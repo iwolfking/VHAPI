@@ -1,0 +1,37 @@
+package xyz.iwolfking.vaultcrackerlib.mixin.configs.research;
+
+import iskallia.vault.config.ResearchGroupStyleConfig;
+import iskallia.vault.config.entry.ResearchGroupStyle;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.iwolfking.vaultcrackerlib.api.patching.configs.research.ResearchGUIConfigPatcher;
+import xyz.iwolfking.vaultcrackerlib.api.patching.configs.research.ResearchGroupGUIConfigPatcher;
+
+import java.util.Map;
+
+@Mixin(value = ResearchGroupStyleConfig.class, remap = false)
+public class MixinResearchesGroupGUIConfig {
+    @Shadow protected Map<String, ResearchGroupStyle> groupStyles;
+
+    @Inject(method = "getStyles", at = @At("HEAD"))
+    public void getStyles(CallbackInfoReturnable<Map<String, ResearchGroupStyle>> cir) {
+        if(!ResearchGroupGUIConfigPatcher.isPatched()) {
+            this.groupStyles.putAll(ResearchGroupGUIConfigPatcher.getResearchGroupGUIConfigPatches());
+            ResearchGroupGUIConfigPatcher.setPatched(true);
+        }
+    }
+
+    @Inject(method = "getStyle", at = @At("HEAD"))
+    public void getStyle(String groupId, CallbackInfoReturnable<ResearchGroupStyle> cir) {
+        if(!ResearchGroupGUIConfigPatcher.isPatched()) {
+            for(String name : ResearchGroupGUIConfigPatcher.getResearchGuiGroupsToRemove()) {
+                this.groupStyles.remove(name);
+            }
+            this.groupStyles.putAll(ResearchGroupGUIConfigPatcher.getResearchGroupGUIConfigPatches());
+            ResearchGroupGUIConfigPatcher.setPatched(true);
+        }
+    }
+}

@@ -1,0 +1,34 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "xyz.iwolfking.vaultcrackerlib.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "vaultcrackerlib.refmap.json",
+  "mixins": [
+    "MixinModConfigs",
+    "accessors.MixinInfusedCatalystItem",
+    "configs.research.MixinResearchConfig",
+    "configs.research.MixinResearchesGroupGUIConfig",
+    "configs.research.MixinResearchesGUIConfig",
+    "configs.research.MixinResearchGroupConfig",
+    "models.MixinInfusedCatalystItem",
+    "models.MixinInscriptionItem",
+    "registry.gear.MixinGearModelRollRaritiesConfig",
+    "registry.gear.MixinMainModDynamicModels",
+    "registry.gear.MixinModModels",
+    "registry.gear.MixinReforgeTagModificationFocus",
+    "registry.gear.MixinVaultGearToolTier",
+    "registry.gear.MixinVaultGearWorkbenchConfig",
+    "registry.objective.MixinClassicListenersLogic",
+    "registry.objective.MixinCompletionProperties",
+    "registry.objective.MixinCrystalData",
+    "registry.objective.MixinLootInfoGroupDefinitionRegistry",
+    "registry.objective.MixinVaultRegistry"
+  ],
+  "client": [
+    "registry.objective.MixinBountyScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
