@@ -34,12 +34,6 @@ public class VaultCrackerLib {
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public static SkillStyle TEST_STYLE = new SkillStyle(300, 480, new ResourceLocation("the_vault:gui/research_groups/big_toys"));
-    public static ModResearch TEST_RESEARCH = new ModResearch("Draconic Evolution", 1, "quark").withRestrictions(true, false, false, false, true);
-
-    public static ResearchGroup TEST_GROUP = ResearchGroup.builder("Big_Dildos").withResearchNodes("Draconic Evolution").withGroupCostIncrease("Big_Dildos", 2).build();
-
-    public static ResearchGroupStyle TEST_GROUP_STYLE = ResearchGroupStyle.builder("Big_Dildos").withBoxSize(170, 105).withHeaderColor(-44776961).withHeaderTextColor(-1).withPosition(-10, 400).withIcon(new ResourceLocation("the_vault:gui/research_groups/big_toys")).build();
 
 
 
@@ -52,9 +46,5 @@ public class VaultCrackerLib {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        ResearchPatcher.addResearch(TEST_RESEARCH);
-        ResearchGUIConfigPatcher.addResearchGUIStyle("Draconic Evolution", TEST_STYLE);
-        ResearchGroupPatcher.addResearchGroup("Big_Dildos", TEST_GROUP);
-        ResearchGroupGUIConfigPatcher.addResearchGroupStyle("Big_Dildos", TEST_GROUP_STYLE);
     }
 }
