@@ -7,7 +7,7 @@ import iskallia.vault.util.data.WeightedList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LootBoxConfigInjector<T> extends BasicPatcher {
+public class WeightedListInjector<T> extends BasicPatcher {
 
     private WeightedList<T> WEIGHTED_LIST_ADDITIONS = new WeightedList<>();
 

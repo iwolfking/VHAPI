@@ -1,6 +1,8 @@
 package xyz.iwolfking.vaultcrackerlib.mixin.configs.misc;
 
+import iskallia.vault.client.gui.screen.block.AscensionForgeScreen;
 import iskallia.vault.config.PlayerTitlesConfig;
+import iskallia.vault.container.AscensionForgeContainer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,6 +20,9 @@ public class MixinPlayerTitlesConfig {
     @Inject(method = "getAll", at = @At("HEAD"))
     private void patchAffixes(PlayerTitlesConfig.Affix affix, CallbackInfoReturnable<Map<String, PlayerTitlesConfig.Title>> cir) {
         if(!Patchers.PLAYER_TITLES_PATCHER.isPatched()) {
+            if(Patchers.PLAYER_TITLES_PATCHER.getAdditions().isEmpty() || Patchers.PLAYER_TITLES_PATCHER.getAdditions().get(affix) == null) {
+                return;
+            }
             Map<String, PlayerTitlesConfig.Title> titleAdditions = Patchers.PLAYER_TITLES_PATCHER.getAdditions().get(affix);
             for (String name : titleAdditions.keySet()) {
                 this.titles.get(affix).put(name, titleAdditions.get(name));

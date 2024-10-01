@@ -1,4 +1,4 @@
-package xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib.custom;
+package xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib.custom.market;
 
 import iskallia.vault.config.SoulShardConfig;
 import iskallia.vault.init.ModConfigs;

@@ -1,28 +1,20 @@
 package xyz.iwolfking.vaultcrackerlib;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import iskallia.vault.VaultMod;
 import iskallia.vault.config.*;
-import iskallia.vault.config.entry.ItemEntry;
-import iskallia.vault.config.entry.LevelEntryList;
-import iskallia.vault.config.entry.SkillStyle;
+import iskallia.vault.config.entry.recipe.ConfigCatalystRecipe;
+import iskallia.vault.config.entry.recipe.ConfigGearRecipe;
 import iskallia.vault.config.entry.vending.ProductEntry;
-import iskallia.vault.core.world.generator.layout.VaultLayout;
-import iskallia.vault.gear.trinket.TrinketEffect;
-import iskallia.vault.init.ModConfigs;
+import iskallia.vault.config.recipe.ForgeRecipeType;
+import iskallia.vault.core.world.loot.LootPool;
+import iskallia.vault.core.world.loot.LootTable;
+import iskallia.vault.core.world.roll.IntRoll;
+import iskallia.vault.gear.crafting.recipe.VaultForgeRecipe;
+import iskallia.vault.init.ModBlocks;
 import iskallia.vault.init.ModItems;
-import iskallia.vault.item.crystal.layout.CrystalLayout;
-import iskallia.vault.item.crystal.objective.BingoCrystalObjective;
-import iskallia.vault.item.crystal.objective.CakeCrystalObjective;
-import iskallia.vault.item.crystal.objective.CrystalObjective;
-import iskallia.vault.item.crystal.objective.MonolithCrystalObjective;
-import iskallia.vault.research.type.ModResearch;
 import iskallia.vault.util.data.WeightedList;
 import iskallia.vault.world.data.PlayerTitlesData;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -30,10 +22,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
-import xyz.iwolfking.vaultcrackerlib.api.helpers.market.ShardTradeHelper;
+import xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.AscensionForgeHelper;
+import xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.market.ShardTradeHelper;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
-import xyz.iwolfking.vaultcrackerlib.mixin.accessors.configs.TrinketAccessor;
+import xyz.iwolfking.vaultcrackerlib.api.util.ItemStackUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +71,8 @@ public class VaultCrackerLib {
         Map<String, PlayerTitlesConfig.Title> WOLD_TITLE = new HashMap<String, PlayerTitlesConfig.Title>();
         WOLD_TITLE.put("wold", (new PlayerTitlesConfig.Title(1)).put(PlayerTitlesData.Type.TAB_LIST, new PlayerTitlesConfig.Display("Wold ", "#AAAAAA")).put(PlayerTitlesData.Type.CHAT, new PlayerTitlesConfig.Display("Wold ", (String)null)));
         Patchers.PLAYER_TITLES_PATCHER.put(PlayerTitlesConfig.Affix.PREFIX, WOLD_TITLE);
-
+        ItemStack WOLD_SCROLL = ItemStackUtils.createNbtItemStack(ModItems.TITLE_SCROLL, 1, "{Affix:\"PREFIX\",TitleId:\"wold\", display:{Name:\u0027{\"text\":\"Prefix Title: \", \"extra\":[{\"text\":\"Wold\",\"color\":\"#6AFF00\"}]}\u0027}}");
+        Patchers.ASCENSION_FORGE_PATCHER.add(AscensionForgeHelper.createListing(null, WOLD_SCROLL, 2));
+        Patchers.VAULT_GEAR_RECIPE_PATCHER.add(new ConfigGearRecipe(ModItems.GEMSTONE.getDefaultInstance()));
     }
 }

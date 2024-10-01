@@ -1,4 +1,4 @@
-package xyz.iwolfking.vaultcrackerlib.api.helpers.market;
+package xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.market;
 
 import iskallia.vault.config.OmegaSoulShardConfig;
 import iskallia.vault.config.SoulShardConfig;

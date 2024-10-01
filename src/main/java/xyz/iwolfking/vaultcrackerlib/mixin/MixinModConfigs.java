@@ -1,6 +1,7 @@
 package xyz.iwolfking.vaultcrackerlib.mixin;
 
 import iskallia.vault.init.ModConfigs;
+import iskallia.vault.skill.base.Skill;
 import org.lwjgl.system.CallbackI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,6 +36,24 @@ public class MixinModConfigs {
 
         //Vault Modifiers
         Patchers.VAULT_MODIFIER_POOLS_PATCHER.doPatches(ModConfigs.VAULT_MODIFIER_POOLS.pools);
+
+        //Spawner Groups
+        Patchers.CUSTOM_ENTITY_SPAWNER_GROUPS_PATCHER.doPatches(ModConfigs.CUSTOM_ENTITY_SPAWNER.spawnerGroups);
+
+        //Expertises
+        ModConfigs.EXPERTISES.tree.skills.addAll(Patchers.EXPERTISES_PATCHER.getAdditions());
+
+        //Talents
+        ModConfigs.TALENTS.tree.skills.addAll(Patchers.TALENTS_PATCHER.getAdditions());
+
+        //Abilities
+        ModConfigs.ABILITIES.tree.skills.addAll(Patchers.ABILITIES_PATCHER.getAdditions());
+
+        //Inscriptions
+        Patchers.INSCRIPTION_POOL_TO_MODEL_PATCHER.doPatches(ModConfigs.INSCRIPTION.poolToModel);
+
+        //Vault Altar
+        Patchers.VAULT_ALTAR_PATCHER.doPatches(ModConfigs.VAULT_ALTAR.INTERFACES);
     }
 
 }
