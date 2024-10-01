@@ -7,9 +7,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.research.ResearchGUIConfigPatcher;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.research.ResearchGroupPatcher;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.research.ResearchPatcher;
+import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
+
 
 import java.util.Map;
 
@@ -20,12 +19,6 @@ public class MixinResearchGroupConfig {
 
     @Inject(method = "getGroups", at = @At("HEAD"))
     private void addCustomResearchGroups(CallbackInfoReturnable<Map<String, ResearchGroup>> cir) {
-        if(!ResearchGroupPatcher.isPatched()) {
-            for(String name : ResearchGroupPatcher.getResearchGroupsToRemove()) {
-                this.groups.remove(name);
-            }
-            this.groups.putAll(ResearchGroupPatcher.getCustomResearchGroups());
-            ResearchGroupPatcher.setPatched(true);
-        }
+        Patchers.RESEARCH_GROUP_PATCHER.doPatches(groups);
     }
 }

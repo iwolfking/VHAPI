@@ -3,13 +3,12 @@ package xyz.iwolfking.vaultcrackerlib.mixin.configs.research;
 import iskallia.vault.config.ResearchesGUIConfig;
 import iskallia.vault.config.entry.SkillStyle;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.research.ResearchGUIConfigPatcher;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.research.ResearchGroupGUIConfigPatcher;
+import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
+
 
 import java.util.HashMap;
 
@@ -20,17 +19,10 @@ public class MixinResearchesGUIConfig {
 
     /**
      * @author iwolfking
-     * @reason Patch research styles with custom ones. For some reason inject isn't working?
+     * @reason Patch research styles with custom ones.
      */
-    @Overwrite
-    public HashMap<String, SkillStyle> getStyles() {
-        if(!ResearchGUIConfigPatcher.isPatched()) {
-            for(String name : ResearchGUIConfigPatcher.getResearchGuiToRemove()) {
-                this.styles.remove(name);
-            }
-            this.styles.putAll(ResearchGUIConfigPatcher.getResearchConfigPatches());
-            ResearchGUIConfigPatcher.setPatched(true);
-        }
-        return this.styles;
+    @Inject(method = "getStyles", at = @At("HEAD"))
+    public void getStyles(CallbackInfoReturnable<HashMap<String, SkillStyle>> cir) {
+        Patchers.RESEARCH_GUI_PATCHER.doPatches(styles);
     }
 }

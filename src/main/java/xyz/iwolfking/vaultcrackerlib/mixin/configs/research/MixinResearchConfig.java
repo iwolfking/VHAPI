@@ -7,7 +7,8 @@ import iskallia.vault.research.type.Research;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.research.ResearchPatcher;
+import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
+
 
 import java.util.*;
 
@@ -23,10 +24,11 @@ public class MixinResearchConfig {
     @Overwrite
     public List<Research> getAll() {
         Set<Research> all = new HashSet<>();
-        if(!ResearchPatcher.isPatched()) {
-            this.MOD_RESEARCHES.addAll(ResearchPatcher.getCustomModResearches());
-            this.CUSTOM_RESEARCHES.addAll(ResearchPatcher.getCustomResearches());
-            ResearchPatcher.setPatched(true);
+        if(!Patchers.MOD_RESEARCH_PATCHER.isPatched()) {
+            this.MOD_RESEARCHES.addAll(Patchers.MOD_RESEARCH_PATCHER.getAdditions());
+            this.CUSTOM_RESEARCHES.addAll(Patchers.CUSTOM_RESEARCH_PATCHER.getAdditions());
+            Patchers.MOD_RESEARCH_PATCHER.setPatched(true);
+            Patchers.CUSTOM_RESEARCH_PATCHER.setPatched(true);
         }
         all.addAll(this.MOD_RESEARCHES);
         all.addAll(this.CUSTOM_RESEARCHES);
