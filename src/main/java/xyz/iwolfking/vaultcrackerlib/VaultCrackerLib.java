@@ -1,71 +1,38 @@
 package xyz.iwolfking.vaultcrackerlib;
 
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSerializer;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
-import iskallia.vault.VaultMod;
 import iskallia.vault.config.*;
 import iskallia.vault.config.altar.entry.AltarIngredientEntry;
 import iskallia.vault.config.entry.SkillStyle;
-import iskallia.vault.config.entry.recipe.ConfigCatalystRecipe;
-import iskallia.vault.config.entry.recipe.ConfigGearRecipe;
 import iskallia.vault.config.entry.vending.ProductEntry;
-import iskallia.vault.config.recipe.ForgeRecipeType;
-import iskallia.vault.config.skillgate.ConstantSkillGate;
-import iskallia.vault.config.skillgate.SkillGateType;
 import iskallia.vault.core.vault.player.Completion;
-import iskallia.vault.core.world.data.entity.EntityPredicate;
-import iskallia.vault.core.world.data.entity.PartialEntity;
-import iskallia.vault.core.world.loot.LootPool;
-import iskallia.vault.core.world.loot.LootTable;
-import iskallia.vault.core.world.roll.IntRoll;
-import iskallia.vault.gear.crafting.recipe.VaultForgeRecipe;
-import iskallia.vault.init.ModBlocks;
 import iskallia.vault.init.ModItems;
-import iskallia.vault.skill.SkillGates;
-import iskallia.vault.util.EnchantmentCost;
-import iskallia.vault.util.VaultRarity;
 import iskallia.vault.util.data.WeightedList;
-import iskallia.vault.world.data.PlayerTitlesData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.commons.io.IOUtils;
-import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
-import xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.AscensionForgeHelper;
 import xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.market.ShardTradeHelper;
-import xyz.iwolfking.vaultcrackerlib.api.lib.TestConfig;
+import xyz.iwolfking.vaultcrackerlib.api.loaders.CustomVaultGearLoader;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
-import xyz.iwolfking.vaultcrackerlib.api.util.ItemStackUtils;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("vaultcrackerlib")
 public class VaultCrackerLib {
 
-    // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
 
-    public TestConfig TEST_CONFIG;
+    // Directly reference a slf4j logger
+    public static final Logger LOGGER = LogUtils.getLogger();
+
+
+
 
 
     public static WeightedList<ProductEntry> MISC_TEST = new WeightedList<>();
@@ -110,11 +77,9 @@ public class VaultCrackerLib {
 
     }
 
-    private void worldLoad(final WorldEvent.Load event)  {
-        TEST_CONFIG = (new TestConfig("test", ".json")).readCustomConfig(event.getWorld().getServer());
-        if(TEST_CONFIG != null) {
-            System.out.println("CUSTOM CONFIG OUTPUT: " + TEST_CONFIG.hello);
-        }
+    private void worldLoad(final AddReloadListenerEvent event)  {
+        event.addListener(new CustomVaultGearLoader());
+
 
     }
 }

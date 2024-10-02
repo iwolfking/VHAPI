@@ -10,7 +10,7 @@ public class ItemStackUtils {
         ItemStack stack = item.getDefaultInstance();
         stack.setCount(count);
 
-        CompoundTag nbt = new CompoundTag();
+        CompoundTag nbt;
 
         try {
             nbt = net.minecraft.nbt.TagParser.parseTag(nbtString);

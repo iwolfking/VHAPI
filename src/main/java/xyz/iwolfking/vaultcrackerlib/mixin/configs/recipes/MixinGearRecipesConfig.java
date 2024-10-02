@@ -13,11 +13,10 @@ import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
 import java.util.List;
 
 @Mixin(value = GearRecipesConfig.class, remap = false)
-public class MixinGearRecipesConfig {
+public abstract class MixinGearRecipesConfig {
     @Shadow @Final private List<ConfigGearRecipe> gearRecipes;
 
     @Inject(method = "getConfigRecipes", at = @At("HEAD"))
     public void getConfigRecipes(CallbackInfoReturnable<List<ConfigGearRecipe>> cir) {
-        Patchers.VAULT_GEAR_RECIPE_PATCHER.doPatches(gearRecipes);
     }
 }

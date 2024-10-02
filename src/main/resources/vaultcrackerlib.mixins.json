@@ -6,6 +6,7 @@
   "refmap": "vaultcrackerlib.refmap.json",
   "mixins": [
     "MixinModConfigs",
+    "accessors.MixinConfigAccessor",
     "accessors.MixinInfusedCatalystItem",
     "accessors.configs.TrinketAccessor",
     "configs.altar.MixinVaultAltarIngredientsConfig",
