@@ -1,5 +1,7 @@
 package xyz.iwolfking.vaultcrackerlib;
 
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSerializer;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.logging.LogUtils;
 import iskallia.vault.VaultMod;
@@ -27,20 +29,33 @@ import iskallia.vault.util.VaultRarity;
 import iskallia.vault.util.data.WeightedList;
 import iskallia.vault.world.data.PlayerTitlesData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.commons.io.IOUtils;
 import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.AscensionForgeHelper;
 import xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.market.ShardTradeHelper;
+import xyz.iwolfking.vaultcrackerlib.api.lib.TestConfig;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
 import xyz.iwolfking.vaultcrackerlib.api.util.ItemStackUtils;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -49,6 +64,9 @@ public class VaultCrackerLib {
 
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
+
+    public TestConfig TEST_CONFIG;
+
 
     public static WeightedList<ProductEntry> MISC_TEST = new WeightedList<>();
     static {
@@ -62,6 +80,7 @@ public class VaultCrackerLib {
 
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        MinecraftForge.EVENT_BUS.addListener(this::worldLoad);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -78,6 +97,8 @@ public class VaultCrackerLib {
         Patchers.MISC_VAULT_ALTAR_INGREDIENT_PATCHER.addEntry(0, new AltarIngredientEntry(List.of(new ItemStack(ModItems.SOUL_SHARD)), 2, 2, 1.0), 30000);
         Patchers.TALENTS_GUI_PATCHER.put("test", new SkillStyle(300, 300, new ResourceLocation("test")));
 
+
+
         Map<String, Map<Completion, Float>> completion = new LinkedHashMap();
         LinkedHashMap<Completion, Float> defaultPool = new LinkedHashMap();
         defaultPool.put(Completion.BAILED, 1000000.0F);
@@ -85,5 +106,15 @@ public class VaultCrackerLib {
         defaultPool.put(Completion.COMPLETED, 10000000.0F);
         completion.put("brutal_bosses", defaultPool);
         Patchers.VAULT_STATS_COMPLETION_PATCHER.put("brutal_bosses", defaultPool);
+
+
+    }
+
+    private void worldLoad(final WorldEvent.Load event)  {
+        TEST_CONFIG = (new TestConfig("test", ".json")).readCustomConfig(event.getWorld().getServer());
+        if(TEST_CONFIG != null) {
+            System.out.println("CUSTOM CONFIG OUTPUT: " + TEST_CONFIG.hello);
+        }
+
     }
 }
