@@ -9,6 +9,7 @@ import iskallia.vault.config.entry.SkillStyle;
 import iskallia.vault.config.entry.recipe.ConfigCatalystRecipe;
 import iskallia.vault.config.entry.recipe.ConfigGearRecipe;
 import iskallia.vault.config.entry.vending.ProductEntry;
+import iskallia.vault.config.gear.VaultGearModificationConfig;
 import iskallia.vault.config.recipe.CatalystRecipesConfig;
 import iskallia.vault.config.recipe.GearRecipesConfig;
 import iskallia.vault.config.tool.ToolPulverizingConfig;
@@ -43,60 +44,58 @@ import java.util.Set;
 public class Patchers {
 
     public static Set<BasicPatcher> PATCHERS = new HashSet<>();
+
+    //Confirmed Working
+
     public static final SetInjector<ModResearch> MOD_RESEARCH_PATCHER = new SetInjector<>();
     public static final SetInjector<CustomResearch> CUSTOM_RESEARCH_PATCHER = new SetInjector<>();
-
-
     public static final MapInjector<String, SkillStyle> RESEARCH_GUI_PATCHER = new MapInjector<>();
     public static final MapInjector<String, ResearchGroupStyle> RESEARCH_GROUP_GUI_PATCHER = new MapInjector<>();
     public static final MapInjector<String, ResearchGroup> RESEARCH_GROUP_PATCHER = new MapInjector<>();
     public static final MapInjector<String, JsonElement> SKILL_DESCRIPTIONS_PATCHER = new MapInjector<>();
     public static final MapInjector<ResourceLocation, Integer> VAULT_DIFFUSER_PATCHER = new MapInjector<>();
+    public static final WeightedListInjector<ProductEntry> MYSTERY_BOX_PATCHER = new WeightedListInjector<>();
+    public static final WeightedListInjector<ProductEntry> MYSTERY_EGG_PATCHER = new WeightedListInjector<>();
+    public static final WeightedListInjector<ProductEntry> MYSTERY_EGG_HOSTILE_PATCHER = new WeightedListInjector<>();
+    public static final WeightedListInjector<ProductEntry> UNIDENTIFIED_TREASURE_KEY_PATCHER = new WeightedListInjector<>();
+    public static final MapInjector<String, WeightedList<ProductEntry>> MOD_BOX_PATCHER = new MapInjector<>();
+    public static final SetInjector<String> ITEM_BLACKLIST_PATCHER = new SetInjector<>();
+    public static final SetInjector<String> BLOCK_BLACKLIST_PATCHER = new SetInjector<>();
+    public static final MapInjector<EntityPredicate, Float> ENTITY_CHAMPION_CHANCE_PATCHER = new MapInjector<>();
+    public static final SetInjector<TooltipConfig.TooltipEntry> TOOLTIP_PATCHER = new SetInjector<>();
+    public static final MapInjector<PlayerTitlesConfig.Affix, Map<String, PlayerTitlesConfig.Title>> PLAYER_TITLES_PATCHER = new MapInjector<>();
+    public static final SetInjector<AscensionForgeConfig.AscensionForgeListing> ASCENSION_FORGE_PATCHER = new SetInjector<>();
+    public static final MapInjector<Enchantment, EnchantmentCost> VAULT_GEAR_ENCHANTMENT_PATCHER = new MapInjector<>();
+
+    public static final MapInjector<Block, Map<VaultRarity, Double>> VAULT_CHEST_CATALYST_CHANCE_PATCHER = new MapInjector<>();
+
+    public static final SetInjector<VaultLevelsConfig.VaultLevelMeta> VAULT_LEVELS_PATCHER = new SetInjector<>();
+    public static final ConstantInjector<Integer> MAX_VAULT_LEVEL_PATCHER = new ConstantInjector<>();
+
+
+    //Testing
+
     public static final MapInjector<VaultChestType, Map<VaultRarity, Float>> VAULT_STATS_CHEST_PATCHER = new MapInjector<>();
     public static final MapInjector<ResourceLocation, Float> VAULT_STATS_BLOCKS_PATCHER = new MapInjector<>();
     public static final MapInjector<ResourceLocation, Float> VAULT_STATS_MOBS_PATCHER = new MapInjector<>();
     public static final MapInjector<String, Map<Completion, Float>> VAULT_STATS_COMPLETION_PATCHER = new MapInjector<>();
 
-    public static final WeightedListInjector<ProductEntry> MYSTERY_BOX_PATCHER = new WeightedListInjector<>();
-    public static final WeightedListInjector<ProductEntry> MYSTERY_EGG_PATCHER = new WeightedListInjector<>();
-    public static final WeightedListInjector<ProductEntry> MYSTERY_EGG_HOSTILE_PATCHER = new WeightedListInjector<>();
-    public static final WeightedListInjector<ProductEntry> UNIDENTIFIED_TREASURE_KEY_PATCHER = new WeightedListInjector<>();
 
-    public static final SetInjector<String> ITEM_BLACKLIST_PATCHER = new SetInjector<>();
-    public static final SetInjector<String> BLOCK_BLACKLIST_PATCHER = new SetInjector<>();
-
-    public static final MapInjector<String, WeightedList<ProductEntry>> MOD_BOX_PATCHER = new MapInjector<>();
+    //Untested
     public static final MapInjector<ResourceLocation, LevelEntryList<VaultCrystalConfig.SealEntry>> CRYSTAL_SEALS_PATCHER = new MapInjector<>();
-    public static final MapInjector<EntityPredicate, Float> ENTITY_CHAMPION_CHANCE_PATCHER = new MapInjector<>();
+
     public static final MapInjector<ResourceLocation, LevelEntryList<VaultModifierPoolsConfig.Level>> VAULT_MODIFIER_POOLS_PATCHER = new MapInjector<>();
-
-    public static final SetInjector<TooltipConfig.TooltipEntry> TOOLTIP_PATCHER = new SetInjector<>();
-    public static final SetInjector<SoulShardConfig.Trades> NORMAL_BLACK_MARKET_TRADES_PATCHER = new BlackMarketPatcher();
-    public static final SetInjector<OmegaSoulShardConfig.Trades> OMEGA_BLACK_MARKET_TRADES_PATCHER = new OmegaBlackMarketPatcher<>();
-
     public static final MapInjector<String, SkillGates.Entry> SKILL_GATES_PATCHER = new MapInjector<>();
-
-    public static final MapInjector<PlayerTitlesConfig.Affix, Map<String, PlayerTitlesConfig.Title>> PLAYER_TITLES_PATCHER = new MapInjector<>();
-    public static final SetInjector<AscensionForgeConfig.AscensionForgeListing> ASCENSION_FORGE_PATCHER = new SetInjector<>();
-
     public static final MapInjector<ResourceLocation, Map<String, Integer>> AUGMENT_PATCHER = new MapInjector<>();
 
     public static final MapInjector<String, TextColor> COLORS_PATCHER = new MapInjector<>();
 
     public static final MapInjector<String, List<CustomEntitySpawnerConfig.SpawnerGroup>> CUSTOM_ENTITY_SPAWNER_GROUPS_PATCHER = new MapInjector<>();
-
     public static final SetInjector<Skill> EXPERTISES_PATCHER = new SetInjector<>();
-
-    public static final MapInjector<String, SkillStyle> EXPERTISES_GUI_PATCHER = new MapInjector<>();
-
-
     public static final SetInjector<Skill> TALENTS_PATCHER = new SetInjector<>();
-
     public static final SetInjector<Skill> ABILITIES_PATCHER = new SetInjector<>();
+    public static final MapInjector<String, AbilitiesGUIConfig.AbilityStyle> ABILITIES_GUI_PATCHER = new MapInjector<>();
 
-    public static final MapInjector<String, SkillStyle> TALENTS_GUI_PATCHER = new MapInjector<>();
-    public static final MapInjector<String, SkillStyle> ABILITIES_GUI_PATCHER = new MapInjector<>();
-    public static final MapInjector<Enchantment, EnchantmentCost> VAULT_GEAR_ENCHANTMENT_PATCHER = new MapInjector<>();
 
     public static final MapInjector<ResourceLocation, Integer> INSCRIPTION_POOL_TO_MODEL_PATCHER = new MapInjector<>();
 
@@ -106,26 +105,51 @@ public class Patchers {
     public static final MapInjector<ResourceLocation, String> MENU_PLAYER_STAT_GEAR_PATCHER = new MapInjector<>();
     public static final MapInjector<String, String> MENU_PLAYER_STATS_VAULT_PATCHER = new MapInjector<>();
 
+
     public static final MapInjector<String, AbilitiesDescriptionsConfig.DescriptionData> ABILITIES_DESCRIPTIONS_PATCHER = new MapInjector<>();
-
     public static final SetInjector<VaultAltarConfig.Interface> VAULT_ALTAR_PATCHER = new SetInjector<>();
+    public static final MapInjector<ResourceLocation, List<LootTable.Entry>> TOOL_PULVERIZING_PATCHER = new MapInjector<>();
 
-    public static final MapInjector<Block, Map<VaultRarity, Double>> VAULT_CHEST_CATALYST_CHANCE_PATCHER = new MapInjector<>();
 
-    public static final SetInjector<VaultLevelsConfig.VaultLevelMeta> VAULT_LEVELS_PATCHER = new SetInjector<>();
-    public static final ConstantInjector<Integer> MAX_VAULT_LEVEL_PATCHER = new ConstantInjector<>();
+    //Unfinished
 
+
+    public static final SetInjector<SoulShardConfig.Trades> NORMAL_BLACK_MARKET_TRADES_PATCHER = new BlackMarketPatcher();
+    public static final SetInjector<OmegaSoulShardConfig.Trades> OMEGA_BLACK_MARKET_TRADES_PATCHER = new OmegaBlackMarketPatcher<>();
+    @Experimental
+    public static final MapInjector<ResourceLocation, TrinketConfig.Trinket> TRINKET_PATCHER = new MapInjector<>();
+
+
+    //Not working
+    public static final MapInjector<String, SkillStyle> EXPERTISES_GUI_PATCHER = new MapInjector<>();
+
+    public static final MapInjector<String, SkillStyle> TALENTS_GUI_PATCHER = new MapInjector<>();
     public static final LeveledWeightedListInjector<AltarIngredientEntry, String> RESOURCE_VAULT_ALTAR_INGREDIENT_PATCHER = new LeveledWeightedListInjector<>("resource");
     public static final LeveledWeightedListInjector<AltarIngredientEntry, String> MOB_VAULT_ALTAR_INGREDIENT_PATCHER = new LeveledWeightedListInjector<>("mob");
     public static final LeveledWeightedListInjector<AltarIngredientEntry, String> FARMABLE_VAULT_ALTAR_INGREDIENT_PATCHER = new LeveledWeightedListInjector<>("farmable");
     public static final LeveledWeightedListInjector<AltarIngredientEntry, String> MISC_VAULT_ALTAR_INGREDIENT_PATCHER = new LeveledWeightedListInjector<>("misc");
     public static final VaultAltarIngredientInjector VAULT_ALTAR_INGREDIENT_PATCHER = new VaultAltarIngredientInjector();
-
-    public static final MapInjector<ResourceLocation, List<LootTable.Entry>> TOOL_PULVERIZING_PATCHER = new MapInjector<>();
-
     public static final SetInjector<ConfigGearRecipe> VAULT_GEAR_RECIPE_PATCHER = new SetInjector<>();
-    @Experimental
-    public static final MapInjector<ResourceLocation, TrinketConfig.Trinket> TRINKET_PATCHER = new MapInjector<>();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

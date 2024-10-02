@@ -10,9 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
 
-import java.util.TreeMap;
-
-@Mixin(targets = "iskallia.vault.config.ColorsConfig$Colors")
+@Mixin(targets = "iskallia.vault.config.ColorsConfig$Colors", remap = false)
 public class MixinColorsConfig {
 
     @Inject(method = "get", at = @At("HEAD"), cancellable = true)

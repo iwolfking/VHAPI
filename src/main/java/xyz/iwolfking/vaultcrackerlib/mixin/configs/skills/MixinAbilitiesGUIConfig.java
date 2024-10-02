@@ -12,14 +12,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Mixin(value = AbilitiesGUIConfig.class, remap = false)
 public class MixinAbilitiesGUIConfig {
 
-    @Shadow private HashMap<String, SkillStyle> styles;
+
+    @Shadow private Map<String, AbilitiesGUIConfig.AbilityStyle> styles;
 
     @Inject(method = "getStyles", at = @At("HEAD"))
-    private void addAbilitiesGUIStyles(CallbackInfoReturnable<HashMap<String, SkillStyle>> cir) {
+    private void addStyles(CallbackInfoReturnable<Map<String, AbilitiesGUIConfig.AbilityStyle>> cir) {
         Patchers.ABILITIES_GUI_PATCHER.doPatches(styles);
     }
+
 }

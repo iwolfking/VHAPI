@@ -34,7 +34,6 @@
     "configs.skills.MixinTalentsGUIConfig",
     "configs.tool.MixinToolPulverizingConfig",
     "configs.workstations.MixinAscensionForgeConfig",
-    "configs.workstations.MixinSoulShardConfig",
     "configs.workstations.MixinVaultDiffuserConfig",
     "models.MixinInfusedCatalystItem",
     "models.MixinInscriptionItem",
