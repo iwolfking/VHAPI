@@ -17,9 +17,7 @@ public abstract class MixinVaultRegistry {
 
 
     static {
-        for(CustomVaultObjectiveEntry entry : CustomVaultObjectiveRegistry.getCustomVaultObjectiveEntries()) {
-            OBJECTIVE.add(entry.key());
-        }
+
     }
 
 

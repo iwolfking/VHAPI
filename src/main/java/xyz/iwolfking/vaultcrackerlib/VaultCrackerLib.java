@@ -1,6 +1,7 @@
 package xyz.iwolfking.vaultcrackerlib;
 
 import com.mojang.logging.LogUtils;
+import iskallia.vault.core.vault.VaultRegistry;
 import iskallia.vault.init.ModConfigs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
@@ -8,8 +9,13 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
+import xyz.iwolfking.vaultcrackerlib.api.registry.generic.records.CustomVaultObjectiveEntry;
+import xyz.iwolfking.vaultcrackerlib.api.registry.objective.CustomVaultObjectiveRegistry;
 
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static net.minecraft.world.level.dimension.DimensionType.OVERWORLD_EFFECTS;
 
@@ -20,7 +26,7 @@ public class VaultCrackerLib {
 
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
-
+    private final AtomicBoolean hasLoaded = new AtomicBoolean();
 
 
 
@@ -36,13 +42,23 @@ public class VaultCrackerLib {
     }
 
     private void setup(final FMLCommonSetupEvent event)  {
-
+        for(CustomVaultObjectiveEntry entry : CustomVaultObjectiveRegistry.getCustomVaultObjectiveEntries()) {
+            VaultRegistry.OBJECTIVE.add(entry.key());
+        }
     }
 
+    public static void beforeConfigsLoad() {
+    }
     private void worldLoad(final WorldEvent.Load event)  {
-       if(event.getWorld().dimensionType().effectsLocation() == OVERWORLD_EFFECTS) {
+        if(hasLoaded.get()) {
+            return;
+        }
+
+        if(hasLoaded.compareAndSet(false, true)) {
             ModConfigs.register();
-       }
+        }
+
+
     }
 
 }
