@@ -29,7 +29,7 @@ public class MixinVaultGearWorkbenchConfig {
 
 
         for (Item item : newGearItems) {
-            gearConfig.put(item, Loaders.CUSTOM_VAULT_GEAR_WORKBENCH_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation("the_vault", item.getRegistryName().getPath())));
+           // gearConfig.put(item, Loaders.CUSTOM_VAULT_GEAR_WORKBENCH_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation("the_vault", item.getRegistryName().getPath())));
         }
     }
 

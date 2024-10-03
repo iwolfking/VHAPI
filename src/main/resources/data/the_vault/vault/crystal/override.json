@@ -1,0 +1,372 @@
+{
+  "OBJECTIVES": {
+    "the_vault:default": [
+      {
+        "level": 0,
+        "pool": [
+          {
+            "value": {
+              "type": "bingo",
+              "objective_probability": 1.0
+            },
+            "weight": 40000
+          }
+        ]
+      },
+      {
+        "level": 10,
+        "pool": [
+          {
+            "value": {
+              "type": "elixir",
+              "objective_probability": 0.75
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "monolith",
+              "objective_probability": 1.0,
+              "target": {
+                "type": "uniform",
+                "min": 3,
+                "max": 5
+              }
+            },
+            "weight": 4
+          }
+        ]
+      },
+      {
+        "level": 20,
+        "pool": [
+          {
+            "value": {
+              "type": "scavenger",
+              "objective_probability": 0.75
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "monolith",
+              "objective_probability": 1.0,
+              "target": {
+                "type": "uniform",
+                "min": 3,
+                "max": 6
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "elixir",
+              "objective_probability": 0.5
+            },
+            "weight": 4
+          }
+        ]
+      },
+      {
+        "level": 50,
+        "pool": [
+          {
+            "value": {
+              "type": "boss",
+              "objective_probability": 0.3,
+              "target": {
+                "type": "uniform",
+                "min": 3,
+                "max": 5
+              },
+              "wave": {
+                "type": "uniform",
+                "min": 4,
+                "max": 8
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "scavenger",
+              "objective_probability": 0.75
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "monolith",
+              "objective_probability": 1.0,
+              "target": {
+                "type": "uniform",
+                "min": 4,
+                "max": 10
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "elixir",
+              "objective_probability": 0.3
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "bingo",
+              "objective_probability": 1.0
+            },
+            "weight": 4
+          }
+        ]
+      },
+      {
+        "level": 60,
+        "pool": [
+          {
+            "value": {
+              "type": "boss",
+              "objective_probability": 0.25,
+              "target": {
+                "type": "uniform",
+                "min": 3,
+                "max": 5
+              },
+              "wave": {
+                "type": "uniform",
+                "min": 5,
+                "max": 8
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "scavenger",
+              "objective_probability": 0.75
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "monolith",
+              "objective_probability": 1.0,
+              "target": {
+                "type": "uniform",
+                "min": 4,
+                "max": 12
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "elixir",
+              "objective_probability": 0.3
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "bingo",
+              "objective_probability": 1.0
+            },
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "level": 70,
+        "pool": [
+          {
+            "value": {
+              "type": "boss",
+              "objective_probability": 0.25,
+              "target": {
+                "type": "uniform",
+                "min": 4,
+                "max": 5
+              },
+              "wave": {
+                "type": "uniform",
+                "min": 6,
+                "max": 8
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "scavenger",
+              "objective_probability": 0.75
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "monolith",
+              "objective_probability": 1.0,
+              "target": {
+                "type": "uniform",
+                "min": 5,
+                "max": 12
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "elixir",
+              "objective_probability": 0.3
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "bingo",
+              "objective_probability": 1.0
+            },
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "level": 90,
+        "pool": [
+          {
+            "value": {
+              "type": "boss",
+              "objective_probability": 0.25,
+              "target": {
+                "type": "uniform",
+                "min": 4,
+                "max": 5
+              },
+              "wave": {
+                "type": "uniform",
+                "min": 6,
+                "max": 8
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "scavenger",
+              "objective_probability": 0.75
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "monolith",
+              "objective_probability": 1.0,
+              "target": {
+                "type": "uniform",
+                "min": 10,
+                "max": 15
+              }
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "elixir",
+              "objective_probability": 0.3
+            },
+            "weight": 4
+          },
+          {
+            "value": {
+              "type": "bingo",
+              "objective_probability": 1.0
+            },
+            "weight": 2
+          }
+        ]
+      }
+    ]
+  },
+  "SEALS": {
+    "the_vault:crystal_seal_hunter": [
+      {
+        "level": 0,
+        "input": [
+          "the_vault:vault_crystal"
+        ],
+        "objective": {
+          "type": "monolith",
+          "objective_probability": 1.0,
+          "target": {
+            "type": "uniform",
+            "min": 3,
+            "max": 5
+          }
+        }
+      },
+      {
+        "level": 20,
+        "input": [
+          "the_vault:vault_crystal"
+        ],
+        "objective": {
+          "type": "monolith",
+          "objective_probability": 1.0,
+          "target": {
+            "type": "uniform",
+            "min": 3,
+            "max": 6
+          }
+        }
+      },
+      {
+        "level": 50,
+        "input": [
+          "the_vault:vault_crystal"
+        ],
+        "objective": {
+          "type": "monolith",
+          "objective_probability": 1.0,
+          "target": {
+            "type": "uniform",
+            "min": 4,
+            "max": 10
+          }
+        }
+      },
+      {
+        "level": 70,
+        "input": [
+          "the_vault:vault_crystal"
+        ],
+        "objective": {
+          "type": "monolith",
+          "objective_probability": 1.0,
+          "target": {
+            "type": "uniform",
+            "min": 4,
+            "max": 12
+          }
+        }
+      },
+      {
+        "level": 90,
+        "input": [
+          "the_vault:vault_crystal"
+        ],
+        "objective": {
+          "type": "monolith",
+          "objective_probability": 1.0,
+          "target": {
+            "type": "uniform",
+            "min": 5,
+            "max": 12
+          }
+        }
+      }
+    ]
+  }
+}

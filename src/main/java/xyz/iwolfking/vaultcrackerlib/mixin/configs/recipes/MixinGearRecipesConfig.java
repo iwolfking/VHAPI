@@ -19,11 +19,11 @@ public abstract class MixinGearRecipesConfig {
 
     @Inject(method = "getConfigRecipes", at = @At("HEAD"))
     public void getConfigRecipes(CallbackInfoReturnable<List<ConfigGearRecipe>> cir) {
-        if(!Loaders.GEAR_RECIPES_LOADER.isPatched()) {
-            for(GearRecipesConfig config : Loaders.GEAR_RECIPES_LOADER.CUSTOM_CONFIGS.values()) {
-                gearRecipes.addAll(config.getConfigRecipes());
-            }
-            Loaders.GEAR_RECIPES_LOADER.setPatched(true);
-        }
+//        if(!Loaders.GEAR_RECIPES_LOADER.isPatched()) {
+//            for(GearRecipesConfig config : Loaders.GEAR_RECIPES_LOADER.CUSTOM_CONFIGS.values()) {
+//                gearRecipes.addAll(config.getConfigRecipes());
+//            }
+//            Loaders.GEAR_RECIPES_LOADER.setPatched(true);
+//        }
     }
 }

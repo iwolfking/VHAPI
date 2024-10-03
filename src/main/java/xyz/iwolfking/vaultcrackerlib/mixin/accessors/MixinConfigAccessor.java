@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 import java.io.File;
 
-@Mixin(Config.class)
+@Mixin(value = Config.class, remap = false)
 public interface MixinConfigAccessor {
     @Invoker("onLoad")
     public abstract void invokeOnLoad(Config oldConfigInstance);
