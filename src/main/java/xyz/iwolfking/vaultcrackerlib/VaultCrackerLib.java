@@ -18,7 +18,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.market.ShardTradeHelper;
-import xyz.iwolfking.vaultcrackerlib.api.loaders.CustomVaultGearLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.CustomVaultGearLoader;
+import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Loaders;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
 
 import java.util.*;
@@ -78,8 +79,8 @@ public class VaultCrackerLib {
     }
 
     private void worldLoad(final AddReloadListenerEvent event)  {
-        event.addListener(new CustomVaultGearLoader());
-
-
+        event.addListener(Loaders.CUSTOM_VAULT_GEAR_LOADER);
+        event.addListener(Loaders.CUSTOM_VAULT_GEAR_WORKBENCH_LOADER);
+        event.addListener(Loaders.GEAR_RECIPES_LOADER);
     }
 }

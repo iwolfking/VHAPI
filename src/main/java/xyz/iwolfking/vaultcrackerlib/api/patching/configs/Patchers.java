@@ -10,6 +10,7 @@ import iskallia.vault.config.entry.recipe.ConfigCatalystRecipe;
 import iskallia.vault.config.entry.recipe.ConfigGearRecipe;
 import iskallia.vault.config.entry.vending.ProductEntry;
 import iskallia.vault.config.gear.VaultGearModificationConfig;
+import iskallia.vault.config.gear.VaultGearWorkbenchConfig;
 import iskallia.vault.config.recipe.CatalystRecipesConfig;
 import iskallia.vault.config.recipe.GearRecipesConfig;
 import iskallia.vault.config.tool.ToolPulverizingConfig;
@@ -130,6 +131,7 @@ public class Patchers {
     public static final LeveledWeightedListInjector<AltarIngredientEntry, String> MISC_VAULT_ALTAR_INGREDIENT_PATCHER = new LeveledWeightedListInjector<>("misc");
     public static final VaultAltarIngredientInjector VAULT_ALTAR_INGREDIENT_PATCHER = new VaultAltarIngredientInjector();
     public static final SetInjector<ConfigGearRecipe> VAULT_GEAR_RECIPE_PATCHER = new SetInjector<>();
+
 
 
 

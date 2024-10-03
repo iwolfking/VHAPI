@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import iskallia.vault.VaultMod;
 import iskallia.vault.config.Config;
+import iskallia.vault.config.ResearchConfig;
 import iskallia.vault.core.vault.Vault;
 import iskallia.vault.init.ModConfigs;
 import net.minecraft.server.MinecraftServer;

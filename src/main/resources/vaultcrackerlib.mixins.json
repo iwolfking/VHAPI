@@ -7,7 +7,9 @@
   "mixins": [
     "MixinModConfigs",
     "accessors.MixinConfigAccessor",
+    "accessors.MixinCraftableModifiersConfigAccessor",
     "accessors.MixinInfusedCatalystItem",
+    "accessors.MixinVaultGearWorkbenchAccessor",
     "accessors.configs.TrinketAccessor",
     "configs.altar.MixinVaultAltarIngredientsConfig",
     "configs.augment.MixinAugmentConfig",

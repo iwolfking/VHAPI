@@ -1,5 +1,7 @@
 package xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib;
 
+import iskallia.vault.config.gear.VaultGearWorkbenchConfig;
+
 public abstract class BasicPatcher {
 
     public boolean isPatched() {
