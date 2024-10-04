@@ -1,0 +1,91 @@
+{
+  "modifiers": {
+    "the_vault:modifier_type/hunter": {
+      "the_vault:pylon_hunter": {
+        "properties": {
+          "entries": [
+            {
+              "filter": "the_vault:god_altar",
+              "radius": 64.0,
+              "color": 5817009
+            }
+          ]
+        },
+        "display": {
+          "name": ":omega: Pylon Hunter",
+          "color": "#58C2B1",
+          "description": "Highlights Pylons in this vault",
+          "icon": "the_vault:gui/modifiers/god_token_tenos"
+        }
+      },
+      "the_vault:velara_hunter": {
+        "properties": {
+          "entries": [
+            {
+              "filter": "the_vault:god_altar[god=velara]",
+              "radius": 64.0,
+              "color": 65280
+            }
+          ]
+        },
+        "display": {
+          "name": ":velara: Velara Hunter",
+          "color": "#00FF00",
+          "description": "Highlights Velara God Altars in this vault",
+          "icon": "the_vault:gui/modifiers/god_token_velara"
+        }
+      },
+      "the_vault:tenos_hunter": {
+        "properties": {
+          "entries": [
+            {
+              "filter": "the_vault:god_altar[god=tenos]",
+              "radius": 64.0,
+              "color": 197
+            }
+          ]
+        },
+        "display": {
+          "name": ":tenos: Tenos Hunter",
+          "color": "#0000C5",
+          "description": "Highlights Tenos God Altars in this vault",
+          "icon": "the_vault:gui/modifiers/god_token_tenos"
+        }
+      },
+      "the_vault:idona_hunter": {
+        "properties": {
+          "entries": [
+            {
+              "filter": "the_vault:god_altar[god=idona]",
+              "radius": 64.0,
+              "color": 16711680
+            }
+          ]
+        },
+        "display": {
+          "name": ":idona: Idona Hunter",
+          "color": "#FF0000",
+          "description": "Highlights Idona God Altars in this vault",
+          "icon": "the_vault:gui/modifiers/god_token_idona"
+        }
+      },
+      "the_vault:wendarr_hunter": {
+        "properties": {
+          "entries": [
+            {
+              "filter": "the_vault:god_altar[god=wendarr]",
+              "radius": 64.0,
+              "color": 16748800
+            }
+          ]
+        },
+        "display": {
+          "name": ":wendarr: Wendarr Hunter",
+          "color": "#FF9100",
+          "description": "Highlights Wendarr God Altars in this vault",
+          "icon": "the_vault:gui/modifiers/god_token_wendarr"
+        }
+      }
+    }
+  }
+}

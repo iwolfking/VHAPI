@@ -1,8 +1,7 @@
-package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.crystal;
+package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal;
 
 import com.google.gson.JsonElement;
 import iskallia.vault.config.VaultCrystalConfig;
-import iskallia.vault.config.entry.LevelEntryList;
 import iskallia.vault.init.ModConfigs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
