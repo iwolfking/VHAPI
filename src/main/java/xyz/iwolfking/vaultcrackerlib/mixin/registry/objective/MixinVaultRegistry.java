@@ -6,8 +6,6 @@ import iskallia.vault.core.vault.objective.Objective;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import xyz.iwolfking.vaultcrackerlib.api.registry.generic.records.CustomVaultObjectiveEntry;
-import xyz.iwolfking.vaultcrackerlib.api.registry.objective.CustomVaultObjectiveRegistry;
 
 @Mixin(value = VaultRegistry.class, remap = false)
 public abstract class MixinVaultRegistry {

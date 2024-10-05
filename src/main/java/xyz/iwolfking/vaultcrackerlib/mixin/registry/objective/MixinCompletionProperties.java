@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.iwolfking.vaultcrackerlib.api.registry.generic.records.CustomVaultObjectiveEntry;
-import xyz.iwolfking.vaultcrackerlib.api.registry.objective.CustomVaultObjectiveRegistry;
+import xyz.iwolfking.vaultcrackerlib.api.registry.VaultObjectiveRegistry;
+import xyz.iwolfking.vaultcrackerlib.api.registry.objective.CustomObjectiveRegistryEntry;
 
 import java.util.List;
 
@@ -26,9 +26,9 @@ public class MixinCompletionProperties extends TaskProperties {
 
     @Inject(method = "deserializeNBT(Lnet/minecraft/nbt/CompoundTag;)V", at = @At("TAIL"))
     private void addCustomVaultObjectives(CompoundTag tag, CallbackInfo ci) {
-        for(CustomVaultObjectiveEntry entry : CustomVaultObjectiveRegistry.getCustomVaultObjectiveEntries()) {
-            if(this.id.equals("the_vault:" + entry.id())) {
-                this.id = entry.id();
+        for(CustomObjectiveRegistryEntry entry : VaultObjectiveRegistry.customObjectiveRegistry.get().getValues()) {
+            if(this.id.equals("the_vault:" + entry.getId())) {
+                this.id = entry.getId();
             }
         }
     }

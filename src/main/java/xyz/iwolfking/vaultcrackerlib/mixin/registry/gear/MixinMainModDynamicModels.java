@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import xyz.iwolfking.vaultcrackerlib.api.registry.gear.CustomVaultGearRegistry;
-import xyz.iwolfking.vaultcrackerlib.api.registry.generic.records.CustomVaultGearEntry;
+import xyz.iwolfking.vaultcrackerlib.api.registry.VaultGearRegistry;
+import xyz.iwolfking.vaultcrackerlib.api.registry.gear.CustomVaultGearRegistryEntry;
 
 @Mixin(value = ModDynamicModels.class, remap = false)
 public class MixinMainModDynamicModels {
@@ -19,8 +19,8 @@ public class MixinMainModDynamicModels {
 
     @Inject(method = "initItemAssociations", at = @At("RETURN"))
     private static void initItemAssociations(CallbackInfo ci) {
-        for(CustomVaultGearEntry entry : CustomVaultGearRegistry.getCustomGearEntries()) {
-            REGISTRIES.associate(entry.registryItem(), entry.dynamicModelRegistry());
+        for(CustomVaultGearRegistryEntry entry : VaultGearRegistry.customGearRegistry.get().getValues()) {
+            REGISTRIES.associate(entry.getRegistryItem(), entry.getDynamicModelRegistry());
         }
     }
 }

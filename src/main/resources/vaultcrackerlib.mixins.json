@@ -6,15 +6,19 @@
   "refmap": "vaultcrackerlib.refmap.json",
   "mixins": [
     "MixinModConfigs",
+    "accessors.DynamicModelPropertiesAccessor",
     "accessors.ElixirConfigAccessor",
+    "accessors.GearModelRollRaritiesAccessor",
+    "accessors.LootInfoGroupDefinitionRegistryAccessor",
     "accessors.MixinConfigAccessor",
     "accessors.MixinCraftableModifiersConfigAccessor",
     "accessors.MixinGearRecipesConfig",
     "accessors.MixinInfusedCatalystItem",
     "accessors.MixinVaultGearWorkbenchAccessor",
-    "accessors.VaultModifierRegistyAccessor",
+    "accessors.ReforgeTagModificationFocusAccessor",
     "accessors.ScavengerConfigAccessor",
     "accessors.VaultCrystalConfigAccessor",
+    "accessors.VaultModifierRegistyAccessor",
     "accessors.VaultModifiersConfigAccessor",
     "accessors.configs.TrinketAccessor",
     "configs.altar.MixinVaultAltarIngredientsConfig",
@@ -49,16 +53,15 @@
     "registry.gear.MixinGearModelRollRaritiesConfig",
     "registry.gear.MixinMainModDynamicModels",
     "registry.gear.MixinModModels",
-    "registry.gear.MixinReforgeTagModificationFocus",
     "registry.gear.MixinVaultGearToolTier",
     "registry.gear.MixinVaultGearWorkbenchConfig",
     "registry.modifiers.MixinVaultModifiersConfig",
     "registry.objective.MixinClassicListenersLogic",
     "registry.objective.MixinCompletionProperties",
-    "registry.objective.MixinLootInfoGroupDefinitionRegistry",
     "registry.objective.MixinVaultRegistry"
   ],
   "client": [
+    "accessors.BountyScreenAccessor",
     "registry.objective.MixinBountyScreen"
   ],
   "injectors": {

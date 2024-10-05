@@ -1,5 +1,19 @@
 {
   "modifiers": {
+    "the_vault:modifier_type/vault_time": {
+      "the_vault:extra_shortened": {
+        "properties": {
+          "timeAddedTicks": -2400
+        },
+        "display": {
+          "name": "Super Shortened",
+          "color": "#2F86AE",
+          "description": "-1 minute Vault Time",
+          "descriptionFormatted": "-%d minutes Vault Time",
+          "icon": "the_vault:gui/modifiers/rush"
+        }
+      }
+    },
     "the_vault:modifier_type/hunter": {
       "the_vault:pylon_hunter": {
         "properties": {

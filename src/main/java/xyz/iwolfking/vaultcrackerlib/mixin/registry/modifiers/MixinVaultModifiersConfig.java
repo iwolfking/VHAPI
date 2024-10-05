@@ -27,17 +27,12 @@ public abstract class MixinVaultModifiersConfig extends Config{
     public void readConfig(CallbackInfoReturnable<?> cir) {
         VaultModifiersConfig config = super.readConfig();
         if(((VaultModifiersConfigAccessor)config).getModifierTypeGroups() != null) {
-            System.out.println("MODIFIERS WEREN'T NULL");
             for(VaultModifiersConfig customConfig : Loaders.VAULT_MODIFIER_CONFIG_LOADER.CUSTOM_CONFIGS.values()) {
-                System.out.println("Reading a custom config!");
                 for(ResourceLocation key : ((VaultModifiersConfigAccessor)customConfig).getModifierTypeGroups().keySet()) {
-                    System.out.println(key);
                     if((((VaultModifiersConfigAccessor)config).getModifierTypeGroups().containsKey(key))) {
-                        System.out.println("Adding existing key!");
                         ((VaultModifiersConfigAccessor)config).getModifierTypeGroups().get(key).putAll(((VaultModifiersConfigAccessor) customConfig).getModifierTypeGroups().get(key));
                     }
                     else {
-                        System.out.println("New key added!");
                         ((VaultModifiersConfigAccessor)config).getModifierTypeGroups().put(key, ((VaultModifiersConfigAccessor) customConfig).getModifierTypeGroups().get(key));
                     }
                 }

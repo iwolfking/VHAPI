@@ -33,6 +33,7 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib.*;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib.custom.altar.VaultAltarIngredientInjector;
 import xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib.custom.market.BlackMarketPatcher;

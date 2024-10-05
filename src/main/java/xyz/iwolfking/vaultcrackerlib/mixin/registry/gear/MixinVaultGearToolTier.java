@@ -12,15 +12,6 @@ import java.util.Optional;
 
 @Mixin(value = VaultGearTierConfig.class, remap = false)
 public abstract class MixinVaultGearToolTier {
-
-
-
-
-
-    /**
-     * @author iwolfking
-     * @reason Testing...T
-     */
     @Inject(method = "getConfig(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/Optional;", at = @At("HEAD"), cancellable = true)
     private static void getCustomConfig(ResourceLocation key, CallbackInfoReturnable<Optional<VaultGearTierConfig>> cir) {
         if(Loaders.CUSTOM_VAULT_GEAR_LOADER.CUSTOM_CONFIGS.containsKey(key)) {

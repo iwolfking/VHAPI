@@ -1,4 +1,4 @@
-package xyz.iwolfking.vaultcrackerlib.api.registry.models;
+package xyz.iwolfking.vaultcrackerlib.api.registry;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,0 +1,10 @@
+{
+  "MODELS": [
+    {
+      "id": "the_vault:gear/axe/test_axe0",
+      "displayName": "The Test Destroyer",
+      "discoverOnRoll": true,
+      "allowTransmogrification": true
+    }
+  ]
+}
