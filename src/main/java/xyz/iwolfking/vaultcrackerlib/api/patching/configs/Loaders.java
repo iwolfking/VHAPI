@@ -2,6 +2,10 @@ package xyz.iwolfking.vaultcrackerlib.api.patching.configs;
 
 import iskallia.vault.config.ResearchConfig;
 import iskallia.vault.dynamodel.DynamicBakedOverride;
+import iskallia.vault.dynamodel.model.item.HandHeldModel;
+import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
+import iskallia.vault.init.ModDynamicModels;
+import org.apache.commons.lang3.reflect.TypeLiteral;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.DynamicModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.ResearchConfigLoader;
@@ -15,6 +19,10 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.MonolithC
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.ScavengerConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierPoolsConfigLoader;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Loaders {
 
@@ -35,7 +43,5 @@ public class Loaders {
     public static final VaultModifierPoolsConfigLoader VAULT_MODIFIER_POOLS_CONFIG_LOADER = new VaultModifierPoolsConfigLoader( "the_vault");
     public static final ResearchConfigLoader RESEARCH_CONFIG_LOADER = new ResearchConfigLoader( "the_vault");
     public static final CustomGearModelRollRaritiesConfigLoader GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader( "the_vault");
-    public static final DynamicModelRegistryConfigLoader DYNAMIC_MODEL_REGISTRY_CONFIG_LOADER = new DynamicModelRegistryConfigLoader( "the_vault");
-
-
+    public static final Set<DynamicModelRegistryConfigLoader<?>> DYNAMIC_MODEL_REGISTRY_CONFIG_LOADERS  = new HashSet<>();
 }

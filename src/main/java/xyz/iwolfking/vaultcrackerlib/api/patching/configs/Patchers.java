@@ -68,9 +68,7 @@ public class Patchers {
     public static final MapInjector<PlayerTitlesConfig.Affix, Map<String, PlayerTitlesConfig.Title>> PLAYER_TITLES_PATCHER = new MapInjector<>();
     public static final SetInjector<AscensionForgeConfig.AscensionForgeListing> ASCENSION_FORGE_PATCHER = new SetInjector<>();
     public static final MapInjector<Enchantment, EnchantmentCost> VAULT_GEAR_ENCHANTMENT_PATCHER = new MapInjector<>();
-
     public static final MapInjector<Block, Map<VaultRarity, Double>> VAULT_CHEST_CATALYST_CHANCE_PATCHER = new MapInjector<>();
-
     public static final SetInjector<VaultLevelsConfig.VaultLevelMeta> VAULT_LEVELS_PATCHER = new SetInjector<>();
     public static final ConstantInjector<Integer> MAX_VAULT_LEVEL_PATCHER = new ConstantInjector<>();
 
