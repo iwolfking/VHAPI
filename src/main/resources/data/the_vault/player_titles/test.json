@@ -1,0 +1,18 @@
+{
+  "PREFIXES": [
+    {
+      "id": "wold",
+      "display": "Wold ",
+      "color": "#333333",
+      "cost": 10
+    }
+  ],
+  "SUFFIXES": [
+    {
+      "id": "wold_suffix",
+      "display": " of Wold",
+      "color": "#666666",
+      "cost": 5
+    }
+  ]
+}

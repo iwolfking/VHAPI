@@ -44,14 +44,7 @@ public class DynamicModelRegistryConfigLoader<T extends DynamicModelRegistry<Han
         this.item = item;
     }
 
-    @SubscribeEvent
-    public void onAddListeners(AddReloadListenerEvent event) {
-        System.out.println("Added new handheld model loader: " + item.getRegistryName().getPath());
-        event.addListener(this);
-        MinecraftForge.EVENT_BUS.addListener(this::afterConfigsLoad);
-    }
-
-    @SubscribeEvent
+    @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(HandheldModelConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonHandheldModel model : config.MODELS) {
@@ -77,7 +70,6 @@ public class DynamicModelRegistryConfigLoader<T extends DynamicModelRegistry<Han
         BakedModel bakedIcon;
         if(ModDynamicModels.jsonModelExists(resourceManager, DynamicModel.prependToId("item/", handHeldModel.getId()))) {
             bakedIcon = unbakedModel.bake(modelLoader, unbakedModel, ForgeModelBakery.defaultTextureGetter(), SimpleModelState.IDENTITY, DynamicModel.prependToId("item/", handHeldModel.getId()), false);
-            System.out.println(bakedIcon != null);
         }
         else {
             bakedIcon = handHeldModel.bakeModel((ModelResourceLocation) DynamicModel.prependToId("item/", handHeldModel.getId()), modelLoader, unbakedModel);

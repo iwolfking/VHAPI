@@ -1,22 +1,12 @@
 package xyz.iwolfking.vaultcrackerlib.mixin;
 
-import iskallia.vault.config.entry.recipe.ConfigGearRecipe;
-import iskallia.vault.config.recipe.GearRecipesConfig;
-import iskallia.vault.core.event.ForgeEvent;
 import iskallia.vault.init.ModConfigs;
-import iskallia.vault.skill.base.Skill;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.ASMEventHandler;
-import org.lwjgl.system.CallbackI;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Loaders;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib.BasicPatcher;
-import xyz.iwolfking.vaultcrackerlib.init.ModTrinketConfigs;
 
 
 @Mixin(value = ModConfigs.class, remap = false)

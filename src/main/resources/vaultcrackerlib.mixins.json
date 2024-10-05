@@ -15,6 +15,7 @@
     "accessors.MixinGearRecipesConfig",
     "accessors.MixinInfusedCatalystItem",
     "accessors.MixinVaultGearWorkbenchAccessor",
+    "accessors.PlayerTitlesConfigAccessor",
     "accessors.ReforgeTagModificationFocusAccessor",
     "accessors.ScavengerConfigAccessor",
     "accessors.VaultCrystalConfigAccessor",

@@ -10,14 +10,11 @@ import iskallia.vault.init.ModConfigs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.CustomVaultConfigReader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Loaders;
 import xyz.iwolfking.vaultcrackerlib.mixin.accessors.ElixirConfigAccessor;
 
 import java.util.HashMap;
@@ -48,10 +45,10 @@ public class ElixirConfigLoader extends VaultConfigDataLoader<ElixirConfig> {
     }
 
 
-    @SubscribeEvent
-    public static void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(ResourceLocation configKey : Loaders.ELIXIR_CONFIG_LOADER.CUSTOM_CONFIGS.keySet()) {
-            ElixirConfig config = Loaders.ELIXIR_CONFIG_LOADER.CUSTOM_CONFIGS.get(configKey);
+    @Override
+    public void afterConfigsLoad(VaultConfigEvent.End event) {
+        for(ResourceLocation configKey : this.CUSTOM_CONFIGS.keySet()) {
+            ElixirConfig config = this.CUSTOM_CONFIGS.get(configKey);
             if(!Objects.equals(configKey, VaultMod.id("elixir"))) {
                 ((ElixirConfigAccessor)ModConfigs.ELIXIR).getElixirToSize().putAll(((ElixirConfigAccessor)config).getElixirToSize());
                 ((ElixirConfigAccessor)ModConfigs.ELIXIR).getMobGroups().putAll(((ElixirConfigAccessor)config).getMobGroups());
@@ -65,11 +62,4 @@ public class ElixirConfigLoader extends VaultConfigDataLoader<ElixirConfig> {
 
         }
     }
-
-
-    @SubscribeEvent
-    public static void onAddListeners(AddReloadListenerEvent event) {
-        event.addListener(Loaders.ELIXIR_CONFIG_LOADER);
-    }
-
 }

@@ -11,13 +11,10 @@ import iskallia.vault.task.BingoTask;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.CustomVaultConfigReader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Loaders;
 
 import java.util.*;
 
@@ -44,11 +41,10 @@ public class BingoConfigLoader extends VaultConfigDataLoader<BingoConfig> {
         performFinalActions();
     }
 
-
-    @SubscribeEvent
-    public static void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(ResourceLocation configKey : Loaders.BINGO_CONFIG_LOADER.CUSTOM_CONFIGS.keySet()) {
-            BingoConfig config = Loaders.BINGO_CONFIG_LOADER.CUSTOM_CONFIGS.get(configKey);
+    @Override
+    public void afterConfigsLoad(VaultConfigEvent.End event) {
+        for(ResourceLocation configKey : this.CUSTOM_CONFIGS.keySet()) {
+            BingoConfig config = this.CUSTOM_CONFIGS.get(configKey);
             Collection<LevelEntryList<BingoTask>> taskOverrides =  config.pools.values();
             if(!Objects.equals(configKey, VaultMod.id("bingo"))) {
                 (ModConfigs.BINGO).pools.putAll((config.pools));
@@ -60,12 +56,6 @@ public class BingoConfigLoader extends VaultConfigDataLoader<BingoConfig> {
             }
 
         }
-    }
-
-
-    @SubscribeEvent
-    public static void onAddListeners(AddReloadListenerEvent event) {
-        event.addListener(Loaders.BINGO_CONFIG_LOADER);
     }
 
 }

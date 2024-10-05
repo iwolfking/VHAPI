@@ -1,18 +1,12 @@
 package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research;
 
-import iskallia.vault.config.GearModelRollRaritiesConfig;
 import iskallia.vault.config.ResearchConfig;
-import iskallia.vault.config.VaultModifierPoolsConfig;
 import iskallia.vault.init.ModConfigs;
-import iskallia.vault.init.ModModels;
 import iskallia.vault.research.type.CustomResearch;
 import iskallia.vault.research.type.ModResearch;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Loaders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +21,9 @@ public class ResearchConfigLoader extends VaultConfigDataLoader<ResearchConfig> 
         super(instance, "research/researches", new HashMap<>(), namespace);
     }
 
-    @SubscribeEvent
-    public static void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(ResearchConfig config : Loaders.RESEARCH_CONFIG_LOADER.CUSTOM_CONFIGS.values()) {
+    @Override
+    public void afterConfigsLoad(VaultConfigEvent.End event) {
+        for(ResearchConfig config : this.CUSTOM_CONFIGS.values()) {
             List<ModResearch> researchesToRemove = new ArrayList<>();
             List<CustomResearch> customResearchesToRemove = new ArrayList<>();
             for(ModResearch research: config.MOD_RESEARCHES) {
@@ -54,8 +48,4 @@ public class ResearchConfigLoader extends VaultConfigDataLoader<ResearchConfig> 
         }
     }
 
-    @SubscribeEvent
-    public static void onAddListeners(AddReloadListenerEvent event) {
-        event.addListener(Loaders.RESEARCH_CONFIG_LOADER);
-    }
 }

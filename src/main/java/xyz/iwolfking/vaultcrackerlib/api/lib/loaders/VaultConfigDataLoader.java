@@ -3,7 +3,6 @@ package xyz.iwolfking.vaultcrackerlib.api.lib.loaders;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import iskallia.vault.VaultMod;
 import iskallia.vault.antique.condition.AntiqueCondition;
 import iskallia.vault.antique.reward.AntiqueReward;
 import iskallia.vault.config.*;
@@ -49,39 +48,32 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.http.cookie.SM;
+import org.jetbrains.annotations.NotNull;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.CustomVaultConfigReader;
+import xyz.iwolfking.vaultcrackerlib.api.LoaderRegistry;
 
-import java.util.HashMap;
 import java.util.Map;
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceReloadListener {
     public static final Gson GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(MobEffect.class, RegistryCodecAdapter.of(ForgeRegistries.MOB_EFFECTS)).registerTypeHierarchyAdapter(Item.class, RegistryCodecAdapter.of(ForgeRegistries.ITEMS)).registerTypeHierarchyAdapter(Block.class, RegistryCodecAdapter.of(ForgeRegistries.BLOCKS)).registerTypeHierarchyAdapter(Enchantment.class, Adapters.ENCHANTMENT).registerTypeAdapterFactory(IdentifierAdapter.FACTORY).registerTypeAdapterFactory(TextColorAdapter.FACTORY).registerTypeAdapterFactory(ItemStackAdapter.FACTORY).registerTypeAdapterFactory(PartialTileAdapter.FACTORY).registerTypeAdapterFactory(WeightedListAdapter.Factory.INSTANCE).registerTypeHierarchyAdapter(VaultGearTierConfig.AttributeGroup.class, new VaultGearTierConfig.AttributeGroup.Serializer()).registerTypeHierarchyAdapter(EtchingConfig.EtchingMap.class, new EtchingConfig.EtchingMap.Serializer()).registerTypeHierarchyAdapter(TrinketConfig.TrinketMap.class, new TrinketConfig.TrinketMap.Serializer()).registerTypeHierarchyAdapter(CharmConfig.CharmMap.class, new CharmConfig.CharmMap.Serializer()).registerTypeAdapter(VaultModifiersConfig.ModifierTypeGroups.class, new VaultModifiersConfig.ModifierTypeGroups.Serializer()).registerTypeAdapter(CompoundTag.class, Adapters.COMPOUND_NBT).registerTypeAdapter(EnchantmentCost.class, EnchantmentCost.ADAPTER).registerTypeHierarchyAdapter(VersionedKey.class, VersionedKeyAdapter.INSTANCE).registerTypeHierarchyAdapter(CrystalTheme.class, CrystalData.THEME).registerTypeHierarchyAdapter(CrystalLayout.class, CrystalData.LAYOUT).registerTypeHierarchyAdapter(CrystalObjective.class, CrystalData.OBJECTIVE).registerTypeHierarchyAdapter(CrystalTime.class, CrystalData.TIME).registerTypeHierarchyAdapter(CrystalModifiers.class, CrystalData.MODIFIERS).registerTypeHierarchyAdapter(CrystalProperties.class, CrystalData.PROPERTIES).registerTypeHierarchyAdapter(ScavengeTask.class, ScavengeTask.Adapter.INSTANCE).registerTypeHierarchyAdapter(LootPool.class, Adapters.LOOT_POOL).registerTypeHierarchyAdapter(LootTable.Entry.class, Adapters.LOOT_TABLE_ENTRY).registerTypeHierarchyAdapter(IntRoll.class, Adapters.INT_ROLL).registerTypeHierarchyAdapter(FloatRoll.class, iskallia.vault.core.world.roll.FloatRoll.Adapter.INSTANCE).registerTypeHierarchyAdapter(Skill.class, Adapters.SKILL).registerTypeHierarchyAdapter(Task.class, Adapters.TASK).registerTypeAdapter(ElixirTask.Config.class, ElixirTask.Config.Serializer.INSTANCE).registerTypeHierarchyAdapter(Quest.class, iskallia.vault.quest.base.Quest.Adapter.INSTANCE).registerTypeAdapter(TilePredicate.class, Adapters.TILE_PREDICATE).registerTypeAdapter(EntityPredicate.class, Adapters.ENTITY_PREDICATE).registerTypeAdapter(ItemPredicate.class, Adapters.ITEM_PREDICATE).registerTypeAdapter(SkillGateType.class, SkillGates.GATE_TYPE).registerTypeAdapter(VaultAltarConfig.Interface.class, Adapters.ALTAR_INTERFACE).registerTypeAdapter(BingoItem.class, BingoItemAdapter.INSTANCE).registerTypeAdapter(Card.Config.class, iskallia.vault.core.card.Card.Config.ADAPTER).registerTypeHierarchyAdapter(Processor.class, ProcessorAdapter.INSTANCE).registerTypeHierarchyAdapter(AntiqueCondition.class, iskallia.vault.antique.condition.AntiqueCondition.Serializer.INSTANCE).registerTypeHierarchyAdapter(AntiqueReward.class, iskallia.vault.antique.reward.AntiqueReward.Serializer.INSTANCE).registerTypeAdapter(CardEntry.Config.class, iskallia.vault.core.card.CardEntry.Config.ADAPTER).registerTypeAdapter(CardScaler.class, CardScaler.ADAPTER).registerTypeAdapter(CardCondition.class, CardCondition.ADAPTER).registerTypeHierarchyAdapter(Component.class, Adapters.COMPONENT).excludeFieldsWithoutExposeAnnotation().enableComplexMapKeySerialization().setPrettyPrinting().create();
-
     private final T instance;
-
-
-    private boolean isPatched = false;
-
-
-
-    private boolean loaded = false;
-
-
     private final String namespace;
-
+    private final String directory;
     public Map<ResourceLocation, T> CUSTOM_CONFIGS;
 
     public VaultConfigDataLoader(T instance, String directory, Map<ResourceLocation, T> configMap, String namespace) {
         super(GSON, directory);
+        this.directory = directory;
         this.instance = instance;
         this.CUSTOM_CONFIGS = configMap;
         this.namespace = namespace;
+        LoaderRegistry.LOADERS.put(new ResourceLocation(this.namespace, this.getName()), this);
     }
 
     @Override
@@ -96,32 +88,27 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
         performFinalActions();
     }
 
-    protected void performFinalActions() {
-        this.setLoaded(true);
+    @SubscribeEvent
+    public void onAddListeners(AddReloadListenerEvent event) {
+        event.addListener(this);
+        MinecraftForge.EVENT_BUS.addListener(this::afterConfigsLoad);
     }
 
+    @SubscribeEvent
+    public void afterConfigsLoad(VaultConfigEvent.End event) {
+    }
 
+    protected void performFinalActions() {
+
+    }
 
     public String getNamespace() {
         return namespace;
     }
 
-    public boolean isPatched() {
-        return isPatched;
+
+    @Override
+    public @NotNull String getName() {
+        return this.directory;
     }
-
-    public void setPatched(boolean patched) {
-        isPatched = patched;
-    }
-
-    public boolean isLoaded() {
-        return loaded;
-    }
-
-    public void setLoaded(boolean loaded) {
-        this.loaded = loaded;
-    }
-
-
-
 }

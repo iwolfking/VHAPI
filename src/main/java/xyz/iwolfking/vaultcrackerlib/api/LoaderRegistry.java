@@ -1,14 +1,16 @@
-package xyz.iwolfking.vaultcrackerlib.api.patching.configs;
+package xyz.iwolfking.vaultcrackerlib.api;
 
-import iskallia.vault.config.ResearchConfig;
-import iskallia.vault.dynamodel.DynamicBakedOverride;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
 import iskallia.vault.init.ModDynamicModels;
-import org.apache.commons.lang3.reflect.TypeLiteral;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.DynamicModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.ResearchConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.titles.CustomTitleConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal.VaultCrystalConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearRecipesLoader;
@@ -19,17 +21,39 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.MonolithC
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.ScavengerConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierPoolsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-public class Loaders {
-
+import java.util.*;
+@Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class LoaderRegistry {
 
 
 
+    public static final Map<ResourceLocation, VaultConfigDataLoader<?>> LOADERS = new HashMap<>();
 
+    public static Set<VaultConfigDataLoader<?>> getLoadersByType(Class<?> type) {
+        Set<VaultConfigDataLoader<?>> loaders = new HashSet<>();
+        for(VaultConfigDataLoader<?> loader : LOADERS.values()) {
+            if(loader.getClass().equals(type)) {
+                loaders.add(loader);
+            }
+        }
+        return loaders;
+    }
+
+    public static void onAddListener(AddReloadListenerEvent event) {
+        for(Item item : ModDynamicModels.REGISTRIES.getUniqueItems()) {
+            System.out.println(item.getRegistryName());
+            DynamicModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> configLoader = new DynamicModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>>("the_vault", (DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
+        }
+
+        for(VaultConfigDataLoader<?> loader : LOADERS.values()) {
+            loader.onAddListeners(event);
+        }
+
+    }
+
+//
     public static final CustomVaultGearLoader CUSTOM_VAULT_GEAR_LOADER = new CustomVaultGearLoader("the_vault");
     public static final CustomVaultGearWorkbenchLoader CUSTOM_VAULT_GEAR_WORKBENCH_LOADER = new CustomVaultGearWorkbenchLoader("the_vault");
 
@@ -43,5 +67,8 @@ public class Loaders {
     public static final VaultModifierPoolsConfigLoader VAULT_MODIFIER_POOLS_CONFIG_LOADER = new VaultModifierPoolsConfigLoader( "the_vault");
     public static final ResearchConfigLoader RESEARCH_CONFIG_LOADER = new ResearchConfigLoader( "the_vault");
     public static final CustomGearModelRollRaritiesConfigLoader GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader( "the_vault");
+    public static final CustomTitleConfigLoader CUSTOM_TITLE_CONFIG_LOADER = new CustomTitleConfigLoader( "the_vault");
     public static final Set<DynamicModelRegistryConfigLoader<?>> DYNAMIC_MODEL_REGISTRY_CONFIG_LOADERS  = new HashSet<>();
+
+
 }

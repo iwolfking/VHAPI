@@ -1,17 +1,10 @@
 package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal;
 
-import com.google.gson.JsonElement;
 import iskallia.vault.config.VaultCrystalConfig;
 import iskallia.vault.init.ModConfigs;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Loaders;
 import xyz.iwolfking.vaultcrackerlib.mixin.accessors.VaultCrystalConfigAccessor;
 
 import java.util.*;
@@ -23,11 +16,9 @@ public class VaultCrystalConfigLoader extends VaultConfigDataLoader<VaultCrystal
         super(instance, "vault/crystal", new HashMap<>(), namespace);
     }
 
-    @SubscribeEvent
-    public static void afterConfigsLoad(VaultConfigEvent.End event) {
-        System.out.println("READING VAULT CRYSTAL CONFIGS");
-        System.out.println(Loaders.VAULT_CRYSTAL_CONFIG_LOADER.CUSTOM_CONFIGS.size());
-        for(VaultCrystalConfig config : Loaders.VAULT_CRYSTAL_CONFIG_LOADER.CUSTOM_CONFIGS.values()) {
+    @Override
+    public void afterConfigsLoad(VaultConfigEvent.End event) {
+        for(VaultCrystalConfig config : this.CUSTOM_CONFIGS.values()) {
             System.out.println("Found a config!");
             if(config.LAYOUTS != null) {
                 ModConfigs.VAULT_CRYSTAL.LAYOUTS.addAll(config.LAYOUTS);
@@ -77,16 +68,5 @@ public class VaultCrystalConfigLoader extends VaultConfigDataLoader<VaultCrystal
             }
 
         }
-    }
-
-
-    @SubscribeEvent
-    public static void onAddListeners(AddReloadListenerEvent event) {
-        event.addListener(Loaders.VAULT_CRYSTAL_CONFIG_LOADER);
-    }
-
-    @Override
-    protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
-        super.apply(dataMap, resourceManager, profilerFiller);
     }
 }
