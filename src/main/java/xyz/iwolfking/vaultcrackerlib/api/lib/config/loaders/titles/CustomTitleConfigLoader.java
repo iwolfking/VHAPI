@@ -36,7 +36,6 @@ public class CustomTitleConfigLoader extends VaultConfigDataLoader<CustomTitleCo
 
     public CustomTitleConfigLoader(String namespace) {
         super(instance, "player_titles", new HashMap<>(), namespace);
-
     }
 
     @Override

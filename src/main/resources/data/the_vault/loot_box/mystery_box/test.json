@@ -1,0 +1,22 @@
+{
+  "POOL": [
+    {
+      "value": {
+        "id": "minecraft:diamond",
+        "nbt": "{\"remove\": true}",
+        "amountMin": 1,
+        "amountMax": 8
+      },
+      "weight": 256
+    },
+    {
+      "value": {
+        "id": "the_vault:echo_pog",
+        "nbt": "{}",
+        "amountMin": 1,
+        "amountMax": 8
+      },
+      "weight": 256
+    }
+  ]
+}
