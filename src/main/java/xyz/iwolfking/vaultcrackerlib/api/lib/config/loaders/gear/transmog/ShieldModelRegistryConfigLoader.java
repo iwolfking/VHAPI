@@ -1,65 +1,40 @@
 package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog;
 
-import iskallia.vault.dynamodel.DynamicBakedModel;
 import iskallia.vault.dynamodel.DynamicModel;
-import iskallia.vault.dynamodel.DynamicModelProperties;
 import iskallia.vault.dynamodel.baked.JsonFileBakedModel;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
-import iskallia.vault.dynamodel.registry.DynamicModelRegistries;
+import iskallia.vault.dynamodel.model.item.shield.ShieldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
-import iskallia.vault.gear.item.VaultGearItem;
 import iskallia.vault.init.ModDynamicModels;
-import iskallia.vault.item.InfusedCatalystItem;
-import iskallia.vault.item.gear.VaultSwordItem;
-import iskallia.vault.mixin.MixinModelBakery;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BlockModel;
-import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.RecordItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.SimpleModelState;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.system.CallbackI;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.lib.GsonHandheldModel;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.lib.HandheldModelConfig;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
-import xyz.iwolfking.vaultcrackerlib.mixin.accessors.DynamicModelPropertiesAccessor;
-import xyz.iwolfking.vaultcrackerlib.mixin.accessors.DynamicModelRegistryAccessor;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class DynamicModelRegistryConfigLoader<T extends DynamicModelRegistry<HandHeldModel>> extends VaultConfigDataLoader<HandheldModelConfig> {
+public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<ShieldModel>> extends VaultConfigDataLoader<HandheldModelConfig> {
 
     public static final HandheldModelConfig instance = new HandheldModelConfig();
-
-//    public static Map<ResourceLocation, BakedModel> modelRegistry;
 
     T registry;
 
     Item item;
-    public DynamicModelRegistryConfigLoader(String namespace, DynamicModelRegistry<HandHeldModel> registry, @NotNull Item item) {
-        super(instance, "gear/handheld_models/" + item.getRegistryName().getPath(), new HashMap<>(), namespace);
+    public ShieldModelRegistryConfigLoader(String namespace, DynamicModelRegistry<ShieldModel> registry, @NotNull Item item) {
+        super(instance, "gear/shield_models/" + item.getRegistryName().getPath(), new HashMap<>(), namespace);
         this.registry = (T) registry;
         this.item = item;
     }
@@ -68,13 +43,10 @@ public class DynamicModelRegistryConfigLoader<T extends DynamicModelRegistry<Han
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(HandheldModelConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonHandheldModel model : config.MODELS) {
-                DynamicModelProperties properties = new DynamicModelProperties();
-                ((DynamicModelPropertiesAccessor)properties).setDiscoverOnRoll(model.isDiscoverOnRoll());
-                ((DynamicModelPropertiesAccessor)properties).setAllowTransmogrification(model.isAllowTransmogrification());
-                HandHeldModel handHeldModel = new HandHeldModel(model.getId(), model.getDisplayName()).properties(properties);
-                registry.register(handHeldModel);
+                ShieldModel shieldModel = model.getShieldModel();
+                registry.register(shieldModel);
                 if(Dist.CLIENT.isClient()) {
-                    this.bakeModel(handHeldModel);
+                    this.bakeModel(shieldModel);
                 }
             }
 
@@ -84,7 +56,7 @@ public class DynamicModelRegistryConfigLoader<T extends DynamicModelRegistry<Han
 
 
     @OnlyIn(Dist.CLIENT)
-    public void bakeModel(HandHeldModel handHeldModel) {
+    public void bakeModel(ShieldModel handHeldModel) {
         ForgeModelBakery modelLoader = ForgeModelBakery.instance();
         ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
         handHeldModel.getAssociatedModelLocations().forEach(modelResourceLocation -> {

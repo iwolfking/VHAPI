@@ -1,9 +1,11 @@
 package xyz.iwolfking.vaultcrackerlib.api;
 
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
+import iskallia.vault.dynamodel.model.item.shield.ShieldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModDynamicModels;
+import iskallia.vault.item.gear.VaultShieldItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -12,7 +14,8 @@ import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.DynamicModelRegistryConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.HandheldModelRegistryConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.ShieldModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.ResearchConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.titles.CustomTitleConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal.VaultCrystalConfigLoader;
@@ -50,7 +53,11 @@ public class LoaderRegistry {
 
     public static void onAddListener(AddReloadListenerEvent event) {
         for(Item item : ModDynamicModels.REGISTRIES.getUniqueItems()) {
-            DynamicModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> configLoader = new DynamicModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>>("the_vault", (DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
+            if(item instanceof VaultShieldItem) {
+                ShieldModelRegistryConfigLoader<DynamicModelRegistry<ShieldModel>> shieldModelLoader = new ShieldModelRegistryConfigLoader<>("the_vault", (DynamicModelRegistry<ShieldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
+            }
+
+            HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> configLoader = new HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>>("the_vault", (DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
         }
 
         for(VaultConfigDataLoader<?> loader : LOADERS.values()) {
@@ -81,7 +88,7 @@ public class LoaderRegistry {
     public static final WeightedProductEntryConfigLoader MYSTERY_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_EGG.POOL, "mystery_egg");
     public static final WeightedProductEntryConfigLoader MYSTERY_HOSTILE_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_HOSTILE_EGG.POOL, "mystery_hostile_egg");
     public static final MappedWeightedProductEntryConfigLoader MOD_BOX_CONFIG_LOADER = new MappedWeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MOD_BOX.POOL, "mod_box");
-    public static final Set<DynamicModelRegistryConfigLoader<?>> DYNAMIC_MODEL_REGISTRY_CONFIG_LOADERS  = new HashSet<>();
+    public static final Set<HandheldModelRegistryConfigLoader<?>> DYNAMIC_MODEL_REGISTRY_CONFIG_LOADERS  = new HashSet<>();
 
 
 }

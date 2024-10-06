@@ -2,50 +2,27 @@ package xyz.iwolfking.vaultcrackerlib;
 
 import com.mojang.logging.LogUtils;
 import iskallia.vault.dynamodel.DynamicModel;
-import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
 import iskallia.vault.init.ModConfigs;
-import iskallia.vault.init.ModDynamicModels;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraft.server.packs.repository.Pack;
-import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.loading.DatagenModLoader;
-import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forgespi.locating.IModFile;
-import net.minecraftforge.resource.PathResourcePack;
-import org.cef.network.CefRequest;
 import org.slf4j.Logger;
 import xyz.iwolfking.vaultcrackerlib.api.LoaderRegistry;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.DynamicModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.registry.VaultGearRegistry;
 import xyz.iwolfking.vaultcrackerlib.api.registry.VaultObjectiveRegistry;
 
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 // The value here should match an entry in the META-INF/mods.toml file
