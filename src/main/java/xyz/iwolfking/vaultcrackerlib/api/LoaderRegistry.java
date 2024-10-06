@@ -1,5 +1,6 @@
 package xyz.iwolfking.vaultcrackerlib.api;
 
+import iskallia.vault.VaultMod;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
 import iskallia.vault.dynamodel.model.item.shield.ShieldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
@@ -9,8 +10,10 @@ import iskallia.vault.item.gear.VaultShieldItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
+import xyz.iwolfking.vaultcrackerlib.api.events.ConfigDataLoaderEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
@@ -61,9 +64,10 @@ public class LoaderRegistry {
         }
 
         for(VaultConfigDataLoader<?> loader : LOADERS.values()) {
+            MinecraftForge.EVENT_BUS.post(new ConfigDataLoaderEvent.Init(loader));
             loader.onAddListeners(event);
         }
-
+        MinecraftForge.EVENT_BUS.post(new ConfigDataLoaderEvent.Finish(LOADERS));
     }
 
     public static void onAddClientListener(RegisterClientReloadListenersEvent event) {

@@ -58,7 +58,10 @@ import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.CustomVaultConfigReader;
 import xyz.iwolfking.vaultcrackerlib.api.LoaderRegistry;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceReloadListener {
     public static final Gson GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(MobEffect.class, RegistryCodecAdapter.of(ForgeRegistries.MOB_EFFECTS)).registerTypeHierarchyAdapter(Item.class, RegistryCodecAdapter.of(ForgeRegistries.ITEMS)).registerTypeHierarchyAdapter(Block.class, RegistryCodecAdapter.of(ForgeRegistries.BLOCKS)).registerTypeHierarchyAdapter(Enchantment.class, Adapters.ENCHANTMENT).registerTypeAdapterFactory(IdentifierAdapter.FACTORY).registerTypeAdapterFactory(TextColorAdapter.FACTORY).registerTypeAdapterFactory(ItemStackAdapter.FACTORY).registerTypeAdapterFactory(PartialTileAdapter.FACTORY).registerTypeAdapterFactory(WeightedListAdapter.Factory.INSTANCE).registerTypeHierarchyAdapter(VaultGearTierConfig.AttributeGroup.class, new VaultGearTierConfig.AttributeGroup.Serializer()).registerTypeHierarchyAdapter(EtchingConfig.EtchingMap.class, new EtchingConfig.EtchingMap.Serializer()).registerTypeHierarchyAdapter(TrinketConfig.TrinketMap.class, new TrinketConfig.TrinketMap.Serializer()).registerTypeHierarchyAdapter(CharmConfig.CharmMap.class, new CharmConfig.CharmMap.Serializer()).registerTypeAdapter(VaultModifiersConfig.ModifierTypeGroups.class, new VaultModifiersConfig.ModifierTypeGroups.Serializer()).registerTypeAdapter(CompoundTag.class, Adapters.COMPOUND_NBT).registerTypeAdapter(EnchantmentCost.class, EnchantmentCost.ADAPTER).registerTypeHierarchyAdapter(VersionedKey.class, VersionedKeyAdapter.INSTANCE).registerTypeHierarchyAdapter(CrystalTheme.class, CrystalData.THEME).registerTypeHierarchyAdapter(CrystalLayout.class, CrystalData.LAYOUT).registerTypeHierarchyAdapter(CrystalObjective.class, CrystalData.OBJECTIVE).registerTypeHierarchyAdapter(CrystalTime.class, CrystalData.TIME).registerTypeHierarchyAdapter(CrystalModifiers.class, CrystalData.MODIFIERS).registerTypeHierarchyAdapter(CrystalProperties.class, CrystalData.PROPERTIES).registerTypeHierarchyAdapter(ScavengeTask.class, ScavengeTask.Adapter.INSTANCE).registerTypeHierarchyAdapter(LootPool.class, Adapters.LOOT_POOL).registerTypeHierarchyAdapter(LootTable.Entry.class, Adapters.LOOT_TABLE_ENTRY).registerTypeHierarchyAdapter(IntRoll.class, Adapters.INT_ROLL).registerTypeHierarchyAdapter(FloatRoll.class, iskallia.vault.core.world.roll.FloatRoll.Adapter.INSTANCE).registerTypeHierarchyAdapter(Skill.class, Adapters.SKILL).registerTypeHierarchyAdapter(Task.class, Adapters.TASK).registerTypeAdapter(ElixirTask.Config.class, ElixirTask.Config.Serializer.INSTANCE).registerTypeHierarchyAdapter(Quest.class, iskallia.vault.quest.base.Quest.Adapter.INSTANCE).registerTypeAdapter(TilePredicate.class, Adapters.TILE_PREDICATE).registerTypeAdapter(EntityPredicate.class, Adapters.ENTITY_PREDICATE).registerTypeAdapter(ItemPredicate.class, Adapters.ITEM_PREDICATE).registerTypeAdapter(SkillGateType.class, SkillGates.GATE_TYPE).registerTypeAdapter(VaultAltarConfig.Interface.class, Adapters.ALTAR_INTERFACE).registerTypeAdapter(BingoItem.class, BingoItemAdapter.INSTANCE).registerTypeAdapter(Card.Config.class, iskallia.vault.core.card.Card.Config.ADAPTER).registerTypeHierarchyAdapter(Processor.class, ProcessorAdapter.INSTANCE).registerTypeHierarchyAdapter(AntiqueCondition.class, iskallia.vault.antique.condition.AntiqueCondition.Serializer.INSTANCE).registerTypeHierarchyAdapter(AntiqueReward.class, iskallia.vault.antique.reward.AntiqueReward.Serializer.INSTANCE).registerTypeAdapter(CardEntry.Config.class, iskallia.vault.core.card.CardEntry.Config.ADAPTER).registerTypeAdapter(CardScaler.class, CardScaler.ADAPTER).registerTypeAdapter(CardCondition.class, CardCondition.ADAPTER).registerTypeHierarchyAdapter(Component.class, Adapters.COMPONENT).excludeFieldsWithoutExposeAnnotation().enableComplexMapKeySerialization().setPrettyPrinting().create();
@@ -66,6 +69,7 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
     private final String namespace;
     private final String directory;
     public Map<ResourceLocation, T> CUSTOM_CONFIGS;
+    private Set<ResourceLocation> CONFIGS_TO_IGNORE = new HashSet<>();
 
     public VaultConfigDataLoader(T instance, String directory, Map<ResourceLocation, T> configMap, String namespace) {
         super(GSON, directory);
@@ -80,9 +84,11 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
 
         dataMap.forEach((resourceLocation, jsonElement) -> {
-            CustomVaultConfigReader<T> configReader = new CustomVaultConfigReader<>();
-            T config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, instance.getClass());
-            CUSTOM_CONFIGS.put(new ResourceLocation(namespace, resourceLocation.getPath()), config);
+            if(!CONFIGS_TO_IGNORE.contains(resourceLocation)) {
+                CustomVaultConfigReader<T> configReader = new CustomVaultConfigReader<>();
+                T config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, instance.getClass());
+                CUSTOM_CONFIGS.put(new ResourceLocation(namespace, resourceLocation.getPath()), config);
+            }
         });
 
         performFinalActions();
@@ -100,6 +106,14 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
 
     protected void performFinalActions() {
 
+    }
+
+    public void addIgnoredConfig(ResourceLocation configLocation) {
+        CONFIGS_TO_IGNORE.add(configLocation);
+    }
+
+    public Set<ResourceLocation> getIgnoredConfigs() {
+        return CONFIGS_TO_IGNORE;
     }
 
     public String getNamespace() {
