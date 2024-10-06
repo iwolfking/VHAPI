@@ -1,13 +1,13 @@
 {
   "MODELS": [
     {
-      "id": "vaultcrackerlib:gear/wand/cat_wand",
+      "id": "custom_transmogs:gear/wand/cat_wand",
       "displayName": "Cat Wand",
       "discoverOnRoll": true,
       "allowTransmogrification": true
     },
     {
-      "id": "the_vault:gear/wand/arch_wand",
+      "id": "custom_transmogs:gear/wand/arch_wand",
       "displayName": "Mustard Wand",
       "discoverOnRoll": true,
       "allowTransmogrification": true

@@ -14,6 +14,7 @@ import iskallia.vault.item.gear.VaultSwordItem;
 import iskallia.vault.mixin.MixinModelBakery;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelManager;
@@ -21,10 +22,12 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.RecordItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.SimpleModelState;
@@ -79,6 +82,7 @@ public class DynamicModelRegistryConfigLoader<T extends DynamicModelRegistry<Han
         this.CUSTOM_CONFIGS.clear();
     }
 
+
     @OnlyIn(Dist.CLIENT)
     public void bakeModel(HandHeldModel handHeldModel) {
         ForgeModelBakery modelLoader = ForgeModelBakery.instance();
@@ -88,7 +92,6 @@ public class DynamicModelRegistryConfigLoader<T extends DynamicModelRegistry<Han
             BakedModel bakedIcon;
 
             if(ModDynamicModels.jsonModelExists(resourceManager, DynamicModel.prependToId("item/", handHeldModel.getId()))) {
-                System.out.println("Found json model!");
                 bakedIcon = unbakedModel.bake(modelLoader, unbakedModel, ForgeModelBakery.defaultTextureGetter(), SimpleModelState.IDENTITY, modelResourceLocation, false);;
                 bakedIcon = new JsonFileBakedModel(bakedIcon);
             }
@@ -98,22 +101,6 @@ public class DynamicModelRegistryConfigLoader<T extends DynamicModelRegistry<Han
             ResourceLocation bakeId = new ResourceLocation(modelResourceLocation.getNamespace(), modelResourceLocation.getPath());
             this.registry.bakeIcon(bakeId, bakedIcon);
         });
-
-//        if(modelRegistry != null) {
-//            ModDynamicModels.REGISTRIES.getUniqueItems().forEach((item) -> {
-//                ResourceLocation itemId = item.getRegistryName();
-//                if (itemId == null) {
-//                    throw new InternalError("Registry name does not exist for item -> " + item);
-//                } else {
-//                    ModelResourceLocation key = new ModelResourceLocation(itemId, "inventory");
-//                    BakedModel oldModel = (BakedModel)modelRegistry.get(key);
-//                    if (oldModel != null) {
-//                        modelRegistry.put(key, new DynamicBakedModel(oldModel, modelLoader));
-//                    }
-//
-//                }
-//            });
-//        }
 
     }
 

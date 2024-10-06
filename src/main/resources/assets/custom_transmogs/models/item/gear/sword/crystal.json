@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "the_vault:item/gear/sword/crystal",
-		"particle": "the_vault:item/gear/sword/crystal"
+		"0": "custom_transmogs:item/gear/sword/crystal",
+		"particle": "custom_transmogs:item/gear/sword/crystal"
 	},
 	"elements": [
 		{

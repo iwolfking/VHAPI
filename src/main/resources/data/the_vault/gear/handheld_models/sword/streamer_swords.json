@@ -1,25 +1,25 @@
 {
   "MODELS": [
     {
-      "id": "the_vault:gear/sword/hotdog_bat",
+      "id": "custom_transmogs:gear/sword/hotdog_bat",
       "displayName": "Hot Dog Bat",
       "discoverOnRoll": true,
       "allowTransmogrification": true
     },
     {
-      "id": "the_vault:gear/sword/crystal",
+      "id": "custom_transmogs:gear/sword/crystal",
       "displayName": "Hyper Crystal Sword",
       "discoverOnRoll": true,
       "allowTransmogrification": true
     },
     {
-      "id": "the_vault:gear/sword/dogfall",
+      "id": "custom_transmogs:gear/sword/dogfall",
       "displayName": "Dogfall",
       "discoverOnRoll": true,
       "allowTransmogrification": true
     },
     {
-      "id": "the_vault:gear/sword/sword_what",
+      "id": "custom_transmogs:gear/sword/sword_what",
       "displayName": "No Idea Sword",
       "discoverOnRoll": true,
       "allowTransmogrification": true

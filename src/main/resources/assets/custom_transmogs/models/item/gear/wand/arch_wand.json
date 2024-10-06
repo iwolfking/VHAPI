@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "the_vault:item/gear/wand/arch_wand",
-		"particle": "the_vault:item/gear/wand/arch_wand"
+		"0": "custom_transmogs:item/gear/wand/arch_wand",
+		"particle": "custom_transmogs:item/gear/wand/arch_wand"
 	},
 	"elements": [
 		{

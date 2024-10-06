@@ -1,8 +1,8 @@
 {
   "MODELS": [
     {
-      "id": "the_vault:gear/axe/anchor",
-      "displayName": "Iskallian Anchor",
+      "id": "custom_transmogs:gear/axe/anchor",
+      "displayName": "Iskallianchor",
       "discoverOnRoll": true,
       "allowTransmogrification": true
     }

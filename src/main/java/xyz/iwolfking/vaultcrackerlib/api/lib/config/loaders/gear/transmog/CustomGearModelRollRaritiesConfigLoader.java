@@ -22,26 +22,34 @@ public class CustomGearModelRollRaritiesConfigLoader extends VaultConfigDataLoad
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(GearModelRollRaritiesConfig config : this.CUSTOM_CONFIGS.values()) {
             if(((GearModelRollRaritiesAccessor)config).getArmorModelRolls() != null) {
-                ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getArmorModelRolls().putAll(((GearModelRollRaritiesAccessor) config).getArmorModelRolls());
+                for(String key : ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getArmorModelRolls().keySet()) {
+                    ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getArmorModelRolls().get(key).addAll(((GearModelRollRaritiesAccessor) config).getArmorModelRolls().get(key));
+                }
             }
             if(((GearModelRollRaritiesAccessor)config).getAxeModelRolls() != null) {
-                ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getAxeModelRolls().putAll(((GearModelRollRaritiesAccessor) config).getAxeModelRolls());
+                for(String key : ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getArmorModelRolls().keySet()) {
+                    ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getAxeModelRolls().get(key).addAll(((GearModelRollRaritiesAccessor) config).getAxeModelRolls().get(key));
+                }
             }
-
-            if(((GearModelRollRaritiesAccessor)config).getFocusModelRolls() != null) {
-                ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getFocusModelRolls().putAll(((GearModelRollRaritiesAccessor) config).getFocusModelRolls());
-            }
-
-            if(((GearModelRollRaritiesAccessor)config).getShieldModelRolls() != null) {
-                ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getShieldModelRolls().putAll(((GearModelRollRaritiesAccessor) config).getShieldModelRolls());
-            }
-
             if(((GearModelRollRaritiesAccessor)config).getSwordModelRolls() != null) {
-                ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getSwordModelRolls().putAll(((GearModelRollRaritiesAccessor) config).getSwordModelRolls());
+                for(String key : ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getSwordModelRolls().keySet()) {
+                    ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getSwordModelRolls().get(key).addAll(((GearModelRollRaritiesAccessor) config).getSwordModelRolls().get(key));
+                }
             }
-
+            if(((GearModelRollRaritiesAccessor)config).getShieldModelRolls() != null) {
+                for(String key : ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getArmorModelRolls().keySet()) {
+                    ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getShieldModelRolls().get(key).addAll(((GearModelRollRaritiesAccessor) config).getShieldModelRolls().get(key));
+                }
+            }
             if(((GearModelRollRaritiesAccessor)config).getWandModelRolls() != null) {
-                ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getWandModelRolls().putAll(((GearModelRollRaritiesAccessor) config).getWandModelRolls());
+                for(String key : ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getArmorModelRolls().keySet()) {
+                    ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getWandModelRolls().get(key).addAll(((GearModelRollRaritiesAccessor) config).getWandModelRolls().get(key));
+                }
+            }
+            if(((GearModelRollRaritiesAccessor)config).getFocusModelRolls() != null) {
+                for(String key : ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getArmorModelRolls().keySet()) {
+                    ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getFocusModelRolls().get(key).addAll(((GearModelRollRaritiesAccessor) config).getFocusModelRolls().get(key));
+                }
             }
         }
     }

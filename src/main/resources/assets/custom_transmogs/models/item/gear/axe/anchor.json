@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "the_vault:item/gear/axe/anchor",
-		"particle": "the_vault:item/gear/axe/anchor"
+		"0": "custom_transmogs:item/gear/axe/anchor",
+		"particle": "custom_transmogs:item/gear/axe/anchor"
 	},
 	"elements": [
 		{
