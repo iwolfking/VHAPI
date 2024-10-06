@@ -1,9 +1,13 @@
 package xyz.iwolfking.vaultcrackerlib.api.registry;
 
+import iskallia.vault.dynamodel.DynamicBakedModel;
+import iskallia.vault.init.ModDynamicModels;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class CustomInscriptionModelRegistry {
+
     private static final Map<Integer, String> CUSTOM_INSCRIPTION_MODELS = new HashMap<>();
 
     public static void addModel(int id, String modelName) {

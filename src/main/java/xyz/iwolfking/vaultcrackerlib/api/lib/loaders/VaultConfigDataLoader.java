@@ -111,4 +111,8 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
     public @NotNull String getName() {
         return this.directory;
     }
+
+    public ResourceLocation namespaceLoc(String name) {
+        return new ResourceLocation(namespace, name);
+    }
 }

@@ -7,6 +7,7 @@
   "mixins": [
     "MixinModConfigs",
     "accessors.DynamicModelPropertiesAccessor",
+    "accessors.DynamicModelRegistryAccessor",
     "accessors.ElixirConfigAccessor",
     "accessors.GearModelRollRaritiesAccessor",
     "accessors.LootInfoGroupDefinitionRegistryAccessor",
@@ -18,6 +19,7 @@
     "accessors.PlayerTitlesConfigAccessor",
     "accessors.ReforgeTagModificationFocusAccessor",
     "accessors.ScavengerConfigAccessor",
+    "accessors.VaultAltarIngredientsConfigAccessor",
     "accessors.VaultCrystalConfigAccessor",
     "accessors.VaultModifierRegistyAccessor",
     "accessors.VaultModifiersConfigAccessor",

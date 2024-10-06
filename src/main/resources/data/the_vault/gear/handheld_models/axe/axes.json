@@ -1,8 +1,8 @@
 {
   "MODELS": [
     {
-      "id": "the_vault:gear/axe/test_axe0",
-      "displayName": "The Test Destroyer",
+      "id": "the_vault:gear/axe/anchor",
+      "displayName": "Iskallian Anchor",
       "discoverOnRoll": true,
       "allowTransmogrification": true
     }
