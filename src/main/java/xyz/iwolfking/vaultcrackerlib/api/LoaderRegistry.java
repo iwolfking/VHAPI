@@ -1,6 +1,12 @@
 package xyz.iwolfking.vaultcrackerlib.api;
 
 import iskallia.vault.VaultMod;
+import iskallia.vault.config.LegacyLootTablesConfig;
+import iskallia.vault.config.core.LootTablesConfig;
+import iskallia.vault.config.core.TemplatePoolsConfig;
+import iskallia.vault.config.core.ThemesConfig;
+import iskallia.vault.core.vault.VaultRegistry;
+import iskallia.vault.core.world.loot.entry.LootEntry;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
 import iskallia.vault.dynamodel.model.item.shield.ShieldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
@@ -33,6 +39,7 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.Vaul
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierPoolsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vaultar.VaultAltarIngredientsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vaultcrackerlib.mixin.accessors.UnidentifiedTreasureKeyAccessorConfig;
 
 import java.util.*;
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -73,7 +80,6 @@ public class LoaderRegistry {
     public static void onAddClientListener(RegisterClientReloadListenersEvent event) {
 
     }
-
     public static final CustomVaultGearLoader CUSTOM_VAULT_GEAR_LOADER = new CustomVaultGearLoader("the_vault");
     public static final CustomVaultGearWorkbenchLoader CUSTOM_VAULT_GEAR_WORKBENCH_LOADER = new CustomVaultGearWorkbenchLoader("the_vault");
     public static final CustomVaultGearRecipesLoader GEAR_RECIPES_LOADER = new CustomVaultGearRecipesLoader( "the_vault");
@@ -91,6 +97,7 @@ public class LoaderRegistry {
     public static final WeightedProductEntryConfigLoader MYSTERY_BOX_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_BOX.POOL, "mystery_box");
     public static final WeightedProductEntryConfigLoader MYSTERY_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_EGG.POOL, "mystery_egg");
     public static final WeightedProductEntryConfigLoader MYSTERY_HOSTILE_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_HOSTILE_EGG.POOL, "mystery_hostile_egg");
+    public static final WeightedProductEntryConfigLoader UNIDENTIFIED_TREASURE_KEY_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ((UnidentifiedTreasureKeyAccessorConfig)ModConfigs.UNIDENTIFIED_TREASURE_KEY).getTreasureKeys(), "unidentified_treasure_key");
     public static final MappedWeightedProductEntryConfigLoader MOD_BOX_CONFIG_LOADER = new MappedWeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MOD_BOX.POOL, "mod_box");
     public static final Set<HandheldModelRegistryConfigLoader<?>> DYNAMIC_MODEL_REGISTRY_CONFIG_LOADERS  = new HashSet<>();
 
