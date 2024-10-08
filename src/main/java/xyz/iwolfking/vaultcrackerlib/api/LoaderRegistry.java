@@ -25,6 +25,12 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.WeightedProductE
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.HandheldModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.ShieldModelRegistryConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.palettes.GenPaletteLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.palettes.PalettesConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.template_pools.GenTemplatePoolLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.template_pools.TemplatePoolsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.theme.GenThemeLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.theme.ThemeConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.ResearchConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.titles.CustomTitleConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal.VaultCrystalConfigLoader;
@@ -38,6 +44,7 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.Scavenger
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierPoolsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vaultar.VaultAltarIngredientsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.GenFileDataLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
 import xyz.iwolfking.vaultcrackerlib.mixin.accessors.UnidentifiedTreasureKeyAccessorConfig;
 
@@ -48,6 +55,7 @@ public class LoaderRegistry {
 
 
     public static final Map<ResourceLocation, VaultConfigDataLoader<?>> LOADERS = new HashMap<>();
+    public static final Map<ResourceLocation, GenFileDataLoader<?>> GEN_FILE_LOADERS = new HashMap<>();
 
     public static Set<VaultConfigDataLoader<?>> getLoadersByType(Class<?> type) {
         Set<VaultConfigDataLoader<?>> loaders = new HashSet<>();
@@ -63,23 +71,34 @@ public class LoaderRegistry {
 
     public static void onAddListener(AddReloadListenerEvent event) {
         for(Item item : ModDynamicModels.REGISTRIES.getUniqueItems()) {
+            System.out.println(item.getRegistryName());
             if(item instanceof VaultShieldItem) {
                 ShieldModelRegistryConfigLoader<DynamicModelRegistry<ShieldModel>> shieldModelLoader = new ShieldModelRegistryConfigLoader<>("the_vault", (DynamicModelRegistry<ShieldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
             }
 
             HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> configLoader = new HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>>("the_vault", (DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
         }
+        GEN_PALETTE_LOADER.onAddListeners(event);
+        GEN_TEMPLATE_POOL_LOADER.onAddListeners(event);
+        TEMPLATE_POOLS_CONFIG_LOADER.onAddListeners(event);
 
         for(VaultConfigDataLoader<?> loader : LOADERS.values()) {
+            if(loader instanceof ThemeConfigLoader || loader instanceof TemplatePoolsConfigLoader) {
+                continue;
+            }
+            System.out.println(loader.getName());
             MinecraftForge.EVENT_BUS.post(new ConfigDataLoaderEvent.Init(loader));
             loader.onAddListeners(event);
         }
+
+        GEN_THEME_LOADER.onAddListeners(event);
+        THEME_CONFIG_LOADER.onAddListeners(event);
         MinecraftForge.EVENT_BUS.post(new ConfigDataLoaderEvent.Finish(LOADERS));
     }
 
-    public static void onAddClientListener(RegisterClientReloadListenersEvent event) {
+    public static final TemplatePoolsConfigLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsConfigLoader( "the_vault");
 
-    }
+    public static final GenTemplatePoolLoader GEN_TEMPLATE_POOL_LOADER = new GenTemplatePoolLoader( "the_vault");
     public static final CustomVaultGearLoader CUSTOM_VAULT_GEAR_LOADER = new CustomVaultGearLoader("the_vault");
     public static final CustomVaultGearWorkbenchLoader CUSTOM_VAULT_GEAR_WORKBENCH_LOADER = new CustomVaultGearWorkbenchLoader("the_vault");
     public static final CustomVaultGearRecipesLoader GEAR_RECIPES_LOADER = new CustomVaultGearRecipesLoader( "the_vault");
@@ -91,6 +110,7 @@ public class LoaderRegistry {
     public static final VaultModifierConfigLoader VAULT_MODIFIER_CONFIG_LOADER = new VaultModifierConfigLoader( "the_vault");
     public static final VaultModifierPoolsConfigLoader VAULT_MODIFIER_POOLS_CONFIG_LOADER = new VaultModifierPoolsConfigLoader( "the_vault");
     public static final ResearchConfigLoader RESEARCH_CONFIG_LOADER = new ResearchConfigLoader( "the_vault");
+    public static final GenPaletteLoader GEN_PALETTE_LOADER = new GenPaletteLoader( "the_vault");
     public static final CustomGearModelRollRaritiesConfigLoader GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader( "the_vault");
     public static final CustomTitleConfigLoader CUSTOM_TITLE_CONFIG_LOADER = new CustomTitleConfigLoader( "the_vault");
     public static final VaultAltarIngredientsConfigLoader VAULT_ALTAR_INGREDIENTS_CONFIG_LOADER = new VaultAltarIngredientsConfigLoader( "the_vault");
@@ -99,6 +119,14 @@ public class LoaderRegistry {
     public static final WeightedProductEntryConfigLoader MYSTERY_HOSTILE_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_HOSTILE_EGG.POOL, "mystery_hostile_egg");
     public static final WeightedProductEntryConfigLoader UNIDENTIFIED_TREASURE_KEY_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ((UnidentifiedTreasureKeyAccessorConfig)ModConfigs.UNIDENTIFIED_TREASURE_KEY).getTreasureKeys(), "unidentified_treasure_key");
     public static final MappedWeightedProductEntryConfigLoader MOD_BOX_CONFIG_LOADER = new MappedWeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MOD_BOX.POOL, "mod_box");
+
+    public static final GenThemeLoader GEN_THEME_LOADER = new GenThemeLoader( "the_vault");
+    public static final PalettesConfigLoader PALETTES_CONFIG_LOADER = new PalettesConfigLoader( "the_vault");
+
+
+    public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader( "the_vault");
+
+
     public static final Set<HandheldModelRegistryConfigLoader<?>> DYNAMIC_MODEL_REGISTRY_CONFIG_LOADERS  = new HashSet<>();
 
 

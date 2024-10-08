@@ -25,6 +25,7 @@ import iskallia.vault.core.vault.objective.scavenger.ScavengeTask;
 import iskallia.vault.core.world.data.entity.EntityPredicate;
 import iskallia.vault.core.world.data.item.ItemPredicate;
 import iskallia.vault.core.world.data.tile.TilePredicate;
+import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootPool;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Processor;

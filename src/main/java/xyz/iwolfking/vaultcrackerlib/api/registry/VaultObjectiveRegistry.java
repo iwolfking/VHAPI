@@ -35,9 +35,9 @@ public class VaultObjectiveRegistry {
             System.out.println("Registered custom objective: " + customObjectiveRegistryEntry.getId());
             VaultRegistry.OBJECTIVE.add(customObjectiveRegistryEntry.getKey());
             CrystalData.OBJECTIVE.register(customObjectiveRegistryEntry.getId(), customObjectiveRegistryEntry.getCrystalObjective(), customObjectiveRegistryEntry.getCrystalObjectiveSupplier());
-            if(BountyScreenAccessor.getObjectiveNames() != null) {
-                BountyScreenAccessor.getObjectiveNames().put(customObjectiveRegistryEntry.getId(), new TextComponent(customObjectiveRegistryEntry.getName()));
-            }
+//            if(BountyScreenAccessor.getObjectiveNames() != null) {
+//                BountyScreenAccessor.getObjectiveNames().put(customObjectiveRegistryEntry.getId(), new TextComponent(customObjectiveRegistryEntry.getName()));
+//            }
             if(customObjectiveRegistryEntry.getCrateItem() != null) {
                 LootInfoGroupDefinitionRegistryAccessor.invokeRegister("completion_crate" + customObjectiveRegistryEntry.getId(), () -> new ItemStack(customObjectiveRegistryEntry.getCrateItem()));
             }

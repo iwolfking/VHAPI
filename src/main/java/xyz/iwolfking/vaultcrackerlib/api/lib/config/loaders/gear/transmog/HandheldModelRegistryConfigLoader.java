@@ -15,6 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.SimpleModelState;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
@@ -44,9 +45,7 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
             for(GsonHandheldModel model : config.MODELS) {
                 HandHeldModel handHeldModel = model.getModel();
                 registry.register(handHeldModel);
-                if(Dist.CLIENT.isClient()) {
-                    this.bakeModel(handHeldModel);
-                }
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(handHeldModel));
             }
 
         }

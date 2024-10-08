@@ -7,6 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
@@ -109,6 +111,7 @@ public class VaultCrackerLib {
     }
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = MODID)
     public static class Client {
+        @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public static void textureStitch(TextureStitchEvent.Pre event) {
             if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
@@ -131,6 +134,10 @@ public class VaultCrackerLib {
 
     public static ResourceLocation removeSuffixFromId(String suffix, ResourceLocation id) {
         return id.getPath().endsWith(suffix) ? new ResourceLocation(id.getNamespace(), id.getPath().replaceFirst(suffix, "")) : id;
+    }
+
+    public static ResourceLocation removePrefixFromId(String prefix, ResourceLocation id) {
+        return id.getPath().startsWith(prefix) ? new ResourceLocation(id.getNamespace(), id.getPath().replaceFirst(prefix, "")) : id;
     }
 
 }
