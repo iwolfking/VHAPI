@@ -37,6 +37,7 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.MonolithC
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.ScavengerConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierPoolsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.portal.VaultPortalBlockConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vaultar.VaultAltarIngredientsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.workstation.VaultRecyclerConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.GenFileDataLoader;
@@ -155,5 +156,7 @@ public class LoaderRegistry {
     public static final GenFileDataLoader<Theme> GEN_THEME_LOADER = new GenFileDataLoader<>( Theme.class, "gen/themes", new HashMap<>(), "vhapi");
     public static final GenFileDataLoader<Palette> GEN_PALETTE_LOADER = new GenFileDataLoader<>( Palette.class, "gen/palettes", new HashMap<>(), "vhapi");
 
+    //Misc Configs
+    public static final VaultPortalBlockConfigLoader VAULT_PORTAL_BLOCK_CONFIG_LOADER = new VaultPortalBlockConfigLoader("vhapi");
 
 }
