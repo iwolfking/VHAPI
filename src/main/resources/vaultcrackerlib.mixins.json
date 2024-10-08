@@ -23,6 +23,7 @@
     "accessors.PlayerTitlesConfigAccessor",
     "accessors.ReforgeTagModificationFocusAccessor",
     "accessors.ScavengerConfigAccessor",
+    "accessors.SkillDescriptionsConfigAccessor",
     "accessors.TemplatePoolAccessor",
     "accessors.ThemeAccessor",
     "accessors.TooltipConfigAccessor",
