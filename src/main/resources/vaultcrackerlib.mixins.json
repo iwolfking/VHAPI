@@ -15,6 +15,7 @@
     "accessors.ElixirConfigAccessor",
     "accessors.GearModelRollRaritiesAccessor",
     "accessors.KeyRegistryAccessor",
+    "accessors.LegacyLootTablesConfigAccessor",
     "accessors.LootInfoGroupDefinitionRegistryAccessor",
     "accessors.MixinConfigAccessor",
     "accessors.MixinCraftableModifiersConfigAccessor",
