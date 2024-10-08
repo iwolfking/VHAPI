@@ -23,9 +23,7 @@ public class VaultDiffuserConfigLoader extends VaultConfigDataLoader<VaultDiffus
             }
             else if(key.getPath().contains("remove")) {
                 for(ResourceLocation itemKey : CUSTOM_CONFIGS.get(key).getDiffuserOutputMap().keySet()) {
-                    if(ModConfigs.VAULT_DIFFUSER.getDiffuserOutputMap().containsKey(itemKey)) {
-                        ModConfigs.VAULT_DIFFUSER.getDiffuserOutputMap().remove(itemKey);
-                    }
+                    ModConfigs.VAULT_DIFFUSER.getDiffuserOutputMap().remove(itemKey);
                 }
             }
             else {
