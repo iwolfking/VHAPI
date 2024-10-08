@@ -31,6 +31,7 @@
     "accessors.UnidentifiedTreasureKeyAccessorConfig",
     "accessors.VaultAltarIngredientsConfigAccessor",
     "accessors.VaultCrystalConfigAccessor",
+    "accessors.VaultGearEnchantmentConfigAccessor",
     "accessors.VaultModifierRegistyAccessor",
     "accessors.VaultModifiersConfigAccessor",
     "accessors.VaultStatsConfigAccessor",
