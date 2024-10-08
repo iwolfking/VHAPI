@@ -24,6 +24,7 @@
     "accessors.ReforgeTagModificationFocusAccessor",
     "accessors.ScavengerConfigAccessor",
     "accessors.SkillDescriptionsConfigAccessor",
+    "accessors.SkillGatesAccessor",
     "accessors.TemplatePoolAccessor",
     "accessors.ThemeAccessor",
     "accessors.TooltipConfigAccessor",

@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class SkillDescriptionsConfigLoader extends VaultConfigDataLoader<SkillDescriptionsConfig> {
     public SkillDescriptionsConfigLoader(String namespace) {
-        super(new SkillDescriptionsConfig(), "skill_descriptions", new HashMap<>(), namespace);
+        super(new SkillDescriptionsConfig(), "skill/descriptions", new HashMap<>(), namespace);
     }
 
     @Override
