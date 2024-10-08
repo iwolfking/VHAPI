@@ -38,6 +38,7 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.Scavenger
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierPoolsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vaultar.VaultAltarIngredientsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.workstation.VaultRecyclerConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.GenFileDataLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
 import xyz.iwolfking.vaultcrackerlib.api.util.vhapi.VHAPILoggerUtils;
@@ -146,6 +147,8 @@ public class LoaderRegistry {
     public static final TemplatePoolsConfigLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsConfigLoader( "vhapi");
     public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader( "vhapi");
 
+    //Workstations
+    public static final VaultRecyclerConfigLoader VAULT_RECYCLER_CONFIG_LOADER = new VaultRecyclerConfigLoader("vhapi");
 
     //Vault Generation Files
     public static final GenFileDataLoader<TemplatePool> GEN_TEMPLATE_POOL_LOADER = new GenFileDataLoader<>( TemplatePool.class, "gen/template_pools", new HashMap<>(), "vhapi");

@@ -1,7 +1,9 @@
 package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.misc;
 
+import iskallia.vault.block.entity.VaultRecyclerTileEntity;
 import iskallia.vault.config.ChampionsConfig;
 import iskallia.vault.config.CustomEntitySpawnerConfig;
+import iskallia.vault.config.VaultRecyclerConfig;
 import iskallia.vault.init.ModConfigs;
 import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
@@ -20,6 +22,7 @@ public class ChampionsConfigLoader extends VaultConfigDataLoader<ChampionsConfig
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(ChampionsConfig config : this.CUSTOM_CONFIGS.values()) {
+
 
             ModConfigs.CHAMPIONS.entityChampionChance.putAll(config.entityChampionChance);
 
