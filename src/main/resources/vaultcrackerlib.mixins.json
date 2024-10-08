@@ -33,6 +33,7 @@
     "accessors.VaultCrystalConfigAccessor",
     "accessors.VaultGearEnchantmentConfigAccessor",
     "accessors.VaultGeneralConfigAccessor",
+    "accessors.VaultLevelsConfigAccessor",
     "accessors.VaultMobsConfigAccessor",
     "accessors.VaultModifierRegistyAccessor",
     "accessors.VaultModifiersConfigAccessor",
