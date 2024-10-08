@@ -1,7 +1,9 @@
 package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes;
 
+import iskallia.vault.config.recipe.CatalystRecipesConfig;
 import iskallia.vault.config.recipe.GearRecipesConfig;
 import iskallia.vault.init.ModConfigs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -18,8 +20,14 @@ public class CustomVaultGearRecipesLoader extends VaultConfigDataLoader<GearReci
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(GearRecipesConfig config : this.CUSTOM_CONFIGS.values()) {
-            ModConfigs.GEAR_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
+        for(ResourceLocation key : this.CUSTOM_CONFIGS.keySet()) {
+            GearRecipesConfig config = CUSTOM_CONFIGS.get(key);
+            if(key.getPath().contains("overwrite")) {
+                ModConfigs.GEAR_RECIPES = config;
+            }
+            else {
+                ModConfigs.GEAR_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
+            }
         }
         syncRecipes();
     }

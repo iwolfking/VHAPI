@@ -3,6 +3,7 @@ package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes;
 import iskallia.vault.config.recipe.CatalystRecipesConfig;
 import iskallia.vault.config.recipe.InscriptionRecipesConfig;
 import iskallia.vault.init.ModConfigs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
@@ -17,8 +18,14 @@ public class CatalystRecipesLoader extends VaultConfigDataLoader<CatalystRecipes
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(CatalystRecipesConfig config : this.CUSTOM_CONFIGS.values()) {
-            ModConfigs.CATALYST_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
+        for(ResourceLocation key : this.CUSTOM_CONFIGS.keySet()) {
+            CatalystRecipesConfig config = CUSTOM_CONFIGS.get(key);
+            if(key.getPath().contains("overwrite")) {
+                ModConfigs.CATALYST_RECIPES = config;
+            }
+            else {
+                ModConfigs.CATALYST_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
+            }
         }
         syncRecipes();
     }

@@ -1,0 +1,36 @@
+{
+  "pools": {
+    "the_vault:blackmarket": [
+      {
+        "level": 0,
+        "pool": [
+          {
+            "value": {
+              "entries": [
+                {
+                  "pool": "the_vault:vault/rooms/omega/cube",
+                  "count": 1,
+                  "color": 7012096
+                }
+              ],
+              "size": {
+                "type": "uniform",
+                "min": 10,
+                "max": 10
+              },
+              "model": {
+                "type": "uniform",
+                "min": 2,
+                "max": 2
+              }
+            },
+            "weight": 20000
+          }
+        ]
+      }
+    ]
+  },
+  "poolToModel": {
+    "the_vault:vault/rooms/omega/cube": 12
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "values": {
+    "the_vault:default": {
+      "name": {
+        "text": "Stat Booster Pack"
+      },
+      "model": {
+        "unopened": "the_vault:booster_pack/stat_pack#inventory",
+        "opened": "the_vault:booster_pack/stat_pack_ripped#inventory"
+      },
+      "roll": [
+        {
+          "value": 5,
+          "weight": 1.0
+        }
+      ],
+      "tier": [
+        {
+          "value": 1,
+          "weight": 1.0
+        }
+      ],
+      "color": [
+        {
+          "value": "GREEN",
+          "weight": 1.0
+        },
+        {
+          "value": "BLUE",
+          "weight": 1.0
+        },
+        {
+          "value": "YELLOW",
+          "weight": 1.0
+        },
+        {
+          "value": "RED",
+          "weight": 1.0
+        }
+      ],
+      "card": [
+        {
+          "value": [
+            {
+              "modifier": "@default",
+              "probability": 1.0
+            }
+          ],
+          "weight": 9
+        },
+        {
+          "value": [
+            {
+              "modifier": "@default",
+              "groups": [
+                "Foil"
+              ],
+              "scaler": "",
+              "condition": "",
+              "probability": 1.0
+            }
+          ],
+          "weight": 1000
+        }
+      ]
+    },
+    "the_vault:ultra_arcane_pack": {
+      "name": {
+        "text": "Ultra Arcane Booster Pack"
+      },
+      "model": {
+        "unopened": "the_vault:booster_pack/arcane_pack#inventory",
+        "opened": "the_vault:booster_pack/arcane_pack_ripped#inventory"
+      },
+      "roll": [
+        {
+          "value": 5,
+          "weight": 1.0
+        }
+      ],
+      "tier": [
+        {
+          "value": 5,
+          "weight": 1.0
+        }
+      ],
+      "color": [
+        {
+          "value": "GREEN",
+          "weight": 1.0
+        }
+      ],
+      "card": [
+        {
+          "value": [
+            {
+              "modifier": "@arcane",
+              "probability": 1.0,
+              "condition": "@default"
+            }
+          ],
+          "weight": 9
+        }
+      ]
+    }
+  }
+}

@@ -1,9 +1,7 @@
 package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.expertises;
 
 import iskallia.vault.config.ExpertisesConfig;
-import iskallia.vault.config.TrinketConfig;
 import iskallia.vault.init.ModConfigs;
-import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
 

@@ -1,0 +1,13 @@
+{
+  "costs": {
+    "feather_falling": {
+      "items": [
+        {
+          "id": "minecraft:feather",
+          "count": 64
+        }
+      ],
+      "levels": 100
+    }
+  }
+}

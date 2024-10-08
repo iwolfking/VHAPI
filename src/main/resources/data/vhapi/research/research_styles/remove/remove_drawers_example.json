@@ -1,0 +1,10 @@
+{
+  "styles": {
+    "Drawers": {
+      "x": -190,
+      "y": 40,
+      "frameType": "RECTANGULAR",
+      "icon": "the_vault:gui/researches/drawers"
+    }
+  }
+}

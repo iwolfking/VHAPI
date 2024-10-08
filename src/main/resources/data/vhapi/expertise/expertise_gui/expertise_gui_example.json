@@ -1,0 +1,10 @@
+{
+  "styles": {
+    "Lucky_Altar": {
+      "x": 210,
+      "y": 540,
+      "frameType": "STAR",
+      "icon": "the_vault:gui/skills/lucky_altar"
+    }
+  }
+}

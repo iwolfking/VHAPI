@@ -1,0 +1,22 @@
+{
+  "MOD_RESEARCHES": [
+    {
+      "modIds": [
+        "quark"
+      ],
+      "restrictions": {
+        "restricts": {
+          "HITTABILITY": true,
+          "BLOCK_INTERACTABILITY": true,
+          "USABILITY": true,
+          "CRAFTABILITY": true,
+          "ENTITY_INTERACTABILITY": true
+        }
+      },
+      "name": "Quark",
+      "cost": 1,
+      "usesKnowledge": true
+    }
+  ],
+  "CUSTOM_RESEARCHES": []
+}

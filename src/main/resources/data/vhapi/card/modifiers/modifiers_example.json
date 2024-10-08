@@ -1,0 +1,51 @@
+{
+  "values": {
+    "attack_damage": {
+      "type": "gear",
+      "name": {
+        "text": "Attack Damage Card"
+      },
+      "model": "the_vault:card/icon/attack_damage#inventory",
+      "groups": [
+        "Offensive",
+        "Stat"
+      ],
+      "attribute": "the_vault:attack_damage",
+      "pool": [
+        {
+          "min": 100.0,
+          "max": 100.0,
+          "step": 0.5,
+          "tier": 1
+        },
+        {
+          "min": 200.0,
+          "max": 200.0,
+          "step": 0.5,
+          "tier": 2
+        },
+        {
+          "min": 300.0,
+          "max": 300.0,
+          "step": 0.5,
+          "tier": 3
+        },
+        {
+          "min": 400.0,
+          "max": 400.0,
+          "step": 0.5,
+          "tier": 4
+        },
+        {
+          "min": 500.0,
+          "max": 500.0,
+          "step": 0.5,
+          "tier": 5
+        }
+      ],
+      "maxTier": 5
+    }
+  },
+  "pools": {
+  }
+}

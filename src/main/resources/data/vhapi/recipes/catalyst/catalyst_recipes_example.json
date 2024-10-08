@@ -1,0 +1,29 @@
+{
+  "catalystRecipes": [
+    {
+      "id": "the_vault:catalyst_wooden_cascade_duplicate",
+      "output": {
+        "AMOUNT": 1,
+        "ITEM": "the_vault:vault_catalyst_infused",
+        "NBT": "{model:1,modifiers:[\"the_vault:wooden_cascade\",\"the_vault:random_negative\"],pool:\"the_vault:craft_wooden_cascade\",size:10}"
+      },
+      "inputs": [
+        {
+          "AMOUNT": 1,
+          "ITEM": "the_vault:vault_catalyst",
+          "NBT": "{}"
+        },
+        {
+          "AMOUNT": 16,
+          "ITEM": "the_vault:gem_larimar",
+          "NBT": "{}"
+        },
+        {
+          "AMOUNT": 1,
+          "ITEM": "the_vault:mystical_powder",
+          "NBT": "{}"
+        }
+      ]
+    }
+  ]
+}

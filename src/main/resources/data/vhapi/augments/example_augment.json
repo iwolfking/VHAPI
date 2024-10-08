@@ -1,0 +1,8 @@
+{
+  "dropChance": 0.2,
+  "drops": {
+    "the_vault:classic_vault_undersea": {
+      "the_vault:augment{theme:\"vhapi:classic_vault_undersea\"}": 2
+    }
+  }
+}

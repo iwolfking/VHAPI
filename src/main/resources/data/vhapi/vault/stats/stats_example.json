@@ -1,0 +1,26 @@
+{
+  "percentOfExperienceDealtAsDurabilityDamage": 0.05,
+  "freeExperienceNotDealtAsDurabilityDamage": 6000,
+  "chests": {
+    "WOODEN": {
+      "COMMON": 2000.0,
+      "RARE": 4000.0,
+      "EPIC": 8000.0,
+      "OMEGA": 16000.0
+    }
+  },
+  "blocksMined": {
+    "the_vault:ore_larimar": 20000.0
+  },
+  "treasureRoomsOpened": 3400.0,
+  "mobsKilled": {
+    "minecraft:sheep": 26000.0
+  },
+  "completion": {
+    "elixir": {
+      "BAILED": 20000,
+      "FAILED": 20000,
+      "COMPLETED": 18000
+    }
+  }
+}

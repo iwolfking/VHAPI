@@ -1,0 +1,14 @@
+{
+  "groupStyles": {
+    "Looting": {
+      "group": "Looting",
+      "headerColor": -14336,
+      "headerTextColor": -1,
+      "x": 180,
+      "y": -65,
+      "boxWidth": 170,
+      "boxHeight": 145,
+      "icon": "the_vault:gui/research_groups/looting"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "groups": {
+    "Omega": {
+      "title": "Omega",
+      "research": [
+        "Quark"
+      ],
+      "globalCostIncrease": 0.0,
+      "groupCostIncrease": {
+        "Omega": 10
+      }
+    }
+  }
+}

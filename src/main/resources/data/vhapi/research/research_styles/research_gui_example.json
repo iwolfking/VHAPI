@@ -1,0 +1,10 @@
+{
+  "styles": {
+    "Quark": {
+      "x": 250,
+      "y": 515,
+      "frameType": "STAR",
+      "icon": "the_vault:gui/researches/inception_upgrade"
+    }
+  }
+}

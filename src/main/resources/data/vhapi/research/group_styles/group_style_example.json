@@ -1,0 +1,14 @@
+{
+  "groupStyles": {
+    "Omega": {
+      "group": "Omega",
+      "headerColor": -8598175,
+      "headerTextColor": -1,
+      "x": 180,
+      "y": 415,
+      "boxWidth": 170,
+      "boxHeight": 135,
+      "icon": "the_vault:gui/research_groups/omega"
+    }
+  }
+}

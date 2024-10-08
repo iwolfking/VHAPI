@@ -18,28 +18,39 @@ import java.util.List;
 import java.util.Map;
 
 public class ResearchGroupConfigLoader extends VaultConfigDataLoader<ResearchGroupConfig> {
-    public ResearchGroupConfigLoader(ResearchGroupConfigLoader instance, String directory, Map<ResourceLocation, ResearchGroupConfigLoader> configMap, String namespace) {
-        super(new ResearchGroupConfig(), "research_groups", new HashMap<>(), namespace);
+    public ResearchGroupConfigLoader(String namespace) {
+        super(new ResearchGroupConfig(), "research/groups", new HashMap<>(), namespace);
     }
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(ResearchGroupConfig config : this.CUSTOM_CONFIGS.values()) {
-            for(String groupKey : config.getGroups().keySet()) {
-                if(ModConfigs.RESEARCH_GROUPS.getGroups().containsKey(groupKey)) {
-                    for(String research  : ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch()) {
-                        if(research.startsWith("remove:")) {
-                            ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch().remove(research.replaceAll("remove:", ""));
-                        }
-                        else {
-                            ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch().add(research);
+        for(ResourceLocation key : this.CUSTOM_CONFIGS.keySet()) {
+            ResearchGroupConfig config = CUSTOM_CONFIGS.get(key);
+            if(key.getPath().contains("overwrite")) {
+                ModConfigs.RESEARCH_GROUPS = config;
+            }
+            else if (key.getPath().contains("remove")) {
+                for (String groupKey : config.getGroups().keySet()) {
+                    if (ModConfigs.RESEARCH_GROUPS.getGroups().containsKey(groupKey)) {
+                        for (String research : ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch()) {
+                            ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch().remove(research);
                         }
                     }
                 }
-                else {
-                    ModConfigs.RESEARCH_GROUPS.getGroups().put(groupKey, config.getGroups().get(groupKey));
+            }
+            else {
+                for(String groupKey : config.getGroups().keySet()) {
+                    if(ModConfigs.RESEARCH_GROUPS.getGroups().containsKey(groupKey)) {
+                        for(String research  : ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch()) {
+                            ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch().add(research);
+                        }
+                    }
+                    else {
+                        ModConfigs.RESEARCH_GROUPS.getGroups().put(groupKey, config.getGroups().get(groupKey));
+                    }
                 }
             }
+
         }
     }
 }

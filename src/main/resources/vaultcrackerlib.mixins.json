@@ -11,6 +11,7 @@
     "accessors.CardDeckConfigAccessor",
     "accessors.CardEssenceExtractorConfigAccessor",
     "accessors.CardModifiersConfigAccessor",
+    "accessors.CardTasksConfigAccessor",
     "accessors.ClassicVaultThemeAccessor",
     "accessors.DynamicModelPropertiesAccessor",
     "accessors.DynamicModelRegistryAccessor",

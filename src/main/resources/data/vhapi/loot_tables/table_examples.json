@@ -1,0 +1,9 @@
+{
+  "keys": [
+    {
+      "id": "the_vault:dungeon_pedestal",
+      "name": "Dungeon Pedestal",
+      "1.0": "vhapi:dungeon_pedestasl"
+    }
+  ]
+}

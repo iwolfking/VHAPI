@@ -1,0 +1,25 @@
+{
+  "gearRecipes": [
+    {
+      "proficiencyType": "MAGNET",
+      "id": "the_vault:magnet_magnetite",
+      "output": {
+        "AMOUNT": 1,
+        "ITEM": "the_vault:magnet",
+        "NBT": "{Damage:0}"
+      },
+      "inputs": [
+        {
+          "AMOUNT": 9,
+          "ITEM": "the_vault:magnetite_ingot",
+          "NBT": "{}"
+        },
+        {
+          "AMOUNT": 1,
+          "ITEM": "the_vault:vault_gold",
+          "NBT": "{}"
+        }
+      ]
+    }
+  ]
+}

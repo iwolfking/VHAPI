@@ -1,0 +1,20 @@
+{
+  "trinketRecipes": [
+    {
+      "trinket": "the_vault:carapace",
+      "id": "the_vault:carapace_two",
+      "output": {
+        "AMOUNT": 1,
+        "ITEM": "the_vault:trinket",
+        "NBT": "{}"
+      },
+      "inputs": [
+        {
+          "AMOUNT": 64,
+          "ITEM": "minecraft:cobblestone",
+          "NBT": "{}"
+        }
+      ]
+    }
+  ]
+}

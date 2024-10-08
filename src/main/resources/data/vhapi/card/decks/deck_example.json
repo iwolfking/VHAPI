@@ -1,0 +1,32 @@
+{
+  "values": {
+    "example": {
+      "model": "the_vault:deck/starter_deck#inventory",
+      "name": "Example",
+      "layout": [
+        {
+          "value": [
+            "O",
+            "O",
+            "O"
+          ],
+          "weight": 1.0
+        }
+      ]
+    },
+    "starter": {
+      "model": "the_vault:deck/starter_deck#inventory",
+      "name": "Starter",
+      "layout": [
+        {
+          "value": [
+            "OOOOO",
+            "OOOOO",
+            "OOOOO"
+          ],
+          "weight": 1.0
+        }
+      ]
+    }
+  }
+}

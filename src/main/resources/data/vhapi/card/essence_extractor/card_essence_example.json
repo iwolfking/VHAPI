@@ -1,0 +1,12 @@
+{
+  "tierConfigs": {
+    "1": {
+      "extractTickTime": 1000,
+      "essencePerCard": {
+        "min": 1,
+        "max": 1
+      },
+      "essencePerUpgrade": 10
+    }
+  }
+}

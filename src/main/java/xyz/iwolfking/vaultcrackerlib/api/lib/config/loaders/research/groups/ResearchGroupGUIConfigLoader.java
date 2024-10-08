@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResearchGroupGUIConfigLoader extends VaultConfigDataLoader<ResearchGroupStyleConfig> {
-    public ResearchGroupGUIConfigLoader(ResearchGroupConfigLoader instance, String directory, Map<ResourceLocation, ResearchGroupConfigLoader> configMap, String namespace) {
-        super(new ResearchGroupStyleConfig(), "research_group_styles", new HashMap<>(), namespace);
+    public ResearchGroupGUIConfigLoader(String namespace) {
+        super(new ResearchGroupStyleConfig(), "research/group_styles", new HashMap<>(), namespace);
     }
 
     @Override

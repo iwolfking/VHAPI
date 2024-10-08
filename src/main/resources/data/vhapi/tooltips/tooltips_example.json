@@ -1,0 +1,12 @@
+{
+  "tooltips": [
+    {
+      "item": "minecraft:cobblestone",
+      "value": "Rock solid."
+    },
+    {
+      "item": "the_vault:topaz_shard",
+      "value": "Shiny Shiny"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "inscriptionRecipes": [
+    {
+      "id": "the_vault:inscription_cube",
+      "output": {
+        "AMOUNT": 1,
+        "ITEM": "the_vault:inscription",
+        "NBT": "{pool:\"the_vault:cube\", data:{color:7012096,model:12}, display:{Name:'{\"text\":\"Cube Room Inscription\",\"color\":\"#6AFF00\"}' }}"
+      },
+      "inputs": [
+        {
+          "AMOUNT": 5,
+          "ITEM": "the_vault:living_chest_scroll",
+          "NBT": "{}"
+        },
+        {
+          "AMOUNT": 16,
+          "ITEM": "the_vault:vault_gold",
+          "NBT": "{}"
+        },
+        {
+          "AMOUNT": 32,
+          "ITEM": "the_vault:inscription_piece",
+          "NBT": "{}"
+        },
+        {
+          "AMOUNT": 4,
+          "ITEM": "the_vault:gem_echo",
+          "NBT": "{}"
+        }
+      ]
+    }
+  ]
+}

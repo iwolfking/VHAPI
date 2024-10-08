@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ResearchGUIConfigLoader extends VaultConfigDataLoader<ResearchesGUIConfig> {
     public ResearchGUIConfigLoader(String namespace) {
-        super(new ResearchesGUIConfig(), "research/researches_gui", new HashMap<>(), namespace);
+        super(new ResearchesGUIConfig(), "research/research_styles", new HashMap<>(), namespace);
     }
 
     @Override

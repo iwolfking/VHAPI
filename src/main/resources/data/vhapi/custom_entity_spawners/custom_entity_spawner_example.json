@@ -1,0 +1,40 @@
+{
+  "spawnerGroups": {
+    "burning": [
+      {
+        "minLevel": 0,
+        "blockCheckRadius": 20,
+        "entities": [
+          {
+            "value": {
+              "type": "thermal:fire_grenade",
+              "randomMotion": true
+            },
+            "weight": 3
+          },
+          {
+            "value": {
+              "type": "thermal:fire_tnt",
+              "randomMotion": true
+            },
+            "weight": 2
+          },
+          {
+            "value": {
+              "type": "thermal:fire_grenade",
+              "randomMotion": false
+            },
+            "weight": 3
+          },
+          {
+            "value": {
+              "type": "thermal:fire_tnt",
+              "randomMotion": false
+            },
+            "weight": 2
+          }
+        ]
+      }
+    ]
+  }
+}

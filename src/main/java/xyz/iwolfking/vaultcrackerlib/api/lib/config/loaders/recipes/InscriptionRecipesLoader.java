@@ -1,5 +1,6 @@
 package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes;
 
+import iskallia.vault.config.recipe.CatalystRecipesConfig;
 import iskallia.vault.config.recipe.GearRecipesConfig;
 import iskallia.vault.config.recipe.InscriptionRecipesConfig;
 import iskallia.vault.init.ModConfigs;
@@ -19,8 +20,14 @@ public class InscriptionRecipesLoader extends VaultConfigDataLoader<InscriptionR
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(InscriptionRecipesConfig config : this.CUSTOM_CONFIGS.values()) {
-            ModConfigs.INSCRIPTION_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
+        for(ResourceLocation key : this.CUSTOM_CONFIGS.keySet()) {
+            InscriptionRecipesConfig config = CUSTOM_CONFIGS.get(key);
+            if(key.getPath().contains("overwrite")) {
+                ModConfigs.INSCRIPTION_RECIPES = config;
+            }
+            else {
+                ModConfigs.INSCRIPTION_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
+            }
         }
         syncRecipes();
     }
