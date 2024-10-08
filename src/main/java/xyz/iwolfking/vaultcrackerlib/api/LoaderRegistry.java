@@ -2,6 +2,7 @@ package xyz.iwolfking.vaultcrackerlib.api;
 
 import com.mojang.logging.LogUtils;
 import iskallia.vault.core.world.generator.theme.Theme;
+import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
 import iskallia.vault.core.world.template.data.TemplatePool;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
@@ -22,6 +23,7 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.WeightedProductE
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.HandheldModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.ShieldModelRegistryConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.loot_table.LootTableConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.palettes.PalettesConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.template_pools.TemplatePoolsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.theme.ThemeConfigLoader;
@@ -83,6 +85,7 @@ public class LoaderRegistry {
 
         GEN_PALETTE_LOADER.onAddListeners(event);
         GEN_TEMPLATE_POOL_LOADER.onAddListeners(event);
+        GEN_LOOT_TABLE_LOADER.onAddListeners(event);
 
 
         //Load all normal config loaders
@@ -147,6 +150,7 @@ public class LoaderRegistry {
     public static final PalettesConfigLoader PALETTES_CONFIG_LOADER = new PalettesConfigLoader( "vhapi");
     public static final TemplatePoolsConfigLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsConfigLoader( "vhapi");
     public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader( "vhapi");
+    public static final LootTableConfigLoader LOOT_TABLE_CONFIG_LOADER = new LootTableConfigLoader( "vhapi");
 
     //Workstations
     public static final VaultRecyclerConfigLoader VAULT_RECYCLER_CONFIG_LOADER = new VaultRecyclerConfigLoader("vhapi");
@@ -155,6 +159,7 @@ public class LoaderRegistry {
     public static final GenFileDataLoader<TemplatePool> GEN_TEMPLATE_POOL_LOADER = new GenFileDataLoader<>( TemplatePool.class, "gen/template_pools", new HashMap<>(), "vhapi");
     public static final GenFileDataLoader<Theme> GEN_THEME_LOADER = new GenFileDataLoader<>( Theme.class, "gen/themes", new HashMap<>(), "vhapi");
     public static final GenFileDataLoader<Palette> GEN_PALETTE_LOADER = new GenFileDataLoader<>( Palette.class, "gen/palettes", new HashMap<>(), "vhapi");
+    public static final GenFileDataLoader<LootTable> GEN_LOOT_TABLE_LOADER = new GenFileDataLoader<>( LootTable.class, "gen/loot_tables", new HashMap<>(), "vhapi");
 
     //Misc Configs
     public static final VaultPortalBlockConfigLoader VAULT_PORTAL_BLOCK_CONFIG_LOADER = new VaultPortalBlockConfigLoader("vhapi");
