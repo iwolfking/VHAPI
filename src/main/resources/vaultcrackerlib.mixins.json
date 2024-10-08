@@ -8,6 +8,7 @@
     "MixinModConfigs",
     "accessors.AbilitiesDescriptionsConfigAccessor",
     "accessors.AugmentConfigAccessor",
+    "accessors.CardDeckConfigAccessor",
     "accessors.CardEssenceExtractorConfigAccessor",
     "accessors.ClassicVaultThemeAccessor",
     "accessors.DynamicModelPropertiesAccessor",
