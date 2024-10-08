@@ -1,25 +1,26 @@
-package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear;
+package xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes;
 
 import iskallia.vault.config.recipe.GearRecipesConfig;
+import iskallia.vault.config.recipe.InscriptionRecipesConfig;
 import iskallia.vault.init.ModConfigs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
 
 import java.util.HashMap;
+import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class CustomVaultGearRecipesLoader extends VaultConfigDataLoader<GearRecipesConfig> {
-    public CustomVaultGearRecipesLoader(String namespace) {
-        super(ModConfigs.GEAR_RECIPES, "gear_recipes", new HashMap<>(), namespace);
+public class InscriptionRecipesLoader extends VaultConfigDataLoader<InscriptionRecipesConfig> {
+    public InscriptionRecipesLoader(String namespace) {
+        super(ModConfigs.INSCRIPTION_RECIPES, "inscription_recipes", new HashMap<>(), namespace);
     }
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(GearRecipesConfig config : this.CUSTOM_CONFIGS.values()) {
-            ModConfigs.GEAR_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
+        for(InscriptionRecipesConfig config : this.CUSTOM_CONFIGS.values()) {
+            ModConfigs.INSCRIPTION_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
         }
         syncRecipes();
     }
@@ -28,9 +29,8 @@ public class CustomVaultGearRecipesLoader extends VaultConfigDataLoader<GearReci
         MinecraftServer srv = ServerLifecycleHooks.getCurrentServer();
         if (srv != null) {
             srv.getPlayerList().getPlayers().forEach((player) -> {
-                ModConfigs.GEAR_RECIPES.syncTo(ModConfigs.GEAR_RECIPES, player);
+                ModConfigs.INSCRIPTION_RECIPES.syncTo(ModConfigs.INSCRIPTION_RECIPES, player);
             });
         }
     }
-
 }

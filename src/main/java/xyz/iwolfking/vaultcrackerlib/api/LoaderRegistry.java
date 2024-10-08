@@ -29,7 +29,7 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.ResearchCon
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.titles.CustomTitleConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal.VaultCrystalConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearRecipesLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes.CustomVaultGearRecipesLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearWorkbenchLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.BingoConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.ElixirConfigLoader;
@@ -44,7 +44,6 @@ import xyz.iwolfking.vaultcrackerlib.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vaultcrackerlib.mixin.accessors.UnidentifiedTreasureKeyAccessorConfig;
 
 import java.util.*;
-import java.util.logging.LogManager;
 
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LoaderRegistry {
