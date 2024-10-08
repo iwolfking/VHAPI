@@ -37,6 +37,7 @@
     "accessors.VaultGearEnchantmentConfigAccessor",
     "accessors.VaultGeneralConfigAccessor",
     "accessors.VaultLevelsConfigAccessor",
+    "accessors.VaultMetaChestConfigAccessor",
     "accessors.VaultMobsConfigAccessor",
     "accessors.VaultModifierRegistyAccessor",
     "accessors.VaultModifiersConfigAccessor",
