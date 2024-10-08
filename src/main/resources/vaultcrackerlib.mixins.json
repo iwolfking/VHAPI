@@ -6,6 +6,7 @@
   "refmap": "vaultcrackerlib.refmap.json",
   "mixins": [
     "MixinModConfigs",
+    "accessors.AugmentConfigAccessor",
     "accessors.ClassicVaultThemeAccessor",
     "accessors.DynamicModelPropertiesAccessor",
     "accessors.DynamicModelRegistryAccessor",

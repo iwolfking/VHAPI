@@ -1,9 +1,5 @@
 package xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib;
 
-import iskallia.vault.config.entry.ResearchGroupStyle;
-import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vaultcrackerlib.api.patching.configs.Patchers;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
