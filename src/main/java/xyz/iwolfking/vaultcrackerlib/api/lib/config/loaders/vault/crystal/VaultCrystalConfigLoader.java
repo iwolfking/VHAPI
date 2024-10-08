@@ -19,7 +19,6 @@ public class VaultCrystalConfigLoader extends VaultConfigDataLoader<VaultCrystal
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(VaultCrystalConfig config : this.CUSTOM_CONFIGS.values()) {
-            System.out.println("Found a config!");
             if(config.LAYOUTS != null) {
                 ModConfigs.VAULT_CRYSTAL.LAYOUTS.addAll(config.LAYOUTS);
             }

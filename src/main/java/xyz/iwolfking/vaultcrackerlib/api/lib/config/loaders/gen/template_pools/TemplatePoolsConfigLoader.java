@@ -21,6 +21,7 @@ public class TemplatePoolsConfigLoader extends VaultConfigDataLoader<TemplatePoo
         super(new TemplatePoolsConfig(), "template_pools", new HashMap<>(), namespace);
     }
 
+    //It is very important template pools load into their registry *before* themes do, so we do it immediately. Themes require the template pool to be present to properly create.
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         ((KeyRegistryAccessor) VaultRegistry.TEMPLATE_POOL).setLocked(false);
@@ -39,12 +40,14 @@ public class TemplatePoolsConfigLoader extends VaultConfigDataLoader<TemplatePoo
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        ((KeyRegistryAccessor) VaultRegistry.TEMPLATE_POOL).setLocked(false);
-        for(TemplatePoolsConfig config : this.CUSTOM_CONFIGS.values()) {
-            for(TemplatePoolKey key : config.toRegistry().getKeys()) {
-                VaultRegistry.TEMPLATE_POOL.register(key.with(Version.latest(), key.get(Version.v1_0)));
+        if(event.getType().equals(VaultConfigEvent.Type.GEN)) {
+            ((KeyRegistryAccessor) VaultRegistry.TEMPLATE_POOL).setLocked(false);
+            for(TemplatePoolsConfig config : this.CUSTOM_CONFIGS.values()) {
+                for(TemplatePoolKey key : config.toRegistry().getKeys()) {
+                    VaultRegistry.TEMPLATE_POOL.register(key.with(Version.latest(), key.get(Version.v1_0)));
+                }
             }
+            ((KeyRegistryAccessor)VaultRegistry.TEMPLATE_POOL).setLocked(true);
         }
-        ((KeyRegistryAccessor)VaultRegistry.TEMPLATE_POOL).setLocked(true);
     }
 }

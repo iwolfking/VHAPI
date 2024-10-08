@@ -22,10 +22,6 @@ public class ThemeConfigLoader extends VaultConfigDataLoader<ThemesConfig> {
         super(new ThemesConfig(), "themes", new HashMap<>(), namespace);
     }
 
-    public ThemeConfigLoader(ThemesConfig instance, String directory, Map<ResourceLocation, ThemesConfig> configMap, String namespace) {
-        super(instance, directory, configMap, namespace);
-    }
-
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         ((KeyRegistryAccessor)VaultRegistry.THEME).setLocked(false);

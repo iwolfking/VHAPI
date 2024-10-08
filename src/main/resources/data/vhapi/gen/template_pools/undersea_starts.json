@@ -4,7 +4,7 @@
     "value": {
       "template": "the_vault:vault/starts/start1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   }

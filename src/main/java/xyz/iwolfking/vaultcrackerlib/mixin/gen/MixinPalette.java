@@ -16,7 +16,7 @@ public class MixinPalette {
     @Inject(method = "fromPath", at = @At("HEAD"), cancellable = true)
     private static void fromPath(String path, CallbackInfoReturnable<Palette> cir) {
         Palette pool = null;
-        if(path.startsWith("the_vault:")) {
+        if(path.startsWith("vhapi:")) {
             if(LoaderRegistry.GEN_PALETTE_LOADER.CUSTOM_CONFIGS.containsKey(new ResourceLocation(path))) {
                 pool = LoaderRegistry.GEN_PALETTE_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation(path));
             }

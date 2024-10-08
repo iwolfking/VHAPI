@@ -27,7 +27,7 @@ public class MixinTheme {
     @Inject(method = "fromPath", at = @At("HEAD"), cancellable = true)
     private static void fromPath(String path, CallbackInfoReturnable<Theme> cir) {
         Theme theme = null;
-        if(path.startsWith("the_vault:")) {
+        if(path.startsWith("vhapi:")) {
             if(LoaderRegistry.GEN_THEME_LOADER.CUSTOM_CONFIGS.containsKey(new ResourceLocation(path))) {
                 theme = LoaderRegistry.GEN_THEME_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation(path));
             }

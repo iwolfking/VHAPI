@@ -1,8 +1,8 @@
 {
   "type": "classic_vault",
-  "starts": "the_vault:undersea_starts",
-  "rooms": "the_vault:undersea_rooms",
-  "tunnels": "the_vault:undersea_tunnels",
+  "starts": "vhapi:undersea_starts",
+  "rooms": "vhapi:undersea_rooms",
+  "tunnels": "vhapi:undersea_tunnels",
   "ambient_light": 0.2,
   "fog_color": 11796461,
   "grass_color": 2987600,

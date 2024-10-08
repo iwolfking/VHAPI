@@ -1,0 +1,24 @@
+{
+  "keys": [
+    {
+      "id": "vhapi:undersea_rooms",
+      "name": "Undersea Rooms",
+      "1.0": "vhapi:undersea_rooms"
+    },
+    {
+      "id": "vhapi:undersea_common_rooms",
+      "name": "Undersea Common Rooms",
+      "1.0": "vhapi:undersea_common_rooms"
+    },
+    {
+      "id": "vhapi:undersea_starts",
+      "name": "Undersea Starts",
+      "1.0": "vhapi:undersea_starts"
+    },
+    {
+      "id": "vhapi:undersea_tunnels",
+      "name": "Undersea Tunnels",
+      "1.0": "vhapi:undersea_tunnels"
+    }
+  ]
+}

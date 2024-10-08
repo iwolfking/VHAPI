@@ -4,7 +4,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/bee1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -13,7 +13,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/bee2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -22,7 +22,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/bee3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -31,7 +31,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/bee4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -40,7 +40,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/cliffs1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -49,7 +49,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/cliffs2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -58,7 +58,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/cliffs3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -67,7 +67,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/cliffs4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -76,7 +76,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/glowstone_lakes1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -85,7 +85,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/glowstone_lakes2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -94,7 +94,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/glowstone_lakes3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -103,7 +103,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/glowstone_lakes4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -112,7 +112,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/lakes1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -121,7 +121,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/lakes2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -130,7 +130,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/lakes3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -139,7 +139,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/lakes4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -148,7 +148,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/mushroom_forest1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -157,7 +157,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/mushroom_forest2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -166,7 +166,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/mushroom_forest3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -175,7 +175,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/mushroom_forest4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -184,7 +184,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/mustard1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -193,7 +193,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/mustard2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -202,7 +202,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/mustard3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -211,7 +211,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/mustard4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -220,7 +220,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/pirate1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -229,7 +229,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/pirate2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -238,7 +238,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/pirate3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -247,7 +247,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/pirate4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -256,7 +256,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/rainbow_forest1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -265,7 +265,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/rainbow_forest2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -274,7 +274,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/rainbow_forest3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -283,7 +283,7 @@
     "value": {
       "template": "the_vault:vault/rooms/common/rainbow_forest4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -293,7 +293,7 @@
       "template": "the_vault:vault/rooms/common/ore1",
       "palettes": [
         "the_vault:generic/ore_placeholder_alternate",
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -303,7 +303,7 @@
       "template": "the_vault:vault/rooms/common/ore2",
       "palettes": [
         "the_vault:generic/ore_placeholder_alternate",
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -313,7 +313,7 @@
       "template": "the_vault:vault/rooms/common/ore3",
       "palettes": [
         "the_vault:generic/ore_placeholder_alternate",
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -323,7 +323,7 @@
       "template": "the_vault:vault/rooms/common/ore4",
       "palettes": [
         "the_vault:generic/ore_placeholder_alternate",
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   }

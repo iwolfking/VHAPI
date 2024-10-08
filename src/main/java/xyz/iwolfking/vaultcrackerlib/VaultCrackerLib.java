@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import xyz.iwolfking.vaultcrackerlib.api.LoaderRegistry;
 import xyz.iwolfking.vaultcrackerlib.api.registry.VaultGearRegistry;
 import xyz.iwolfking.vaultcrackerlib.api.registry.VaultObjectiveRegistry;
+import xyz.iwolfking.vaultcrackerlib.api.util.ResourceLocUtils;
+import xyz.iwolfking.vaultcrackerlib.api.util.vhapi.VHAPILoggerUtils;
 
 
 import java.util.Collection;
@@ -38,6 +40,7 @@ public class VaultCrackerLib {
     public static final String MODID = "vaultcrackerlib";
 
     public VaultCrackerLib() {
+        VHAPILoggerUtils.debug("Initializing VHAPI!");
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register the setup method for modloading
@@ -57,47 +60,9 @@ public class VaultCrackerLib {
 
     }
 
-    @SubscribeEvent
-    public static void textureStitch(TextureStitchEvent.Pre event) {
-        System.out.println("STITCHING CAT");
-        event.addSprite(new ResourceLocation("vaultcrackerlib", "textures/item/gear/wand/cat_wand.png"));
-    }
-
     public static ResourceLocation of(String name) {
         return new ResourceLocation(MODID, name);
     }
-
-//    public void addPackFinders(AddPackFindersEvent event) {
-//        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-//            registerBuiltinResourcePack(event, new TextComponent("Custom Transmogs"), "custom_transmogs");
-//        }
-//    }
-//
-//    private static void registerBuiltinResourcePack(AddPackFindersEvent event, MutableComponent name, String folder) {
-//        event.addRepositorySource((consumer, constructor) -> {
-//            String path = VaultCrackerLib.of(folder).toString();
-//            IModFile file = ModList.get().getModFileById(VaultCrackerLib.MODID).getFile();
-//            try (PathResourcePack pack = new PathResourcePack(
-//                    path,
-//                    file.findResource("resourcepacks/" + folder));) {
-//
-//                consumer.accept(constructor.create(
-//                        VaultCrackerLib.of(folder).toString(),
-//                        name,
-//                        false,
-//                        () -> pack,
-//                        Objects.requireNonNull(pack.getMetadataSection(PackMetadataSection.SERIALIZER)),
-//                        Pack.Position.TOP,
-//                        PackSource.BUILT_IN,
-//                        false));
-//
-//            } catch (IOException e) {
-//                if (!DatagenModLoader.isRunningDataGen())
-//                    e.printStackTrace();
-//            }
-//        });
-//    }
-
 
     private void worldLoad(final WorldEvent.Load event)  {
         if(hasLoaded.get()) {
@@ -105,6 +70,7 @@ public class VaultCrackerLib {
         }
 
         if(hasLoaded.compareAndSet(false, true)) {
+            VHAPILoggerUtils.debug("Rerunning Vault Configs load to patch them.");
             ModConfigs.register();
         }
 
@@ -119,8 +85,8 @@ public class VaultCrackerLib {
                 Collection<ResourceLocation> textures = Minecraft.getInstance().getResourceManager().listResources("textures/item/gear", s -> s.endsWith(".png"));
                 for(ResourceLocation loc : textures) {
                     if(loc.getNamespace().equals("custom_transmogs")) {
-                        System.out.println("Stitching " + stripLocationForSprite(loc));
-                        event.addSprite(stripLocationForSprite(loc));
+                        VHAPILoggerUtils.debug("Stitching custom transmog texture: " + loc);
+                        event.addSprite(ResourceLocUtils.stripLocationForSprite(loc));
                     }
                 }
             }
@@ -128,16 +94,6 @@ public class VaultCrackerLib {
         }
     }
 
-    public static ResourceLocation stripLocationForSprite(ResourceLocation loc) {
-        return VaultCrackerLib.removeSuffixFromId(".png", DynamicModel.removePrefixFromId("textures/", loc));
-    }
 
-    public static ResourceLocation removeSuffixFromId(String suffix, ResourceLocation id) {
-        return id.getPath().endsWith(suffix) ? new ResourceLocation(id.getNamespace(), id.getPath().replaceFirst(suffix, "")) : id;
-    }
-
-    public static ResourceLocation removePrefixFromId(String prefix, ResourceLocation id) {
-        return id.getPath().startsWith(prefix) ? new ResourceLocation(id.getNamespace(), id.getPath().replaceFirst(prefix, "")) : id;
-    }
 
 }

@@ -1,12 +1,9 @@
 package xyz.iwolfking.vaultcrackerlib.api;
 
-import iskallia.vault.VaultMod;
-import iskallia.vault.config.LegacyLootTablesConfig;
-import iskallia.vault.config.core.LootTablesConfig;
-import iskallia.vault.config.core.TemplatePoolsConfig;
-import iskallia.vault.config.core.ThemesConfig;
-import iskallia.vault.core.vault.VaultRegistry;
-import iskallia.vault.core.world.loot.entry.LootEntry;
+import com.mojang.logging.LogUtils;
+import iskallia.vault.core.world.generator.theme.Theme;
+import iskallia.vault.core.world.processor.Palette;
+import iskallia.vault.core.world.template.data.TemplatePool;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
 import iskallia.vault.dynamodel.model.item.shield.ShieldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
@@ -15,21 +12,18 @@ import iskallia.vault.init.ModDynamicModels;
 import iskallia.vault.item.gear.VaultShieldItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.slf4j.Logger;
 import xyz.iwolfking.vaultcrackerlib.api.events.ConfigDataLoaderEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.HandheldModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.ShieldModelRegistryConfigLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.palettes.GenPaletteLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.palettes.PalettesConfigLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.template_pools.GenTemplatePoolLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.template_pools.TemplatePoolsConfigLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.theme.GenThemeLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.theme.ThemeConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.ResearchConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.titles.CustomTitleConfigLoader;
@@ -46,13 +40,16 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.Vaul
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vaultar.VaultAltarIngredientsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.GenFileDataLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vaultcrackerlib.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vaultcrackerlib.mixin.accessors.UnidentifiedTreasureKeyAccessorConfig;
 
 import java.util.*;
+import java.util.logging.LogManager;
+
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LoaderRegistry {
 
-
+    Logger LOGGER = LogUtils.getLogger();
 
     public static final Map<ResourceLocation, VaultConfigDataLoader<?>> LOADERS = new HashMap<>();
     public static final Map<ResourceLocation, GenFileDataLoader<?>> GEN_FILE_LOADERS = new HashMap<>();
@@ -69,65 +66,92 @@ public class LoaderRegistry {
 
 
 
+
     public static void onAddListener(AddReloadListenerEvent event) {
+        VHAPILoggerUtils.info("Registering datapack vault config listeners!");
+        //Register a loader for each gear item present in the model registry.
         for(Item item : ModDynamicModels.REGISTRIES.getUniqueItems()) {
-            System.out.println(item.getRegistryName());
             if(item instanceof VaultShieldItem) {
-                ShieldModelRegistryConfigLoader<DynamicModelRegistry<ShieldModel>> shieldModelLoader = new ShieldModelRegistryConfigLoader<>("the_vault", (DynamicModelRegistry<ShieldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
-            }
-
-            HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> configLoader = new HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>>("the_vault", (DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
-        }
-        GEN_PALETTE_LOADER.onAddListeners(event);
-        GEN_TEMPLATE_POOL_LOADER.onAddListeners(event);
-        TEMPLATE_POOLS_CONFIG_LOADER.onAddListeners(event);
-
-        for(VaultConfigDataLoader<?> loader : LOADERS.values()) {
-            if(loader instanceof ThemeConfigLoader || loader instanceof TemplatePoolsConfigLoader) {
+                VHAPILoggerUtils.debug("Registered a custom shield transmog data listener for" + item.getRegistryName());
+                ShieldModelRegistryConfigLoader<DynamicModelRegistry<ShieldModel>> shieldModelLoader = new ShieldModelRegistryConfigLoader<>("vhapi", (DynamicModelRegistry<ShieldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
                 continue;
             }
-            System.out.println(loader.getName());
+            VHAPILoggerUtils.debug("Registered a custom transmog data listener for" + item.getRegistryName());
+            HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> configLoader = new HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>>("vhapi", (DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
+        }
+
+        GEN_PALETTE_LOADER.onAddListeners(event);
+        GEN_TEMPLATE_POOL_LOADER.onAddListeners(event);
+
+
+        //Load all normal config loaders
+        for(VaultConfigDataLoader<?> loader : LOADERS.values()) {
+            VHAPILoggerUtils.debug("Registered " + loader.getName() + " data listener.");
+            if(loader instanceof ThemeConfigLoader) {
+                continue;
+            }
             MinecraftForge.EVENT_BUS.post(new ConfigDataLoaderEvent.Init(loader));
             loader.onAddListeners(event);
         }
 
+        //Themes rely on Template Pools to already be registered, so we must make sure they load last.
         GEN_THEME_LOADER.onAddListeners(event);
         THEME_CONFIG_LOADER.onAddListeners(event);
+
         MinecraftForge.EVENT_BUS.post(new ConfigDataLoaderEvent.Finish(LOADERS));
+        VHAPILoggerUtils.info("Finished registering listeners. Registered " + LOADERS.size() + " listeners.");
     }
 
-    public static final TemplatePoolsConfigLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsConfigLoader( "the_vault");
 
-    public static final GenTemplatePoolLoader GEN_TEMPLATE_POOL_LOADER = new GenTemplatePoolLoader( "the_vault");
-    public static final CustomVaultGearLoader CUSTOM_VAULT_GEAR_LOADER = new CustomVaultGearLoader("the_vault");
-    public static final CustomVaultGearWorkbenchLoader CUSTOM_VAULT_GEAR_WORKBENCH_LOADER = new CustomVaultGearWorkbenchLoader("the_vault");
-    public static final CustomVaultGearRecipesLoader GEAR_RECIPES_LOADER = new CustomVaultGearRecipesLoader( "the_vault");
-    public static final ElixirConfigLoader ELIXIR_CONFIG_LOADER = new ElixirConfigLoader( "the_vault");
-    public static final ScavengerConfigLoader SCAVENGER_CONFIG_LOADER = new ScavengerConfigLoader( "the_vault");
-    public static final MonolithConfigLoader MONOLITH_CONFIG_LOADER = new MonolithConfigLoader( "the_vault");
-    public static final BingoConfigLoader BINGO_CONFIG_LOADER = new BingoConfigLoader( "the_vault");
-    public static final VaultCrystalConfigLoader VAULT_CRYSTAL_CONFIG_LOADER = new VaultCrystalConfigLoader( "the_vault");
-    public static final VaultModifierConfigLoader VAULT_MODIFIER_CONFIG_LOADER = new VaultModifierConfigLoader( "the_vault");
-    public static final VaultModifierPoolsConfigLoader VAULT_MODIFIER_POOLS_CONFIG_LOADER = new VaultModifierPoolsConfigLoader( "the_vault");
-    public static final ResearchConfigLoader RESEARCH_CONFIG_LOADER = new ResearchConfigLoader( "the_vault");
-    public static final GenPaletteLoader GEN_PALETTE_LOADER = new GenPaletteLoader( "the_vault");
-    public static final CustomGearModelRollRaritiesConfigLoader GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader( "the_vault");
-    public static final CustomTitleConfigLoader CUSTOM_TITLE_CONFIG_LOADER = new CustomTitleConfigLoader( "the_vault");
-    public static final VaultAltarIngredientsConfigLoader VAULT_ALTAR_INGREDIENTS_CONFIG_LOADER = new VaultAltarIngredientsConfigLoader( "the_vault");
-    public static final WeightedProductEntryConfigLoader MYSTERY_BOX_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_BOX.POOL, "mystery_box");
-    public static final WeightedProductEntryConfigLoader MYSTERY_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_EGG.POOL, "mystery_egg");
-    public static final WeightedProductEntryConfigLoader MYSTERY_HOSTILE_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MYSTERY_HOSTILE_EGG.POOL, "mystery_hostile_egg");
-    public static final WeightedProductEntryConfigLoader UNIDENTIFIED_TREASURE_KEY_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "the_vault", () -> ((UnidentifiedTreasureKeyAccessorConfig)ModConfigs.UNIDENTIFIED_TREASURE_KEY).getTreasureKeys(), "unidentified_treasure_key");
-    public static final MappedWeightedProductEntryConfigLoader MOD_BOX_CONFIG_LOADER = new MappedWeightedProductEntryConfigLoader( "the_vault", () -> ModConfigs.MOD_BOX.POOL, "mod_box");
+    //Objective Configs
+    public static final ElixirConfigLoader ELIXIR_CONFIG_LOADER = new ElixirConfigLoader( "vhapi");
+    public static final ScavengerConfigLoader SCAVENGER_CONFIG_LOADER = new ScavengerConfigLoader( "vhapi");
+    public static final MonolithConfigLoader MONOLITH_CONFIG_LOADER = new MonolithConfigLoader( "vhapi");
+    public static final BingoConfigLoader BINGO_CONFIG_LOADER = new BingoConfigLoader( "vhapi");
 
-    public static final GenThemeLoader GEN_THEME_LOADER = new GenThemeLoader( "the_vault");
-    public static final PalettesConfigLoader PALETTES_CONFIG_LOADER = new PalettesConfigLoader( "the_vault");
+    //Research Configs
+
+    public static final ResearchConfigLoader RESEARCH_CONFIG_LOADER = new ResearchConfigLoader( "vhapi");
+
+    //Title Configs
+    public static final CustomTitleConfigLoader CUSTOM_TITLE_CONFIG_LOADER = new CustomTitleConfigLoader( "vhapi");
+
+    //Vault Crystal Configs
+    public static final VaultCrystalConfigLoader VAULT_CRYSTAL_CONFIG_LOADER = new VaultCrystalConfigLoader( "vhapi");
 
 
-    public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader( "the_vault");
 
 
-    public static final Set<HandheldModelRegistryConfigLoader<?>> DYNAMIC_MODEL_REGISTRY_CONFIG_LOADERS  = new HashSet<>();
+    //Vault Altar Configs
+    public static final VaultAltarIngredientsConfigLoader VAULT_ALTAR_INGREDIENTS_CONFIG_LOADER = new VaultAltarIngredientsConfigLoader( "vhapi");
+
+    //Vault Modifier Configs
+    public static final VaultModifierConfigLoader VAULT_MODIFIER_CONFIG_LOADER = new VaultModifierConfigLoader( "vhapi");
+    public static final VaultModifierPoolsConfigLoader VAULT_MODIFIER_POOLS_CONFIG_LOADER = new VaultModifierPoolsConfigLoader( "vhapi");
+
+    //Vault Gear Configs
+    public static final CustomVaultGearLoader CUSTOM_VAULT_GEAR_LOADER = new CustomVaultGearLoader("vhapi");
+    public static final CustomVaultGearWorkbenchLoader CUSTOM_VAULT_GEAR_WORKBENCH_LOADER = new CustomVaultGearWorkbenchLoader("vhapi");
+    public static final CustomVaultGearRecipesLoader GEAR_RECIPES_LOADER = new CustomVaultGearRecipesLoader( "vhapi");
+    public static final CustomGearModelRollRaritiesConfigLoader GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader( "vhapi");
+
+    //"Loot Box" Configs
+    public static final WeightedProductEntryConfigLoader MYSTERY_BOX_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "vhapi", () -> ModConfigs.MYSTERY_BOX.POOL, "mystery_box");
+    public static final WeightedProductEntryConfigLoader MYSTERY_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "vhapi", () -> ModConfigs.MYSTERY_EGG.POOL, "mystery_egg");
+    public static final WeightedProductEntryConfigLoader MYSTERY_HOSTILE_EGG_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "vhapi", () -> ModConfigs.MYSTERY_HOSTILE_EGG.POOL, "mystery_hostile_egg");
+    public static final WeightedProductEntryConfigLoader UNIDENTIFIED_TREASURE_KEY_CONFIG_LOADER = new WeightedProductEntryConfigLoader( "vhapi", () -> ((UnidentifiedTreasureKeyAccessorConfig)ModConfigs.UNIDENTIFIED_TREASURE_KEY).getTreasureKeys(), "unidentified_treasure_key");
+    public static final MappedWeightedProductEntryConfigLoader MOD_BOX_CONFIG_LOADER = new MappedWeightedProductEntryConfigLoader( "vhapi", () -> ModConfigs.MOD_BOX.POOL, "mod_box");
+
+    //Vault Generation Config Files
+    public static final PalettesConfigLoader PALETTES_CONFIG_LOADER = new PalettesConfigLoader( "vhapi");
+    public static final TemplatePoolsConfigLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsConfigLoader( "vhapi");
+    public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader( "vhapi");
+
+
+    //Vault Generation Files
+    public static final GenFileDataLoader<TemplatePool> GEN_TEMPLATE_POOL_LOADER = new GenFileDataLoader<>( TemplatePool.class, "gen/template_pools", new HashMap<>(), "vhapi");
+    public static final GenFileDataLoader<Theme> GEN_THEME_LOADER = new GenFileDataLoader<>( Theme.class, "gen/themes", new HashMap<>(), "vhapi");
+    public static final GenFileDataLoader<Palette> GEN_PALETTE_LOADER = new GenFileDataLoader<>( Palette.class, "gen/palettes", new HashMap<>(), "vhapi");
 
 
 }

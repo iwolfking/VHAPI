@@ -15,7 +15,7 @@ public class MixinTemplatePool {
     @Inject(method = "fromPath", at = @At("HEAD"), cancellable = true)
     private static void fromPath(String path, CallbackInfoReturnable<TemplatePool> cir) {
         TemplatePool pool = null;
-        if(path.startsWith("the_vault:")) {
+        if(path.startsWith("vhapi:")) {
             if(LoaderRegistry.GEN_TEMPLATE_POOL_LOADER.CUSTOM_CONFIGS.containsKey(new ResourceLocation(path))) {
                 pool = LoaderRegistry.GEN_TEMPLATE_POOL_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation(path));
             }

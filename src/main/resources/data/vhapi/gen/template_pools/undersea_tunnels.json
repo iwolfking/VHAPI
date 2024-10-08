@@ -4,7 +4,7 @@
     "value": {
       "template": "the_vault:vault/tunnels/tunnel1",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -13,7 +13,7 @@
     "value": {
       "template": "the_vault:vault/tunnels/tunnel2",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -22,7 +22,7 @@
     "value": {
       "template": "the_vault:vault/tunnels/tunnel3",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -31,7 +31,7 @@
     "value": {
       "template": "the_vault:vault/tunnels/tunnel4",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -40,7 +40,7 @@
     "value": {
       "template": "the_vault:vault/tunnels/tunnel5",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   },
@@ -49,7 +49,7 @@
     "value": {
       "template": "the_vault:vault/tunnels/tunnel6",
       "palettes": [
-        "the_vault:universal_undersea"
+        "vhapi:universal_undersea"
       ]
     }
   }
