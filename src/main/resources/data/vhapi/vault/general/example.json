@@ -1,8 +1,0 @@
-{
-  "ITEM_BLACKLIST": [
-    "quark:*"
-  ],
-  "BLOCK_BLACKLIST": [
-    "quark:*"
-  ]
-}

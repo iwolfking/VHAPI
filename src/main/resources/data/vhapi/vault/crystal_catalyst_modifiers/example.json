@@ -1,9 +1,0 @@
-{
-  "MODIFIER_POOLS": {
-    "CURSE": {
-      "modifiers": [
-        "the_vault:pylon_hunter"
-      ]
-    }
-  }
-}
