@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class CustomEntitySpawnersLoader extends VaultConfigDataLoader<CustomEntitySpawnerConfig> {
     public CustomEntitySpawnersLoader(String namespace) {
-        super(ModConfigs.CUSTOM_ENTITY_SPAWNER, "custom_entity_spawners", new HashMap<>(), namespace);
+        super(new CustomEntitySpawnerConfig(), "custom_entity_spawners", new HashMap<>(), namespace);
     }
 
     @Override

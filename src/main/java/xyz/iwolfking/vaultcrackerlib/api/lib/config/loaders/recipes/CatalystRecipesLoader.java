@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class CatalystRecipesLoader extends VaultConfigDataLoader<CatalystRecipesConfig> {
     public CatalystRecipesLoader(String namespace) {
-        super(ModConfigs.CATALYST_RECIPES, "recipes/catalyst", new HashMap<>(), namespace);
+        super(new CatalystRecipesConfig(), "vault_recipes/catalyst", new HashMap<>(), namespace);
     }
 
     @Override

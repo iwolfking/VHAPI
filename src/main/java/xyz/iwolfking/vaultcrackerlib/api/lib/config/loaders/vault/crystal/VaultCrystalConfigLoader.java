@@ -10,10 +10,10 @@ import xyz.iwolfking.vaultcrackerlib.mixin.accessors.VaultCrystalConfigAccessor;
 import java.util.*;
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class VaultCrystalConfigLoader extends VaultConfigDataLoader<VaultCrystalConfig> {
-    public static final VaultCrystalConfig instance = new VaultCrystalConfig();
+
 
     public VaultCrystalConfigLoader(String namespace) {
-        super(instance, "vault/crystal", new HashMap<>(), namespace);
+        super(new VaultCrystalConfig(), "vault/crystal", new HashMap<>(), namespace);
     }
 
     @Override

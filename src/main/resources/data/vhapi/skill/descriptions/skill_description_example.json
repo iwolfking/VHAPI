@@ -1,0 +1,16 @@
+{
+  "descriptions": {
+    "Quark": [
+      {
+        "text": "Unlocks the "
+      },
+      {
+        "text": "Example Mod!",
+        "color": "yellow"
+      },
+      {
+        "text": " An incredible mod that does nothing."
+      }
+    ]
+  }
+}

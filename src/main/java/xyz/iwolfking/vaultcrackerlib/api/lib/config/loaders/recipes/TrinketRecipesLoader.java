@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class TrinketRecipesLoader extends VaultConfigDataLoader<TrinketRecipesConfig> {
     public TrinketRecipesLoader(String namespace) {
-        super(ModConfigs.TRINKET_RECIPES, "recipes/trinket", new HashMap<>(), namespace);
+        super(new TrinketRecipesConfig(), "vault_recipes/trinket", new HashMap<>(), namespace);
     }
 
     @Override

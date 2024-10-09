@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class LootTableConfigLoader extends VaultConfigDataLoader<LootTablesConfig> {
     public LootTableConfigLoader(String namespace) {
-        super(new LootTablesConfig(), "loot_tables", new HashMap<>(), namespace);
+        super(new LootTablesConfig(), "vault_loot_tables", new HashMap<>(), namespace);
     }
 
     @Override

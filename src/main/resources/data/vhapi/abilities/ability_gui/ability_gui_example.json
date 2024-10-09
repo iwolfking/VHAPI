@@ -1,0 +1,19 @@
+{
+  "styles": {
+    "Stonefall": {
+      "x": 532,
+      "y": 60,
+      "specializationStyles": {
+        "Stonefall_Base": {
+          "icon": "the_vault:gui/abilities/stonefall"
+        },
+        "Stonefall_Snow": {
+          "icon": "the_vault:gui/abilities/stonefall_snow"
+        },
+        "Stonefall_Cold": {
+          "icon": "the_vault:gui/abilities/stonefall_cold"
+        }
+      }
+    }
+  }
+}

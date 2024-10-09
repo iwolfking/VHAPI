@@ -15,7 +15,7 @@ import java.util.HashMap;
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CustomVaultGearRecipesLoader extends VaultConfigDataLoader<GearRecipesConfig> {
     public CustomVaultGearRecipesLoader(String namespace) {
-        super(ModConfigs.GEAR_RECIPES, "recipes/gear", new HashMap<>(), namespace);
+        super(new GearRecipesConfig(), "vault_recipes/gear", new HashMap<>(), namespace);
     }
 
     @Override

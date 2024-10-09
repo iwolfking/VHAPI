@@ -1,0 +1,13 @@
+{
+  "catalystMinLevel": 0,
+  "catalystChances": {
+    "the_vault:wooden_chest": {
+      "RARE": 1.0,
+      "EPIC": 1.0,
+      "COMMON": 1.0,
+      "OMEGA": 1.0
+    }
+  },
+  "runeChances": {
+  }
+}

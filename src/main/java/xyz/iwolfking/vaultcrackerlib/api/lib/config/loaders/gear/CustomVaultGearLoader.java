@@ -14,10 +14,9 @@ import java.util.HashMap;
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CustomVaultGearLoader extends VaultConfigDataLoader<VaultGearTierConfig> {
 
-    public static final VaultGearTierConfig instance = new VaultGearTierConfig(VaultMod.id("test"));
 
     public CustomVaultGearLoader(String namespace) {
-        super(instance, "gear_modifiers", new HashMap<>(), namespace);
+        super(new VaultGearTierConfig(VaultMod.id("test")), "gear_modifiers", new HashMap<>(), namespace);
     }
 
     @Override

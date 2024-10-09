@@ -1,0 +1,16 @@
+{
+  "SKILL_GATES": {
+    "entries": {
+      "Quark": {
+        "dependsOn": [
+          {
+            "type": "constant",
+            "id": "Botania"
+          }
+        ],
+        "ignoreArrow": true,
+        "lockedBy": []
+      }
+    }
+  }
+}

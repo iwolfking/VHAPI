@@ -19,14 +19,14 @@ public class MonolithConfigLoader extends VaultConfigDataLoader<MonolithConfig> 
     public static final MonolithConfig instance = new MonolithConfig();
 
     public MonolithConfigLoader(String namespace) {
-        super(instance, "objectives/monolith", new HashMap<>(), namespace);
+        super(new MonolithConfig(), "objectives/monolith", new HashMap<>(), namespace);
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         dataMap.forEach((resourceLocation, jsonElement) -> {
             CustomVaultConfigReader<Config> configReader = new CustomVaultConfigReader<>();
-            Config config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, instance.getClass());
+            Config config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, MonolithConfig.class);
             if(config instanceof MonolithConfig monolithConfig) {
                 CUSTOM_CONFIGS.put(new ResourceLocation(getNamespace(), resourceLocation.getPath()), monolithConfig);
             }

@@ -34,7 +34,7 @@ public class PlainModelRegistryConfigLoader<T extends DynamicModelRegistry<Plain
 
     Item item;
     public PlainModelRegistryConfigLoader(String namespace, DynamicModelRegistry<PlainItemModel> registry, @NotNull Item item) {
-        super(instance, "gear/plain_models/" + item.getRegistryName().getPath(), new HashMap<>(), namespace);
+        super(new HandheldModelConfig(), "gear/plain_models/" + item.getRegistryName().getPath(), new HashMap<>(), namespace);
         this.registry = (T) registry;
         this.item = item;
     }

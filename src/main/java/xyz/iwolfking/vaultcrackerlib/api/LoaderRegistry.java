@@ -1,6 +1,7 @@
 package xyz.iwolfking.vaultcrackerlib.api;
 
 import com.mojang.logging.LogUtils;
+import iskallia.vault.config.VaultMobsConfig;
 import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
@@ -54,8 +55,19 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.groups.Rese
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.shops.NormalBlackMarketConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.shops.OmegaBlackMarketConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.shops.ShoppingPedestalConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.skills.AbilitiesConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.skills.AbilitiesGUIConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.skills.descriptions.AbilitiesDescriptionsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.skills.descriptions.SkillDescriptionsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.skills.gates.SkillGatesConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.talents.TalentConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.talents.TalentsGUIConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.titles.CustomTitleConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.tool.PulverizingConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.altar.VaultAltarConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.catalyst.CatalystConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.chest.VaultChestMetaConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal.VaultCrystalCatalystModifiersConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal.VaultCrystalConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes.CustomVaultGearRecipesLoader;
@@ -64,10 +76,14 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.BingoConf
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.ElixirConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.MonolithConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.ScavengerConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.general.VaultGeneralConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.general.VaultLevelsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.mobs.VaultMobsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.modifiers.VaultModifierPoolsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.portal.VaultPortalBlockConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vaultar.VaultAltarIngredientsConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.workstation.VaultDiffuserConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.workstation.VaultRecyclerConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.GenFileDataLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
@@ -113,7 +129,7 @@ public class LoaderRegistry {
 
         GEN_PALETTE_LOADER.onAddListeners(event);
         GEN_TEMPLATE_POOL_LOADER.onAddListeners(event);
-        GEN_LOOT_TABLE_LOADER.onAddListeners(event);
+        //GEN_LOOT_TABLE_LOADER.onAddListeners(event);
 
 
         //Load all normal config loaders
@@ -188,7 +204,7 @@ public class LoaderRegistry {
     public static final PalettesConfigLoader PALETTES_CONFIG_LOADER = new PalettesConfigLoader( "vhapi");
     public static final TemplatePoolsConfigLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsConfigLoader( "vhapi");
     public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader( "vhapi");
-    public static final LootTableConfigLoader LOOT_TABLE_CONFIG_LOADER = new LootTableConfigLoader( "vhapi");
+    //public static final LootTableConfigLoader LOOT_TABLE_CONFIG_LOADER = new LootTableConfigLoader( "vhapi");
 
     //Workstations
     public static final VaultRecyclerConfigLoader VAULT_RECYCLER_CONFIG_LOADER = new VaultRecyclerConfigLoader("vhapi");
@@ -250,4 +266,38 @@ public class LoaderRegistry {
 
     //Tool
     public static final PulverizingConfigLoader PULVERIZING_CONFIG_LOADER = new PulverizingConfigLoader("vhapi");
+
+    //Descriptions
+    public static final SkillDescriptionsConfigLoader SKILL_DESCRIPTIONS_CONFIG_LOADER = new SkillDescriptionsConfigLoader("vhapi");
+
+    public static final AbilitiesDescriptionsConfigLoader ABILITIES_DESCRIPTIONS_CONFIG_LOADER = new AbilitiesDescriptionsConfigLoader("vhapi");
+
+    public static final SkillGatesConfigLoader SKILL_GATES_CONFIG_LOADER = new SkillGatesConfigLoader("vhapi");
+
+    //Abilities
+    public static final AbilitiesConfigLoader ABILITIES_CONFIG_LOADER = new AbilitiesConfigLoader("vhapi");
+
+    public static final AbilitiesGUIConfigLoader ABILITIES_GUI_CONFIG_LOADER = new AbilitiesGUIConfigLoader("vhapi");
+
+    //Talents
+    public static final TalentConfigLoader TALENT_CONFIG_LOADER = new TalentConfigLoader("vhapi");
+
+    public static final TalentsGUIConfigLoader TALENTS_GUI_CONFIG_LOADER = new TalentsGUIConfigLoader("vhapi");
+
+    //Altar
+    public static final VaultAltarConfigLoader VAULT_ALTAR_CONFIG_LOADER = new VaultAltarConfigLoader("vhapi");
+
+    //Catalyst
+    public static final CatalystConfigLoader CATALYST_CONFIG_LOADER = new CatalystConfigLoader("vhapi");
+
+    public static final VaultCrystalCatalystModifiersConfigLoader VAULT_CRYSTAL_CATALYST_MODIFIERS_CONFIG_LOADER = new VaultCrystalCatalystModifiersConfigLoader("vhapi");
+
+    public static final VaultChestMetaConfigLoader VAULT_CHEST_META_CONFIG_LOADER = new VaultChestMetaConfigLoader("vhapi");
+    public static final VaultGeneralConfigLoader VAULT_GENERAL_CONFIG_LOADER = new VaultGeneralConfigLoader("vhapi");
+
+    public static final VaultLevelsConfigLoader VAULT_LEVELS_CONFIG_LOADER = new VaultLevelsConfigLoader("vhapi");
+
+    public static final VaultMobsConfigLoader VAULT_MOBS_CONFIG_LOADER = new VaultMobsConfigLoader("vhapi");
+
+    public static final VaultDiffuserConfigLoader VAULT_DIFFUSER_CONFIG_LOADER = new VaultDiffuserConfigLoader("vhapi");
 }

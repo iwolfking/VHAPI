@@ -34,7 +34,7 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
 
     Item item;
     public HandheldModelRegistryConfigLoader(String namespace, DynamicModelRegistry<HandHeldModel> registry, @NotNull Item item) {
-        super(instance, "gear/handheld_models/" + item.getRegistryName().getPath(), new HashMap<>(), namespace);
+        super(new HandheldModelConfig(), "gear/handheld_models/" + item.getRegistryName().getPath(), new HashMap<>(), namespace);
         this.registry = (T) registry;
         this.item = item;
     }

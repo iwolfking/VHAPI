@@ -1,0 +1,10 @@
+{
+  "styles": {
+    "Speed": {
+      "x": 200,
+      "y": 200,
+      "frameType": "RECTANGULAR",
+      "icon": "the_vault:gui/skills/speed"
+    }
+  }
+}

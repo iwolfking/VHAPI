@@ -19,12 +19,11 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CustomVaultGearWorkbenchLoader extends VaultConfigDataLoader<VaultGearWorkbenchConfig> {
-    public static final VaultGearWorkbenchConfig instance = new VaultGearWorkbenchConfig(ModItems.SWORD);
 
     public Map<Item, VaultGearWorkbenchConfig> WORKBENCH_CONFIGS = new HashMap<>();
 
     public CustomVaultGearWorkbenchLoader(String namespace) {
-        super(instance, "gear_workbench", new HashMap<>(), namespace);
+        super(new VaultGearWorkbenchConfig(ModItems.SWORD), "gear_workbench", new HashMap<>(), namespace);
     }
 
     @Override

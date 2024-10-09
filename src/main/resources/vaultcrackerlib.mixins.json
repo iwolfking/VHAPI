@@ -13,6 +13,7 @@
     "accessors.CardModifiersConfigAccessor",
     "accessors.CardTasksConfigAccessor",
     "accessors.ClassicVaultThemeAccessor",
+    "accessors.DescriptionDataAccessor",
     "accessors.DynamicModelPropertiesAccessor",
     "accessors.DynamicModelRegistryAccessor",
     "accessors.ElixirConfigAccessor",

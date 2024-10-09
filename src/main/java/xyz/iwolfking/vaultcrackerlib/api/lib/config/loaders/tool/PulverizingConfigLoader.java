@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class PulverizingConfigLoader extends VaultConfigDataLoader<ToolPulverizingConfig> {
     public PulverizingConfigLoader(String namespace) {
-        super(ModConfigs.TOOL_PULVERIZING, "tool/pulverizing", new HashMap<>(), namespace);
+        super(new ToolPulverizingConfig(), "tool/pulverizing", new HashMap<>(), namespace);
     }
 
     @Override

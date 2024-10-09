@@ -1,0 +1,43 @@
+{
+  "PULL_SPEED": 1.0,
+  "PLAYER_RANGE_CHECK": 32.0,
+  "ITEM_RANGE_CHECK": 8.0,
+  "INFUSION_TIME": 5,
+  "GROUP_DISPLAY_TICKS": 20,
+  "INTERFACES": [
+    {
+      "input": "the_vault:vault_rock",
+      "output": "the_vault:vault_crystal"
+    },
+    {
+      "input": "minecraft:cake",
+      "output": {
+        "id": "the_vault:vault_crystal",
+        "nbt": {
+          "CrystalData": {
+            "Objective": {
+              "type": "cake",
+              "objective_probability": 1.0
+            },
+            "Layout": {
+              "type": "spiral",
+              "tunnel_span": 1,
+              "half_length": 99,
+              "rotation": "CLOCKWISE_90"
+            },
+            "Modifiers": {
+              "type": "default",
+              "RandomModifiers": 0
+            },
+            "Properties": {
+              "type": "capacity",
+              "exhausted": 1,
+              "volume": 0
+            },
+            "Version": 3
+          }
+        }
+      }
+    }
+  ]
+}

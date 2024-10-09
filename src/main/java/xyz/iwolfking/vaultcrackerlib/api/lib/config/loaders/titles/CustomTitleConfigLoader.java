@@ -18,6 +18,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.SimpleModelState;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.helpers.workstations.AscensionForgeHelper;
@@ -32,10 +33,9 @@ import xyz.iwolfking.vaultcrackerlib.mixin.accessors.PlayerTitlesConfigAccessor;
 import java.util.HashMap;
 
 public class CustomTitleConfigLoader extends VaultConfigDataLoader<CustomTitleConfig> {
-    public static final CustomTitleConfig instance = new CustomTitleConfig();
 
     public CustomTitleConfigLoader(String namespace) {
-        super(instance, "player_titles", new HashMap<>(), namespace);
+        super(new CustomTitleConfig(), "player_titles", new HashMap<>(), namespace);
     }
 
     @Override

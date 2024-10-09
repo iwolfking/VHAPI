@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class InscriptionRecipesLoader extends VaultConfigDataLoader<InscriptionRecipesConfig> {
     public InscriptionRecipesLoader(String namespace) {
-        super(ModConfigs.INSCRIPTION_RECIPES, "recipes/inscription", new HashMap<>(), namespace);
+        super(new InscriptionRecipesConfig(), "vault_recipes/inscription", new HashMap<>(), namespace);
     }
 
     @Override

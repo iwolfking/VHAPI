@@ -15,9 +15,8 @@ import java.util.HashMap;
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class VaultModifierConfigLoader extends VaultConfigDataLoader<VaultModifiersConfig> {
 
-    public static final VaultModifiersConfig instance = new VaultModifiersConfig();
     public VaultModifierConfigLoader(String namespace) {
-        super(instance, "vault/modifiers", new HashMap<>(), namespace);
+        super(new VaultModifiersConfig(), "vault/modifiers", new HashMap<>(), namespace);
     }
 
     @Override

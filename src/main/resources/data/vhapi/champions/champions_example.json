@@ -1,12 +1,12 @@
 {
   "defaultChampionChance": 0.01,
   "entityChampionChance": {
-    "minecraft:sheep": 1.0
+    "minecraft:pig": 1.0
   },
   "defaultAttributeOverrides": [
   ],
   "entityAttributeOverrides": {
-    "minecraft:sheep": [
+    "minecraft:pig": [
       {
         "NAME": "minecraft:generic.max_health",
         "VALUE": 100.0,

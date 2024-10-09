@@ -1,0 +1,417 @@
+{
+  "THEMES": {
+    "the_vault:default": [
+      {
+        "level": 0,
+        "pool": [
+          {
+            "value": "the_vault:classic_vault_ice",
+            "weight": 4
+          },
+          {
+            "value": "the_vault:classic_vault_ice_cave",
+            "weight": 4
+          },
+          {
+            "value": "the_vault:classic_vault_cave",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_cave_deepslate",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_cave_geode",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_cave_wasteland",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_lush_cave",
+            "weight": 4
+          },
+          {
+            "value": "the_vault:classic_vault_living_cave",
+            "weight": 4
+          },
+          {
+            "value": "the_vault:classic_vault_desert",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_sandy_cave",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_beach",
+            "weight": 2
+          },
+          {
+            "value": "the_vault:classic_vault_flooded",
+            "weight": 2
+          },
+          {
+            "value": "the_vault:classic_vault_haunted",
+            "weight": 2
+          },
+          {
+            "value": "the_vault:classic_vault_shipwreck",
+            "weight": 2
+          },
+          {
+            "value": "the_vault:classic_vault_sea_floor",
+            "weight": 2
+          },
+          {
+            "value": "the_vault:classic_vault_mushroom",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_fairy_ring",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_poison",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_mesa",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_deep_mesa",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_season_spring",
+            "weight": 4
+          },
+          {
+            "value": "the_vault:classic_vault_season_summer",
+            "weight": 2
+          },
+          {
+            "value": "the_vault:classic_vault_season_fall",
+            "weight": 3
+          },
+          {
+            "value": "the_vault:classic_vault_season_winter",
+            "weight": 4
+          }
+        ]
+      },
+      {
+        "level": 20,
+        "pool": [
+          {
+            "value": "the_vault:classic_vault_tropical",
+            "weight": 20
+          },
+          {
+            "value": "the_vault:classic_vault_sweet",
+            "weight": 10
+          },
+          {
+            "value": "the_vault:classic_vault_ice",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_ice_cave",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_cave",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_cave_deepslate",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_cave_geode",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_cave_wasteland",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_lush_cave",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_living_cave",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_desert",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_sandy_cave",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_beach",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_flooded",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_haunted",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_shipwreck",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_sea_floor",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_mushroom",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_fairy_ring",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_poison",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_mesa",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_deep_mesa",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_nether_crimson",
+            "weight": 5
+          },
+          {
+            "value": "the_vault:classic_vault_nether_warped",
+            "weight": 5
+          },
+          {
+            "value": "the_vault:classic_vault_nether_blackstone",
+            "weight": 5
+          },
+          {
+            "value": "the_vault:classic_vault_nether_soul",
+            "weight": 5
+          },
+          {
+            "value": "the_vault:classic_vault_festive",
+            "weight": 0
+          },
+          {
+            "value": "the_vault:classic_vault_gingerbread",
+            "weight": 0
+          },
+          {
+            "value": "the_vault:classic_vault_easter_egg",
+            "weight": 5
+          },
+          {
+            "value": "the_vault:classic_vault_easter_pastel",
+            "weight": 5
+          },
+          {
+            "value": "the_vault:classic_vault_blood_moon",
+            "weight": 10
+          },
+          {
+            "value": "the_vault:classic_vault_flesh",
+            "weight": 10
+          },
+          {
+            "value": "the_vault:classic_vault_season_spring",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_season_summer",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_season_fall",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_season_winter",
+            "weight": 38
+          }
+        ]
+      },
+      {
+        "level": 30,
+        "pool": [
+          {
+            "value": "vhapi:classic_vault_undersea",
+            "weight": 200000
+          },
+          {
+            "value": "the_vault:classic_vault_sweet",
+            "weight": 10
+          },
+          {
+            "value": "the_vault:classic_vault_ice",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_ice_cave",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_cave",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_cave_deepslate",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_cave_geode",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_cave_wasteland",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_lush_cave",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_living_cave",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_desert",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_sandy_cave",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_beach",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_flooded",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_haunted",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_shipwreck",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_sea_floor",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_mushroom",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_fairy_ring",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_poison",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_mesa",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_deep_mesa",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_nether_crimson",
+            "weight": 10
+          },
+          {
+            "value": "the_vault:classic_vault_nether_warped",
+            "weight": 10
+          },
+          {
+            "value": "the_vault:classic_vault_nether_blackstone",
+            "weight": 10
+          },
+          {
+            "value": "the_vault:classic_vault_nether_soul",
+            "weight": 10
+          },
+          {
+            "value": "the_vault:classic_vault_void",
+            "weight": 7
+          },
+          {
+            "value": "the_vault:classic_vault_end_void",
+            "weight": 7
+          },
+          {
+            "value": "the_vault:classic_vault_factory_void",
+            "weight": 7
+          },
+          {
+            "value": "the_vault:classic_vault_festive",
+            "weight": 0
+          },
+          {
+            "value": "the_vault:classic_vault_gingerbread",
+            "weight": 0
+          },
+          {
+            "value": "the_vault:classic_vault_easter_egg",
+            "weight": 5
+          },
+          {
+            "value": "the_vault:classic_vault_easter_pastel",
+            "weight": 5
+          },
+          {
+            "value": "the_vault:classic_vault_blood_moon",
+            "weight": 20
+          },
+          {
+            "value": "the_vault:classic_vault_flesh",
+            "weight": 20
+          },
+          {
+            "value": "the_vault:classic_vault_season_spring",
+            "weight": 38
+          },
+          {
+            "value": "the_vault:classic_vault_season_summer",
+            "weight": 19
+          },
+          {
+            "value": "the_vault:classic_vault_season_fall",
+            "weight": 29
+          },
+          {
+            "value": "the_vault:classic_vault_season_winter",
+            "weight": 38
+          }
+        ]
+      }
+    ]
+  }
+}

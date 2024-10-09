@@ -25,17 +25,17 @@ import java.util.Objects;
 public class ElixirConfigLoader extends VaultConfigDataLoader<ElixirConfig> {
 
 
-    public static final ElixirConfig instance = new ElixirConfig();
+
 
     public ElixirConfigLoader(String namespace) {
-        super(instance, "objectives/elixir", new HashMap<>(), namespace);
+        super(new ElixirConfig(), "objectives/elixir", new HashMap<>(), namespace);
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         dataMap.forEach((resourceLocation, jsonElement) -> {
             CustomVaultConfigReader<Config> configReader = new CustomVaultConfigReader<>();
-            Config config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, instance.getClass());
+            Config config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, ElixirConfig.class);
             if(config instanceof ElixirConfig elixirConfig) {
                 CUSTOM_CONFIGS.put(new ResourceLocation(getNamespace(), resourceLocation.getPath()), elixirConfig);
             }

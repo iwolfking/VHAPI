@@ -20,14 +20,14 @@ public class ScavengerConfigLoader extends VaultConfigDataLoader<ScavengerConfig
     public static final ScavengerConfig instance = new ScavengerConfig();
 
     public ScavengerConfigLoader(String namespace) {
-        super(instance, "objectives/scavenger", new HashMap<>(), namespace);
+        super(new ScavengerConfig(), "objectives/scavenger", new HashMap<>(), namespace);
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         dataMap.forEach((resourceLocation, jsonElement) -> {
             CustomVaultConfigReader<Config> configReader = new CustomVaultConfigReader<>();
-            Config config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, instance.getClass());
+            Config config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, ScavengerConfig.class);
             if(config instanceof ScavengerConfig scavConfig) {
                 CUSTOM_CONFIGS.put(new ResourceLocation(getNamespace(), resourceLocation.getPath()), scavConfig);
             }

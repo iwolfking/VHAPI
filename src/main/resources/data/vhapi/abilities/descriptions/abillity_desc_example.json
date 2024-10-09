@@ -1,0 +1,34 @@
+{
+  "data": {
+    "Dash_Base": {
+      "description": [
+        {
+          "text": "Propels you a ",
+          "color": "$text"
+        },
+        {
+          "text": "EXAMPLE distance",
+          "color": "$distance"
+        },
+        {
+          "text": " in the direction you are facing!\n\n",
+          "color": "$text"
+        },
+        {
+          "text": "\u2734 Cast Ability ",
+          "color": "$castType"
+        }
+      ],
+      "current": [
+        "cooldown",
+        "manaCost",
+        "distance"
+      ],
+      "next": [
+        "cooldown",
+        "manaCost",
+        "distance"
+      ]
+    }
+  }
+}

@@ -22,17 +22,16 @@ import java.util.*;
 public class BingoConfigLoader extends VaultConfigDataLoader<BingoConfig> {
 
 
-    public static final BingoConfig instance = new BingoConfig();
 
     public BingoConfigLoader(String namespace) {
-        super(instance, "objectives/bingo", new HashMap<>(), namespace);
+        super(new BingoConfig(), "objectives/bingo", new HashMap<>(), namespace);
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         dataMap.forEach((resourceLocation, jsonElement) -> {
             CustomVaultConfigReader<Config> configReader = new CustomVaultConfigReader<>();
-            Config config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, instance.getClass());
+            Config config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, BingoConfig.class);
             if(config instanceof BingoConfig bingoConfig) {
                 CUSTOM_CONFIGS.put(new ResourceLocation(getNamespace(), resourceLocation.getPath()), bingoConfig);
             }

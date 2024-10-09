@@ -34,7 +34,7 @@ public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<Shie
 
     Item item;
     public ShieldModelRegistryConfigLoader(String namespace, DynamicModelRegistry<ShieldModel> registry, @NotNull Item item) {
-        super(instance, "gear/shield_models/" + item.getRegistryName().getPath(), new HashMap<>(), namespace);
+        super(new HandheldModelConfig(), "gear/shield_models/" + item.getRegistryName().getPath(), new HashMap<>(), namespace);
         this.registry = (T) registry;
         this.item = item;
     }

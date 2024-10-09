@@ -11,10 +11,8 @@ import java.util.HashMap;
 
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CustomGearModelRollRaritiesConfigLoader extends VaultConfigDataLoader<GearModelRollRaritiesConfig> {
-    public static final GearModelRollRaritiesConfig instance = new GearModelRollRaritiesConfig();
-
     public CustomGearModelRollRaritiesConfigLoader(String namespace) {
-        super(instance, "gear/model_rolls", new HashMap<>(), namespace);
+        super(new GearModelRollRaritiesConfig(), "gear/model_rolls", new HashMap<>(), namespace);
     }
 
 

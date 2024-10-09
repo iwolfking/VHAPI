@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class VaultMobsConfigLoader extends VaultConfigDataLoader<VaultMobsConfig> {
     public VaultMobsConfigLoader(String namespace) {
-        super(ModConfigs.VAULT_MOBS, "vault/mobs", new HashMap<>(), namespace);
+        super(new VaultMobsConfig(), "vault/mobs", new HashMap<>(), namespace);
     }
 
     @Override

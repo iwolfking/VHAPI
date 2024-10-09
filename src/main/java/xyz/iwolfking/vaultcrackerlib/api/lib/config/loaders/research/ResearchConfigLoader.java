@@ -18,7 +18,7 @@ public class ResearchConfigLoader extends VaultConfigDataLoader<ResearchConfig> 
 
     public static final ResearchConfig instance = new ResearchConfig();
     public ResearchConfigLoader(String namespace) {
-        super(instance, "research/researches", new HashMap<>(), namespace);
+        super(new ResearchConfig(), "research/researches", new HashMap<>(), namespace);
     }
 
     @Override

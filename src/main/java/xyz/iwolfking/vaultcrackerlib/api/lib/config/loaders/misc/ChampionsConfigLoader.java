@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class ChampionsConfigLoader extends VaultConfigDataLoader<ChampionsConfig> {
     public ChampionsConfigLoader(String namespace) {
-        super(ModConfigs.CHAMPIONS, "champions", new HashMap<>(), namespace);
+        super(new ChampionsConfig(), "champions", new HashMap<>(), namespace);
     }
 
     @Override
