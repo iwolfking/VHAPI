@@ -129,7 +129,7 @@ public class LoaderRegistry {
 
         GEN_PALETTE_LOADER.onAddListeners(event);
         GEN_TEMPLATE_POOL_LOADER.onAddListeners(event);
-        //GEN_LOOT_TABLE_LOADER.onAddListeners(event);
+        GEN_LOOT_TABLE_LOADER.onAddListeners(event);
 
 
         //Load all normal config loaders
@@ -204,7 +204,7 @@ public class LoaderRegistry {
     public static final PalettesConfigLoader PALETTES_CONFIG_LOADER = new PalettesConfigLoader( "vhapi");
     public static final TemplatePoolsConfigLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsConfigLoader( "vhapi");
     public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader( "vhapi");
-    //public static final LootTableConfigLoader LOOT_TABLE_CONFIG_LOADER = new LootTableConfigLoader( "vhapi");
+    public static final LootTableConfigLoader LOOT_TABLE_CONFIG_LOADER = new LootTableConfigLoader( "vhapi");
 
     //Workstations
     public static final VaultRecyclerConfigLoader VAULT_RECYCLER_CONFIG_LOADER = new VaultRecyclerConfigLoader("vhapi");
