@@ -42,9 +42,7 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.loot.LootInfoConfigL
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.misc.ChampionsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.misc.CustomEntitySpawnersLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.misc.EntityGroupsConfigLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes.CatalystRecipesLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes.InscriptionRecipesLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes.TrinketRecipesLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes.*;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.ResearchConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.ResearchGUIConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.research.groups.ResearchGroupConfigLoader;
@@ -67,7 +65,6 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.chest.VaultChe
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal.VaultCrystalCatalystModifiersConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.vault.crystal.VaultCrystalConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearLoader;
-import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.recipes.CustomVaultGearRecipesLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearWorkbenchLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.BingoConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.objectives.ElixirConfigLoader;
@@ -91,8 +88,6 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LoaderRegistry {
-
-    Logger LOGGER = LogUtils.getLogger();
 
     public static final Map<ResourceLocation, VaultConfigDataLoader<?>> LOADERS = new HashMap<>();
     public static final Map<ResourceLocation, GenFileDataLoader<?>> GEN_FILE_LOADERS = new HashMap<>();
@@ -253,6 +248,7 @@ public class LoaderRegistry {
     public static final CatalystRecipesLoader CATALYST_RECIPES_LOADER = new CatalystRecipesLoader("vhapi");
     public static final InscriptionRecipesLoader INSCRIPTION_RECIPES_LOADER = new InscriptionRecipesLoader("vhapi");
     public static final TrinketRecipesLoader TRINKET_RECIPES_LOADER = new TrinketRecipesLoader("vhapi");
+    public static final ToolRecipesLoader TOOL_RECIPES_LOADER = new ToolRecipesLoader("vhapi");
 
     public static final NormalBlackMarketConfigLoader NORMAL_BLACK_MARKET_CONFIG_LOADER = new NormalBlackMarketConfigLoader("vhapi");
 

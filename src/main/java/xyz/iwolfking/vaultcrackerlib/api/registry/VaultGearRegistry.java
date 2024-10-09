@@ -1,6 +1,7 @@
 package xyz.iwolfking.vaultcrackerlib.api.registry;
 
 import iskallia.vault.core.vault.VaultRegistry;
+import iskallia.vault.init.ModDynamicModels;
 import iskallia.vault.init.ModItems;
 import iskallia.vault.item.crystal.CrystalData;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +32,7 @@ public class VaultGearRegistry {
             if(ReforgeTagModificationFocusAccessor.getItemToName() != null) {
                 ReforgeTagModificationFocusAccessor.getItemToName().put(customGearRegistryEntry.getRegistryItem(), customGearRegistryEntry.getName());
             }
+            ModDynamicModels.REGISTRIES.associate(customGearRegistryEntry.getRegistryItem(), customGearRegistryEntry.getDynamicModelRegistry());
         }
     }
 

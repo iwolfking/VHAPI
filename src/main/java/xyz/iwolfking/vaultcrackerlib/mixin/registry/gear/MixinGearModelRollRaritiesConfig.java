@@ -24,10 +24,7 @@ public abstract class MixinGearModelRollRaritiesConfig extends Config {
 
     @Inject(method = "getRolls", at = @At("HEAD"), cancellable = true)
     private void getRollsHook(CallbackInfoReturnable<Map<VaultGearRarity, List<String>>> cir, @Local ItemStack stack) {
-        System.out.println("GET ROLL");
-        System.out.println(stack.getItem().getRegistryName());
         if(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.containsKey(stack.getItem().getRegistryName())) {
-            System.out.println("Found in map!");
             cir.setReturnValue(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(stack.getItem().getRegistryName()));
         }
     }
