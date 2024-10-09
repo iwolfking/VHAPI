@@ -26,4 +26,8 @@ public class ResourceLocUtils {
     public static ResourceLocation prependToId(String prepend, ResourceLocation id) {
         return new ResourceLocation(id.getNamespace(), prepend + id.getPath());
     }
+
+    public static ResourceLocation swapNamespace(ResourceLocation loc, String newNamespace) {
+        return new ResourceLocation(newNamespace, loc.getPath());
+    }
 }

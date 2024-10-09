@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.CustomVaultGearLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
 import xyz.iwolfking.vaultcrackerlib.api.LoaderRegistry;
+import xyz.iwolfking.vaultcrackerlib.api.util.ResourceLocUtils;
 
 import java.util.Optional;
 
@@ -17,8 +18,8 @@ public abstract class MixinVaultGearToolTier {
     @Inject(method = "getConfig(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/Optional;", at = @At("HEAD"), cancellable = true)
     private static void getCustomConfig(ResourceLocation key, CallbackInfoReturnable<Optional<VaultGearTierConfig>> cir) {
         for(VaultConfigDataLoader<?> loader : LoaderRegistry.getLoadersByType(CustomVaultGearLoader.class)) {
-            if(loader.CUSTOM_CONFIGS.containsKey(key)) {
-                VaultGearTierConfig tierConfig = (VaultGearTierConfig) loader.CUSTOM_CONFIGS.get(key);
+            if(loader.CUSTOM_CONFIGS.containsKey(ResourceLocUtils.swapNamespace(key, "vhapi"))) {
+                VaultGearTierConfig tierConfig = (VaultGearTierConfig) loader.CUSTOM_CONFIGS.get(ResourceLocUtils.swapNamespace(key, "vhapi"));
                 cir.setReturnValue(Optional.ofNullable(tierConfig));
             }
         }

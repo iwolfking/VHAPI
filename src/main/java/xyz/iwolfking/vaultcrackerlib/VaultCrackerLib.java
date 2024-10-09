@@ -24,6 +24,7 @@ import xyz.iwolfking.vaultcrackerlib.api.registry.VaultGearRegistry;
 import xyz.iwolfking.vaultcrackerlib.api.registry.VaultObjectiveRegistry;
 import xyz.iwolfking.vaultcrackerlib.api.util.ResourceLocUtils;
 import xyz.iwolfking.vaultcrackerlib.api.util.vhapi.VHAPILoggerUtils;
+import xyz.iwolfking.vaultcrackerlib.mixin.accessors.BountyScreenAccessor;
 
 
 import java.util.Collection;
@@ -72,9 +73,14 @@ public class VaultCrackerLib {
         if(hasLoaded.compareAndSet(false, true)) {
             VHAPILoggerUtils.debug("Rerunning Vault Configs load to patch them.");
             ModConfigs.register();
-        }
 
+            //Register bounty screen names
+            if (BountyScreenAccessor.getObjectiveNames() != null) {
+                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
+            }
+        }
     }
+
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = MODID)
     public static class Client {
         @OnlyIn(Dist.CLIENT)

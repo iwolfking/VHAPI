@@ -1,7 +1,6 @@
 package xyz.iwolfking.vaultcrackerlib.api;
 
 import com.mojang.logging.LogUtils;
-import iskallia.vault.config.VaultMobsConfig;
 import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
@@ -17,9 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.C;
-import org.lwjgl.system.CallbackI;
 import org.slf4j.Logger;
 import xyz.iwolfking.vaultcrackerlib.api.events.ConfigDataLoaderEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.MappedWeightedProductEntryConfigLoader;
@@ -30,6 +26,7 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.expertises.Expertise
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.GearEnchantmentConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.TrinketConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.GearModelRollRaritiesConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.HandheldModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gear.transmog.ShieldModelRegistryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.gen.loot_table.LootTableConfigLoader;
@@ -88,7 +85,6 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.workstation.VaultRec
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.GenFileDataLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
 import xyz.iwolfking.vaultcrackerlib.api.util.vhapi.VHAPILoggerUtils;
-import xyz.iwolfking.vaultcrackerlib.mixin.accessors.CardTasksConfigAccessor;
 import xyz.iwolfking.vaultcrackerlib.mixin.accessors.UnidentifiedTreasureKeyAccessorConfig;
 
 import java.util.*;
@@ -186,8 +182,8 @@ public class LoaderRegistry {
     public static final CustomVaultGearLoader CUSTOM_VAULT_GEAR_LOADER = new CustomVaultGearLoader("vhapi");
     public static final CustomVaultGearWorkbenchLoader CUSTOM_VAULT_GEAR_WORKBENCH_LOADER = new CustomVaultGearWorkbenchLoader("vhapi");
     public static final CustomVaultGearRecipesLoader GEAR_RECIPES_LOADER = new CustomVaultGearRecipesLoader( "vhapi");
-    public static final CustomGearModelRollRaritiesConfigLoader GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader( "vhapi");
-
+    public static final GearModelRollRaritiesConfigLoader GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new GearModelRollRaritiesConfigLoader( "vhapi");
+    public static final CustomGearModelRollRaritiesConfigLoader CUSTOM_GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader("vhapi");
     public static final GearEnchantmentConfigLoader GEAR_ENCHANTMENT_CONFIG_LOADER = new GearEnchantmentConfigLoader("vhapi");
 
     //Trinkets

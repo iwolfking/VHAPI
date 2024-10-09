@@ -1,13 +1,13 @@
 {
   "groups": {
-    "Omega": {
-      "title": "Omega",
+    "Example": {
+      "title": "Example",
       "research": [
         "Quark"
       ],
       "globalCostIncrease": 0.0,
       "groupCostIncrease": {
-        "Omega": 10
+        "Example": 10
       }
     }
   }

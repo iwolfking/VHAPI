@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.iwolfking.vaultcrackerlib.api.data.CustomGearModelRolls;
 import xyz.iwolfking.vaultcrackerlib.api.registry.VaultGearRegistry;
 
 import xyz.iwolfking.vaultcrackerlib.api.registry.gear.CustomVaultGearRegistryEntry;
@@ -23,10 +24,11 @@ public abstract class MixinGearModelRollRaritiesConfig extends Config {
 
     @Inject(method = "getRolls", at = @At("HEAD"), cancellable = true)
     private void getRollsHook(CallbackInfoReturnable<Map<VaultGearRarity, List<String>>> cir, @Local ItemStack stack) {
-        for(CustomVaultGearRegistryEntry entry : VaultGearRegistry.customGearRegistry.get().getValues()) {
-            if(stack.getItem().equals(entry.getRegistryItem())) {
-                cir.setReturnValue(entry.getModelRarityMap());
-            }
+        System.out.println("GET ROLL");
+        System.out.println(stack.getItem().getRegistryName());
+        if(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.containsKey(stack.getItem().getRegistryName())) {
+            System.out.println("Found in map!");
+            cir.setReturnValue(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(stack.getItem().getRegistryName()));
         }
     }
 

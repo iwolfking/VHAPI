@@ -19,7 +19,9 @@ public class MixinMainModDynamicModels {
 
     @Inject(method = "initItemAssociations", at = @At("RETURN"))
     private static void initItemAssociations(CallbackInfo ci) {
+        System.out.println("INIT ITEM ASSOCATION");
         for(CustomVaultGearRegistryEntry entry : VaultGearRegistry.customGearRegistry.get().getValues()) {
+            System.out.println(entry.getName());
             REGISTRIES.associate(entry.getRegistryItem(), entry.getDynamicModelRegistry());
         }
     }

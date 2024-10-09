@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import xyz.iwolfking.vaultcrackerlib.api.events.VaultConfigEvent;
 import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vaultcrackerlib.api.util.ResourceLocUtils;
 import xyz.iwolfking.vaultcrackerlib.mixin.accessors.MixinCraftableModifiersConfigAccessor;
 import xyz.iwolfking.vaultcrackerlib.mixin.accessors.MixinVaultGearWorkbenchAccessor;
 
@@ -23,18 +24,17 @@ public class CustomVaultGearWorkbenchLoader extends VaultConfigDataLoader<VaultG
     public Map<Item, VaultGearWorkbenchConfig> WORKBENCH_CONFIGS = new HashMap<>();
 
     public CustomVaultGearWorkbenchLoader(String namespace) {
-        super(new VaultGearWorkbenchConfig(ModItems.SWORD), "gear_workbench", new HashMap<>(), namespace);
+        super(new VaultGearWorkbenchConfig(ModItems.SWORD), "gear/gear_workbench", new HashMap<>(), namespace);
     }
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(ResourceLocation key : this.CUSTOM_CONFIGS.keySet()) {
-            Item gearItem = ForgeRegistries.ITEMS.getValue(key);
+            Item gearItem = ForgeRegistries.ITEMS.getValue(ResourceLocUtils.swapNamespace(key, "the_vault"));
             VaultGearWorkbenchConfig config = this.CUSTOM_CONFIGS.get(key);
             ((MixinVaultGearWorkbenchAccessor) config).setGearItem(gearItem);
 
             for (VaultGearModifier.AffixType affix : ((MixinVaultGearWorkbenchAccessor) config).getCraftableModifiers().keySet()) {
-                System.out.println(affix);
                 for (VaultGearWorkbenchConfig.CraftableModifierConfig craftableModifierConfig : ((MixinVaultGearWorkbenchAccessor) config).getCraftableModifiers().get(affix)) {
                     ((MixinCraftableModifiersConfigAccessor) craftableModifierConfig).setAffixGroup(VaultGearTierConfig.ModifierAffixTagGroup.ofAffixType(affix));
                     ((MixinCraftableModifiersConfigAccessor) craftableModifierConfig).setGearItem(gearItem);

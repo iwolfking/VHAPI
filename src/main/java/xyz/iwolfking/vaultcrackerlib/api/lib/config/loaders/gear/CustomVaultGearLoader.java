@@ -16,7 +16,7 @@ public class CustomVaultGearLoader extends VaultConfigDataLoader<VaultGearTierCo
 
 
     public CustomVaultGearLoader(String namespace) {
-        super(new VaultGearTierConfig(VaultMod.id("test")), "gear_modifiers", new HashMap<>(), namespace);
+        super(new VaultGearTierConfig(VaultMod.id("test")), "gear/gear_modifiers", new HashMap<>(), namespace);
     }
 
     @Override

@@ -41,9 +41,9 @@ public class ResearchGroupConfigLoader extends VaultConfigDataLoader<ResearchGro
             else {
                 for(String groupKey : config.getGroups().keySet()) {
                     if(ModConfigs.RESEARCH_GROUPS.getGroups().containsKey(groupKey)) {
-                        for(String research  : ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch()) {
-                            ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch().add(research);
-                        }
+                        List<String> researchToAdd = new ArrayList<>();
+                        researchToAdd.addAll(ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch());
+                        ModConfigs.RESEARCH_GROUPS.getGroups().get(groupKey).getResearch().addAll(researchToAdd);
                     }
                     else {
                         ModConfigs.RESEARCH_GROUPS.getGroups().put(groupKey, config.getGroups().get(groupKey));
