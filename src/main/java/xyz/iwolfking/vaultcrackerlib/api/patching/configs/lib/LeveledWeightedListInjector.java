@@ -8,7 +8,7 @@ import xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib.BasicPatcher;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@Deprecated
 public class LeveledWeightedListInjector<T, S> extends BasicPatcher {
     public Map<Integer, WeightedList<T>> LEVEL_MAP = new HashMap<>();
 

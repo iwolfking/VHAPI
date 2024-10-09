@@ -13,11 +13,6 @@ import java.util.function.Consumer;
 @Mixin(value = InfusedCatalystItem.class, remap = false)
 public abstract class MixinInfusedCatalystItem {
 
-
-    /**
-     * @author iwolfking
-     * @reason Register custom models
-     */
     @Inject(method = "loadModels", at = @At("TAIL"))
     public void loadModels(Consumer<ModelResourceLocation> consumer, CallbackInfo ci) {
         for(Integer i : CustomCatalystModelRegistry.getModelMap().keySet()) {

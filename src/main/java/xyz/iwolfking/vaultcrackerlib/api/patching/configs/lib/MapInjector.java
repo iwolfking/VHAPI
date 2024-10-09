@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
+@Deprecated
 public class MapInjector<S, T> extends BasicPatcher {
 
     private Map<S,T> CONFIG_PATCHES_MAP= new HashMap<>();

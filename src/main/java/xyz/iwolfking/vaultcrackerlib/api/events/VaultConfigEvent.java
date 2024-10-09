@@ -3,6 +3,9 @@ package xyz.iwolfking.vaultcrackerlib.api.events;
 
 import net.minecraftforge.eventbus.api.Event;
 
+/**
+ * An event fired when The Vault reloads it's configs in ModConfigs.
+ */
 public class VaultConfigEvent extends Event {
 
     public enum Type {

@@ -18,6 +18,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.slf4j.Logger;
 import xyz.iwolfking.vaultcrackerlib.api.events.ConfigDataLoaderEvent;
+import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.bounty.BountyRewardsConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vaultcrackerlib.api.lib.config.loaders.card.*;
@@ -89,9 +90,20 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = "vaultcrackerlib", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LoaderRegistry {
 
+    /**
+     * All normal config data loaders (not under the gen/ file path)
+     */
     public static final Map<ResourceLocation, VaultConfigDataLoader<?>> LOADERS = new HashMap<>();
+    /**
+     * All Gen file data loaders (found under gen/ file path)
+     */
     public static final Map<ResourceLocation, GenFileDataLoader<?>> GEN_FILE_LOADERS = new HashMap<>();
 
+    /**
+     *
+     * @param type The class type of the VaultConfigDataLoader to retrieve.
+     * @return A Set of VaultConfigDataLoaders in the registry that match the type passed in.
+     */
     public static Set<VaultConfigDataLoader<?>> getLoadersByType(Class<?> type) {
         Set<VaultConfigDataLoader<?>> loaders = new HashSet<>();
         for(VaultConfigDataLoader<?> loader : LOADERS.values()) {
@@ -101,7 +113,6 @@ public class LoaderRegistry {
         }
         return loaders;
     }
-
 
 
 
@@ -292,4 +303,7 @@ public class LoaderRegistry {
     public static final VaultMobsConfigLoader VAULT_MOBS_CONFIG_LOADER = new VaultMobsConfigLoader("vhapi");
 
     public static final VaultDiffuserConfigLoader VAULT_DIFFUSER_CONFIG_LOADER = new VaultDiffuserConfigLoader("vhapi");
+
+    //Bounty
+    public static final BountyRewardsConfigLoader BOUNTY_REWARDS_CONFIG_LOADER = new BountyRewardsConfigLoader("vhapi");
 }

@@ -8,6 +8,9 @@ import xyz.iwolfking.vaultcrackerlib.api.lib.loaders.VaultConfigDataLoader;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * An event fired when the LoaderRegistry initializes and finishes loading all the config loaders.
+ */
 public class ConfigDataLoaderEvent extends Event {
 
     public static class Init extends ConfigDataLoaderEvent {

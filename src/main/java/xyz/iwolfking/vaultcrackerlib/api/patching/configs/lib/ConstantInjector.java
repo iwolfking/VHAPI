@@ -1,5 +1,5 @@
 package xyz.iwolfking.vaultcrackerlib.api.patching.configs.lib;
-
+@Deprecated
 public class ConstantInjector<T> extends BasicPatcher {
     T REPLACEMENT_VALUE = null;
 

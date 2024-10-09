@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 
+@Deprecated
 public class ShardTradeHelper {
     public static SoulShardConfig.ShardTrade normalEntry(ItemStack stack, int minPrice, int maxPrice) {
         return new SoulShardConfig.ShardTrade(new ItemEntry(stack), minPrice, maxPrice);

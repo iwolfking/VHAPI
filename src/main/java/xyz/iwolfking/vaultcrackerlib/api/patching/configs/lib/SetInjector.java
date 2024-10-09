@@ -6,7 +6,7 @@ import iskallia.vault.research.type.ModResearch;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
+@Deprecated
 public class SetInjector<T> extends BasicPatcher {
 
     private Set<T> CONFIG_PATCHES_SET = new HashSet<>();

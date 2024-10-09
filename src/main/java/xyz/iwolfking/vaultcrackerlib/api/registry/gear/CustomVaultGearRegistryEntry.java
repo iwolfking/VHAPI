@@ -21,6 +21,14 @@ public class CustomVaultGearRegistryEntry extends ForgeRegistryEntry<CustomVault
 
     private final Map<VaultGearRarity, List<String>> modelRarityMap;
 
+    /**
+     *
+     * @param id The internal id to use for the item (ex. "axe", "dagger", "trident", etc.)
+     * @param name The name of the item, used for display in Faceted Focus.
+     * @param registryItem The class of the gear item.
+     * @param dynamicModelRegistry A registry that will contain all of the transmog models for the gear piece.
+     * @param modelRarityMap A map of VaultGearRarity to a list of transmog model names.
+     */
     public CustomVaultGearRegistryEntry(String id, String name, @NotNull Item registryItem, DynamicModelRegistry<?> dynamicModelRegistry, Map<VaultGearRarity, List<String>> modelRarityMap) {
         this.name = name;
         this.registryItem = registryItem;
