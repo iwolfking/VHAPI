@@ -74,9 +74,11 @@ public class VHAPI {
             VHAPILoggerUtils.debug("Rerunning Vault Configs load to patch them.");
             ModConfigs.register();
 
-            //Register bounty screen names
-            if (BountyScreenAccessor.getObjectiveNames() != null) {
-                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
+            if(event.getWorld().isClientSide()) {
+                //Register bounty screen names
+                if (BountyScreenAccessor.getObjectiveNames() != null) {
+                    BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
+                }
             }
         }
     }

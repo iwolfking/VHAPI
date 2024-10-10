@@ -64,7 +64,7 @@ public class CustomVaultConfigReader<T extends Config> {
      * @return An instance of the instance class with the data from json.
      */
     public T readCustomConfig(String name, JsonElement json, Type instance) {
-        VHAPI.LOGGER.debug("Reading custom " + instance.getTypeName().toLowerCase() + " config: "  + name);
+        VHAPI.LOGGER.info("Reading custom " + instance.getTypeName().toLowerCase() + " config: "  + name);
         T readConfig;
         try {
             T config = GSON.fromJson(json, instance);
