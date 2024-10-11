@@ -43,7 +43,6 @@ public class VaultObjectiveRegistry {
             }
             ((KeyRegistryAccessor)VaultRegistry.OBJECTIVE).setLocked(false);
             VaultRegistry.OBJECTIVE.register(customObjectiveRegistryEntry.getKey());
-            //VaultRegistry.OBJECTIVE.add(customObjectiveRegistryEntry.getKey());
             CrystalData.OBJECTIVE.register(customObjectiveRegistryEntry.getId(), customObjectiveRegistryEntry.getCrystalObjective(), customObjectiveRegistryEntry.getCrystalObjectiveSupplier());
             CUSTOM_BOUNTY_SCREEN_NAMES.put(customObjectiveRegistryEntry.getId(), new TextComponent(customObjectiveRegistryEntry.getName()));
             if(customObjectiveRegistryEntry.getCrateItem() != null) {

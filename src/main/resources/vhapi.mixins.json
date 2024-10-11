@@ -51,6 +51,7 @@
     "accessors.VaultStatsConfigAccessor",
     "accessors.configs.TrinketAccessor",
     "custom.MixinVaultRecyclerTileEntity",
+    "events.MixinGodAltarTask",
     "gen.MixinLootTable",
     "gen.MixinPalette",
     "gen.MixinTemplatePool",

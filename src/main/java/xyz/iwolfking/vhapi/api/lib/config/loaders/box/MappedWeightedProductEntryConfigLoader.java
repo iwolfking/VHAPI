@@ -28,12 +28,14 @@ public class MappedWeightedProductEntryConfigLoader extends VaultConfigDataLoade
                 Set<Item> entriesToRemove = new HashSet<>();
                 if(targetPool.get().containsKey(modKey)) {
                     config.POOL.get(modKey).forEach(productEntryEntry -> {
-                        if(productEntryEntry.value.getNBT().contains("remove")) {
+                        if(productEntryEntry.value.getNBT() != null && productEntryEntry.value.getNBT().contains("remove")) {
                             entriesToRemove.add(productEntryEntry.value.getItem());
                         }
                         else {
                             targetPool.get().get(modKey).add(productEntryEntry);
                         }
+
+
                     });
 
                     Set<ProductEntry> productsToRemove = new HashSet<>();

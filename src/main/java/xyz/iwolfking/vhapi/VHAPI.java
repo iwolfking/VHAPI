@@ -19,6 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
+import xyz.iwolfking.vhapi.api.events.vault.VaultEvents;
 import xyz.iwolfking.vhapi.api.registry.VaultGearRegistry;
 import xyz.iwolfking.vhapi.api.registry.VaultObjectiveRegistry;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
@@ -55,6 +56,7 @@ public class VHAPI {
         modEventBus.addListener(VaultGearRegistry::newRegistry);
 
         MinecraftForge.EVENT_BUS.register(this);
+        VaultEvents.init();
     }
 
     private void setup(final FMLCommonSetupEvent event)  {
