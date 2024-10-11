@@ -29,6 +29,7 @@ public class PlainModelRegistryConfigLoader<T extends DynamicModelRegistry<Plain
 
     public static final HandheldModelConfig instance = new HandheldModelConfig();
 
+    public static boolean loaded = false;
     T registry;
 
     Item item;
@@ -40,6 +41,9 @@ public class PlainModelRegistryConfigLoader<T extends DynamicModelRegistry<Plain
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
+        if(loaded) {
+            return;
+        }
         for(HandheldModelConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonHandheldModel model : config.MODELS) {
                 PlainItemModel plainItemModel = model.getPlainModel();
@@ -50,6 +54,7 @@ public class PlainModelRegistryConfigLoader<T extends DynamicModelRegistry<Plain
             }
 
         }
+        loaded = true;
         this.CUSTOM_CONFIGS.clear();
     }
 

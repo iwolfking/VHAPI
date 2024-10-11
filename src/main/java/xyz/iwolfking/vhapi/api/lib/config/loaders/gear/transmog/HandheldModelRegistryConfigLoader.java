@@ -30,6 +30,8 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
 
     public static final HandheldModelConfig instance = new HandheldModelConfig();
 
+    public static boolean loaded = false;
+
     T registry;
 
     Item item;
@@ -41,6 +43,9 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
+        if(loaded) {
+            return;
+        }
         for(HandheldModelConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonHandheldModel model : config.MODELS) {
                 HandHeldModel handHeldModel = model.getModel();
@@ -49,6 +54,7 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
             }
 
         }
+        loaded = true;
         this.CUSTOM_CONFIGS.clear();
     }
 

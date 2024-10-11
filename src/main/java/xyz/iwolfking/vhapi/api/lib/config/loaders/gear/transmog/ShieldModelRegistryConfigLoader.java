@@ -29,6 +29,7 @@ public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<Shie
 
     public static final HandheldModelConfig instance = new HandheldModelConfig();
 
+    public static boolean loaded = false;
     T registry;
 
     Item item;
@@ -40,6 +41,9 @@ public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<Shie
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
+        if(loaded) {
+            return;
+        }
         for(HandheldModelConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonHandheldModel model : config.MODELS) {
                 ShieldModel shieldModel = model.getShieldModel();
@@ -50,6 +54,7 @@ public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<Shie
             }
 
         }
+        loaded = true;
         this.CUSTOM_CONFIGS.clear();
     }
 

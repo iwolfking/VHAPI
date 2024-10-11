@@ -9,10 +9,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 import org.jetbrains.annotations.Nullable;
 import xyz.iwolfking.vhapi.api.registry.objective.CustomObjectiveRegistryEntry;
+import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.LootInfoGroupDefinitionRegistryAccessor;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber
@@ -20,6 +23,8 @@ public class VaultObjectiveRegistry {
     public static Supplier<IForgeRegistry<CustomObjectiveRegistryEntry>> customObjectiveRegistry;
 
     public static Map<String, TextComponent> CUSTOM_BOUNTY_SCREEN_NAMES = new HashMap<>();
+
+    public static Set<CustomObjectiveRegistryEntry> ENTRIES = new HashSet<>();
 
 
     public static void newRegistry(NewRegistryEvent event) {
@@ -30,7 +35,15 @@ public class VaultObjectiveRegistry {
     public static class Callback implements IForgeRegistry.AddCallback<CustomObjectiveRegistryEntry> {
         @Override
         public void onAdd(IForgeRegistryInternal<CustomObjectiveRegistryEntry> iForgeRegistryInternal, RegistryManager registryManager, int i, CustomObjectiveRegistryEntry customObjectiveRegistryEntry, @Nullable CustomObjectiveRegistryEntry v1) {
-            VaultRegistry.OBJECTIVE.add(customObjectiveRegistryEntry.getKey());
+            if(!ENTRIES.contains(customObjectiveRegistryEntry)) {
+                ENTRIES.add(customObjectiveRegistryEntry);
+            }
+            else {
+                return;
+            }
+            ((KeyRegistryAccessor)VaultRegistry.OBJECTIVE).setLocked(false);
+            VaultRegistry.OBJECTIVE.register(customObjectiveRegistryEntry.getKey());
+            //VaultRegistry.OBJECTIVE.add(customObjectiveRegistryEntry.getKey());
             CrystalData.OBJECTIVE.register(customObjectiveRegistryEntry.getId(), customObjectiveRegistryEntry.getCrystalObjective(), customObjectiveRegistryEntry.getCrystalObjectiveSupplier());
             CUSTOM_BOUNTY_SCREEN_NAMES.put(customObjectiveRegistryEntry.getId(), new TextComponent(customObjectiveRegistryEntry.getName()));
             if(customObjectiveRegistryEntry.getCrateItem() != null) {
