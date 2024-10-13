@@ -8,6 +8,8 @@ import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class InscriptionConfigLoader extends VaultConfigDataLoader<InscriptionConfig> {
     public InscriptionConfigLoader(String namespace) {
@@ -18,8 +20,8 @@ public class InscriptionConfigLoader extends VaultConfigDataLoader<InscriptionCo
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(InscriptionConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.INSCRIPTION.poolToModel.putAll(config.poolToModel);
-            for(ResourceLocation key : ModConfigs.INSCRIPTION.pools.keySet()) {
-                if(config.pools.containsKey(key)) {
+            for(ResourceLocation key : config.pools.keySet()) {
+                if(ModConfigs.INSCRIPTION.pools.containsKey(key)) {
                     ModConfigs.INSCRIPTION.pools.get(key).addAll(config.pools.get(key));
                 }
                 else {
