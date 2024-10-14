@@ -56,6 +56,8 @@
     "gen.MixinPalette",
     "gen.MixinTemplatePool",
     "gen.MixinTheme",
+    "models.MixinBoosterPackItem",
+    "models.MixinDeckItem",
     "models.MixinInfusedCatalystItem",
     "models.MixinInscriptionItem",
     "registry.gear.MixinGearModelRollRaritiesConfig",

@@ -1,6 +1,7 @@
 package xyz.iwolfking.vhapi.api.util;
 
 import iskallia.vault.dynamodel.DynamicModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 
 public class ResourceLocUtils {
@@ -11,6 +12,16 @@ public class ResourceLocUtils {
      */
     public static ResourceLocation stripLocationForSprite(ResourceLocation loc) {
         return removeSuffixFromId(".png", DynamicModel.removePrefixFromId("textures/", loc));
+    }
+
+    /**
+     * This is used during in VHAPI during model loading to clean up the resource locations to work with what is expected for input.
+     * @param loc The ResourceLocation that will have "models/" removed from the front and .json removed from the back.
+     * @return A ResourceLocation with no models in the front of it's path, and not ending in .json
+     */
+    public static ModelResourceLocation stripLocationForItemModel(ResourceLocation loc) {
+        ResourceLocation stripped = removeSuffixFromId(".json", DynamicModel.removePrefixFromId("models/item/", loc));
+        return new ModelResourceLocation(stripped, "inventory");
     }
 
     /**

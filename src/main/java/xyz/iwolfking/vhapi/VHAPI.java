@@ -2,6 +2,7 @@ package xyz.iwolfking.vhapi;
 
 import com.mojang.logging.LogUtils;
 import iskallia.vault.init.ModConfigs;
+import iskallia.vault.item.BoosterPackItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
@@ -92,15 +93,15 @@ public class VHAPI {
         public static void textureStitch(TextureStitchEvent.Pre event) {
             if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
                 ResourceManager manager = Minecraft.getInstance().getResourceManager();
-                Collection<ResourceLocation> textures = Minecraft.getInstance().getResourceManager().listResources("textures/item/gear", s -> s.endsWith(".png"));
-                for(ResourceLocation loc : textures) {
-                    if(loc.getNamespace().equals("custom_transmogs")) {
+                Collection<ResourceLocation> gearTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/gear", s -> s.endsWith(".png"));
+                //Collection<ResourceLocation> boosterTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/booster_pack", s -> s.endsWith(".png"));
+                for(ResourceLocation loc : gearTextures) {
+                    if(loc.getNamespace().equals("vhapi")) {
                         VHAPILoggerUtils.debug("Stitching custom transmog texture: " + loc);
                         event.addSprite(ResourceLocUtils.stripLocationForSprite(loc));
                     }
                 }
             }
-
         }
     }
 
