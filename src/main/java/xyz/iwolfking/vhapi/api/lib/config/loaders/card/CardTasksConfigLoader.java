@@ -49,6 +49,9 @@ public class CardTasksConfigLoader extends VaultConfigDataLoader<CardTasksConfig
                             ((CardTasksConfigAccessor) ModConfigs.CARD_TASKS).getPools().get(groupKey).add(s, aDouble);
                         });
                     }
+                    else {
+                        ((CardTasksConfigAccessor) ModConfigs.CARD_TASKS).getPools().put(groupKey, ((CardTasksConfigAccessor) config).getPools().get(groupKey));
+                    }
                 }
             }
         }
