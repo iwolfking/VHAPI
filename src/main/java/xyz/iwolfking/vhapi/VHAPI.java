@@ -10,6 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -48,6 +49,7 @@ public class VHAPI {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::worldLoad);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::onLogin);
 
         MinecraftForge.EVENT_BUS.addListener(LoaderRegistry::onAddListener);
 
@@ -67,22 +69,31 @@ public class VHAPI {
         return new ResourceLocation(MODID, name);
     }
 
+    private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
+        //We don't want to reload configs on server every player login, this should only run client-side.
+        if(event.getPlayer().level.isClientSide()) {
+            VHAPILoggerUtils.debug("Rerunning Vault Configs load client-side to patch them.");
+            ModConfigs.register();
+            //Register bounty screen names
+            if (BountyScreenAccessor.getObjectiveNames() != null) {
+                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
+            }
+        }
+    }
 
     private void worldLoad(final WorldEvent.Load event)  {
+        //This should only run on dedicated servers, we just want to reload configs once initially.
+        if(event.getWorld().isClientSide()) {
+            return;
+        }
+
         if(hasLoaded.get()) {
             return;
         }
 
         if(hasLoaded.compareAndSet(false, true)) {
-            VHAPILoggerUtils.debug("Rerunning Vault Configs load to patch them.");
+            VHAPILoggerUtils.debug("Rerunning Vault Configs load server-side to patch them.");
             ModConfigs.register();
-
-            if(event.getWorld().isClientSide()) {
-                //Register bounty screen names
-                if (BountyScreenAccessor.getObjectiveNames() != null) {
-                    BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
-                }
-            }
         }
     }
 
