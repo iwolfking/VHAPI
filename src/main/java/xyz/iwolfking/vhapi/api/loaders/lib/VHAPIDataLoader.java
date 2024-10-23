@@ -11,6 +11,7 @@ import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.data.core.ConfigData;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IPreConfigProcessor;
+import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,13 +30,15 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+        profilerFiller.startTick();
+
         dataMap.forEach((resourceLocation, jsonElement) -> {
             if(!CONFIGS_TO_IGNORE.contains(resourceLocation)) {
                 JSON_DATA.put(new ResourceLocation(namespace, resourceLocation.getPath()), jsonElement);
             }
         });
 
-
+        profilerFiller.push("process_vault_configs");
         for(int i = 0; i < LoaderRegistry.CONFIG_PROCESSORS.size(); i++) {
             IConfigProcessor configProcessor = LoaderRegistry.CONFIG_PROCESSORS.get(i);
             configProcessor.processMatchingConfigs();
@@ -44,11 +47,13 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
                 preConfigProcessor.preProcessStep();
             }
 
-
             MinecraftForge.EVENT_BUS.addListener(configProcessor::afterConfigsLoad);
-
         }
 
+        profilerFiller.pop();
+
+        profilerFiller.endTick();
+        VHAPILoggerUtils.info("Finished processing " + dataMap.size() + " custom vault configs.");
 
 
     }

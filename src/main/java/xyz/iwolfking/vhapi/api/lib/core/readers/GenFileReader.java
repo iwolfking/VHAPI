@@ -63,7 +63,7 @@ public class GenFileReader<T> {
      * @return An instance of the instance class with the data from json.
      */
     public T readCustomConfig(String name, JsonElement json, Type instance) {
-        VHAPI.LOGGER.info("Reading custom {} gen file: {}", instance.getTypeName().toLowerCase(), name);
+        VHAPI.LOGGER.debug("Reading custom {} gen file: {}", instance.getTypeName().toLowerCase(), name);
         T readConfig;
         try {
             readConfig = (T)GSON.fromJson(json, instance);

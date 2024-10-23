@@ -48,11 +48,11 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
             for(GsonHandheldModel model : config.MODELS) {
                 HandHeldModel handHeldModel = model.getModel();
                 registry.register(handHeldModel);
+                loaded = true;
                 DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(handHeldModel));
             }
 
         }
-        loaded = true;
         this.CUSTOM_CONFIGS.clear();
     }
 
@@ -64,7 +64,6 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
         handHeldModel.getAssociatedModelLocations().forEach(modelResourceLocation -> {
             BlockModel unbakedModel = (BlockModel)modelLoader.getModel(modelResourceLocation);
             BakedModel bakedIcon;
-
             if(ModDynamicModels.jsonModelExists(resourceManager, DynamicModel.prependToId("item/", handHeldModel.getId()))) {
                 bakedIcon = unbakedModel.bake(modelLoader, unbakedModel, ForgeModelBakery.defaultTextureGetter(), SimpleModelState.IDENTITY, modelResourceLocation, false);;
                 bakedIcon = new JsonFileBakedModel(bakedIcon);

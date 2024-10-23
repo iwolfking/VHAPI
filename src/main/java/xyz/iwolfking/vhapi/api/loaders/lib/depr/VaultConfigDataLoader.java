@@ -129,7 +129,6 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
 
     @Override
     protected Map<ResourceLocation, JsonElement> prepare(ResourceManager p_10771_, ProfilerFiller p_10772_) {
-        System.out.println("Preparing" + getName());
         return super.prepare(p_10771_, p_10772_);
     }
 }

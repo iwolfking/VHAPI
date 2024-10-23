@@ -15,6 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.SimpleModelState;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
@@ -46,13 +47,11 @@ public class PlainModelRegistryConfigLoader<T extends DynamicModelRegistry<Plain
             for(GsonHandheldModel model : config.MODELS) {
                 PlainItemModel plainItemModel = model.getPlainModel();
                 registry.register(plainItemModel);
-                if(Dist.CLIENT.isClient()) {
-                    this.bakeModel(plainItemModel);
-                }
+                loaded = true;
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(plainItemModel));
             }
 
         }
-        loaded = true;
         this.CUSTOM_CONFIGS.clear();
     }
 

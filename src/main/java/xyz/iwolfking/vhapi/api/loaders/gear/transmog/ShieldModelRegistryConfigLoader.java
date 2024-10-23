@@ -15,6 +15,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.SimpleModelState;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
@@ -46,13 +47,11 @@ public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<Shie
             for(GsonHandheldModel model : config.MODELS) {
                 ShieldModel shieldModel = model.getShieldModel();
                 registry.register(shieldModel);
-                if(Dist.CLIENT.isClient()) {
-                    this.bakeModel(shieldModel);
-                }
+                loaded = true;
+                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(shieldModel));
             }
 
         }
-        loaded = true;
         this.CUSTOM_CONFIGS.clear();
     }
 
