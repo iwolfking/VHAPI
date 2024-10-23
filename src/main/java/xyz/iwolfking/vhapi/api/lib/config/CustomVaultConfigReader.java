@@ -78,7 +78,6 @@ public class CustomVaultConfigReader<T extends Config> {
                 ((MixinConfigAccessor)config).invokeReset();
             }
 
-            ModConfigs.CONFIGS.add(config);
             readConfig = config;
         } catch (JsonSyntaxException e) {
             throw new RuntimeException(e);

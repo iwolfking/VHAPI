@@ -49,15 +49,13 @@
     "accessors.VaultModifierRegistyAccessor",
     "accessors.VaultModifiersConfigAccessor",
     "accessors.VaultStatsConfigAccessor",
-    "accessors.configs.TrinketAccessor",
+    "accessors.TrinketAccessor",
     "custom.MixinVaultRecyclerTileEntity",
     "events.MixinGodAltarTask",
     "gen.MixinLootTable",
     "gen.MixinPalette",
     "gen.MixinTemplatePool",
     "gen.MixinTheme",
-    "models.MixinBoosterPackItem",
-    "models.MixinDeckItem",
     "models.MixinInfusedCatalystItem",
     "models.MixinInscriptionItem",
     "registry.gear.MixinGearModelRollRaritiesConfig",
@@ -70,7 +68,9 @@
   ],
   "client": [
     "accessors.BountyScreenAccessor",
-    "registry.objective.MixinBountyScreen"
+    "registry.objective.MixinBountyScreen",
+    "models.MixinBoosterPackItem",
+    "models.MixinDeckItem"
   ],
   "injectors": {
     "defaultRequire": 1

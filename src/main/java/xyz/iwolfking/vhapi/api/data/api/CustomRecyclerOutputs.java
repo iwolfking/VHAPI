@@ -1,4 +1,4 @@
-package xyz.iwolfking.vhapi.api.data;
+package xyz.iwolfking.vhapi.api.data.api;
 
 import iskallia.vault.config.VaultRecyclerConfig;
 import net.minecraft.resources.ResourceLocation;

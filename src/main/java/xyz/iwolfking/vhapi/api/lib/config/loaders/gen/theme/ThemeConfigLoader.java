@@ -6,13 +6,14 @@ import iskallia.vault.core.data.key.ThemeKey;
 import iskallia.vault.core.vault.VaultRegistry;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoaderRF;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 
 import java.util.HashMap;
 
-public class ThemeConfigLoader extends VaultConfigDataLoader<ThemesConfig> {
+public class ThemeConfigLoader extends VaultConfigDataLoaderRF<ThemesConfig> {
     public ThemeConfigLoader(String namespace) {
-        super(new ThemesConfig(), "themes", new HashMap<>(), namespace);
+        super(new ThemesConfig(), "themes", namespace);
     }
 
     @Override

@@ -59,6 +59,7 @@ import org.jetbrains.annotations.NotNull;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.config.GenFileReader;
+import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -92,24 +93,14 @@ public class GenFileDataLoader<T> extends SimpleJsonResourceReloadListener {
                 CUSTOM_CONFIGS.put(new ResourceLocation(namespace, resourceLocation.getPath()), config);
             }
         });
-
-        performFinalActions();
-    }
-
-    @SubscribeEvent
-    public void onAddListeners(AddReloadListenerEvent event) {
-        event.addListener(this);
         MinecraftForge.EVENT_BUS.addListener(this::afterConfigsLoad);
     }
 
     @SubscribeEvent
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-    }
-
-
-    protected void performFinalActions() {
 
     }
+
 
     public void addIgnoredConfig(ResourceLocation configLocation) {
         CONFIGS_TO_IGNORE.add(configLocation);

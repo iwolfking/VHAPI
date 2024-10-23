@@ -4,15 +4,17 @@ import iskallia.vault.config.core.PalettesConfig;
 import iskallia.vault.core.Version;
 import iskallia.vault.core.data.key.PaletteKey;
 import iskallia.vault.core.vault.VaultRegistry;
+import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoaderRF;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 
 import java.util.HashMap;
 
-public class PalettesConfigLoader extends VaultConfigDataLoader<PalettesConfig> {
+public class PalettesConfigLoader extends VaultConfigDataLoaderRF<PalettesConfig> {
     public PalettesConfigLoader(String namespace) {
-        super(new PalettesConfig(), "palettes", new HashMap<>(), namespace);
+        super(new PalettesConfig(), "palettes", namespace);
     }
 
     @Override

@@ -2,7 +2,7 @@ package xyz.iwolfking.vhapi.api.lib.config.loaders.gear.transmog;
 
 import iskallia.vault.gear.VaultGearRarity;
 import net.minecraftforge.fml.common.Mod;
-import xyz.iwolfking.vhapi.api.data.CustomGearModelRolls;
+import xyz.iwolfking.vhapi.api.data.api.CustomGearModelRolls;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.config.loaders.gear.transmog.lib.CustomGearModelRollRaritiesConfig;
 import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;

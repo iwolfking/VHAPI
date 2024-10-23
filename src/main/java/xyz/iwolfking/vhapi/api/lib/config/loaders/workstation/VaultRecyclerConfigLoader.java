@@ -1,6 +1,6 @@
 package xyz.iwolfking.vhapi.api.lib.config.loaders.workstation;
 
-import xyz.iwolfking.vhapi.api.data.CustomRecyclerOutputs;
+import xyz.iwolfking.vhapi.api.data.api.CustomRecyclerOutputs;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.config.loaders.workstation.lib.CustomVaultRecyclerConfig;
 import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;

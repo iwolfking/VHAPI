@@ -4,14 +4,15 @@ import iskallia.vault.config.AugmentConfig;
 import iskallia.vault.init.ModConfigs;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoaderRF;
 import xyz.iwolfking.vhapi.mixin.accessors.AugmentConfigAccessor;
 
 import java.util.HashMap;
 
 
-public class AugmentConfigLoader extends VaultConfigDataLoader<AugmentConfig> {
+public class AugmentConfigLoader extends VaultConfigDataLoaderRF<AugmentConfig> {
     public AugmentConfigLoader(String namespace) {
-        super(new AugmentConfig(), "augments", new HashMap<>(), namespace);
+        super(new AugmentConfig(), "augments",  namespace);
     }
 
     @Override

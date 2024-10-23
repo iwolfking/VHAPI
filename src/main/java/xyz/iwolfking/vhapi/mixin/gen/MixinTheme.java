@@ -1,6 +1,8 @@
 package xyz.iwolfking.vhapi.mixin.gen;
 
 import com.google.gson.Gson;
+import iskallia.vault.core.vault.VaultRegistry;
+import iskallia.vault.core.world.generator.theme.ClassicVaultTheme;
 import iskallia.vault.core.world.generator.theme.Theme;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Final;
@@ -14,7 +16,6 @@ import xyz.iwolfking.vhapi.mixin.accessors.ThemeAccessor;
 
 @Mixin(value = Theme.class, remap = false)
 public class MixinTheme {
-    @Shadow @Final private static Gson GSON;
 
     /**
      * @author iwolfking
@@ -26,6 +27,11 @@ public class MixinTheme {
         if(path.startsWith("vhapi:")) {
             if(LoaderRegistry.GEN_THEME_LOADER.CUSTOM_CONFIGS.containsKey(new ResourceLocation(path))) {
                 theme = LoaderRegistry.GEN_THEME_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation(path));
+                if(theme instanceof ClassicVaultTheme classicVaultTheme) {
+                    System.out.println(classicVaultTheme.getRooms());
+                    System.out.println(classicVaultTheme.getStarts());
+                    System.out.println(classicVaultTheme.getTunnels());
+                }
             }
         }
 

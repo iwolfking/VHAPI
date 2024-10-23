@@ -5,15 +5,16 @@ import iskallia.vault.init.ModConfigs;
 import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoaderRF;
 import xyz.iwolfking.vhapi.mixin.accessors.VaultCrystalConfigAccessor;
 
 import java.util.*;
 @Mod.EventBusSubscriber(modid = "vhapi", bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class VaultCrystalConfigLoader extends VaultConfigDataLoader<VaultCrystalConfig> {
+public class VaultCrystalConfigLoader extends VaultConfigDataLoaderRF<VaultCrystalConfig> {
 
 
     public VaultCrystalConfigLoader(String namespace) {
-        super(new VaultCrystalConfig(), "vault/crystal", new HashMap<>(), namespace);
+        super(new VaultCrystalConfig(), "vault/crystal", namespace);
     }
 
     @Override

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.iwolfking.vhapi.api.data.CustomGearModelRolls;
+import xyz.iwolfking.vhapi.api.data.api.CustomGearModelRolls;
 
 
 import java.util.List;

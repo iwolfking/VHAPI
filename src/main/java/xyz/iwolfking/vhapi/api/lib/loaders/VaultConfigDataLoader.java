@@ -82,7 +82,7 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
-
+        System.out.println("LOADING " + getName());
         dataMap.forEach((resourceLocation, jsonElement) -> {
             if(!CONFIGS_TO_IGNORE.contains(resourceLocation)) {
                 CustomVaultConfigReader<T> configReader = new CustomVaultConfigReader<>();
@@ -94,7 +94,6 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
         performFinalActions();
     }
 
-    @SubscribeEvent
     public void onAddListeners(AddReloadListenerEvent event) {
         event.addListener(this);
         MinecraftForge.EVENT_BUS.addListener(this::afterConfigsLoad);
@@ -128,5 +127,11 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
 
     public ResourceLocation namespaceLoc(String name) {
         return new ResourceLocation(namespace, name);
+    }
+
+    @Override
+    protected Map<ResourceLocation, JsonElement> prepare(ResourceManager p_10771_, ProfilerFiller p_10772_) {
+        System.out.println("Preparing" + getName());
+        return super.prepare(p_10771_, p_10772_);
     }
 }

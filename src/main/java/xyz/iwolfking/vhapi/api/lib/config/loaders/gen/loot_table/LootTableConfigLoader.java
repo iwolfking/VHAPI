@@ -6,13 +6,14 @@ import iskallia.vault.core.data.key.LootTableKey;
 import iskallia.vault.core.vault.VaultRegistry;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoaderRF;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 
 import java.util.HashMap;
 
-public class LootTableConfigLoader extends VaultConfigDataLoader<LootTablesConfig> {
+public class LootTableConfigLoader extends VaultConfigDataLoaderRF<LootTablesConfig> {
     public LootTableConfigLoader(String namespace) {
-        super(new LootTablesConfig(), "vault_loot_tables", new HashMap<>(), namespace);
+        super(new LootTablesConfig(), "vault_loot_tables", namespace);
     }
 
     @Override

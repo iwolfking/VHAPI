@@ -1,4 +1,4 @@
-package xyz.iwolfking.vhapi.mixin.accessors.configs;
+package xyz.iwolfking.vhapi.mixin.accessors;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;

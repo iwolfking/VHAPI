@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
-import xyz.iwolfking.vhapi.api.data.BountyScreenData;
+import xyz.iwolfking.vhapi.api.data.api.BountyScreenData;
 
 import java.util.HashMap;
 import java.util.Map;

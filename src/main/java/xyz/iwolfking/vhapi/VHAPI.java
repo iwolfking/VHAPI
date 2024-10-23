@@ -2,7 +2,6 @@ package xyz.iwolfking.vhapi;
 
 import com.mojang.logging.LogUtils;
 import iskallia.vault.init.ModConfigs;
-import iskallia.vault.item.BoosterPackItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
@@ -50,7 +49,7 @@ public class VHAPI {
 
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::worldLoad);
 
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGHEST, LoaderRegistry::onAddListener);
+        MinecraftForge.EVENT_BUS.addListener(LoaderRegistry::onAddListener);
 
 
         modEventBus.addListener(VaultObjectiveRegistry::newRegistry);
@@ -67,6 +66,7 @@ public class VHAPI {
     public static ResourceLocation of(String name) {
         return new ResourceLocation(MODID, name);
     }
+
 
     private void worldLoad(final WorldEvent.Load event)  {
         if(hasLoaded.get()) {
