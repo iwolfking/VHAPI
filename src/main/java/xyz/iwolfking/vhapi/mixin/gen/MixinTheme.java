@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
+import xyz.iwolfking.vhapi.api.loaders.Processors;
+import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.ThemeAccessor;
 
 @Mixin(value = Theme.class, remap = false)
@@ -24,14 +26,9 @@ public class MixinTheme {
     @Inject(method = "fromPath", at = @At("HEAD"), cancellable = true)
     private static void fromPath(String path, CallbackInfoReturnable<Theme> cir) {
         Theme theme = null;
-        if(path.startsWith("vhapi:")) {
-            if(LoaderRegistry.GEN_THEME_LOADER.CUSTOM_CONFIGS.containsKey(new ResourceLocation(path))) {
-                theme = LoaderRegistry.GEN_THEME_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation(path));
-                if(theme instanceof ClassicVaultTheme classicVaultTheme) {
-                    System.out.println(classicVaultTheme.getRooms());
-                    System.out.println(classicVaultTheme.getStarts());
-                    System.out.println(classicVaultTheme.getTunnels());
-                }
+        if(ResourceLocUtils.isResourceLocation(path)) {
+            if(Processors.GenerationFileProcessors.GEN_THEME_LOADER.CUSTOM_CONFIGS.containsKey(new ResourceLocation(path))) {
+                theme = Processors.GenerationFileProcessors.GEN_THEME_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation(path));
             }
         }
 

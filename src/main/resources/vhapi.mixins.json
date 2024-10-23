@@ -59,6 +59,7 @@
     "models.MixinInfusedCatalystItem",
     "models.MixinInscriptionItem",
     "registry.gear.MixinGearModelRollRaritiesConfig",
+    "registry.gear.MixinMainModDynamicModels",
     "registry.gear.MixinModModels",
     "registry.gear.MixinVaultGearToolTier",
     "registry.modifiers.MixinVaultModifiersConfig",
@@ -70,7 +71,8 @@
     "accessors.BountyScreenAccessor",
     "registry.objective.MixinBountyScreen",
     "models.MixinBoosterPackItem",
-    "models.MixinDeckItem"
+    "models.MixinDeckItem",
+    "registry.objective.MixinBountyScreen"
   ],
   "injectors": {
     "defaultRequire": 1

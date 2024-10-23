@@ -1,10 +1,8 @@
 package xyz.iwolfking.vhapi.api.events;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.Event;
-import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;
-
-import java.util.Map;
+import xyz.iwolfking.vhapi.api.loaders.lib.VHAPIDataLoader;
+import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 
 /**
  * An event fired when the LoaderRegistry initializes and finishes loading all the config loaders.
@@ -12,25 +10,25 @@ import java.util.Map;
 public class ConfigDataLoaderEvent extends Event {
 
     public static class Init extends ConfigDataLoaderEvent {
-        private VaultConfigDataLoader<?> loader;
+        private final VaultConfigProcessor<?> loader;
 
-        public Init(VaultConfigDataLoader<?> loader) {
+        public Init(VaultConfigProcessor<?> loader) {
             this.loader = loader;
         }
-        public VaultConfigDataLoader<?> getLoader() {
+        public VaultConfigProcessor<?> getLoader() {
             return loader;
         }
     }
 
     public static class Finish extends ConfigDataLoaderEvent {
-        private Map<ResourceLocation, VaultConfigDataLoader<?>> loaders;
+        private final VHAPIDataLoader loader;
 
-        public Finish(Map<ResourceLocation, VaultConfigDataLoader<?>> loaders) {
-        this.loaders = loaders;
+        public Finish(VHAPIDataLoader loader) {
+            this.loader = loader;
         }
 
-        public Map<ResourceLocation, VaultConfigDataLoader<?>>getLoaders() {
-            return loaders;
+        public VHAPIDataLoader getLoader() {
+            return loader;
         }
     }
 

@@ -75,4 +75,8 @@ public class ResourceLocUtils {
     public static ResourceLocation swapNamespace(ResourceLocation loc, String newNamespace) {
         return new ResourceLocation(newNamespace, loc.getPath());
     }
+
+    public static boolean isResourceLocation(String testString) {
+        return testString.matches(".+:.+");
+    }
 }
