@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.iwolfking.vhapi.api.data.CustomRecyclerOutputs;
+import xyz.iwolfking.vhapi.api.data.api.CustomRecyclerOutputs;
 
 import java.util.UUID;
 

@@ -8,8 +8,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.iwolfking.vhapi.api.lib.config.loaders.vault.modifiers.VaultModifierConfigLoader;
-import xyz.iwolfking.vhapi.api.lib.loaders.VaultConfigDataLoader;
+import xyz.iwolfking.vhapi.api.loaders.Processors;
+import xyz.iwolfking.vhapi.api.loaders.vault.modifiers.VaultModifierConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.lib.depr.VaultConfigDataLoader;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.mixin.accessors.VaultModifiersConfigAccessor;
 
@@ -21,7 +22,7 @@ public abstract class MixinVaultModifiersConfig extends Config{
     public void readConfig(CallbackInfoReturnable<?> cir) {
         VaultModifiersConfig config = super.readConfig();
         if(((VaultModifiersConfigAccessor)config).getModifierTypeGroups() != null) {
-            for(VaultConfigDataLoader<?> loader : LoaderRegistry.getLoadersByType(VaultModifierConfigLoader.class)) {
+            VaultModifierConfigLoader loader = Processors.VaultModifierConfigProcessors.VAULT_MODIFIER_CONFIG_LOADER;
                 for(Config customConfig : loader.CUSTOM_CONFIGS.values()) {
                     for(ResourceLocation key : ((VaultModifiersConfigAccessor) customConfig).getModifierTypeGroups().keySet()) {
                         if(((VaultModifiersConfigAccessor) config).getModifierTypeGroups().containsKey(key)) {
@@ -32,7 +33,6 @@ public abstract class MixinVaultModifiersConfig extends Config{
                         }
                     }
                 }
-            }
         }
 
     }
