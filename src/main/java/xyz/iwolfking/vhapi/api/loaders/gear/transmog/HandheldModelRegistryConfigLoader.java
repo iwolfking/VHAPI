@@ -28,7 +28,7 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
 
     public static final HandheldModelConfig instance = new HandheldModelConfig();
 
-    public static boolean loaded = false;
+    public boolean loaded = false;
 
     T registry;
 

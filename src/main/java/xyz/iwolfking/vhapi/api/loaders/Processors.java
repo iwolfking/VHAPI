@@ -206,13 +206,14 @@ public class Processors {
         public static Set<VaultConfigProcessor<?>>getStandardTransmogProcessors() {
             Set<VaultConfigProcessor<?>> result = new HashSet<>();
             for(Item item : ModDynamicModels.REGISTRIES.getUniqueItems()) {
-                if(!(item instanceof VaultShieldItem)) {
-                    HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> transmogLoader = new HandheldModelRegistryConfigLoader<>((DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
-                    result.add(transmogLoader);
-                }
-                else {
+                if(item instanceof VaultShieldItem) {
                     ShieldModelRegistryConfigLoader<DynamicModelRegistry<ShieldModel>> shieldTransmogLoader = new ShieldModelRegistryConfigLoader<>("vhapi", (DynamicModelRegistry<ShieldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
                     result.add(shieldTransmogLoader);
+
+                }
+                else {
+                    HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> transmogLoader = new HandheldModelRegistryConfigLoader<>((DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
+                    result.add(transmogLoader);
                 }
             }
             return result;
