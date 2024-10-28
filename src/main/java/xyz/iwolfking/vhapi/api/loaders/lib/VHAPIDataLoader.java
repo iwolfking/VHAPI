@@ -1,6 +1,7 @@
 package xyz.iwolfking.vhapi.api.loaders.lib;
 
 import com.google.gson.JsonElement;
+import iskallia.vault.init.ModConfigs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -11,6 +12,7 @@ import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.data.core.ConfigData;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IPreConfigProcessor;
+import xyz.iwolfking.vhapi.api.loaders.Processors;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 
 import java.util.HashMap;
@@ -64,5 +66,31 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
 
     public Set<ResourceLocation> getIgnoredConfigs() {
         return CONFIGS_TO_IGNORE;
+    }
+
+    public Map<ResourceLocation, String> getMapOfStrings() {
+        Map<ResourceLocation, String> returnMap = new HashMap<>();
+
+        for(ResourceLocation loc : JSON_DATA.keySet()) {
+            returnMap.put(loc, JSON_DATA.get(loc).toString());
+        }
+
+        return returnMap;
+    }
+
+    public void gatherConfigsToProcessors() {
+        LoaderRegistry.initProcessors();
+        VHAPILoggerUtils.info(String.valueOf(LoaderRegistry.CONFIG_PROCESSORS.size()));
+        for(int i = 0; i < LoaderRegistry.CONFIG_PROCESSORS.size(); i++) {
+            IConfigProcessor configProcessor = LoaderRegistry.CONFIG_PROCESSORS.get(i);
+            configProcessor.processMatchingConfigs();
+
+            if (configProcessor instanceof IPreConfigProcessor preConfigProcessor) {
+                preConfigProcessor.preProcessStep();
+            }
+
+            MinecraftForge.EVENT_BUS.addListener(configProcessor::afterConfigsLoad);
+        }
+        ModConfigs.register();
     }
 }

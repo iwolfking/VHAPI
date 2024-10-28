@@ -48,6 +48,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import xyz.iwolfking.vhapi.VHAPI;
+import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.MixinConfigAccessor;
 
 import java.lang.reflect.Type;
@@ -64,7 +65,7 @@ public class CustomVaultConfigReader<T extends Config> {
      * @return An instance of the instance class with the data from json.
      */
     public T readCustomConfig(String name, JsonElement json, Type instance) {
-        VHAPI.LOGGER.debug("Reading custom {} config: {}", instance.getTypeName().toLowerCase(), name);
+        VHAPILoggerUtils.info(String.format("Reading custom %s config: %s", instance.getTypeName().toLowerCase(), name));
         T readConfig;
         try {
             T config = GSON.fromJson(json, instance);

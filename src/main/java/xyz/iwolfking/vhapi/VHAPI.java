@@ -2,9 +2,12 @@ package xyz.iwolfking.vhapi;
 
 import com.mojang.logging.LogUtils;
 import iskallia.vault.init.ModConfigs;
+import lv.id.bonne.vaulthunters.serversync.proxy.client.SyncModClientProxy;
+import lv.id.bonne.vaulthunters.serversync.proxy.server.SyncModServerProxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -15,6 +18,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -26,6 +30,11 @@ import xyz.iwolfking.vhapi.api.registry.VaultObjectiveRegistry;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.BountyScreenAccessor;
+import xyz.iwolfking.vhapi.networking.VHAPISyncDescriptor;
+import xyz.iwolfking.vhapi.networking.VHAPISyncNetwork;
+import xyz.iwolfking.vhapi.proxy.IVHAPISyncProxy;
+import xyz.iwolfking.vhapi.proxy.client.VHAPISyncClientProxy;
+import xyz.iwolfking.vhapi.proxy.server.VHAPISyncServerProxy;
 
 
 import java.util.Collection;
@@ -59,7 +68,17 @@ public class VHAPI {
 
         MinecraftForge.EVENT_BUS.register(this);
         VaultEvents.init();
+        PROXY.init();
+
+        //Config Sync from Server
+
     }
+
+    public static final IVHAPISyncProxy PROXY = DistExecutor.safeRunForDist(
+            () -> VHAPISyncClientProxy::new,
+            () -> VHAPISyncServerProxy::new);
+
+
 
     private void setup(final FMLCommonSetupEvent event)  {
 
@@ -70,6 +89,11 @@ public class VHAPI {
     }
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
+        if(!event.getPlayer().level.isClientSide()) {
+            System.out.println("SENDING CONFIGS");
+            //We are on server so send configs
+            VHAPISyncNetwork.syncVHAPIConfigs(new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getMapOfStrings()), (ServerPlayer) event.getPlayer());
+        }
         //We don't want to reload configs on server every player login, this should only run client-side.
         if(event.getPlayer().level.isClientSide()) {
             VHAPILoggerUtils.debug("Rerunning Vault Configs load client-side to patch them.");

@@ -32,7 +32,6 @@ public class LoaderRegistry {
 
     public static void onAddListener(AddReloadListenerEvent event) {
         initProcessors();
-
         VHAPILoggerUtils.info("Registering VHAPI datapack listener!");
         event.addListener(VHAPI_DATA_LOADER);
 
@@ -44,7 +43,7 @@ public class LoaderRegistry {
         CONFIG_PROCESSORS.put(ordinal, processor);
     }
 
-    private static void initProcessors() {
+    public static void initProcessors() {
 
         for(VaultConfigProcessor<?> transmogProcessor : Processors.TransmogConfigProcessors.getStandardTransmogProcessors()) {
             addConfigProcessor(transmogProcessor);
