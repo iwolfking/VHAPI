@@ -108,6 +108,9 @@ public class VHAPI {
     private void worldLoad(final WorldEvent.Load event)  {
         //This should only run on dedicated servers, we just want to reload configs once initially.
         if(event.getWorld().isClientSide()) {
+            if(BountyScreenAccessor.getObjectiveNames() != null) {
+                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
+            }
             return;
         }
 
