@@ -85,7 +85,6 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
                 preConfigProcessor.preProcessStep();
             }
 
-            MinecraftForge.EVENT_BUS.addListener(configProcessor::afterConfigsLoad);
         }
         ModConfigs.register();
     }

@@ -39,6 +39,7 @@ public class LoaderRegistry {
 
     public static void addConfigProcessor(IConfigProcessor processor) {
         ordinal += 1;
+        MinecraftForge.EVENT_BUS.addListener(processor::afterConfigsLoad);
         CONFIG_PROCESSORS.put(ordinal, processor);
     }
 

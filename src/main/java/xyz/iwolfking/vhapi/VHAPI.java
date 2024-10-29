@@ -92,13 +92,15 @@ public class VHAPI {
     }
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
-        if(!event.getPlayer().level.isClientSide()) {
+        //Only servers ever need to send datapack syncs
+        DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
             if(VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
                 VHAPILoggerUtils.info("Sending VHAPI datapacks to " + event.getPlayer().getName().getString() + ".");
                 //We are on server so send configs
                 VHAPISyncNetwork.syncVHAPIConfigs(new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()), (ServerPlayer) event.getPlayer());
             }
-        }
+        });
+
         //We don't want to reload configs on server every player login, this should only run client-side.
         if(event.getPlayer().level.isClientSide()) {
             VHAPILoggerUtils.debug("Rerunning Vault Configs load client-side to patch them.");
