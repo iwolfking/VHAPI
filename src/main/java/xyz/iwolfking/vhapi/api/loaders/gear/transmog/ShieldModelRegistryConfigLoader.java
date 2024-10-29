@@ -40,19 +40,16 @@ public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<Shie
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        if(loaded) {
-            return;
-        }
         for(HandheldModelConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonHandheldModel model : config.MODELS) {
                 ShieldModel shieldModel = model.getShieldModel();
-                registry.register(shieldModel);
-                loaded = true;
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(shieldModel));
+                if(registry.containsId(shieldModel.getId())) {
+                    registry.register(shieldModel);
+                    DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(shieldModel));
+                }
             }
 
         }
-        this.CUSTOM_CONFIGS.clear();
     }
 
 

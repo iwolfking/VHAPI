@@ -22,6 +22,7 @@ import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.gear.transmog.lib.GsonHandheldModel;
 import xyz.iwolfking.vhapi.api.loaders.gear.transmog.lib.HandheldModelConfig;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
+import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 
 @Mod.EventBusSubscriber(modid = "vhapi", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<HandHeldModel>> extends VaultConfigProcessor<HandheldModelConfig> {
@@ -41,19 +42,16 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        if(loaded) {
-            return;
-        }
         for(HandheldModelConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonHandheldModel model : config.MODELS) {
                 HandHeldModel handHeldModel = model.getModel();
-                registry.register(handHeldModel);
-                loaded = true;
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(handHeldModel));
+                if(!registry.containsId(model.getId())) {
+                    registry.register(handHeldModel);
+                    DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(handHeldModel));
+                }
             }
 
         }
-        this.CUSTOM_CONFIGS.clear();
     }
 
 

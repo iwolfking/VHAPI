@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
-
+    private boolean isInitialized = false;
     private final String namespace = VHAPI.MODID;
     public Map<ResourceLocation, JsonElement> JSON_DATA = new HashMap<>();
     private final Set<ResourceLocation> CONFIGS_TO_IGNORE = new HashSet<>();
@@ -40,7 +40,6 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
 
         dataMap.forEach((resourceLocation, jsonElement) -> {
             if(!getIgnoredConfigs().contains(resourceLocation)) {
-                VHAPILoggerUtils.info(resourceLocation.toString());
                 JSON_DATA.put(new ResourceLocation(namespace, resourceLocation.getPath()), jsonElement);
             }
         });
@@ -76,7 +75,8 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     }
 
     public void gatherConfigsToProcessors() {
-        if(LoaderRegistry.CONFIG_PROCESSORS.isEmpty()) {
+        if(!isInitialized) {
+            isInitialized = true;
             LoaderRegistry.initProcessors();
         }
 

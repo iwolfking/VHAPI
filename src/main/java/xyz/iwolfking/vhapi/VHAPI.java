@@ -75,7 +75,6 @@ public class VHAPI {
         MinecraftForge.EVENT_BUS.register(this);
         VaultEvents.init();
         PROXY.init();
-        //Config Sync from Server
 
     }
 
@@ -106,7 +105,7 @@ public class VHAPI {
         //We don't want to reload configs on server every player login, this should only run client-side.
         if(event.getPlayer().level.isClientSide()) {
             VHAPILoggerUtils.debug("Rerunning Vault Configs load client-side to patch them.");
-            ModConfigs.register();
+            //ModConfigs.register();
             //Register bounty screen names
             if (BountyScreenAccessor.getObjectiveNames() != null) {
                 BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
@@ -128,8 +127,8 @@ public class VHAPI {
         }
 
         if(hasLoaded.compareAndSet(false, true)) {
-            VHAPILoggerUtils.debug("Rerunning Vault Configs load server-side to patch them.");
-            ModConfigs.register();
+            //VHAPILoggerUtils.debug("Rerunning Vault Configs load server-side to patch them.");
+            //ModConfigs.register();
         }
     }
 
