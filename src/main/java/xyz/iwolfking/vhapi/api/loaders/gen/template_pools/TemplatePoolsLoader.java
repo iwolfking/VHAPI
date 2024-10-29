@@ -6,11 +6,11 @@ import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.vault.VaultRegistry;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
-import xyz.iwolfking.vhapi.api.lib.core.processors.IPreConfigProcessor;
+import xyz.iwolfking.vhapi.api.lib.core.processors.IPreProcessor;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 
-public class TemplatePoolsConfigLoader extends VaultConfigProcessor<TemplatePoolsConfig> implements IPreConfigProcessor{
-    public TemplatePoolsConfigLoader() {
+public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfig> implements IPreProcessor {
+    public TemplatePoolsLoader() {
         super(new TemplatePoolsConfig(), "template_pools");
     }
 
@@ -25,6 +25,7 @@ public class TemplatePoolsConfigLoader extends VaultConfigProcessor<TemplatePool
             }
             ((KeyRegistryAccessor)VaultRegistry.TEMPLATE_POOL).setLocked(true);
         }
+        super.afterConfigsLoad(event);
     }
 
 

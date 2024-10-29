@@ -22,5 +22,6 @@ public class AbilitiesDescriptionsConfigLoader extends VaultConfigProcessor<Abil
 
             ((AbilitiesDescriptionsConfigAccessor)ModConfigs.ABILITIES_DESCRIPTIONS).getData().putAll(((AbilitiesDescriptionsConfigAccessor) config).getData());
         }
+        super.afterConfigsLoad(event);
     }
 }

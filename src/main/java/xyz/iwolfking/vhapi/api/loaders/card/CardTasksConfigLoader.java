@@ -54,6 +54,6 @@ public class CardTasksConfigLoader extends VaultConfigProcessor<CardTasksConfig>
                 }
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

@@ -15,5 +15,6 @@ public class TalentsGUIConfigLoader extends VaultConfigProcessor<TalentsGUIConfi
         for(TalentsGUIConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.TALENTS_GUI.getStyles().putAll(config.getStyles());
         }
+        super.afterConfigsLoad(event);
     }
 }

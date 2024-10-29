@@ -17,6 +17,6 @@ public class CardEssenceExtractorConfigLoader extends VaultConfigProcessor<CardE
         for(CardEssenceExtractorConfig config : this.CUSTOM_CONFIGS.values()) {
             ((CardEssenceExtractorConfigAccessor)ModConfigs.CARD_ESSENCE_EXTRACTOR).getTierConfigs().putAll(((CardEssenceExtractorConfigAccessor)config).getTierConfigs());
         }
-
+        super.afterConfigsLoad(event);
     }
 }

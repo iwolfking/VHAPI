@@ -19,6 +19,7 @@ public class MonolithConfigLoader extends VaultConfigProcessor<MonolithConfig> {
         for(MonolithConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.MONOLITH = config;
         }
+        super.afterConfigsLoad(event);
     }
 
 }

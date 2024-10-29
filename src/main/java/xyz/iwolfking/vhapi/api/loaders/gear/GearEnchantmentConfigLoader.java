@@ -16,5 +16,6 @@ public class GearEnchantmentConfigLoader extends VaultConfigProcessor<VaultGearE
         for(VaultGearEnchantmentConfig config : this.CUSTOM_CONFIGS.values()) {
             ((VaultGearEnchantmentConfigAccessor)ModConfigs.VAULT_GEAR_ENCHANTMENT_CONFIG).getCosts().putAll(((VaultGearEnchantmentConfigAccessor)config).getCosts());
         }
+        super.afterConfigsLoad(event);
     }
 }

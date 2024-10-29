@@ -19,5 +19,6 @@ public class VaultModifierPoolsConfigLoader extends VaultConfigProcessor<VaultMo
         for(VaultModifierPoolsConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.VAULT_MODIFIER_POOLS.pools.putAll(config.pools);
         }
+        super.afterConfigsLoad(event);
     }
 }

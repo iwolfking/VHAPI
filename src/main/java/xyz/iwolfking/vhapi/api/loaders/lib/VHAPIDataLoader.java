@@ -1,6 +1,7 @@
 package xyz.iwolfking.vhapi.api.loaders.lib;
 
 import com.google.gson.JsonElement;
+import iskallia.vault.init.ModConfigs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -9,20 +10,25 @@ import net.minecraftforge.common.MinecraftForge;
 import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.data.core.ConfigData;
+import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IPreConfigProcessor;
+import xyz.iwolfking.vhapi.api.lib.core.processors.IPreProcessor;
+import xyz.iwolfking.vhapi.api.util.VHAPIProcesserUtils;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
+import xyz.iwolfking.vhapi.networking.util.StringCompressor;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
-
+    private boolean isInitialized = false;
     private final String namespace = VHAPI.MODID;
     public Map<ResourceLocation, JsonElement> JSON_DATA = new HashMap<>();
-    private Set<ResourceLocation> CONFIGS_TO_IGNORE = new HashSet<>();
+    private final Set<ResourceLocation> CONFIGS_TO_IGNORE = new HashSet<>();
 
     public VHAPIDataLoader() {
         super(ConfigData.CONFIG_LOADER_GSON, "vault_configs");
@@ -33,22 +39,14 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
         profilerFiller.startTick();
 
         dataMap.forEach((resourceLocation, jsonElement) -> {
-            if(!CONFIGS_TO_IGNORE.contains(resourceLocation)) {
+            if(!getIgnoredConfigs().contains(resourceLocation)) {
                 JSON_DATA.put(new ResourceLocation(namespace, resourceLocation.getPath()), jsonElement);
             }
         });
 
         profilerFiller.push("process_vault_configs");
-        for(int i = 0; i < LoaderRegistry.CONFIG_PROCESSORS.size(); i++) {
-            IConfigProcessor configProcessor = LoaderRegistry.CONFIG_PROCESSORS.get(i);
-            configProcessor.processMatchingConfigs();
 
-            if(configProcessor instanceof IPreConfigProcessor preConfigProcessor) {
-                preConfigProcessor.preProcessStep();
-            }
-
-            MinecraftForge.EVENT_BUS.addListener(configProcessor::afterConfigsLoad);
-        }
+        gatherConfigsToProcessors();
 
         profilerFiller.pop();
 
@@ -64,5 +62,33 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
 
     public Set<ResourceLocation> getIgnoredConfigs() {
         return CONFIGS_TO_IGNORE;
+    }
+
+    public Map<ResourceLocation, byte[]> getCompressedConfigMap() {
+        Map<ResourceLocation, byte[]> returnMap = new HashMap<>();
+
+        for(ResourceLocation loc : JSON_DATA.keySet()) {
+            returnMap.put(loc, StringCompressor.compress(JSON_DATA.get(loc).toString()));
+        }
+
+        return returnMap;
+    }
+
+    public void gatherConfigsToProcessors() {
+        if(!isInitialized) {
+            isInitialized = true;
+            LoaderRegistry.initProcessors();
+        }
+
+        for(int i = 0; i < LoaderRegistry.CONFIG_PROCESSORS.size(); i++) {
+            IConfigProcessor configProcessor = LoaderRegistry.CONFIG_PROCESSORS.get(i);
+            configProcessor.processMatchingConfigs();
+
+            if (configProcessor instanceof IPreProcessor preConfigProcessor) {
+                preConfigProcessor.preProcessStep();
+            }
+
+        }
+        ModConfigs.register();
     }
 }

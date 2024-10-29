@@ -66,5 +66,6 @@ public class VaultCrystalConfigLoader extends VaultConfigProcessor<VaultCrystalC
             }
 
         }
+        super.afterConfigsLoad(event);
     }
 }

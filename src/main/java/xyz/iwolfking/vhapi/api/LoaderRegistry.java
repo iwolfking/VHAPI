@@ -31,8 +31,6 @@ public class LoaderRegistry {
     public static final VHAPIDataLoader VHAPI_DATA_LOADER = new VHAPIDataLoader();
 
     public static void onAddListener(AddReloadListenerEvent event) {
-        initProcessors();
-
         VHAPILoggerUtils.info("Registering VHAPI datapack listener!");
         event.addListener(VHAPI_DATA_LOADER);
 
@@ -41,10 +39,11 @@ public class LoaderRegistry {
 
     public static void addConfigProcessor(IConfigProcessor processor) {
         ordinal += 1;
+        MinecraftForge.EVENT_BUS.addListener(processor::afterConfigsLoad);
         CONFIG_PROCESSORS.put(ordinal, processor);
     }
 
-    private static void initProcessors() {
+    public static void initProcessors() {
 
         for(VaultConfigProcessor<?> transmogProcessor : Processors.TransmogConfigProcessors.getStandardTransmogProcessors()) {
             addConfigProcessor(transmogProcessor);

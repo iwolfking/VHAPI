@@ -22,5 +22,6 @@ public class PalettesConfigLoader extends VaultConfigProcessor<PalettesConfig> {
             }
         }
         ((KeyRegistryAccessor)VaultRegistry.PALETTE).setLocked(true);
+        super.afterConfigsLoad(event);
     }
 }

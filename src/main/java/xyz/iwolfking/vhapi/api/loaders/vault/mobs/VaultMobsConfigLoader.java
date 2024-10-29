@@ -16,6 +16,6 @@ public class VaultMobsConfigLoader extends VaultConfigProcessor<VaultMobsConfig>
         for(VaultMobsConfig config : this.CUSTOM_CONFIGS.values()) {
             ((VaultMobsConfigAccessor)ModConfigs.VAULT_MOBS).getAttributeOverrides().putAll(((VaultMobsConfigAccessor)config).getAttributeOverrides());
         }
-
+        super.afterConfigsLoad(event);
     }
 }

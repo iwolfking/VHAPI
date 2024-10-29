@@ -50,6 +50,6 @@ public class ChampionsConfigLoader extends VaultConfigProcessor<ChampionsConfig>
                 ModConfigs.CHAMPIONS.defaultAttributeOverrides.addAll(config.defaultAttributeOverrides);
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

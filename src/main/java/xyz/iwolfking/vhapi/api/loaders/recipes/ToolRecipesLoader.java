@@ -26,6 +26,7 @@ public class ToolRecipesLoader extends VaultConfigProcessor<ToolRecipesConfig> i
             }
         }
         syncRecipes();
+        super.afterConfigsLoad(event);
     }
 
     public void syncRecipes() {

@@ -36,5 +36,6 @@ public class VaultStatsConfigLoader extends VaultConfigProcessor<VaultStatsConfi
             ((VaultStatsConfigAccessor)ModConfigs.VAULT_STATS).setPercentOfExperienceDealtAsDurabilityDamage(config.getPercentOfExperienceDealtAsDurabilityDamage());
             ((VaultStatsConfigAccessor)ModConfigs.VAULT_STATS).setFreeExperienceNotDealtAsDurabilityDamage(config.getFreeExperienceNotDealtAsDurabilityDamage());
         }
+        super.afterConfigsLoad(event);
     }
 }

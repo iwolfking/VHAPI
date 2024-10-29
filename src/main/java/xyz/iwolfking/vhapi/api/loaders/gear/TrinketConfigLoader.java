@@ -19,5 +19,6 @@ public class TrinketConfigLoader extends VaultConfigProcessor<TrinketConfig> {
                 ModConfigs.TRINKET.TRINKETS.put(key, config.TRINKETS.get(key));
             }
         }
+        super.afterConfigsLoad(event);
     }
 }

@@ -35,6 +35,6 @@ public class LegacyLootTableConfigLoader extends VaultConfigProcessor<LegacyLoot
             }
 
         }
-
+        super.afterConfigsLoad(event);
     }
 }

@@ -25,7 +25,7 @@ public class ExpertisesGUIConfigLoader extends VaultConfigProcessor<ExpertisesGU
             else {
                 ModConfigs.EXPERTISES_GUI.getStyles().putAll(CUSTOM_CONFIGS.get(key).getStyles());
             }
-
         }
+        super.afterConfigsLoad(event);
     }
 }

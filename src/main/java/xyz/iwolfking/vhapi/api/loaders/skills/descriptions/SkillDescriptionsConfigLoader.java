@@ -21,6 +21,7 @@ public class SkillDescriptionsConfigLoader extends VaultConfigProcessor<SkillDes
 
             ((SkillDescriptionsConfigAccessor)ModConfigs.SKILL_DESCRIPTIONS).getDescriptions().putAll(((SkillDescriptionsConfigAccessor) config).getDescriptions());
         }
+        super.afterConfigsLoad(event);
     }
 
 }

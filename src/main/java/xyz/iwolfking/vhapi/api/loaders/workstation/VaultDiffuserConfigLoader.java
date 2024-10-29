@@ -26,6 +26,6 @@ public class VaultDiffuserConfigLoader extends VaultConfigProcessor<VaultDiffuse
                 ModConfigs.VAULT_DIFFUSER.getDiffuserOutputMap().putAll(CUSTOM_CONFIGS.get(key).getDiffuserOutputMap());
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

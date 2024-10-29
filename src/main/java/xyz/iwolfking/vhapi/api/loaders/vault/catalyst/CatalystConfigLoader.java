@@ -15,6 +15,6 @@ public class CatalystConfigLoader extends VaultConfigProcessor<CatalystConfig> {
         for(CatalystConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.CATALYST.pools.putAll(config.pools);
         }
-
+        super.afterConfigsLoad(event);
     }
 }

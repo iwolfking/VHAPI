@@ -54,6 +54,6 @@ public class CardModifiersConfigLoader extends VaultConfigProcessor<CardModifier
                 }
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

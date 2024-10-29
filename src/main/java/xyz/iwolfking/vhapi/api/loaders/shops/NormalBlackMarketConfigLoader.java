@@ -36,6 +36,6 @@ public class NormalBlackMarketConfigLoader extends VaultConfigProcessor<SoulShar
                 }
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

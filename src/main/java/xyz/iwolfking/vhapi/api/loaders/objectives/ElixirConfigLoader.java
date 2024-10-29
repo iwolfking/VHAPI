@@ -41,5 +41,6 @@ public class ElixirConfigLoader extends VaultConfigProcessor<ElixirConfig> {
             }
 
         }
+        super.afterConfigsLoad(event);
     }
 }

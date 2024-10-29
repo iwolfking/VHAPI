@@ -19,6 +19,6 @@ public class VaultChestMetaConfigLoader extends VaultConfigProcessor<VaultMetaCh
                 ((VaultMetaChestConfigAccessor) ModConfigs.VAULT_CHEST_META).setCatalystMinLevel(config.getCatalystMinLevel());
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

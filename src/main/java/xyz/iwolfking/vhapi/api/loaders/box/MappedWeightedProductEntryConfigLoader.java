@@ -54,5 +54,6 @@ public class MappedWeightedProductEntryConfigLoader extends VaultConfigProcessor
 
             }
         }
+        super.afterConfigsLoad(event);
     }
 }

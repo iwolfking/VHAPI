@@ -26,6 +26,7 @@ public class CatalystRecipesLoader extends VaultConfigProcessor<CatalystRecipesC
             }
         }
         syncRecipes();
+        super.afterConfigsLoad(event);
     }
 
 

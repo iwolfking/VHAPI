@@ -29,6 +29,6 @@ public class VaultCrystalCatalystModifiersConfigLoader extends VaultConfigProces
             }
 
         }
-
+        super.afterConfigsLoad(event);
     }
 }

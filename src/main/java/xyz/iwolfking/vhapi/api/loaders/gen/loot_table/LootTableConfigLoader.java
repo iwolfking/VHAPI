@@ -22,5 +22,6 @@ public class LootTableConfigLoader extends VaultConfigProcessor<LootTablesConfig
             }
         }
         ((KeyRegistryAccessor)VaultRegistry.LOOT_TABLE).setLocked(true);
+        super.afterConfigsLoad(event);
     }
 }

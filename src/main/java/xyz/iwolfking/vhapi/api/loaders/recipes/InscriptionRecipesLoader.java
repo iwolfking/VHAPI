@@ -26,6 +26,7 @@ public class InscriptionRecipesLoader extends VaultConfigProcessor<InscriptionRe
             }
         }
         syncRecipes();
+        super.afterConfigsLoad(event);
     }
 
     public void syncRecipes() {

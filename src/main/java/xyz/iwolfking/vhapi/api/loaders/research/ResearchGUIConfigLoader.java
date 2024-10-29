@@ -25,7 +25,7 @@ public class ResearchGUIConfigLoader extends VaultConfigProcessor<ResearchesGUIC
             else {
                 ModConfigs.RESEARCHES_GUI.getStyles().putAll(CUSTOM_CONFIGS.get(key).getStyles());
             }
-
         }
+        super.afterConfigsLoad(event);
     }
 }

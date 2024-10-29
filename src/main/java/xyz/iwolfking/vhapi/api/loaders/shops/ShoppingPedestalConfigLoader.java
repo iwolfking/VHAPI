@@ -16,6 +16,6 @@ public class ShoppingPedestalConfigLoader extends VaultConfigProcessor<ShopPedes
         for(ShopPedestalConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.SHOP_PEDESTAL = config;
         }
-
+        super.afterConfigsLoad(event);
     }
 }

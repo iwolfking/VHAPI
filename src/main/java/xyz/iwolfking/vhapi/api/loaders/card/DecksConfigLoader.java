@@ -17,6 +17,6 @@ public class DecksConfigLoader extends VaultConfigProcessor<CardDeckConfig> {
         for(CardDeckConfig config : this.CUSTOM_CONFIGS.values()) {
             ((CardDeckConfigAccessor) ModConfigs.CARD_DECK).getValues().putAll(((CardDeckConfigAccessor)config).getValues());
         }
-
+        super.afterConfigsLoad(event);
     }
 }

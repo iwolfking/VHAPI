@@ -20,6 +20,7 @@ public class CustomVaultGearLoader extends VaultConfigProcessor<VaultGearTierCon
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         VaultGearTierConfig.registerConfigs();
+        super.afterConfigsLoad(event);
     }
 
 }

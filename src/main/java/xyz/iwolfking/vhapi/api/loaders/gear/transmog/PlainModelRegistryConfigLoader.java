@@ -40,19 +40,17 @@ public class PlainModelRegistryConfigLoader<T extends DynamicModelRegistry<Plain
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        if(loaded) {
-            return;
-        }
         for(HandheldModelConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonHandheldModel model : config.MODELS) {
                 PlainItemModel plainItemModel = model.getPlainModel();
-                registry.register(plainItemModel);
-                loaded = true;
-                DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(plainItemModel));
+                if(!registry.containsId(model.getId())) {
+                    registry.register(plainItemModel);
+                    DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(plainItemModel));
+                }
+
             }
 
         }
-        this.CUSTOM_CONFIGS.clear();
     }
 
 

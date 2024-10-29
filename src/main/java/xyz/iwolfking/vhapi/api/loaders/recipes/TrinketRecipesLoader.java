@@ -26,6 +26,7 @@ public class TrinketRecipesLoader extends VaultConfigProcessor<TrinketRecipesCon
             }
         }
         syncRecipes();
+        super.afterConfigsLoad(event);
     }
 
     public void syncRecipes() {

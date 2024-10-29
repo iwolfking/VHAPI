@@ -28,6 +28,6 @@ public class VaultGeneralConfigLoader extends VaultConfigProcessor<VaultGeneralC
                 ((VaultGeneralConfigAccessor)ModConfigs.VAULT_GENERAL).getItemBlacklist().addAll(((VaultGeneralConfigAccessor)CUSTOM_CONFIGS.get(key)).getItemBlacklist());
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

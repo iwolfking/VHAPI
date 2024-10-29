@@ -28,6 +28,7 @@ public class CustomVaultGearRecipesLoader extends VaultConfigProcessor<GearRecip
             }
         }
         syncRecipes();
+        super.afterConfigsLoad(event);
     }
 
     public void syncRecipes() {

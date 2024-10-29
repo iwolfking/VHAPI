@@ -16,5 +16,6 @@ public class ExpertiseConfigLoader extends VaultConfigProcessor<ExpertisesConfig
         for(ExpertisesConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.EXPERTISES.tree.skills.addAll(config.tree.skills);
         }
+        super.afterConfigsLoad(event);
     }
 }
