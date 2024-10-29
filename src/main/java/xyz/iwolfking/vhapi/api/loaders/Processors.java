@@ -27,7 +27,7 @@ import xyz.iwolfking.vhapi.api.loaders.gear.transmog.HandheldModelRegistryConfig
 import xyz.iwolfking.vhapi.api.loaders.gear.transmog.ShieldModelRegistryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.loot_table.LootTableConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.palettes.PalettesConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gen.template_pools.TemplatePoolsConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.gen.template_pools.TemplatePoolsLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.theme.ThemeConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TooltipConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.VaultStatsConfigLoader;
@@ -90,7 +90,7 @@ public class Processors {
 
     public static class GenerationConfigProcessors {
         public static final PalettesConfigLoader PALETTES_CONFIG_LOADER = new PalettesConfigLoader();
-        public static final TemplatePoolsConfigLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsConfigLoader();
+        public static final TemplatePoolsLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsLoader();
         public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader();
         public static final LootTableConfigLoader LOOT_TABLE_CONFIG_LOADER = new LootTableConfigLoader();
     }

@@ -33,6 +33,7 @@ public class VaultModifierConfigLoader extends VaultConfigProcessor<VaultModifie
                 }
             }
         }
+        super.afterConfigsLoad(event);
     }
 
 }

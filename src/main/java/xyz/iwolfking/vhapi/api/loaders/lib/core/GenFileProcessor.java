@@ -38,6 +38,5 @@ public class GenFileProcessor<T> implements IConfigProcessor {
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-
     }
 }

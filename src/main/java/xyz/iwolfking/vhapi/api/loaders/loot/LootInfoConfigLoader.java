@@ -18,6 +18,6 @@ public class LootInfoConfigLoader extends VaultConfigProcessor<LootInfoConfig> {
         for(LootInfoConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.LOOT_INFO_CONFIG.getLootInfoMap().putAll(config.getLootInfoMap());
         }
-
+        super.afterConfigsLoad(event);
     }
 }

@@ -31,7 +31,6 @@ public class LoaderRegistry {
     public static final VHAPIDataLoader VHAPI_DATA_LOADER = new VHAPIDataLoader();
 
     public static void onAddListener(AddReloadListenerEvent event) {
-        initProcessors();
         VHAPILoggerUtils.info("Registering VHAPI datapack listener!");
         event.addListener(VHAPI_DATA_LOADER);
 

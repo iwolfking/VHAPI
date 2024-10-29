@@ -24,6 +24,6 @@ public class VaultAltarConfigLoader extends VaultConfigProcessor<VaultAltarConfi
                 ModConfigs.VAULT_ALTAR.INTERFACES.addAll(CUSTOM_CONFIGS.get(key).INTERFACES);
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

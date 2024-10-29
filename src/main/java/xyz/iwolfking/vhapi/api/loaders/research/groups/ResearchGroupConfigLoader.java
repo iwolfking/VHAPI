@@ -44,5 +44,6 @@ public class ResearchGroupConfigLoader extends VaultConfigProcessor<ResearchGrou
             }
 
         }
+        super.afterConfigsLoad(event);
     }
 }

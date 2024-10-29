@@ -37,6 +37,7 @@
     "accessors.TemplatePoolAccessor",
     "accessors.ThemeAccessor",
     "accessors.TooltipConfigAccessor",
+    "accessors.TrinketAccessor",
     "accessors.UnidentifiedTreasureKeyAccessorConfig",
     "accessors.VaultAltarIngredientsConfigAccessor",
     "accessors.VaultCrystalCatalystConfigAccessor",
@@ -49,7 +50,7 @@
     "accessors.VaultModifierRegistyAccessor",
     "accessors.VaultModifiersConfigAccessor",
     "accessors.VaultStatsConfigAccessor",
-    "accessors.TrinketAccessor",
+    "commands.MixinVaultConfigReloadCommand",
     "custom.MixinVaultRecyclerTileEntity",
     "events.MixinGodAltarTask",
     "gen.MixinLootTable",
@@ -69,7 +70,6 @@
   ],
   "client": [
     "accessors.BountyScreenAccessor",
-    "registry.objective.MixinBountyScreen",
     "models.MixinBoosterPackItem",
     "models.MixinDeckItem",
     "registry.objective.MixinBountyScreen"

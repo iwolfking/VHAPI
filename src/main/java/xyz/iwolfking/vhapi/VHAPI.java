@@ -90,9 +90,9 @@ public class VHAPI {
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
         if(!event.getPlayer().level.isClientSide()) {
-            System.out.println("SENDING CONFIGS");
+            VHAPILoggerUtils.info("Sending VHAPI datapacks to " + event.getPlayer().getName().getString() + ".");
             //We are on server so send configs
-            VHAPISyncNetwork.syncVHAPIConfigs(new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getMapOfStrings()), (ServerPlayer) event.getPlayer());
+            VHAPISyncNetwork.syncVHAPIConfigs(new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()), (ServerPlayer) event.getPlayer());
         }
         //We don't want to reload configs on server every player login, this should only run client-side.
         if(event.getPlayer().level.isClientSide()) {

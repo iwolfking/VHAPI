@@ -17,5 +17,6 @@ public class AugmentConfigLoader extends VaultConfigProcessor<AugmentConfig> {
         for(AugmentConfig config : this.CUSTOM_CONFIGS.values()) {
             ((AugmentConfigAccessor)ModConfigs.AUGMENT).getDrops().putAll(((AugmentConfigAccessor)config).getDrops());
         }
+        super.afterConfigsLoad(event);
     }
 }

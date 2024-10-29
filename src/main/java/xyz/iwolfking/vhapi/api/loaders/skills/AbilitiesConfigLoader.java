@@ -7,7 +7,7 @@ import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 
 public class AbilitiesConfigLoader extends VaultConfigProcessor<AbilitiesConfig> {
     public AbilitiesConfigLoader() {
-        super(new AbilitiesConfig(), "abilities/ability");
+        super(new AbilitiesConfig(), "abilities/abilities");
     }
 
 
@@ -15,6 +15,7 @@ public class AbilitiesConfigLoader extends VaultConfigProcessor<AbilitiesConfig>
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(AbilitiesConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.ABILITIES.tree.skills.addAll(config.tree.skills);
+            super.afterConfigsLoad(event);
         }
     }
 }

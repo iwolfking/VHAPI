@@ -22,5 +22,6 @@ public class ThemeConfigLoader extends VaultConfigProcessor<ThemesConfig> {
             }
         }
         ((KeyRegistryAccessor)VaultRegistry.THEME).setLocked(true);
+        super.afterConfigsLoad(event);
     }
 }

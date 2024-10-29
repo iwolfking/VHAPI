@@ -36,7 +36,7 @@ public class BingoConfigLoader extends VaultConfigProcessor<BingoConfig> {
                     ModConfigs.BINGO.pools.values().add(tasks);
                 }
             }
-
+            super.afterConfigsLoad(event);
         }
     }
 

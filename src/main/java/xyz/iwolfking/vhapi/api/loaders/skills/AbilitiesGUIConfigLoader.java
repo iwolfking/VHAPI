@@ -27,5 +27,6 @@ public class AbilitiesGUIConfigLoader extends VaultConfigProcessor<AbilitiesGUIC
             }
 
         }
+        super.afterConfigsLoad(event);
     }
 }

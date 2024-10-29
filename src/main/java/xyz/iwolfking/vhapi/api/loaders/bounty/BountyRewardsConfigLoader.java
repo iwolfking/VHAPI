@@ -17,6 +17,6 @@ public class BountyRewardsConfigLoader extends VaultConfigProcessor<RewardConfig
         for(RewardConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.REWARD_CONFIG = config;
         }
-
+        super.afterConfigsLoad(event);
     }
 }

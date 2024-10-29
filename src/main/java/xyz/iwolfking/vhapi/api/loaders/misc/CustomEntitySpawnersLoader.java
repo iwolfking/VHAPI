@@ -15,6 +15,6 @@ public class CustomEntitySpawnersLoader extends VaultConfigProcessor<CustomEntit
         for(CustomEntitySpawnerConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.CUSTOM_ENTITY_SPAWNER.spawnerGroups.putAll(config.spawnerGroups);
         }
-
+        super.afterConfigsLoad(event);
     }
 }

@@ -42,5 +42,6 @@ public class WeightedProductEntryConfigLoader extends VaultConfigProcessor<Weigh
                 targetPool.get().removeEntry(entry);
             }
         }
+        super.afterConfigsLoad(event);
     }
 }

@@ -15,6 +15,6 @@ public class PulverizingConfigLoader extends VaultConfigProcessor<ToolPulverizin
         for(ToolPulverizingConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.TOOL_PULVERIZING.getLoot().putAll(config.getLoot());
         }
-
+        super.afterConfigsLoad(event);
     }
 }

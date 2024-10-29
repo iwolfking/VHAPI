@@ -28,5 +28,6 @@ public class InscriptionConfigLoader extends VaultConfigProcessor<InscriptionCon
                 ModConfigs.INSCRIPTION.ringWeights = config.ringWeights;
             }
         }
+        super.afterConfigsLoad(event);
     }
 }

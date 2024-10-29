@@ -29,5 +29,6 @@ public class ResearchGroupGUIConfigLoader extends VaultConfigProcessor<ResearchG
             }
 
         }
+        super.afterConfigsLoad(event);
     }
 }

@@ -28,5 +28,6 @@ public class TooltipConfigLoader extends VaultConfigProcessor<TooltipConfig> {
                 ((TooltipConfigAccessor)ModConfigs.TOOLTIP).getTooltips().addAll(((TooltipConfigAccessor) config).getTooltips());
             }
         }
+        super.afterConfigsLoad(event);
     }
 }

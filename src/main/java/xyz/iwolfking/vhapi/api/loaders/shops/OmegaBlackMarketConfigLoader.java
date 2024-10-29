@@ -36,6 +36,6 @@ public class OmegaBlackMarketConfigLoader extends VaultConfigProcessor<OmegaSoul
                 }
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

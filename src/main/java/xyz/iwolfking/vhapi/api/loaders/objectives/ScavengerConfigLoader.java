@@ -21,6 +21,7 @@ public class ScavengerConfigLoader extends VaultConfigProcessor<ScavengerConfig>
         for(ScavengerConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.SCAVENGER = config;
         }
+        super.afterConfigsLoad(event);
     }
 
 }

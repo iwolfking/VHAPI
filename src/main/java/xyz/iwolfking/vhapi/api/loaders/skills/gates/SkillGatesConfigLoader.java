@@ -30,5 +30,6 @@ public class SkillGatesConfigLoader extends VaultConfigProcessor<SkillGatesConfi
             }
 
         }
+        super.afterConfigsLoad(event);
     }
 }

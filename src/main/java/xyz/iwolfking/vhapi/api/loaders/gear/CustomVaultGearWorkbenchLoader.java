@@ -45,6 +45,7 @@ public class CustomVaultGearWorkbenchLoader extends VaultConfigProcessor<VaultGe
         for(Item item : this.WORKBENCH_CONFIGS.keySet()) {
                 ModConfigs.VAULT_GEAR_WORKBENCH_CONFIG.put(item, this.WORKBENCH_CONFIGS.get(item));
         }
+        super.afterConfigsLoad(event);
     }
 
 

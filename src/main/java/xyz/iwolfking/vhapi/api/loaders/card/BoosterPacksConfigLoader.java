@@ -16,6 +16,6 @@ public class BoosterPacksConfigLoader extends VaultConfigProcessor<BoosterPackCo
         for(BoosterPackConfig config : this.CUSTOM_CONFIGS.values()) {
             ModConfigs.BOOSTER_PACK.getValues().putAll(config.getValues());
         }
-
+        super.afterConfigsLoad(event);
     }
 }

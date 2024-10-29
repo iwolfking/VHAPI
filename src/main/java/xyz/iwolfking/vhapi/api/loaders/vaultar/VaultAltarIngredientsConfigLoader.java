@@ -48,5 +48,6 @@ public class VaultAltarIngredientsConfigLoader extends VaultConfigProcessor<Vaul
                 }
             }
         }
+        super.afterConfigsLoad(event);
     }
 }

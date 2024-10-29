@@ -28,6 +28,6 @@ public class VaultLevelsConfigLoader extends VaultConfigProcessor<VaultLevelsCon
                 }
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

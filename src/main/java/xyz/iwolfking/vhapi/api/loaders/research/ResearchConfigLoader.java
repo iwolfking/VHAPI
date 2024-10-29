@@ -45,6 +45,8 @@ public class ResearchConfigLoader extends VaultConfigProcessor<ResearchConfig> {
             ModConfigs.RESEARCHES.MOD_RESEARCHES.addAll(config.MOD_RESEARCHES);
             ModConfigs.RESEARCHES.CUSTOM_RESEARCHES.addAll(config.CUSTOM_RESEARCHES);
         }
+        super.afterConfigsLoad(event);
     }
+
 
 }

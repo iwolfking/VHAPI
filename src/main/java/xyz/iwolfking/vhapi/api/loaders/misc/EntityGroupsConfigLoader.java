@@ -36,6 +36,6 @@ public class EntityGroupsConfigLoader extends VaultConfigProcessor<EntityGroupsC
                 }
             }
         }
-
+        super.afterConfigsLoad(event);
     }
 }

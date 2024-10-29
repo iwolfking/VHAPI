@@ -15,6 +15,6 @@ public class VaultRecyclerConfigLoader extends VaultConfigProcessor<CustomVaultR
         for(CustomVaultRecyclerConfig config : this.CUSTOM_CONFIGS.values()) {
             CustomRecyclerOutputs.CUSTOM_OUTPUTS.putAll(config.getOutputs());
         }
-
+        super.afterConfigsLoad(event);
     }
 }

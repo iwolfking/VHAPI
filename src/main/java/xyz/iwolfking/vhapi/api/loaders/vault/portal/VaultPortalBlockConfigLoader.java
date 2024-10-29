@@ -25,6 +25,6 @@ public class VaultPortalBlockConfigLoader extends VaultConfigProcessor<VaultPort
             newPortalBlocks.addAll(portalBlocks);
             ModConfigs.VAULT_PORTAL.VALID_BLOCKS = newPortalBlocks.toArray(String[]::new);
         }
-
+        super.afterConfigsLoad(event);
     }
 }

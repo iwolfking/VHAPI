@@ -26,6 +26,7 @@ public class CustomTitleConfigLoader extends VaultConfigProcessor<CustomTitleCon
                 ModConfigs.ASCENSION_FORGE.getListings().add(title.titleStack(PlayerTitlesConfig.Affix.SUFFIX));
             }
         }
+        super.afterConfigsLoad(event);
     }
 
 
