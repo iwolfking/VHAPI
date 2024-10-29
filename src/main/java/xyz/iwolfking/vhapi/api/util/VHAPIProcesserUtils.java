@@ -9,10 +9,7 @@ import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
 import xyz.iwolfking.vhapi.api.lib.core.readers.CustomVaultConfigReader;
 import xyz.iwolfking.vhapi.api.loaders.lib.VHAPIDataLoader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Path;
 
@@ -32,4 +29,10 @@ public class VHAPIProcesserUtils {
             e.printStackTrace();
         }
     }
+
+    public static void addManualConfigFile(InputStream stream, ResourceLocation resourceLocation) {
+        LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.put(resourceLocation, JsonUtils.parseJsonContentFromStream(stream));
+    }
+
+
 }

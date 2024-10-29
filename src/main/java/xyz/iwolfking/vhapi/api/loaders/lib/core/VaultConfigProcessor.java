@@ -8,6 +8,7 @@ import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.core.readers.CustomVaultConfigReader;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
+import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public abstract class VaultConfigProcessor<T extends Config> implements IConfigP
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        this.CUSTOM_CONFIGS.clear();
+        //this.CUSTOM_CONFIGS.clear();
     }
 
     public void processMatchingConfigs() {

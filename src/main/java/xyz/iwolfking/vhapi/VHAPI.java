@@ -30,6 +30,7 @@ import xyz.iwolfking.vhapi.api.events.vault.VaultEvents;
 import xyz.iwolfking.vhapi.api.registry.VaultGearRegistry;
 import xyz.iwolfking.vhapi.api.registry.VaultObjectiveRegistry;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
+import xyz.iwolfking.vhapi.api.util.VHAPIProcesserUtils;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vhapi.config.VHAPIConfig;
 import xyz.iwolfking.vhapi.mixin.accessors.BountyScreenAccessor;
@@ -40,6 +41,7 @@ import xyz.iwolfking.vhapi.proxy.client.VHAPISyncClientProxy;
 import xyz.iwolfking.vhapi.proxy.server.VHAPISyncServerProxy;
 
 
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,6 +54,7 @@ public class VHAPI {
     public static final Logger LOGGER = LogUtils.getLogger();
     private final AtomicBoolean hasLoaded = new AtomicBoolean();
     public static final String MODID = "vhapi";
+    public static boolean shouldPurgeConfigs = false;
 
     public VHAPI() {
         VHAPILoggerUtils.debug("Initializing VHAPI!");
@@ -72,7 +75,6 @@ public class VHAPI {
         MinecraftForge.EVENT_BUS.register(this);
         VaultEvents.init();
         PROXY.init();
-
         //Config Sync from Server
 
     }
