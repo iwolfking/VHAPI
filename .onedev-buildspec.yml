@@ -1,0 +1,19 @@
+version: 36
+jobs:
+- name: Push to Github
+  jobExecutor: mainworker
+  steps:
+  - !PushRepository
+    name: Push to Github
+    remoteUrl: https://github.com/iwolfking/VHAPI.git
+    userName: iwolfking
+    passwordSecret: access-token
+    force: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !BranchUpdateTrigger {}
+  - !TagCreateTrigger {}
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 14400
