@@ -59,7 +59,7 @@ public class VHAPI {
     public VHAPI() {
         VHAPILoggerUtils.debug("Initializing VHAPI!");
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, VHAPIConfig.SERVER_SPEC, "vhapi-server.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, VHAPIConfig.COMMON_SPEC, "vhapi-server.toml");
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
@@ -74,7 +74,6 @@ public class VHAPI {
 
         MinecraftForge.EVENT_BUS.register(this);
         VaultEvents.init();
-        PROXY.init();
 
     }
 
@@ -85,7 +84,9 @@ public class VHAPI {
 
 
     private void setup(final FMLCommonSetupEvent event)  {
-
+        if(VHAPIConfig.COMMON.syncDatapackConfigs.get()) {
+            PROXY.init();
+        }
     }
 
     public static ResourceLocation of(String name) {
@@ -95,7 +96,7 @@ public class VHAPI {
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
         //Only servers ever need to send datapack syncs
         DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
-            if(VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
+            if(VHAPIConfig.COMMON.syncDatapackConfigs.get()) {
                 VHAPILoggerUtils.info("Sending VHAPI datapacks to " + event.getPlayer().getName().getString() + ".");
                 //We are on server so send configs
                 VHAPISyncNetwork.syncVHAPIConfigs(new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()), (ServerPlayer) event.getPlayer());

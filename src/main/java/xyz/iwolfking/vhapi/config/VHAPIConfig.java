@@ -5,22 +5,22 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class VHAPIConfig {
-    public static class Server {
+    public static class Common {
         public final ForgeConfigSpec.ConfigValue<Boolean> syncDatapackConfigs;
 
-        public Server(ForgeConfigSpec.Builder builder) {
+        public Common(ForgeConfigSpec.Builder builder) {
             builder.push("Main Settings");
             this.syncDatapackConfigs = builder.comment("Whether the server should attempt to sync configs with clients with VHAPI installed. (default: true)").define("syncDatapackConfigs", true);
             builder.pop();
         }
     }
 
-    public static final Server SERVER;
-    public static final ForgeConfigSpec SERVER_SPEC;
+    public static final Common COMMON;
+    public static final ForgeConfigSpec COMMON_SPEC;
 
     static {
-        Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(Server::new);
-        SERVER = serverSpecPair.getLeft();
-        SERVER_SPEC = serverSpecPair.getRight();
+        Pair<Common, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(Common::new);
+        COMMON = serverSpecPair.getLeft();
+        COMMON_SPEC = serverSpecPair.getRight();
     }
 }
