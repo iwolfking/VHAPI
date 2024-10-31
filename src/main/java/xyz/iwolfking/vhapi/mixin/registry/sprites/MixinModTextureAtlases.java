@@ -38,7 +38,7 @@ public class MixinModTextureAtlases {
 
     /**
      * @author iwolfking
-     * @reason Modify texture atlas to contain all ability textures under /gui/abilities
+     * @reason Modify texture atlas to contain all ability textures under /gui/researches
      */
     @Inject(method = "lambda$static$3", at = @At("HEAD"), cancellable = true)
     private static void lambda$static$3(CallbackInfoReturnable<List<ResourceLocation>> cir) {
@@ -49,7 +49,7 @@ public class MixinModTextureAtlases {
 
     /**
      * @author iwolfking
-     * @reason Modify texture atlas to contain all ability textures under /gui/abilities
+     * @reason Modify texture atlas to contain all ability textures under /gui/research_groups
      */
     @Inject(method = "lambda$static$4", at = @At("HEAD"), cancellable = true)
     private static void lambda$static$4(CallbackInfoReturnable<List<ResourceLocation>> cir) {
@@ -60,7 +60,7 @@ public class MixinModTextureAtlases {
 
     /**
      * @author iwolfking
-     * @reason Modify texture atlas to contain all ability textures under /gui/abilities
+     * @reason Modify texture atlas to contain all ability textures under /gui/skills
      */
     @Inject(method = "lambda$static$5", at = @At("HEAD"), cancellable = true)
     private static void lambda$static$5(CallbackInfoReturnable<List<ResourceLocation>> cir) {
