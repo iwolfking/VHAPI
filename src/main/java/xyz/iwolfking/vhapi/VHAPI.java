@@ -42,7 +42,7 @@ import xyz.iwolfking.vhapi.proxy.server.VHAPISyncServerProxy;
 
 
 import java.io.InputStream;
-import java.util.Collection;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -135,20 +135,50 @@ public class VHAPI {
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = MODID)
     public static class Client {
+        public static final Map<String, List<ResourceLocation>> CUSTOM_TEXTURE_ATLAS_MAP = new HashMap<>();
         @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public static void textureStitch(TextureStitchEvent.Pre event) {
             if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-                ResourceManager manager = Minecraft.getInstance().getResourceManager();
+
+                //STITCH ALL VAULT MODIFIER ICONS
+                addSpritesToAtlas("MODIFIERS", "/textures/gui/modifiers");
+
+                //STITCH ALL ABILITY ICONS
+                addSpritesToAtlas("ABILITY", "/textures/gui/abilities");
+
+                //STITCH ALL RESEARCH ICONS
+                addSpritesToAtlas("RESEARCH", "/textures/gui/researches");
+
+                //STITCH ALL RESEARCH GROUP ICONS
+                addSpritesToAtlas("RESEARCH_GROUP", "/textures/gui/research_groups");
+
+                //STITCH ALL RESEARCH GROUP ICONS
+                addSpritesToAtlas("SKILLS", "/textures/gui/skills");
+
+
+                //Stitch all Gear Textures
                 Collection<ResourceLocation> gearTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/gear", s -> s.endsWith(".png"));
                 //Collection<ResourceLocation> boosterTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/booster_pack", s -> s.endsWith(".png"));
                 for(ResourceLocation loc : gearTextures) {
-                    if(loc.getNamespace().equals("vhapi")) {
+                    if(!loc.getNamespace().equals("the_vault")) {
                         VHAPILoggerUtils.debug("Stitching custom transmog texture: " + loc);
                         event.addSprite(ResourceLocUtils.stripLocationForSprite(loc));
                     }
                 }
             }
+        }
+
+
+        private static void addSpritesToAtlas(String type, String directory) {
+            Collection<ResourceLocation> textures = Minecraft.getInstance().getResourceManager().listResources(directory, s -> s.endsWith(".png"));
+            List<ResourceLocation> textureLocations = new ArrayList<>();
+
+            for(ResourceLocation loc : textures) {
+                textureLocations.add(ResourceLocUtils.stripLocationForSprite(loc));
+            }
+
+            CUSTOM_TEXTURE_ATLAS_MAP.put(type, textureLocations);
         }
     }
 
