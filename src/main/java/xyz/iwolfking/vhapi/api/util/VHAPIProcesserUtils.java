@@ -22,17 +22,22 @@ public class VHAPIProcesserUtils {
     public static void addManualConfigFile(File file, ResourceLocation resourceLocation) {
         try (FileReader reader = new FileReader(file)) {
             JsonElement jsonElement = JsonParser.parseReader(reader);
-
-            LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.put(resourceLocation, jsonElement);
-
+            addToLoader(resourceLocation, jsonElement);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static void addManualConfigFile(InputStream stream, ResourceLocation resourceLocation) {
-        LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.put(resourceLocation, JsonUtils.parseJsonContentFromStream(stream));
+        addToLoader(resourceLocation, JsonUtils.parseJsonContentFromStream(stream));
     }
 
 
+    private static void addToLoader(ResourceLocation location, JsonElement element) {
+        if(LoaderRegistry.VHAPI_DATA_LOADER.getIgnoredConfigs().contains(location)) {
+            return;
+        }
+
+        LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.put(location, element);
+    }
 }

@@ -5,6 +5,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vhapi.api.events.ConfigDataLoaderEvent;
+import xyz.iwolfking.vhapi.api.events.VHAPIProcessorsEvent;
 import xyz.iwolfking.vhapi.api.loaders.Processors;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
@@ -44,6 +45,7 @@ public class LoaderRegistry {
     }
 
     public static void initProcessors() {
+        MinecraftForge.EVENT_BUS.post(new VHAPIProcessorsEvent.Init());
 
         for(VaultConfigProcessor<?> transmogProcessor : Processors.TransmogConfigProcessors.getStandardTransmogProcessors()) {
             addConfigProcessor(transmogProcessor);
@@ -143,5 +145,7 @@ public class LoaderRegistry {
 
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ALTAR_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_CRYSTAL_CONFIG_LOADER);
+
+        MinecraftForge.EVENT_BUS.post(new VHAPIProcessorsEvent.End());
     }
 }
