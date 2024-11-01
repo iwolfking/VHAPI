@@ -72,7 +72,9 @@
     "accessors.BountyScreenAccessor",
     "models.MixinBoosterPackItem",
     "models.MixinDeckItem",
-    "registry.objective.MixinBountyScreen"
+    "registry.objective.MixinBountyScreen",
+    "registry.sprites.MixinModTextureAtlases",
+    "registry.sprites.MixinResourceTextureAtlasHolder"
   ],
   "injectors": {
     "defaultRequire": 1

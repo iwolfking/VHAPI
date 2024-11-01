@@ -6,19 +6,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.common.MinecraftForge;
 import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.data.core.ConfigData;
-import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
-import xyz.iwolfking.vhapi.api.lib.core.processors.IPreConfigProcessor;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IPreProcessor;
-import xyz.iwolfking.vhapi.api.util.VHAPIProcesserUtils;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
+import xyz.iwolfking.vhapi.config.VHAPIConfig;
 import xyz.iwolfking.vhapi.networking.util.StringCompressor;
 
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -61,13 +57,18 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     }
 
     public Set<ResourceLocation> getIgnoredConfigs() {
-        return CONFIGS_TO_IGNORE;
+        Set<ResourceLocation> locations = CONFIGS_TO_IGNORE;
+        locations.addAll(VHAPIConfig.COMMON.getIgnoredConfigs());
+        return locations;
     }
 
     public Map<ResourceLocation, byte[]> getCompressedConfigMap() {
         Map<ResourceLocation, byte[]> returnMap = new HashMap<>();
 
         for(ResourceLocation loc : JSON_DATA.keySet()) {
+            if(getIgnoredConfigs().contains(loc)) {
+                continue;
+            }
             returnMap.put(loc, StringCompressor.compress(JSON_DATA.get(loc).toString()));
         }
 
@@ -81,6 +82,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
         }
 
         for(int i = 0; i < LoaderRegistry.CONFIG_PROCESSORS.size(); i++) {
+
             IConfigProcessor configProcessor = LoaderRegistry.CONFIG_PROCESSORS.get(i);
             configProcessor.processMatchingConfigs();
 
@@ -89,6 +91,8 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
             }
 
         }
+
         ModConfigs.register();
+
     }
 }
