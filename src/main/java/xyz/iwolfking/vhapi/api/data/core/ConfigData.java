@@ -13,6 +13,7 @@ import iskallia.vault.core.card.CardCondition;
 import iskallia.vault.core.card.CardEntry;
 import iskallia.vault.core.card.CardScaler;
 import iskallia.vault.core.data.adapter.Adapters;
+import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.data.key.VersionedKey;
 import iskallia.vault.core.vault.objective.bingo.BingoItem;
 import iskallia.vault.core.vault.objective.elixir.ElixirTask;
@@ -20,11 +21,15 @@ import iskallia.vault.core.vault.objective.scavenger.ScavengeTask;
 import iskallia.vault.core.world.data.entity.EntityPredicate;
 import iskallia.vault.core.world.data.item.ItemPredicate;
 import iskallia.vault.core.world.data.tile.TilePredicate;
+import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootPool;
 import iskallia.vault.core.world.loot.LootTable;
+import iskallia.vault.core.world.processor.Palette;
 import iskallia.vault.core.world.processor.Processor;
 import iskallia.vault.core.world.roll.FloatRoll;
 import iskallia.vault.core.world.roll.IntRoll;
+import iskallia.vault.core.world.template.Template;
+import iskallia.vault.core.world.template.data.TemplatePool;
 import iskallia.vault.item.crystal.CrystalData;
 import iskallia.vault.item.crystal.layout.CrystalLayout;
 import iskallia.vault.item.crystal.modifiers.CrystalModifiers;
@@ -50,4 +55,5 @@ import java.util.Set;
 
 public class ConfigData {
     public static final Gson CONFIG_LOADER_GSON = Config.GSON;
+    public static final Gson GEN_CONFIG_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(LootTable.class, Adapters.LOOT_TABLE).registerTypeHierarchyAdapter(Palette.class, PaletteAdapter.INSTANCE).registerTypeAdapter(TemplatePool.class, Adapters.TEMPLATE_POOL).registerTypeAdapterFactory(ThemeAdapter.FACTORY).setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
 }

@@ -46,8 +46,10 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import xyz.iwolfking.vhapi.VHAPI;
+import xyz.iwolfking.vhapi.api.data.core.ConfigData;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.MixinConfigAccessor;
 
@@ -55,7 +57,7 @@ import java.lang.reflect.Type;
 
 public class CustomVaultConfigReader<T extends Config> {
 
-    public static final Gson GSON = Config.GSON;
+    public static final Gson GSON = ConfigData.CONFIG_LOADER_GSON;
 
     /**
      *

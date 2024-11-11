@@ -49,12 +49,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import xyz.iwolfking.vhapi.VHAPI;
+import xyz.iwolfking.vhapi.api.data.core.ConfigData;
 
 import java.lang.reflect.Type;
 
 public class GenFileReader<T> {
 
-    public static final Gson GSON = Config.GSON;
+    public static final Gson GSON = ConfigData.GEN_CONFIG_GSON;
     /**
      *
      * @param name The file name of the datapack file.
