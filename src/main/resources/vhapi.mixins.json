@@ -63,6 +63,7 @@
     "registry.gear.MixinMainModDynamicModels",
     "registry.gear.MixinModModels",
     "registry.gear.MixinVaultGearToolTier",
+    "registry.gear.MixinVaultGearWorkbenchConfig",
     "registry.modifiers.MixinVaultModifiersConfig",
     "registry.objective.MixinClassicListenersLogic",
     "registry.objective.MixinCompletionProperties",
