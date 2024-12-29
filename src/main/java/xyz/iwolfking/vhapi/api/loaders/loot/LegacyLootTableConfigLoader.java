@@ -27,7 +27,9 @@ public class LegacyLootTableConfigLoader extends VaultConfigProcessor<LegacyLoot
                 }
 
                 for(LegacyLootTablesConfig.Level level : ((LegacyLootTablesConfigAccessor)ModConfigs.LOOT_TABLES).getLevels()) {
-                    level.COMPLETION_CRATE.putAll(completionsToAdd.get(level.getLevel()));
+                    if(level.COMPLETION_CRATE != null) {
+                        level.COMPLETION_CRATE.putAll(completionsToAdd.get(level.getLevel()));
+                    }
                 }
             }
             else {

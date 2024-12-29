@@ -18,6 +18,9 @@ public class MixinModTextureAtlases {
      */
     @Inject(method = "lambda$static$0", at = @At("HEAD"), cancellable = true)
     private static void lambda$static$0(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+        if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("MODIFIERS")) {
+            return;
+        }
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("MODIFIERS").isEmpty()) {
             cir.setReturnValue(VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("MODIFIERS"));
         }
@@ -29,6 +32,9 @@ public class MixinModTextureAtlases {
      */
     @Inject(method = "lambda$static$1", at = @At("HEAD"), cancellable = true)
     private static void lambda$static$1(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+        if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("ABILITY")) {
+            return;
+        }
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("ABILITY").isEmpty()) {
             cir.setReturnValue(VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("ABILITY"));
         }
@@ -42,6 +48,9 @@ public class MixinModTextureAtlases {
      */
     @Inject(method = "lambda$static$3", at = @At("HEAD"), cancellable = true)
     private static void lambda$static$3(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+        if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("RESEARCH")) {
+            return;
+        }
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("RESEARCH").isEmpty()) {
             cir.setReturnValue(VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("RESEARCH"));
         }
@@ -53,6 +62,9 @@ public class MixinModTextureAtlases {
      */
     @Inject(method = "lambda$static$4", at = @At("HEAD"), cancellable = true)
     private static void lambda$static$4(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+        if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("RESEARCH_GROUP")) {
+            return;
+        }
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("RESEARCH_GROUP").isEmpty()) {
             cir.setReturnValue(VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("RESEARCH_GROUP"));
         }
@@ -64,6 +76,9 @@ public class MixinModTextureAtlases {
      */
     @Inject(method = "lambda$static$5", at = @At("HEAD"), cancellable = true)
     private static void lambda$static$5(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+        if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("SKILLS")) {
+            return;
+        }
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("SKILLS").isEmpty()) {
             cir.setReturnValue(VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("SKILLS"));
         }

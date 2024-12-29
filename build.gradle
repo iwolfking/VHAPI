@@ -165,7 +165,7 @@ dependencies {
         jarJar.ranged(it, "[0.3.3,)")
     }
     implementation files('lib/vault_hunters_sync_server_config-1.4.0.jar')
-    implementation files('lib/the_vault-1.18.2-3.15.2.3636.jar')
+    implementation files('lib/the_vault-1.18.2-3.15.2.3661.jar')
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
