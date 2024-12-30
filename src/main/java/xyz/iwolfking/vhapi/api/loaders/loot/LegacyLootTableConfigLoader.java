@@ -23,11 +23,13 @@ public class LegacyLootTableConfigLoader extends VaultConfigProcessor<LegacyLoot
             if(!key.getPath().contains("new")) {
                 Map<Integer, Map<String, String>> completionsToAdd = new HashMap<>();
                 for(LegacyLootTablesConfig.Level level : ((LegacyLootTablesConfigAccessor)config).getLevels()) {
-                    completionsToAdd.put(level.getLevel(), level.COMPLETION_CRATE);
+                    if(level.COMPLETION_CRATE != null) {
+                        completionsToAdd.put(level.getLevel(), level.COMPLETION_CRATE);
+                    }
                 }
 
                 for(LegacyLootTablesConfig.Level level : ((LegacyLootTablesConfigAccessor)ModConfigs.LOOT_TABLES).getLevels()) {
-                    if(level.COMPLETION_CRATE != null) {
+                    if(level.COMPLETION_CRATE != null && completionsToAdd.containsKey(level.getLevel())) {
                         level.COMPLETION_CRATE.putAll(completionsToAdd.get(level.getLevel()));
                     }
                 }

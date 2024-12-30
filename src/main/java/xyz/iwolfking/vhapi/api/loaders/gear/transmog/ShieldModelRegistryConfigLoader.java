@@ -45,7 +45,7 @@ public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<Shie
                 ShieldModel shieldModel = model.getShieldModel();
                 if(registry.containsId(shieldModel.getId())) {
                     registry.register(shieldModel);
-                    DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(shieldModel));
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(shieldModel));
                 }
             }
 

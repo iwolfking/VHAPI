@@ -47,7 +47,7 @@ public class HandheldModelRegistryConfigLoader<T extends DynamicModelRegistry<Ha
                 HandHeldModel handHeldModel = model.getModel();
                 if(!registry.containsId(model.getId())) {
                     registry.register(handHeldModel);
-                    DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(handHeldModel));
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(handHeldModel));
                 }
             }
 
