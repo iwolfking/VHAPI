@@ -141,6 +141,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.LOOT_INFO_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CHAMPIONS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.ENTITY_GROUPS_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.TILE_GROUPS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CUSTOM_TITLE_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CUSTOM_ENTITY_SPAWNERS_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.RAID_ACTIONS_CONFIG_LOADER);
