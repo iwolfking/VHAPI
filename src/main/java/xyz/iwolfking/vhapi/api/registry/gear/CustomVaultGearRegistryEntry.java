@@ -19,7 +19,7 @@ public class CustomVaultGearRegistryEntry extends ForgeRegistryEntry<CustomVault
 
     private final DynamicModelRegistry<?> dynamicModelRegistry;
 
-    private final Map<VaultGearRarity, List<String>> modelRarityMap;
+    private final Map<String, List<String>> modelRarityMap;
 
     /**
      *
@@ -29,7 +29,7 @@ public class CustomVaultGearRegistryEntry extends ForgeRegistryEntry<CustomVault
      * @param dynamicModelRegistry A registry that will contain all of the transmog models for the gear piece.
      * @param modelRarityMap A map of VaultGearRarity to a list of transmog model names.
      */
-    public CustomVaultGearRegistryEntry(String id, String name, @NotNull Item registryItem, DynamicModelRegistry<?> dynamicModelRegistry, Map<VaultGearRarity, List<String>> modelRarityMap) {
+    public CustomVaultGearRegistryEntry(String id, String name, @NotNull Item registryItem, DynamicModelRegistry<?> dynamicModelRegistry, Map<String, List<String>> modelRarityMap) {
         this.name = name;
         this.registryItem = registryItem;
         this.dynamicModelRegistry = dynamicModelRegistry;
@@ -54,7 +54,7 @@ public class CustomVaultGearRegistryEntry extends ForgeRegistryEntry<CustomVault
         return dynamicModelRegistry;
     }
 
-    public Map<VaultGearRarity, List<String>> getModelRarityMap() {
+    public Map<String, List<String>> getModelRarityMap() {
         return modelRarityMap;
     }
 }
