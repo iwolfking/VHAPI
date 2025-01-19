@@ -14,7 +14,7 @@ public class CustomGearModelRollRaritiesConfig extends Config {
     public ResourceLocation itemRegistryName;
 
     @Expose
-    public Map<VaultGearRarity, List<String>> MODEL_ROLLS;
+    public Map<String, List<String>> MODEL_ROLLS;
     @Override
     public String getName() {
         return "custom_gear_model_roll_rarities";

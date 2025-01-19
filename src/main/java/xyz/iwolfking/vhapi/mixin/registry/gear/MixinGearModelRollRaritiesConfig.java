@@ -32,7 +32,7 @@ public abstract class MixinGearModelRollRaritiesConfig extends Config {
     @Shadow @Nullable protected abstract VaultGearRarity getForcedTierRarity(ItemStack stack, ResourceLocation modelId);
 
     @Inject(method = "getRolls", at = @At("HEAD"), cancellable = true)
-    private void getRollsHook(CallbackInfoReturnable<Map<VaultGearRarity, List<String>>> cir, @Local ItemStack stack) {
+    private void getRollsHook(CallbackInfoReturnable<Map<String, List<String>>> cir, @Local ItemStack stack) {
         if(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.containsKey(stack.getItem().getRegistryName())) {
             cir.setReturnValue(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(stack.getItem().getRegistryName()));
         }
