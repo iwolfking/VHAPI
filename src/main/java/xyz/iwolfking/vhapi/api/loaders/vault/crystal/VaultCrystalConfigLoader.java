@@ -1,7 +1,9 @@
 package xyz.iwolfking.vhapi.api.loaders.vault.crystal;
 
 import iskallia.vault.config.VaultCrystalConfig;
+import iskallia.vault.config.entry.LevelEntryList;
 import iskallia.vault.init.ModConfigs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
@@ -36,9 +38,19 @@ public class VaultCrystalConfigLoader extends VaultConfigProcessor<VaultCrystalC
             }
 
             //Themes
-            //Unfortunately can't add to individual pools due to ThemeEntry being private.
             if(config.THEMES != null) {
-                ModConfigs.VAULT_CRYSTAL.THEMES.putAll(config.THEMES);
+                for(ResourceLocation key : config.THEMES.keySet()) {
+                    LevelEntryList<VaultCrystalConfig.ThemeEntry> levelEntryList = config.THEMES.get(key);
+                    if(ModConfigs.VAULT_CRYSTAL.THEMES.containsKey(key)) {
+                        levelEntryList.forEach(themeEntry -> {
+                            ModConfigs.VAULT_CRYSTAL.THEMES.get(key).getForLevel(themeEntry.level).ifPresentOrElse(themeEntry1 -> themeEntry1.pool.putAll(levelEntryList.getForLevel(themeEntry.level).get().pool), () -> ModConfigs.VAULT_CRYSTAL.THEMES.get(key).add(themeEntry));
+                        });
+                    }
+                    else {
+                        ModConfigs.VAULT_CRYSTAL.THEMES.put(key, levelEntryList);
+                    }
+                }
+                //ModConfigs.VAULT_CRYSTAL.THEMES.putAll(config.THEMES);
             }
 
             //Objectives

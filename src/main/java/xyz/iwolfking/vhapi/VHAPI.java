@@ -31,6 +31,7 @@ import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPIUtils;
 import xyz.iwolfking.vhapi.config.VHAPIConfig;
 import xyz.iwolfking.vhapi.mixin.accessors.BountyScreenAccessor;
+import xyz.iwolfking.vhapi.mixin.registry.sprites.MixinModTextureAtlases;
 import xyz.iwolfking.vhapi.networking.VHAPISyncDescriptor;
 import xyz.iwolfking.vhapi.networking.VHAPISyncNetwork;
 import xyz.iwolfking.vhapi.proxy.IVHAPISyncProxy;
@@ -69,7 +70,7 @@ public class VHAPI {
         modEventBus.addListener(VaultObjectiveRegistry::newRegistry);
         modEventBus.addListener(VaultGearRegistry::newRegistry);
 
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(Client::onClientLogin);
         });
 
@@ -97,7 +98,7 @@ public class VHAPI {
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
         //Only servers ever need to send datapack syncs
-        DistExecutor.safeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
+        DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
             if(VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
                 VHAPILoggerUtils.info("Sending VHAPI datapacks to " + event.getPlayer().getName().getString() + ".");
                 //We are on server so send configs
@@ -161,6 +162,10 @@ public class VHAPI {
 
                 //Stitch all Gear Textures
                 Collection<ResourceLocation> gearTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/gear", s -> s.endsWith(".png"));
+                if(gearTextures.isEmpty()) {
+                    return;
+                }
+
                 //Collection<ResourceLocation> boosterTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/booster_pack", s -> s.endsWith(".png"));
                 for(ResourceLocation loc : gearTextures) {
                     if(!loc.getNamespace().equals("the_vault")) {
@@ -175,6 +180,10 @@ public class VHAPI {
         private static void addSpritesToAtlas(String type, String directory) {
             Collection<ResourceLocation> textures = Minecraft.getInstance().getResourceManager().listResources(directory, s -> s.endsWith(".png"));
             List<ResourceLocation> textureLocations = new ArrayList<>();
+
+            if(textures.isEmpty()) {
+                return;
+            }
 
             for(ResourceLocation loc : textures) {
                 textureLocations.add(ResourceLocUtils.stripLocationForSprite(loc));

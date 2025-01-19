@@ -158,14 +158,13 @@ dependencies {
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
-    implementation fg.deobf('curse.maven:vault-hunters-official-mod-458203:5621637')
+    //implementation fg.deobf('curse.maven:vault-hunters-official-mod-458203:5621637')
     implementation fg.deobf('curse.maven:curios-309927:4985315')
     compileOnly annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.3")
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.3")) {
         jarJar.ranged(it, "[0.3.3,)")
     }
-    implementation files('lib/vault_hunters_sync_server_config-1.4.0.jar')
+    implementation fg.deobf("curse.maven:vault-hunters-official-mod-458203:5925633")
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }

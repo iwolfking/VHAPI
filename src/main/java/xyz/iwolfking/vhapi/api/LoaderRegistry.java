@@ -65,6 +65,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.RecipesConfigProcessors.TRINKET_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.TOOL_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.GEAR_RECIPES_LOADER);
+        addConfigProcessor(Processors.RecipesConfigProcessors.JEWEL_CRAFTING_RECIPES_LOADER);
 
         addConfigProcessor(Processors.BuiltInLootBoxConfigProcessors.MOD_BOX_CONFIG_LOADER);
         addConfigProcessor(Processors.BuiltInLootBoxConfigProcessors.MYSTERY_BOX_CONFIG_LOADER);
@@ -78,6 +79,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.VaultGearConfigProcessors.CUSTOM_GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER);
         addConfigProcessor(Processors.VaultGearConfigProcessors.GEAR_ENCHANTMENT_CONFIG_LOADER);
         addConfigProcessor(Processors.VaultGearConfigProcessors.TRINKET_CONFIG_LOADER);
+        addConfigProcessor(Processors.VaultGearConfigProcessors.UNIQUE_GEAR_CONFIG_LOADER);
 
         addConfigProcessor(Processors.VaultModifierConfigProcessors.VAULT_MODIFIER_CONFIG_LOADER);
         addConfigProcessor(Processors.VaultModifierConfigProcessors.VAULT_MODIFIER_POOLS_CONFIG_LOADER);
@@ -141,6 +143,8 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.ENTITY_GROUPS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CUSTOM_TITLE_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CUSTOM_ENTITY_SPAWNERS_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.RAID_ACTIONS_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.TRANSLATIONS_CONFIG_LOADER);
 
 
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ALTAR_CONFIG_LOADER);

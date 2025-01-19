@@ -29,7 +29,9 @@ public class CustomGearModelRollRaritiesConfigLoader extends VaultConfigProcesso
                 }
             }
             else {
-                CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.put(config.itemRegistryName, config.MODEL_ROLLS);
+                if(config.MODEL_ROLLS != null) {
+                    CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.put(config.itemRegistryName, config.MODEL_ROLLS);
+                }
             }
         }
     }

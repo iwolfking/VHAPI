@@ -45,7 +45,7 @@ public class PlainModelRegistryConfigLoader<T extends DynamicModelRegistry<Plain
                 PlainItemModel plainItemModel = model.getPlainModel();
                 if(!registry.containsId(model.getId())) {
                     registry.register(plainItemModel);
-                    DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(plainItemModel));
+                    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.bakeModel(plainItemModel));
                 }
 
             }

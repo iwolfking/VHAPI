@@ -17,10 +17,7 @@ import xyz.iwolfking.vhapi.api.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.card.*;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertiseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertisesGUIConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.CustomVaultGearLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.CustomVaultGearWorkbenchLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.GearEnchantmentConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.TrinketConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.gear.*;
 import xyz.iwolfking.vhapi.api.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gear.transmog.GearModelRollRaritiesConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gear.transmog.HandheldModelRegistryConfigLoader;
@@ -30,6 +27,7 @@ import xyz.iwolfking.vhapi.api.loaders.gen.palettes.PalettesConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.template_pools.TemplatePoolsLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.theme.ThemeConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TooltipConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.general.TranslationsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.VaultStatsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.items.AugmentConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.items.InscriptionConfigLoader;
@@ -40,6 +38,7 @@ import xyz.iwolfking.vhapi.api.loaders.loot.LootInfoConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.misc.ChampionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.misc.CustomEntitySpawnersLoader;
 import xyz.iwolfking.vhapi.api.loaders.misc.EntityGroupsConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.misc.RaidActionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.objectives.BingoConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.objectives.ElixirConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.objectives.MonolithConfigLoader;
@@ -101,6 +100,7 @@ public class Processors {
         public static final TrinketRecipesLoader TRINKET_RECIPES_LOADER = new TrinketRecipesLoader();
         public static final ToolRecipesLoader TOOL_RECIPES_LOADER = new ToolRecipesLoader();
         public static final CustomVaultGearRecipesLoader GEAR_RECIPES_LOADER = new CustomVaultGearRecipesLoader();
+        public static final JewelCraftingRecipesLoader JEWEL_CRAFTING_RECIPES_LOADER = new JewelCraftingRecipesLoader();
     }
 
 
@@ -119,6 +119,7 @@ public class Processors {
         public static final CustomGearModelRollRaritiesConfigLoader CUSTOM_GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader();
         public static final GearEnchantmentConfigLoader GEAR_ENCHANTMENT_CONFIG_LOADER = new GearEnchantmentConfigLoader();
         public static final TrinketConfigLoader TRINKET_CONFIG_LOADER = new TrinketConfigLoader();
+        public static final UniqueGearConfigLoader UNIQUE_GEAR_CONFIG_LOADER = new UniqueGearConfigLoader();
     }
 
     public static class VaultModifierConfigProcessors {
@@ -200,6 +201,8 @@ public class Processors {
         public static final EntityGroupsConfigLoader ENTITY_GROUPS_CONFIG_LOADER = new EntityGroupsConfigLoader();
         public static final CustomTitleConfigLoader CUSTOM_TITLE_CONFIG_LOADER = new CustomTitleConfigLoader();
         public static final VaultCrystalConfigLoader VAULT_CRYSTAL_CONFIG_LOADER = new VaultCrystalConfigLoader();
+        public static final RaidActionsConfigLoader RAID_ACTIONS_CONFIG_LOADER = new RaidActionsConfigLoader();
+        public static final TranslationsConfigLoader TRANSLATIONS_CONFIG_LOADER = new TranslationsConfigLoader();
     }
 
     public static class TransmogConfigProcessors {
