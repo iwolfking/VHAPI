@@ -21,10 +21,12 @@ public class CustomGearModelRollRaritiesConfigLoader extends VaultConfigProcesso
             if(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.containsKey(config.itemRegistryName)) {
                 for(VaultGearRarity rarity : VaultGearRarity.values()) {
                     if(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(config.itemRegistryName).containsKey(rarity.name())){
-                        CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(config.itemRegistryName).get(rarity.name()).addAll(config.MODEL_ROLLS.get(rarity));
+                        CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(config.itemRegistryName).get(rarity.name()).addAll(config.MODEL_ROLLS.get(rarity.name()));
                     }
                     else {
-                        CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(config.itemRegistryName).put(rarity.name(), config.MODEL_ROLLS.get(rarity));
+                        if(config.MODEL_ROLLS.containsKey(rarity.name())) {
+                            CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(config.itemRegistryName).put(rarity.name(), config.MODEL_ROLLS.get(rarity.name()));
+                        }
                     }
                 }
             }
