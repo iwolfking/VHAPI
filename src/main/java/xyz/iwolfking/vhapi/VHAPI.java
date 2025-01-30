@@ -72,6 +72,7 @@ public class VHAPI {
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
             MinecraftForge.EVENT_BUS.addListener(Client::onClientLogin);
+            MinecraftForge.EVENT_BUS.addListener(Client::onClientLogout);
         });
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -136,6 +137,11 @@ public class VHAPI {
             if (BountyScreenAccessor.getObjectiveNames() != null) {
                 BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
             }
+        }
+
+        public static void onClientLogout(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
+            VHAPILoggerUtils.debug("Clearing cached config data.");
+            VHAPIUtils.purgeConfigs();
         }
 
 
