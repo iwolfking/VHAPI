@@ -164,7 +164,7 @@ dependencies {
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.3")) {
         jarJar.ranged(it, "[0.3.3,)")
     }
-    implementation fg.deobf("curse.maven:vault-hunters-official-mod-458203:5925633")
+    implementation fg.deobf("curse.maven:vault-hunters-official-mod-458203:6367278")
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
