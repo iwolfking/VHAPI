@@ -2,6 +2,7 @@ package xyz.iwolfking.vhapi.api.loaders.workstation.lib;
 
 import com.google.gson.annotations.Expose;
 import iskallia.vault.config.entry.ChanceItemStackEntry;
+import iskallia.vault.config.entry.ConditionalChanceItemStackEntry;
 import net.minecraft.world.item.ItemStack;
 
 public class GsonChanceItemStack {
@@ -22,7 +23,7 @@ public class GsonChanceItemStack {
         this.chance = chance;
     }
 
-    public ChanceItemStackEntry getStack() {
-        return new ChanceItemStackEntry(stack, minCount, maxCount, chance);
+    public ConditionalChanceItemStackEntry getStack() {
+        return new ConditionalChanceItemStackEntry(stack, minCount, maxCount, chance);
     }
 }
