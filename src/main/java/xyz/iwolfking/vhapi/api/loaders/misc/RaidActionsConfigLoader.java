@@ -28,9 +28,6 @@ public class RaidActionsConfigLoader extends VaultConfigProcessor<RaidActionsCon
                 if(((RaidActionsConfigAccessor)ModConfigs.RAID_ACTIONS).getValues().containsKey(s)) {
                     if(((RaidActionsConfigAccessor)ModConfigs.RAID_ACTIONS).getValues().get(s) instanceof PoolChallengeAction poolChallengeAction) {
                         if(challengeAction instanceof PoolChallengeAction newPoolChallengeAction) {
-                            ((PoolChallengeActionAccessor)newPoolChallengeAction).getPool().forEach((challengeAction1, aDouble) -> {
-                                ((PoolChallengeActionAccessor)poolChallengeAction).getPool().add(challengeAction1, aDouble);
-                            });
                         }
                     }
                     else {

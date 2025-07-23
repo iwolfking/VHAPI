@@ -11,6 +11,4 @@ import java.util.Map;
 
 @Mixin(value = PoolChallengeAction.Config.class,remap = false)
 public interface PoolChallengeActionAccessor {
-    @Accessor("pool")
-    WeightedList<ChallengeAction<?>> getPool();
 }
