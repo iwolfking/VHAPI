@@ -11,31 +11,16 @@ public class EntityGroupsConfigLoader extends VaultConfigProcessor<EntityGroupsC
         super(new EntityGroupsConfig(), "entity_groups");
     }
 
+    //TODO: Fix this - was changed in VH 19.6, supports overwriting the config only now.
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(ResourceLocation key : this.CUSTOM_CONFIGS.keySet()) {
             EntityGroupsConfig config = CUSTOM_CONFIGS.get(key);
 
-            if(key.getPath().contains("overwrite")) {
+            if (key.getPath().contains("overwrite")) {
                 ModConfigs.ENTITY_GROUPS = config;
-            } else if (key.getPath().contains("remove")) {
-                for(ResourceLocation entityGroupKey : config.getGroups().keySet()) {
-                    if(ModConfigs.ENTITY_GROUPS.getGroups().containsKey(entityGroupKey)) {
-                            ModConfigs.ENTITY_GROUPS.getGroups().get(entityGroupKey).removeAll(config.getGroups().get(entityGroupKey));
-                    }
-                }
             }
-            else {
-                for(ResourceLocation entityGroupKey : config.getGroups().keySet()) {
-                    if(ModConfigs.ENTITY_GROUPS.getGroups().containsKey(entityGroupKey)) {
-                        ModConfigs.ENTITY_GROUPS.getGroups().get(entityGroupKey).addAll(config.getGroups().get(entityGroupKey));
-                    }
-                    else {
-                        ModConfigs.ENTITY_GROUPS.getGroups().put(entityGroupKey, config.getGroups().get(entityGroupKey));
-                    }
-                }
-            }
+            super.afterConfigsLoad(event);
         }
-        super.afterConfigsLoad(event);
     }
 }

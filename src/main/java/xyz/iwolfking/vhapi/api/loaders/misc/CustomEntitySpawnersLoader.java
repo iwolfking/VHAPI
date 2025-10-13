@@ -5,7 +5,8 @@ import iskallia.vault.init.ModConfigs;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 
-public class CustomEntitySpawnersLoader extends VaultConfigProcessor<CustomEntitySpawnerConfig> {
+public class
+CustomEntitySpawnersLoader extends VaultConfigProcessor<CustomEntitySpawnerConfig> {
     public CustomEntitySpawnersLoader() {
         super(new CustomEntitySpawnerConfig(), "custom_entity_spawners");
     }

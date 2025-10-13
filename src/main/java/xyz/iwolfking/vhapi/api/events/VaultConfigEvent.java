@@ -1,10 +1,12 @@
 package xyz.iwolfking.vhapi.api.events;
 
 
+import iskallia.vault.config.Config;
+import iskallia.vault.init.ModConfigs;
 import net.minecraftforge.eventbus.api.Event;
 
 /**
- * An event fired when The Vault reloads it's configs in ModConfigs.
+ * Contains events for when Vault Configs begin and finish loading (see ModConfigs.register() method from the_vault mod
  */
 public class VaultConfigEvent extends Event {
 
@@ -24,6 +26,7 @@ public class VaultConfigEvent extends Event {
             this.type = type;
         }
     }
+
     public static class End extends VaultConfigEvent {
         public Type getType() {
             return type;
