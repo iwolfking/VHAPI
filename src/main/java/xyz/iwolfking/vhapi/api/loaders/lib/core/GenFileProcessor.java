@@ -30,6 +30,8 @@ public class GenFileProcessor<T> implements IConfigProcessor {
         for(ResourceLocation key : LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.keySet()) {
             //Attempt to process all configs under the specified directory.
             if(key.getPath().startsWith(directory)) {
+                System.out.println("Found gen file: ");
+                System.out.println(key);
                 T config = configReader.readCustomConfig(key.getPath(), LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.get(key), instance);
                 CUSTOM_CONFIGS.put(new ResourceLocation(key.getNamespace(), ResourceLocUtils.removePrefixFromId(directory + "/", key).getPath()), config);
             }

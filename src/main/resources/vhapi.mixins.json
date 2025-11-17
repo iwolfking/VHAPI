@@ -58,6 +58,7 @@
     "events.MixinGodAltarTask",
     "gen.MixinLootTable",
     "gen.MixinPalette",
+    "gen.MixinTemplateKey",
     "gen.MixinTemplatePool",
     "gen.MixinTheme",
     "models.MixinInfusedCatalystItem",
