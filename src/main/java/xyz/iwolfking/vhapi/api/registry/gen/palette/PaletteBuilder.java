@@ -2,7 +2,7 @@ package xyz.iwolfking.vhapi.api.registry.gen.palette;
 
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.Arrays;
+import java.util.*;
 import java.util.function.Consumer;
 
 public final class PaletteBuilder {
@@ -29,6 +29,7 @@ public final class PaletteBuilder {
     }
 
 
+
     public PaletteBuilder templateStackTile(String target, String... stack) {
         def.addTileProcessor(new PaletteProcessors.TemplateStackTileProcessor(target, Arrays.asList(stack)));
         return this;
@@ -45,6 +46,36 @@ public final class PaletteBuilder {
 
     public PaletteBuilder templateStackSpawner(ResourceLocation target, String... stack) {
         return templateStackSpawner(target.toString());
+    }
+
+    public PaletteBuilder leveled(Consumer<LeveledBuilder> consumer) {
+        LeveledBuilder lb = new LeveledBuilder();
+        consumer.accept(lb);
+        def.addTileProcessor(lb.build());
+        return this;
+    }
+
+    public static class LeveledBuilder {
+        private final PaletteProcessors.LeveledProcessor processor =
+                new PaletteProcessors.LeveledProcessor();
+
+        public LeveledBuilder weighted(int level, String type, String target, int weight, Consumer<Map<String , Integer>> entries) {
+            Map<String, Integer> entryMap = new HashMap<>();
+            entries.accept(entryMap);
+            processor.addLevel(new PaletteProcessors.LevelProcessor().weightedLevel(level, target, weight, entryMap));
+            return this;
+        }
+
+        public LeveledBuilder list(int level, String type, String target, Consumer<Map<String , Integer>> entries) {
+            Map<String, Integer> entryMap = new HashMap<>();
+            entries.accept(entryMap);
+            processor.addLevel(new PaletteProcessors.LevelProcessor().level(level, target, entryMap));
+            return this;
+        }
+
+        PaletteProcessors.LeveledProcessor build() {
+            return processor;
+        }
     }
 
     public PaletteDefinition build() { return def; }

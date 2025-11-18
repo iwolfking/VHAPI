@@ -10,6 +10,7 @@ import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vhapi.api.registry.gen.palette.PaletteBuilder;
 import xyz.iwolfking.vhapi.api.registry.gen.palette.PaletteDefinition;
+import xyz.iwolfking.vhapi.api.registry.gen.palette.PaletteProcessors;
 
 import java.io.IOException;
 import java.nio.file.Path;

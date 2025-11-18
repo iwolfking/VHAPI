@@ -3,11 +3,8 @@ package xyz.iwolfking.vhapi.api.registry.gen.palette;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vhapi.api.registry.gen.template_pools.TemplatePoolProcessors;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public class PaletteProcessors {
     public interface TileProcessor {
@@ -52,96 +49,69 @@ public class PaletteProcessors {
         }
     }
 
-    public static final class LeveledProcessor implements TileProcessor {
-        private final Consumer<TemplatePoolProcessors.ProcessorConsumer> processors;
+    public static class LeveledProcessor implements TileProcessor {
+        private final List<LevelProcessor> levels = new ArrayList<>();
 
-        public LeveledProcessor(Consumer<TemplatePoolProcessors.ProcessorConsumer>  processors) {
-            this.processors = processors;
+        public LeveledProcessor addLevel(LevelProcessor entry) {
+            levels.add(entry);
+            return this;
+        }
+
+        @Override
+        public JsonObject toJson() {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("type", "leveled");
+
+            JsonArray arr = new JsonArray();
+            for (LevelProcessor level : levels) {
+                arr.add(level.toJson());
+            }
+            obj.add("levels", arr);
+
+            return obj;
+        }
+    }
+
+    public static class LevelProcessor implements TileProcessor {
+        private final JsonObject json = new JsonObject();
+
+        public LevelProcessor weightedLevel(int level, String target, int weight, Map<String, Integer> elements) {
+            json.addProperty("level", level);
+            json.addProperty("type", "spawner");
+            json.addProperty("target", target);
+
+            JsonArray output = new JsonArray();
+            JsonObject elementsObj = new JsonObject();
+            elements.forEach(elementsObj::addProperty);
+
+            JsonObject entry = new JsonObject();
+            entry.add("elements", elementsObj);
+            entry.addProperty("weight", weight);
+            output.add(entry);
+
+            json.add("output", output);
+            return this;
+        }
+
+        public LevelProcessor level(int level, String target, Map<String, Integer> outputMap) {
+            json.addProperty("level", level);
+            json.addProperty("type", "weighted_target");
+            json.addProperty("target", target);
+
+            JsonObject output = new JsonObject();
+            outputMap.forEach(output::addProperty);
+            json.add("output", output);
+
+            return this;
         }
 
         @Override
         public JsonElement toJson() {
-            JsonObject o = new JsonObject();
-            o.addProperty("type", "leveled");
-            JsonArray levels = new JsonArray();
-
-            TemplatePoolProcessors.ProcessorConsumer builder = new TemplatePoolProcessors.ProcessorConsumer();
-            processors.accept(builder);
-
-            for (TemplatePoolProcessors.TemplateProcessor processor : builder.getProcessors()) {
-                levels.add(processor.toJson());
-            }
-
-            o.add("levels", levels);
-            return o;
-        }
-
-    }
-
-
-    public class LevelProcessor implements TileProcessor {
-
-        protected final int level;
-
-        private LevelProcessor(int level) {
-            this.level = level;
-        }
-
-        @Override
-        public JsonElement toJson() {
-            JsonObject o = new JsonObject();
-            o.addProperty("level", level);
-            return o;
+            return json;
         }
     }
 
-    public class SpawnerLevelProcessor extends LevelProcessor {
-        private final String target;
-        private final Consumer<SpawnerElement> elements;
 
-        private SpawnerLevelProcessor(int level, String target, Consumer<SpawnerElement> elements) {
-            super(level);
-            this.target = target;
-            this.elements = elements;
-        }
-
-        @Override
-        public JsonElement toJson() {
-            JsonObject o = (JsonObject)super.toJson();
-            o.addProperty("type", "spawner");
-            o.addProperty("target", target);
-
-            JsonArray spawnerElements = new JsonArray();
-            SpawnerElement builder = new SpawnerElement();
-            elements.accept(builder);
-
-            builder.getEntries().forEach((resourceLocation, integer) -> {
-                JsonObject entry = new JsonObject();
-                JsonObject element = new JsonObject();
-                element.addProperty(resourceLocation.toString(), integer);
-                entry.add("elements", element);
-                entry.addProperty("weight", 1);
-                spawnerElements.add(entry);
-            });
-
-            o.add("output", spawnerElements);
-
-            return o;
-        }
-
-        private class SpawnerElement {
-            private final Map<ResourceLocation, Integer> entries = new HashMap<>();
-
-            public SpawnerElement add(ResourceLocation entity, Integer weight) {
-                entries.put(entity, weight);
-                return this;
-            }
-
-            public Map<ResourceLocation, Integer> getEntries() {
-                return entries;
-            }
-        }
-    }
 
     public static final class TemplateStackTileProcessor implements TileProcessor {
         private final String target;
@@ -185,4 +155,5 @@ public class PaletteProcessors {
             return o;
         }
     }
+
 }
