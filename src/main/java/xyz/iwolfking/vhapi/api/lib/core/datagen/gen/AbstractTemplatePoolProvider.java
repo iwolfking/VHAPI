@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class AbstractTemplatePoolProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     private final DataGenerator generator;
     private final String modid;

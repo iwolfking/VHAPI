@@ -13,13 +13,5 @@ import xyz.iwolfking.vhapi.VHAPI;
 
 @Mixin(value = DirectTemplateEntry.class, remap = false)
 public class MixinTemplateKey {
-//    @Shadow
-//    protected ResourceLocation template;
-//
-//    @Inject(method = "getTemplate", at = @At("HEAD"))
-//    private void printTemplate(CallbackInfoReturnable<TemplateKey> cir) {
-//        VHAPI.LOGGER.info("Loading template: ");
-//        VHAPI.LOGGER.info(template.toString());
-//    }
 
 }

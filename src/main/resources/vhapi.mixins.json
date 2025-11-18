@@ -37,6 +37,7 @@
     "accessors.SkillDescriptionsConfigAccessor",
     "accessors.SkillGatesAccessor",
     "accessors.TemplatePoolAccessor",
+    "accessors.TemporalShardConfigAccessor",
     "accessors.ThemeAccessor",
     "accessors.TooltipConfigAccessor",
     "accessors.TrinketAccessor",

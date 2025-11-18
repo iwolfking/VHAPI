@@ -1,5 +1,10 @@
 package xyz.iwolfking.vhapi.api.registry.gen.themes;
 
+import iskallia.vault.config.ThemeAugmentLoreConfig;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class ThemeBuilder {
 
     private final ThemeDefinition def = new ThemeDefinition();
@@ -66,6 +71,33 @@ public class ThemeBuilder {
 
     public ThemeBuilder themeColor(int color) {
         def.themeColor = color;
+        return this;
+    }
+
+    public ThemeBuilder levelEntry(String pool, int level) {
+        if(def.levelEntries.containsKey(pool)) {
+            def.levelEntries.get(pool).add(level);
+        }
+        else {
+            Set<Integer> levelEntries = new HashSet<>();
+            levelEntries.add(level);
+            def.levelEntries.put(pool, levelEntries);
+        }
+        return this;
+    }
+
+    public ThemeBuilder themeWeight(int weight) {
+        def.themeWeight = weight;
+        return this;
+    }
+
+    public ThemeBuilder themeGroup(String groupName) {
+        def.themeGroup = groupName;
+        return this;
+    }
+
+    public ThemeBuilder themeLore(ThemeAugmentLoreConfig.AugmentLore augmentLore) {
+        def.themeLore = augmentLore;
         return this;
     }
 

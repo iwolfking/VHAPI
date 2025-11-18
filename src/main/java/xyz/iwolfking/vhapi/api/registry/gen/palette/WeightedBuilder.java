@@ -11,7 +11,6 @@ public final class WeightedBuilder {
 
     public WeightedBuilder(String target) { this.target = target; }
 
-    /** add output mapping like ("create:asurine", 1) */
     public WeightedBuilder add(String result, int weight) {
         outputs.put(result, weight);
         return this;

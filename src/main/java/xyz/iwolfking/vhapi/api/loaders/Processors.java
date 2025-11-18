@@ -1,5 +1,6 @@
 package xyz.iwolfking.vhapi.api.loaders;
 
+import iskallia.vault.config.ThemeAugmentLoreConfig;
 import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
@@ -26,6 +27,7 @@ import xyz.iwolfking.vhapi.api.loaders.gen.loot_table.LootTableConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.palettes.PalettesConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.template_pools.TemplatePoolsLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.theme.ThemeConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.general.ThemeLoreConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TooltipConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TranslationsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.VaultStatsConfigLoader;
@@ -201,6 +203,8 @@ public class Processors {
         public static final VaultCrystalConfigLoader VAULT_CRYSTAL_CONFIG_LOADER = new VaultCrystalConfigLoader();
         public static final RaidActionsConfigLoader RAID_ACTIONS_CONFIG_LOADER = new RaidActionsConfigLoader();
         public static final TranslationsConfigLoader TRANSLATIONS_CONFIG_LOADER = new TranslationsConfigLoader();
+        public static final VoidCrucibleConfigLoader VOID_CRUCIBLE_CONFIG_LOADER = new VoidCrucibleConfigLoader();
+        public static final ThemeLoreConfigLoader THEME_AUGMENT_LORE_CONFIG = new ThemeLoreConfigLoader();
     }
 
     public static class TransmogConfigProcessors {

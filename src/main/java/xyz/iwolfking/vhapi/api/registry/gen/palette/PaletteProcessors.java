@@ -3,8 +3,10 @@ package xyz.iwolfking.vhapi.api.registry.gen.palette;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import iskallia.vault.block.PlaceholderBlock;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class PaletteProcessors {
     public interface TileProcessor {
@@ -49,8 +51,30 @@ public class PaletteProcessors {
         }
     }
 
+    public static final class WeightedGenericProcessor implements TileProcessor {
+        private final String target;
+        private final Consumer<JsonArray> output;
+
+        public WeightedGenericProcessor(String target, Consumer<JsonArray> output) {
+            this.target = target;
+            this.output = output;
+        }
+
+        @Override
+        public JsonElement toJson() {
+            JsonObject o = new JsonObject();
+            o.addProperty("type", "weighted_target");
+            o.addProperty("target", target);
+
+            JsonArray out = new JsonArray();
+            output.accept(out);
+            o.add("output", out);
+            return o;
+        }
+    }
+
     public static class LeveledProcessor implements TileProcessor {
-        private final List<LevelProcessor> levels = new ArrayList<>();
+        final List<LevelProcessor> levels = new ArrayList<>();
 
         public LeveledProcessor addLevel(LevelProcessor entry) {
             levels.add(entry);
@@ -72,42 +96,143 @@ public class PaletteProcessors {
         }
     }
 
-    public static class LevelProcessor implements TileProcessor {
-        private final JsonObject json = new JsonObject();
+    public static class PlaceholderProcessor extends LeveledProcessor {
 
-        public LevelProcessor weightedLevel(int level, String target, int weight, Map<String, Integer> elements) {
-            json.addProperty("level", level);
-            json.addProperty("type", "spawner");
-            json.addProperty("target", target);
+        private final PlaceholderBlock.Type target;
+
+        public PlaceholderProcessor(PlaceholderBlock.Type placeholderType) {
+            target = placeholderType;
+        }
+
+        @Override
+        public JsonObject toJson() {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("type", "placeholder");
+
+            obj.addProperty("target", target.name());
+
+            JsonArray arr = new JsonArray();
+            for (LevelProcessor level : this.levels) {
+                arr.add(level.toJson());
+            }
+            obj.add("levels", arr);
+
+            return obj;
+        }
+    }
+
+    public static class LevelProcessor implements TileProcessor {
+        private final int level;
+
+        public LevelProcessor(int level) {
+            this.level = level;
+        }
+
+        public int getLevel() {
+            return level;
+        }
+
+        @Override
+        public JsonElement toJson() {
+            JsonObject o = new JsonObject();
+            o.addProperty("level", level);
+            return o;
+        }
+    }
+
+    public static class WeightedLevelProcessor extends LevelProcessor {
+        private final String type;
+        private final String target;
+        private final int weight;
+        private final Consumer<Map<String, Integer>> elements;
+
+        public WeightedLevelProcessor(int level, String type, String target, int weight, Consumer<Map<String, Integer>> elements) {
+            super(level);
+            this.type = type;
+            this.target = target;
+            this.weight = weight;
+            this.elements = elements;
+        }
+
+        @Override
+        public JsonElement toJson() {
+            JsonObject o = super.toJson().getAsJsonObject();
+            o.addProperty("type", type);
+            o.addProperty("target", target);
 
             JsonArray output = new JsonArray();
             JsonObject elementsObj = new JsonObject();
-            elements.forEach(elementsObj::addProperty);
+            Map<String, Integer> elementsMap = new HashMap<>();
+            elements.accept(elementsMap);
+            elementsMap.forEach(elementsObj::addProperty);
 
             JsonObject entry = new JsonObject();
             entry.add("elements", elementsObj);
             entry.addProperty("weight", weight);
             output.add(entry);
 
-            json.add("output", output);
-            return this;
+            o.add("output", output);
+
+            return o;
         }
+    }
 
-        public LevelProcessor level(int level, String target, Map<String, Integer> outputMap) {
-            json.addProperty("level", level);
-            json.addProperty("type", "weighted_target");
-            json.addProperty("target", target);
+    public static class WeightedTargetLevelProcessor extends LevelProcessor {
+        private final String target;
+        private final Consumer<Map<String, Integer>> outputConsumer;
 
-            JsonObject output = new JsonObject();
-            outputMap.forEach(output::addProperty);
-            json.add("output", output);
-
-            return this;
+        public WeightedTargetLevelProcessor(int level, String target, Consumer<Map<String, Integer>> outputConsumer) {
+            super(level);
+            this.target = target;
+            this.outputConsumer = outputConsumer;
         }
 
         @Override
         public JsonElement toJson() {
-            return json;
+            JsonObject o = super.toJson().getAsJsonObject();
+            o.addProperty("type", "weighted_target");
+            o.addProperty("target", target);
+
+            JsonObject output = new JsonObject();
+            Map<String, Integer> outputMap = new HashMap<>();
+            outputConsumer.accept(outputMap);
+            outputMap.forEach(output::addProperty);
+            o.add("output", output);
+
+            return o;
+        }
+    }
+
+    public static class ProbabilityLevelProcessor extends LevelProcessor {
+        private final double probability;
+        private final Consumer<Map<String, Integer>> successConsumer;
+        private final Consumer<Map<String, Integer>> failureConsumer;
+
+        public ProbabilityLevelProcessor(int level, double probability, Consumer<Map<String, Integer>> successConsumer, Consumer<Map<String, Integer>> failureConsumer) {
+            super(level);
+            this.probability = probability;
+            this.successConsumer = successConsumer;
+            this.failureConsumer = failureConsumer;
+        }
+
+        @Override
+        public JsonElement toJson() {
+            JsonObject o = super.toJson().getAsJsonObject();
+            o.addProperty("probability", probability);
+
+            JsonObject successOutput = new JsonObject();
+            Map<String, Integer> successMap = new HashMap<>();
+            successConsumer.accept(successMap);
+            successMap.forEach(successOutput::addProperty);
+            o.add("success", successOutput);
+
+            JsonObject failureOutput = new JsonObject();
+            Map<String, Integer> failureMap = new HashMap<>();
+            failureConsumer.accept(failureMap);
+            failureMap.forEach(failureOutput::addProperty);
+            o.add("failure", failureOutput);
+
+            return o;
         }
     }
 

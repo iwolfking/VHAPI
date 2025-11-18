@@ -1,6 +1,11 @@
 package xyz.iwolfking.vhapi.api.registry.gen.themes;
 
 import com.google.gson.JsonObject;
+import iskallia.vault.config.ThemeAugmentLoreConfig;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class ThemeDefinition {
 
@@ -20,6 +25,12 @@ public class ThemeDefinition {
     public float particleProbability;
 
     public int themeColor;
+
+    public Map<String, Set<Integer>> levelEntries = new HashMap<>();
+    public int themeWeight = 0;
+
+    public String themeGroup;
+    public ThemeAugmentLoreConfig.AugmentLore themeLore;
 
     public JsonObject toJson() {
         JsonObject root = new JsonObject();

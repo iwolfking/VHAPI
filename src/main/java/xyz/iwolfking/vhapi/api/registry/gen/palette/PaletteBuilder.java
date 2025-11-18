@@ -1,5 +1,8 @@
 package xyz.iwolfking.vhapi.api.registry.gen.palette;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import iskallia.vault.block.PlaceholderBlock;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.*;
@@ -26,6 +29,15 @@ public final class PaletteBuilder {
 
     public PaletteBuilder weightedTarget(ResourceLocation target, Consumer<WeightedBuilder> consumer) {
         return weightedTarget(target.toString(), consumer);
+    }
+
+    public PaletteBuilder weightedTargetGeneric(String target, Consumer<JsonArray> consumer) {
+        def.addTileProcessor(new PaletteProcessors.WeightedGenericProcessor(target, consumer));
+        return this;
+    }
+
+    public PaletteBuilder weightedTargetGeneric(ResourceLocation target, Consumer<JsonArray> consumer) {
+        return weightedTargetGeneric(target.toString(), consumer);
     }
 
 
@@ -55,21 +67,29 @@ public final class PaletteBuilder {
         return this;
     }
 
+    public PaletteBuilder placeholder(PlaceholderBlock.Type target, Consumer<PlaceholderBuilder> consumer) {
+        PlaceholderBuilder lb = new PlaceholderBuilder(target);
+        consumer.accept(lb);
+        def.addTileProcessor(lb.build());
+        return this;
+    }
+
     public static class LeveledBuilder {
         private final PaletteProcessors.LeveledProcessor processor =
                 new PaletteProcessors.LeveledProcessor();
 
         public LeveledBuilder weighted(int level, String type, String target, int weight, Consumer<Map<String , Integer>> entries) {
-            Map<String, Integer> entryMap = new HashMap<>();
-            entries.accept(entryMap);
-            processor.addLevel(new PaletteProcessors.LevelProcessor().weightedLevel(level, target, weight, entryMap));
+            processor.addLevel(new PaletteProcessors.WeightedLevelProcessor(level, type, target, weight, entries));
             return this;
         }
 
         public LeveledBuilder list(int level, String type, String target, Consumer<Map<String , Integer>> entries) {
-            Map<String, Integer> entryMap = new HashMap<>();
-            entries.accept(entryMap);
-            processor.addLevel(new PaletteProcessors.LevelProcessor().level(level, target, entryMap));
+            processor.addLevel(new PaletteProcessors.WeightedTargetLevelProcessor(level, target, entries));
+            return this;
+        }
+
+        public LeveledBuilder probability(int level, double probability, String target, Consumer<Map<String , Integer>> successes, Consumer<Map<String , Integer>> failures) {
+            processor.addLevel(new PaletteProcessors.ProbabilityLevelProcessor(level, probability, successes, failures));
             return this;
         }
 
@@ -77,6 +97,34 @@ public final class PaletteBuilder {
             return processor;
         }
     }
+
+    public static class PlaceholderBuilder {
+        private final PaletteProcessors.PlaceholderProcessor processor;
+
+        public PlaceholderBuilder(PlaceholderBlock.Type target) {
+            this.processor = new PaletteProcessors.PlaceholderProcessor(target);
+        }
+
+        public PlaceholderBuilder weighted(int level, String type, String target, int weight, Consumer<Map<String , Integer>> entries) {
+            processor.addLevel(new PaletteProcessors.WeightedLevelProcessor(level, type, target, weight, entries));
+            return this;
+        }
+
+        public PlaceholderBuilder list(int level, String target, Consumer<Map<String , Integer>> entries) {
+            processor.addLevel(new PaletteProcessors.WeightedTargetLevelProcessor(level, target, entries));
+            return this;
+        }
+
+        public PlaceholderBuilder probability(int level, double probability, Consumer<Map<String , Integer>> successes, Consumer<Map<String , Integer>> failures) {
+            processor.addLevel(new PaletteProcessors.ProbabilityLevelProcessor(level, probability, successes, failures));
+            return this;
+        }
+
+        PaletteProcessors.PlaceholderProcessor build() {
+            return processor;
+        }
+    }
+
 
     public PaletteDefinition build() { return def; }
 }

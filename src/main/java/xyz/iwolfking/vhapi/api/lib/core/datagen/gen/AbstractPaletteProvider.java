@@ -23,7 +23,7 @@ public abstract class AbstractPaletteProvider implements DataProvider {
     protected final DataGenerator generator;
     protected final String modid;
 
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     private final Map<ResourceLocation, PaletteDefinition> palettes = new LinkedHashMap<>();
 

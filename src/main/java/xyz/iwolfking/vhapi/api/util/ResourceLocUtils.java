@@ -76,6 +76,27 @@ public class ResourceLocUtils {
         return new ResourceLocation(newNamespace, loc.getPath());
     }
 
+    /**
+     *
+     * @param rl A ResourceLocation that will be used to generate a readable name from.
+     * @return A String containing a more readable version of the Resource location
+     */
+    public static String formatReadableName(ResourceLocation rl) {
+        String path = rl.getPath().replace('/', '_');
+
+        String[] parts = path.split("_");
+        StringBuilder sb = new StringBuilder();
+
+        for (String p : parts) {
+            if (p.isEmpty()) continue;
+            sb.append(Character.toUpperCase(p.charAt(0)))
+                    .append(p.substring(1))
+                    .append(" ");
+        }
+
+        return sb.toString().trim();
+    }
+
     public static boolean isResourceLocation(String testString) {
         return testString.matches(".+:.+");
     }
