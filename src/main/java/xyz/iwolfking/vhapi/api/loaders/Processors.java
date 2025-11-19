@@ -119,6 +119,7 @@ public class Processors {
         public static final GearEnchantmentConfigLoader GEAR_ENCHANTMENT_CONFIG_LOADER = new GearEnchantmentConfigLoader();
         public static final TrinketConfigLoader TRINKET_CONFIG_LOADER = new TrinketConfigLoader();
         public static final UniqueGearConfigLoader UNIQUE_GEAR_CONFIG_LOADER = new UniqueGearConfigLoader();
+        public static final UniqueCodexConfigLoader UNIQUE_CODEX_CONFIG_LOADER = new UniqueCodexConfigLoader();
     }
 
     public static class VaultModifierConfigProcessors {

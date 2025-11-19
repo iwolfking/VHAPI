@@ -19,7 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -85,10 +84,8 @@ public class LabeledLootInfoRecipeCategory implements IRecipeCategory<LabeledLoo
         int total = items.size();
 
         final int columns = 9;
-        final int rows = 5;
-        final int visible = columns * rows; // 45
-
-        System.out.println("[JEI] LabeledLootInfo total entries = " + total + ", visible slots = " + visible);
+        final int rows = 6;
+        final int visible = columns * rows;
 
         for (int slotIndex = 0; slotIndex < Math.min(total, visible); slotIndex++) {
             int x = 1 + 18 * (slotIndex % columns);

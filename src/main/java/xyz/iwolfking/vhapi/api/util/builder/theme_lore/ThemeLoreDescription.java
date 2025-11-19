@@ -23,20 +23,20 @@ public class ThemeLoreDescription {
         JsonArray array = new JsonArray();
         array.add(simpleDescription(mobType + ": ", "gray"));
         array.add(simpleDescription(" | ", "$darkgray"));
-        array.add(simpleDescription("\\u2591\\u2591\\u2591", "gray"));
-        array.add(simpleDescription("\\u2591\\n", "$darkgray"));
+        array.add(simpleDescription("\u2591\u2591\u2591", "gray"));
+        array.add(simpleDescription("\u2591\n", "$darkgray"));
         for(MobEntry entry : hordeEntries) {
             array.add(simpleDescription(entry.name, "white"));
-            array.add(simpleDescription("\\uD83D\\uDDE1", "$orange"));
+            array.add(simpleDescription("\uD83D\uDDE1", "$orange"));
             array.add(simpleDescription(" " + entry.attackLevel, "white"));
             array.add(simpleDescription(" | ", "gray"));
-            array.add(simpleDescription("\\u2764", "red"));
+            array.add(simpleDescription("\u2764", "red"));
             array.add(simpleDescription(" " + entry.defenseLevel, "white"));
             array.add(simpleDescription(" | ", "gray"));
-            array.add(simpleDescription("\\u265D", "$speed"));
+            array.add(simpleDescription("\u265D", "$speed"));
             array.add(simpleDescription(" " + entry.speedLevel, "white"));
             array.add(simpleDescription(" | ", "gray"));
-            array.add(simpleDescription("\\u2694 \\u2623", "gray"));
+            array.add(simpleDescription("\u2694 \u2623", "gray"));
             array.add(simpleDescription("\n", "gray"));
         }
         return array;
@@ -46,9 +46,9 @@ public class ThemeLoreDescription {
         JsonArray array = new JsonArray();
         array.add(simpleDescription("Dwellers:", "gray"));
         array.add(simpleDescription(" | ", "$darkgray"));
-        array.add(simpleDescription("\\u2591", "gray"));
+        array.add(simpleDescription("\u2591", "gray"));
         StringBuilder builder = new StringBuilder();
-        builder.append("\\u2591".repeat(Math.max(0, dwellerCount)));
+        builder.append("\u2591".repeat(Math.max(0, dwellerCount)));
         array.add(simpleDescription(builder.toString(), "$darkgray"));
         return array;
     }

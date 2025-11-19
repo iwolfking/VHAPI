@@ -47,6 +47,7 @@
     "accessors.VaultCrystalCatalystConfigAccessor",
     "accessors.VaultCrystalConfigAccessor",
     "accessors.VaultGearEnchantmentConfigAccessor",
+    "accessors.VaultGearTierConfigAccessor",
     "accessors.VaultGeneralConfigAccessor",
     "accessors.VaultLevelsConfigAccessor",
     "accessors.VaultMetaChestConfigAccessor",

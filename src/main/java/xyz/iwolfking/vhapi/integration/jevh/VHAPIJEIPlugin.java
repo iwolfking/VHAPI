@@ -1,7 +1,7 @@
 package xyz.iwolfking.vhapi.integration.jevh;
 
 import dev.attackeight.just_enough_vh.jei.LabeledLootInfo;
-import dev.attackeight.just_enough_vh.jei.category.LabeledLootInfoRecipeCategory;
+import iskallia.vault.VaultMod;
 import iskallia.vault.gear.VaultGearState;
 import iskallia.vault.gear.data.AttributeGearData;
 import iskallia.vault.init.ModConfigs;
@@ -126,7 +126,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
                     if(objectiveEntry.pool.size() > 1) {
                         objectiveEntry.pool.forEach((key, value) -> totalWeight.getAndAdd(value.intValue()));
                         objectiveEntry.pool.forEach((key, value) -> {
-                            if (value > 0) {
+                            if (value > 0 || key1.equals(VaultMod.id("default"))) {
                                 ItemStack sealStack;
                                 if(LoadingModList.get().getModFileById("woldsvaults") != null) {
                                     sealStack = WoldsSealHelper.getSealFromObjective(key);
@@ -158,8 +158,13 @@ public class VHAPIJEIPlugin implements IModPlugin {
                 poolEntry.entries.forEach(entry -> {
                     entry.pool.forEach((modifier, weight) -> {
                         if(weight > 0) {
-                            ItemStack modifierStack = createModifierItemStack(modifier);
-                            augments.add(formatItemStack(modifierStack, entry.min, entry.max, weight, totalWeight.get(), null));
+                            if(modifier.equals(VaultMod.id("dummy")) || modifier.equals(VaultMod.id("empty"))) {
+                                augments.add(formatItemStack(ItemStack.EMPTY, entry.min, entry.max, weight, totalWeight.get(), null));
+                            }
+                            else {
+                                ItemStack modifierStack = createModifierItemStack(modifier);
+                                augments.add(formatItemStack(modifierStack, entry.min, entry.max, weight, totalWeight.get(), null));
+                            }
                         }
                     });
                 });
