@@ -9,7 +9,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vhapi.api.registry.gen.template_pools.TemplatePoolProcessors;
+import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.template_pools.TemplatePoolProcessors;
 
 import java.io.IOException;
 import java.nio.file.Files;

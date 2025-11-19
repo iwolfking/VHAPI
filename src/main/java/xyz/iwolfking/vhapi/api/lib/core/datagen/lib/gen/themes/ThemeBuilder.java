@@ -1,4 +1,4 @@
-package xyz.iwolfking.vhapi.api.registry.gen.themes;
+package xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.themes;
 
 import iskallia.vault.config.ThemeAugmentLoreConfig;
 

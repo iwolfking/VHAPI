@@ -8,9 +8,8 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vhapi.api.registry.gen.palette.PaletteBuilder;
-import xyz.iwolfking.vhapi.api.registry.gen.palette.PaletteDefinition;
-import xyz.iwolfking.vhapi.api.registry.gen.palette.PaletteProcessors;
+import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.palette.PaletteBuilder;
+import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.palette.PaletteDefinition;
 
 import java.io.IOException;
 import java.nio.file.Path;

@@ -1,4 +1,4 @@
-package xyz.iwolfking.vhapi.api.registry.gen.palette;
+package xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.palette;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

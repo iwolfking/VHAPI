@@ -1,4 +1,4 @@
-package xyz.iwolfking.vhapi.api.registry.gen.template_pools;
+package xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.template_pools;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

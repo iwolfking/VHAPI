@@ -4,13 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import iskallia.vault.config.entry.DescriptionData;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vhapi.api.registry.gen.themes.ThemeBuilder;
-import xyz.iwolfking.vhapi.api.registry.gen.themes.ThemeDefinition;
+import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.themes.ThemeBuilder;
+import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.themes.ThemeDefinition;
 
 import java.io.IOException;
 import java.nio.file.Path;
