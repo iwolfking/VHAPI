@@ -29,7 +29,7 @@ public abstract class AbstractGearModifierProvider implements DataProvider {
         this.generator = generator;
         this.modid = modid;
     }
-    /** Subclass overrides this and calls builder("name") to fill entries */
+
     public abstract void addModifierGroups(Map<String, Consumer<ModifierGroupBuilder>> map);
 
     @Override
