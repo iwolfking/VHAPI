@@ -29,6 +29,8 @@ public abstract class AbstractTemplatePoolProvider implements DataProvider {
     private static final ResourceLocation OMEGA_ROOMS_POOL = VaultMod.id("vault/rooms/omega_rooms");
     private static final ResourceLocation CHALLENGE_ROOMS_POOL = VaultMod.id("vault/rooms/challenge_rooms");
 
+    private final List<JsonObject> templatePoolRegistryEntries = new ArrayList<>();
+
     public AbstractTemplatePoolProvider(DataGenerator generator, String modid) {
         this.generator = generator;
         this.modid = modid;
@@ -117,24 +119,29 @@ public abstract class AbstractTemplatePoolProvider implements DataProvider {
             Files.createDirectories(outputPath.getParent());
             DataProvider.save(GSON, cache, array, outputPath);
 
-            Path keyPath = generator.getOutputFolder().resolve(
-                    "data/" + modid + "/vault_configs/template_pools/" + builder.getId() + ".json"
-            );
-
-            JsonObject keyFile = new JsonObject();
-            JsonArray keys = new JsonArray();
-
             JsonObject item = new JsonObject();
             ResourceLocation id = new ResourceLocation(modid, builder.getId());
             item.addProperty("id", id.toString());
             item.addProperty("name", formatReadableName(id));
             item.addProperty("1.0", id.toString());
 
-            keys.add(item);
-            keyFile.add("keys", keys);
-
-            DataProvider.save(GSON, cache, keyFile, keyPath);
+            templatePoolRegistryEntries.add(item);
         }
+
+        Path keyPath = generator.getOutputFolder().resolve(
+                "data/" + modid + "/vault_configs/template_pools/template_pools.json"
+        );
+
+        JsonObject keyFile = new JsonObject();
+        JsonArray keys = new JsonArray();
+
+        for(JsonObject entry : templatePoolRegistryEntries) {
+            keys.add(entry);
+        }
+
+        keyFile.add("keys", keys);
+
+        DataProvider.save(GSON, cache, keyFile, keyPath);
     }
 
     @Override

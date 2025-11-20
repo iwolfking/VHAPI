@@ -2,16 +2,25 @@ package xyz.iwolfking.vhapi.integration.jevh;
 
 import dev.attackeight.just_enough_vh.jei.LabeledLootInfo;
 import iskallia.vault.VaultMod;
+import iskallia.vault.core.Version;
+import iskallia.vault.core.data.key.TemplatePoolKey;
+import iskallia.vault.core.vault.VaultRegistry;
+import iskallia.vault.core.world.template.data.DirectTemplateEntry;
+import iskallia.vault.core.world.template.data.IndirectTemplateEntry;
+import iskallia.vault.core.world.template.data.TemplateEntry;
+import iskallia.vault.core.world.template.data.TemplatePool;
 import iskallia.vault.gear.VaultGearState;
 import iskallia.vault.gear.data.AttributeGearData;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModGearAttributes;
 import iskallia.vault.init.ModItems;
 import iskallia.vault.item.AugmentItem;
+import iskallia.vault.item.InfusedCatalystItem;
 import iskallia.vault.item.InscriptionItem;
 import iskallia.vault.item.VaultModifierItem;
 import iskallia.vault.item.data.InscriptionData;
 import iskallia.vault.item.gear.TemporalShardItem;
+import iskallia.vault.util.data.LazySet;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -35,17 +44,13 @@ import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.integration.the_vault.VaultSealHelper;
 import xyz.iwolfking.vhapi.integration.wolds.WoldsSealHelper;
-import xyz.iwolfking.vhapi.mixin.accessors.InscriptionConfigEntryAccessor;
-import xyz.iwolfking.vhapi.mixin.accessors.InscriptionConfigPoolAccessor;
-import xyz.iwolfking.vhapi.mixin.accessors.TemporalShardConfigAccessor;
+import xyz.iwolfking.vhapi.mixin.accessors.*;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static mezz.jei.api.recipe.RecipeIngredientRole.INPUT;
-import static mezz.jei.api.recipe.RecipeIngredientRole.OUTPUT;
+import static mezz.jei.api.recipe.RecipeIngredientRole.*;
 
 @JeiPlugin
 public class VHAPIJEIPlugin implements IModPlugin {
@@ -54,6 +59,8 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> MODIFIER_POOLS = RecipeType.create(VHAPI.MODID, "modifier_pools", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> TEMPORAL_RELICS = RecipeType.create(VHAPI.MODID, "temporal_relics", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> INSCRIPTION_POOLS = RecipeType.create(VHAPI.MODID, "inscription_pools", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> VAULT_CATALYST_POOLS = RecipeType.create(VHAPI.MODID, "catalyst_pools", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> ROOM_POOLS = RecipeType.create(VHAPI.MODID, "room_pools", LabeledLootInfo.class);
 
 
     @Override @SuppressWarnings("removal")
@@ -63,6 +70,8 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CRYSTAL), MODIFIER_POOLS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.TEMPORAL_SHARD), TEMPORAL_RELICS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.INSCRIPTION), INSCRIPTION_POOLS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CATALYST_INFUSED), VAULT_CATALYST_POOLS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CRYSTAL), ROOM_POOLS);
     }
 
     @Override @SuppressWarnings("removal")
@@ -72,6 +81,8 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(MODIFIER_POOLS, getModifierPoolsPerLevel());
         registration.addRecipes(TEMPORAL_RELICS, getTemporalRelics());
         registration.addRecipes(INSCRIPTION_POOLS, getInscriptionPoolsPerLevel());
+        registration.addRecipes(VAULT_CATALYST_POOLS, getCatalystModifierPoolsPerLevel());
+        registration.addRecipes(ROOM_POOLS, getRoomPools());
     }
 
     @Override
@@ -82,6 +93,8 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, MODIFIER_POOLS, ModItems.VAULT_CATALYST_INFUSED, new TextComponent("Modifier Pools")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, TEMPORAL_RELICS, ModItems.TEMPORAL_SHARD, new TextComponent("Temporal Relics")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, INSCRIPTION_POOLS, ModItems.INSCRIPTION, new TextComponent("Inscription Pools")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_CATALYST_POOLS, ModItems.VAULT_CATALYST_INFUSED, new TextComponent("Infused Vault Catalyst Pools")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROOM_POOLS, ModItems.INSCRIPTION, new TextComponent("Room Pools")));
     }
 
 
@@ -186,13 +199,25 @@ public class VHAPIJEIPlugin implements IModPlugin {
         List<LabeledLootInfo> lootInfo = new ArrayList<>();
         ModConfigs.INSCRIPTION.pools.forEach((key1, value1) -> {
             value1.forEach(poolEntry -> {
+                if(((InscriptionConfigPoolAccessor)poolEntry).getPool() == null ||  ((InscriptionConfigPoolAccessor)poolEntry).getPool().isEmpty()) {
+                    return;
+                }
+
+                if(((InscriptionConfigPoolAccessor)poolEntry).getPool().size() <= 1) {
+                    return;
+                }
+
+
                 List<ItemStack> augments = new ArrayList<>();
-                AtomicInteger totalWeight = new AtomicInteger();
-                ((InscriptionConfigPoolAccessor)poolEntry).getPool().forEach((entry, weight) -> {
-                        totalWeight.getAndAdd(weight.intValue());
-                });
+
+                int totalWeight = (int) ((InscriptionConfigPoolAccessor)poolEntry).getPool().getTotalWeight();
+
+
                 ((InscriptionConfigPoolAccessor)poolEntry).getPool().forEach((entry, weight) -> {
                     if(weight > 0) {
+                        if(entry == null) {
+                            return;
+                        }
                         InscriptionData inscriptionData = InscriptionData.empty();
                         inscriptionData.setSize(((InscriptionConfigEntryAccessor)entry).getSize().getMin());
                         inscriptionData.setModel(((InscriptionConfigEntryAccessor)entry).getModel().getMin());
@@ -200,7 +225,87 @@ public class VHAPIJEIPlugin implements IModPlugin {
                         ((InscriptionConfigEntryAccessor) entry).getEntries().forEach(inscriptionData::add);
                         ItemStack inscriptionStack = new ItemStack(ModItems.INSCRIPTION);
                         inscriptionData.write(inscriptionStack);
-                        augments.add(formatItemStack(inscriptionStack, 1, 1, weight, totalWeight.get(), null));
+                        augments.add(formatItemStack(inscriptionStack, 1, 1, weight, totalWeight, null));
+                    }
+                });
+                lootInfo.add(LabeledLootInfo.of(augments, new TextComponent(ResourceLocUtils.formatReadableName(key1) + " - Level " + poolEntry.getLevel()), null));
+            });
+        });
+        return lootInfo;
+    }
+
+    private static List<ItemStack> inscriptionsFromTemplatePool(ResourceLocation templatePoolId, int inscriptionColor) {
+        TemplatePoolKey templatePoolKey = VaultRegistry.TEMPLATE_POOL.getKey(templatePoolId);
+        TemplatePool rooms = templatePoolKey.get(Version.latest());
+        List<ItemStack> inscriptions = new ArrayList<>();
+
+        int totalWeight = (int) rooms.getChildren().getTotalWeight();
+        rooms.getChildren().forEach(((o, aDouble) -> {
+            TemplateEntry entry = (TemplateEntry) o;
+            ItemStack inscription = new ItemStack(ModItems.INSCRIPTION);
+            InscriptionData inscriptionData = InscriptionData.empty();
+
+            if(entry instanceof IndirectTemplateEntry indirectTemplateEntry) {
+                inscriptionData.add(indirectTemplateEntry.getReferenceId(), 1, inscriptionColor);
+                if(ModConfigs.INSCRIPTION.poolToModel.containsKey(indirectTemplateEntry.getReferenceId())) {
+                    inscriptionData.setModel(ModConfigs.INSCRIPTION.getModel(indirectTemplateEntry.getReferenceId()));
+                }
+            }
+            else if(entry instanceof DirectTemplateEntry directTemplateEntry) {
+                inscriptionData.add(directTemplateEntry.getTemplate().getId(), 1, inscriptionColor);
+                if(ModConfigs.INSCRIPTION.poolToModel.containsKey(directTemplateEntry.getTemplate().getId())) {
+                    inscriptionData.setModel(ModConfigs.INSCRIPTION.getModel(directTemplateEntry.getTemplate().getId()));
+
+                }
+            }
+
+            inscriptionData.setSize(10);
+            inscriptionData.setColor(inscriptionColor);
+            inscriptionData.write(inscription);
+            inscriptions.add(formatItemStack(inscription, 1, 1, aDouble, totalWeight, null));
+        }));
+
+        return inscriptions;
+    }
+
+    private static final Map<ResourceLocation, Integer> TEMPLATE_POOLS = Map.of(VaultMod.id("vault/rooms/omega_rooms"), 7012096, VaultMod.id("vault/rooms/challenge_rooms"), 15769088);
+
+    public static List<LabeledLootInfo> getRoomPools() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+
+        TEMPLATE_POOLS.forEach(((resourceLocation, integer) -> {
+            lootInfo.add(LabeledLootInfo.of(inscriptionsFromTemplatePool(resourceLocation, integer), new TextComponent(ResourceLocUtils.formatReadableName(resourceLocation)), null));
+        }));
+
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getCatalystModifierPoolsPerLevel() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        ModConfigs.CATALYST.pools.forEach((key1, value1) -> {
+            value1.forEach(poolEntry -> {
+                if(((CatalystConfigPoolAccessor)poolEntry).getPool() == null ||  ((CatalystConfigPoolAccessor)poolEntry).getPool().isEmpty()) {
+                    return;
+                }
+
+                if(((CatalystConfigPoolAccessor)poolEntry).getPool().size() <= 1) {
+                    return;
+                }
+
+
+                List<ItemStack> augments = new ArrayList<>();
+
+                int totalWeight = (int) ((CatalystConfigPoolAccessor)poolEntry).getPool().getTotalWeight();
+
+
+                ((CatalystConfigPoolAccessor)poolEntry).getPool().forEach((entry, weight) -> {
+                    if(weight > 0) {
+                        if(entry == null) {
+                            return;
+                        }
+                        ItemStack catalystStack = InfusedCatalystItem.create(((CatalystConfigEntryAccessor)entry).getSize().getMin(), ((CatalystConfigEntryAccessor)entry).getModifiers());
+                        catalystStack.getOrCreateTag().putInt("model", ((CatalystConfigEntryAccessor) entry).getModel());
+                        augments.add(formatItemStack(catalystStack, 1, 1, weight, totalWeight, null));
                     }
                 });
                 lootInfo.add(LabeledLootInfo.of(augments, new TextComponent(ResourceLocUtils.formatReadableName(key1) + " - Level " + poolEntry.getLevel()), null));

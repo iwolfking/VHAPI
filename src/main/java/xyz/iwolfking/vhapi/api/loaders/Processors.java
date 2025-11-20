@@ -215,7 +215,6 @@ public class Processors {
                 if(item instanceof VaultShieldItem) {
                     ShieldModelRegistryConfigLoader<DynamicModelRegistry<ShieldModel>> shieldTransmogLoader = new ShieldModelRegistryConfigLoader<>("vhapi", (DynamicModelRegistry<ShieldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
                     result.add(shieldTransmogLoader);
-
                 }
                 else {
                     HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> transmogLoader = new HandheldModelRegistryConfigLoader<>((DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);

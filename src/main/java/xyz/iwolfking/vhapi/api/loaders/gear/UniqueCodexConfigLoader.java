@@ -17,7 +17,7 @@ public class UniqueCodexConfigLoader extends VaultConfigProcessor<UniqueCodexCon
             UniqueCodexConfig config = this.CUSTOM_CONFIGS.get(configKey);
             ModConfigs.UNIQUE_CODEX.getPages().addAll(config.getPages());
             config.getIntroduction().getIndex().forEach((slotType, resourceLocations) -> {
-                ModConfigs.UNIQUE_CODEX.getIntroduction().getIndex().put(slotType, resourceLocations);
+                ModConfigs.UNIQUE_CODEX.getIntroduction().getIndex().get(slotType).addAll(resourceLocations);
             });
         }
         super.afterConfigsLoad(event);

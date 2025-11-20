@@ -13,7 +13,9 @@ import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.palette.PaletteDefinitio
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -25,6 +27,7 @@ public abstract class AbstractPaletteProvider implements DataProvider {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     private final Map<ResourceLocation, PaletteDefinition> palettes = new LinkedHashMap<>();
+    private final List<JsonObject> paletteRegistryEntries = new ArrayList<>();
 
     public AbstractPaletteProvider(DataGenerator generator, String modid) {
         this.generator = generator;
@@ -33,8 +36,7 @@ public abstract class AbstractPaletteProvider implements DataProvider {
 
     protected abstract void registerPalettes();
 
-    protected void add(ResourceLocation id, Consumer<PaletteBuilder> consumer) {
-        PaletteBuilder builder = new PaletteBuilder();
+    protected <T extends PaletteBuilder> void add(ResourceLocation id, T builder, Consumer<T> consumer) {
         consumer.accept(builder);
         palettes.put(id, builder.build());
     }
@@ -56,23 +58,30 @@ public abstract class AbstractPaletteProvider implements DataProvider {
             );
             DataProvider.save(GSON, cache, def.toJson(), palettePath);
 
-            Path keyPath = output.resolve(
-                    "data/" + id.getNamespace() + "/vault_configs/palettes/" + id.getPath() + ".json"
-            );
-
-            JsonObject keyFile = new JsonObject();
-            JsonArray keys = new JsonArray();
-
             JsonObject item = new JsonObject();
             item.addProperty("id", id.toString());
             item.addProperty("name", formatReadableName(id));
             item.addProperty("1.0", id.toString());
 
-            keys.add(item);
-            keyFile.add("keys", keys);
-
-            DataProvider.save(GSON, cache, keyFile, keyPath);
+            paletteRegistryEntries.add(item);
         }
+
+
+        Path keyPath = output.resolve(
+                "data/" + modid + "/vault_configs/palettes/palettes.json"
+        );
+
+        JsonObject keyFile = new JsonObject();
+        JsonArray keys = new JsonArray();
+
+        for(JsonObject entry : paletteRegistryEntries) {
+            keys.add(entry);
+        }
+
+        keyFile.add("keys", keys);
+
+        DataProvider.save(GSON, cache, keyFile, keyPath);
+
     }
 
     @Override

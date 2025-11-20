@@ -3,7 +3,7 @@ package xyz.iwolfking.vhapi.api.util.builder.theme_lore;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-public class ThemeLoreDescription {
+public class JsonDescription {
 
     public static JsonObject simpleDescription(String text, String color) {
         JsonObject desc = new JsonObject();

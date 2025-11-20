@@ -12,6 +12,8 @@
     "accessors.CardEssenceExtractorConfigAccessor",
     "accessors.CardModifiersConfigAccessor",
     "accessors.CardTasksConfigAccessor",
+    "accessors.CatalystConfigEntryAccessor",
+    "accessors.CatalystConfigPoolAccessor",
     "accessors.ClassicVaultThemeAccessor",
     "accessors.DescriptionDataAccessor",
     "accessors.DynamicModelPropertiesAccessor",

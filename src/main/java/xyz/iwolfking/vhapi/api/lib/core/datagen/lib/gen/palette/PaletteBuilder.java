@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.*;
 import java.util.function.Consumer;
 
-public final class PaletteBuilder {
+public class PaletteBuilder {
     private final PaletteDefinition def = new PaletteDefinition();
 
     public PaletteBuilder reference(String id) {
