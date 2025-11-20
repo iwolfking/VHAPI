@@ -18,6 +18,8 @@
     "accessors.DynamicModelRegistryAccessor",
     "accessors.ElixirConfigAccessor",
     "accessors.GearModelRollRaritiesAccessor",
+    "accessors.InscriptionConfigEntryAccessor",
+    "accessors.InscriptionConfigPoolAccessor",
     "accessors.KeyRegistryAccessor",
     "accessors.LegacyLootTablesConfigAccessor",
     "accessors.LootInfoGroupDefinitionRegistryAccessor",

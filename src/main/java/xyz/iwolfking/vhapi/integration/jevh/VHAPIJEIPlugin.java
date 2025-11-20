@@ -8,7 +8,9 @@ import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModGearAttributes;
 import iskallia.vault.init.ModItems;
 import iskallia.vault.item.AugmentItem;
+import iskallia.vault.item.InscriptionItem;
 import iskallia.vault.item.VaultModifierItem;
+import iskallia.vault.item.data.InscriptionData;
 import iskallia.vault.item.gear.TemporalShardItem;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -33,6 +35,8 @@ import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.integration.the_vault.VaultSealHelper;
 import xyz.iwolfking.vhapi.integration.wolds.WoldsSealHelper;
+import xyz.iwolfking.vhapi.mixin.accessors.InscriptionConfigEntryAccessor;
+import xyz.iwolfking.vhapi.mixin.accessors.InscriptionConfigPoolAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.TemporalShardConfigAccessor;
 
 import javax.annotation.Nullable;
@@ -49,6 +53,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> OBJECTIVES = RecipeType.create(VHAPI.MODID, "objectives", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> MODIFIER_POOLS = RecipeType.create(VHAPI.MODID, "modifier_pools", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> TEMPORAL_RELICS = RecipeType.create(VHAPI.MODID, "temporal_relics", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> INSCRIPTION_POOLS = RecipeType.create(VHAPI.MODID, "inscription_pools", LabeledLootInfo.class);
 
 
     @Override @SuppressWarnings("removal")
@@ -57,6 +62,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CRYSTAL), OBJECTIVES);
         registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CRYSTAL), MODIFIER_POOLS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.TEMPORAL_SHARD), TEMPORAL_RELICS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.INSCRIPTION), INSCRIPTION_POOLS);
     }
 
     @Override @SuppressWarnings("removal")
@@ -65,6 +71,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(OBJECTIVES, getObjectivesPerLevel());
         registration.addRecipes(MODIFIER_POOLS, getModifierPoolsPerLevel());
         registration.addRecipes(TEMPORAL_RELICS, getTemporalRelics());
+        registration.addRecipes(INSCRIPTION_POOLS, getInscriptionPoolsPerLevel());
     }
 
     @Override
@@ -74,6 +81,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, OBJECTIVES, ModItems.CRYSTAL_SEAL_EMPTY, new TextComponent("Objectives")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, MODIFIER_POOLS, ModItems.VAULT_CATALYST_INFUSED, new TextComponent("Modifier Pools")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, TEMPORAL_RELICS, ModItems.TEMPORAL_SHARD, new TextComponent("Temporal Relics")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, INSCRIPTION_POOLS, ModItems.INSCRIPTION, new TextComponent("Inscription Pools")));
     }
 
 
@@ -169,6 +177,33 @@ public class VHAPIJEIPlugin implements IModPlugin {
                     });
                 });
                 lootInfo.add(LabeledLootInfo.of(augments, new TextComponent(ResourceLocUtils.formatReadableName(key1) + " - Level " + poolEntry.level), null));
+            });
+        });
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getInscriptionPoolsPerLevel() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        ModConfigs.INSCRIPTION.pools.forEach((key1, value1) -> {
+            value1.forEach(poolEntry -> {
+                List<ItemStack> augments = new ArrayList<>();
+                AtomicInteger totalWeight = new AtomicInteger();
+                ((InscriptionConfigPoolAccessor)poolEntry).getPool().forEach((entry, weight) -> {
+                        totalWeight.getAndAdd(weight.intValue());
+                });
+                ((InscriptionConfigPoolAccessor)poolEntry).getPool().forEach((entry, weight) -> {
+                    if(weight > 0) {
+                        InscriptionData inscriptionData = InscriptionData.empty();
+                        inscriptionData.setSize(((InscriptionConfigEntryAccessor)entry).getSize().getMin());
+                        inscriptionData.setModel(((InscriptionConfigEntryAccessor)entry).getModel().getMin());
+                        inscriptionData.setColor(((InscriptionConfigEntryAccessor)entry).getColor());
+                        ((InscriptionConfigEntryAccessor) entry).getEntries().forEach(inscriptionData::add);
+                        ItemStack inscriptionStack = new ItemStack(ModItems.INSCRIPTION);
+                        inscriptionData.write(inscriptionStack);
+                        augments.add(formatItemStack(inscriptionStack, 1, 1, weight, totalWeight.get(), null));
+                    }
+                });
+                lootInfo.add(LabeledLootInfo.of(augments, new TextComponent(ResourceLocUtils.formatReadableName(key1) + " - Level " + poolEntry.getLevel()), null));
             });
         });
         return lootInfo;
