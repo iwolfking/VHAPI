@@ -206,6 +206,7 @@ public class Processors {
         public static final TranslationsConfigLoader TRANSLATIONS_CONFIG_LOADER = new TranslationsConfigLoader();
         public static final VoidCrucibleConfigLoader VOID_CRUCIBLE_CONFIG_LOADER = new VoidCrucibleConfigLoader();
         public static final ThemeLoreConfigLoader THEME_AUGMENT_LORE_CONFIG = new ThemeLoreConfigLoader();
+        public static final BestiaryConfigLoader BESTIARY_CONFIG_LOADER = new BestiaryConfigLoader();
     }
 
     public static class TransmogConfigProcessors {
