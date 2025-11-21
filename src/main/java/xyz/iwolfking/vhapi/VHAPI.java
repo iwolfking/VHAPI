@@ -98,14 +98,14 @@ public class VHAPI {
 
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
-        //Only servers ever need to send datapack syncs
-        DistExecutor.unsafeRunWhenOn(Dist.DEDICATED_SERVER, () -> () -> {
-            if(VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
-                VHAPILoggerUtils.info("Sending VHAPI datapacks to " + event.getPlayer().getName().getString() + ".");
-                //We are on server so send configs
-                VHAPISyncNetwork.syncVHAPIConfigs(new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()), (ServerPlayer) event.getPlayer());
+        if (!event.getPlayer().getLevel().isClientSide()) {
+            if (VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
+                VHAPISyncNetwork.syncVHAPIConfigs(
+                        new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
+                        (ServerPlayer) event.getPlayer()
+                );
             }
-        });
+        }
     }
 
     private void worldLoad(final WorldEvent.Load event)  {
