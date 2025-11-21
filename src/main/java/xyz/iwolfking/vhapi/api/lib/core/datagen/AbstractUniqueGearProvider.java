@@ -10,6 +10,8 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gear.UniqueGearEntry;
+import xyz.iwolfking.vhapi.api.loaders.gear.transmog.lib.GsonHandheldModel;
+import xyz.iwolfking.vhapi.api.loaders.gear.transmog.lib.HandheldModelConfig;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -51,7 +53,7 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         Map<String, JsonArray> modelsMap = new HashMap<>();
 
         JsonObject modelRolls = new JsonObject();
-        String[] itemTypes = {"AXE", "WAND", "SWORD", "ARMOR", "SHIELD", "FOCUS", "MAGNETS"};
+        String[] itemTypes = {"AXE", "WAND", "SWORD", "ARMOR", "SHIELD", "FOCUS", "MAGNETS", "TRIDENT", "BATTLESTAFF", "PLUSHIE", "LOOT_SACK"};
 
         for (String type : itemTypes) {
             JsonObject rolls = new JsonObject();
@@ -68,7 +70,7 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             registry.add(key, toJson(entry));
 
             JsonObject poolEntry = new JsonObject();
-            poolEntry.addProperty("weight", entry.weight());
+            poolEntry.addProperty(result.id().toString(), entry.weight());
             pools.add(key, poolEntry);
 
             String type = entry.codexSlotType().toString();
@@ -107,22 +109,17 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             page.addProperty("uniqueId", key);
             pages.add(page);
 
-            // --- Gear Models ---
-            JsonObject model = new JsonObject();
-            model.addProperty("id", entry.model());
-            model.addProperty("displayName", entry.name());
-            model.addProperty("discoverOnRoll", true);
-            model.addProperty("allowTransmogrification", true);
+            GsonHandheldModel handheldModel = new GsonHandheldModel(ResourceLocation.tryParse(entry.model()), entry.name(), true, true);
+
             if(modelsMap.containsKey(entry.modelType().toLowerCase())) {
-                modelsMap.get(entry.modelType().toLowerCase()).add(model);
+                modelsMap.get(entry.modelType().toLowerCase()).add(handheldModel.toJson());
             }
             else {
                 JsonArray modelArray = new JsonArray();
-                modelArray.add(model);
+                modelArray.add(handheldModel.toJson());
                 modelsMap.put(entry.modelType().toLowerCase(), modelArray);
             }
 
-            // --- Model Rolls ---
             String rollKey = entry.modelType().toUpperCase() + "_MODEL_ROLLS";
             JsonObject rolls = modelRolls.getAsJsonObject(rollKey);
             JsonArray uniqueArray = rolls.getAsJsonArray("UNIQUE");

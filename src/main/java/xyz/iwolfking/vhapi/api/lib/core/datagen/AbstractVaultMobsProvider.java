@@ -8,7 +8,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vhapi.api.util.builder.theme_lore.JsonDescription;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -55,7 +54,9 @@ public abstract class AbstractVaultMobsProvider implements DataProvider {
         entityGroupsFile.put("groups", new HashMap<>());
 
         map.forEach(((resourceLocation, vaultMob) -> {
-            mobXPBuilder.add(resourceLocation.toString(), vaultMob.xpReward);
+            if(vaultMob.xpReward >= 0) {
+                mobXPBuilder.add(resourceLocation.toString(), vaultMob.xpReward);
+            }
             vaultMob.entityGroups.forEach(resourceLocation1 -> {
                 if(entityGroupsFile.get("groups").containsKey(resourceLocation1.toString())) {
                     entityGroupsFile.get("groups").get(resourceLocation1.toString()).add(resourceLocation.toString());
@@ -66,7 +67,9 @@ public abstract class AbstractVaultMobsProvider implements DataProvider {
                     entityGroupsFile.get("groups").put(resourceLocation1.toString(), mobIds);
                 }
             });
-            bestiaryEntries.add(vaultMob.entry);
+            if(vaultMob.entry != null) {
+                bestiaryEntries.add(vaultMob.entry);
+            }
         }));
 
 
@@ -139,7 +142,7 @@ public abstract class AbstractVaultMobsProvider implements DataProvider {
     public static class VaultMobBuilder {
         private final ResourceLocation entityId;
         private final List<AttrSpec> entries = new ArrayList<>();
-        public double xpValue = 0.0;
+        public double xpValue = -1.0;
         public final List<ResourceLocation> entityGroups = new ArrayList<>();
         public BestiaryEntry entry;
 
@@ -188,10 +191,6 @@ public abstract class AbstractVaultMobsProvider implements DataProvider {
         }
 
         public VaultMob build() {
-            if(entry == null) {
-                entry = new BestiaryEntry(entityId.toString(), List.of("Not Configured"), 0, List.of(JsonDescription.simpleDescription("Placeholder description", "$text")));
-            }
-
             return new VaultMob(entityId, List.copyOf(entries), xpValue, entityGroups, entry);
         }
 
@@ -265,7 +264,9 @@ public abstract class AbstractVaultMobsProvider implements DataProvider {
         public AttributeOverridesFile(Map<String, VaultMob> map) {
             Map<String, List<AttrSpec>> mobAttributes = new HashMap<>();
             map.forEach(((s, vaultMob) -> {
-                mobAttributes.put(s, vaultMob.attributes);
+                if(vaultMob.attributes != null) {
+                    mobAttributes.put(s, vaultMob.attributes);
+                }
             }));
             this.ATTRIBUTE_OVERRIDES = mobAttributes;
         }

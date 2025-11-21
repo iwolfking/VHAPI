@@ -1,9 +1,16 @@
-package xyz.iwolfking.vhapi.api.util.builder.theme_lore;
+package xyz.iwolfking.vhapi.api.util.builder.description;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class JsonDescription {
+
+    public static JsonObject empty() {
+        JsonObject desc = new JsonObject();
+        desc.addProperty("text", "");
+        desc.addProperty("color", "$text");
+        return desc;
+    }
 
     public static JsonObject simpleDescription(String text, String color) {
         JsonObject desc = new JsonObject();

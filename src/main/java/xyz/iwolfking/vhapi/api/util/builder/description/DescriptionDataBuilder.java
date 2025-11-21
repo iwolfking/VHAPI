@@ -1,4 +1,4 @@
-package xyz.iwolfking.vhapi.api.util.builder.theme_lore;
+package xyz.iwolfking.vhapi.api.util.builder.description;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

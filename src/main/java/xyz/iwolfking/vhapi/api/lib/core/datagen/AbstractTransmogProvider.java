@@ -1,6 +1,5 @@
 package xyz.iwolfking.vhapi.api.lib.core.datagen;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -9,91 +8,79 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.palette.PaletteBuilder;
-import xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gen.palette.PaletteDefinition;
+import xyz.iwolfking.vhapi.api.loaders.gear.transmog.lib.GsonHandheldModel;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 public abstract class AbstractTransmogProvider implements DataProvider {
-
-    protected final DataGenerator generator;
-    protected final String modid;
-
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-    private final Map<ResourceLocation, PaletteDefinition> palettes = new LinkedHashMap<>();
+    private final DataGenerator generator;
+    private final String modid;
+
+    private final Map<String, Map<String, List<GsonHandheldModel>>> files = new LinkedHashMap<>();
 
     public AbstractTransmogProvider(DataGenerator generator, String modid) {
         this.generator = generator;
         this.modid = modid;
     }
 
-    protected abstract void registerPalettes();
-
-    protected void add(ResourceLocation id, Consumer<PaletteBuilder> consumer) {
-        PaletteBuilder builder = new PaletteBuilder();
-        consumer.accept(builder);
-        palettes.put(id, builder.build());
+    public void add(String itemType, String fileName, Consumer<List<GsonHandheldModel>> consumer) {
+        files.computeIfAbsent(itemType, k -> new LinkedHashMap<>());
+        List<GsonHandheldModel> list = new ArrayList<>();
+        consumer.accept(list);
+        files.get(itemType).put(fileName, list);
     }
-
 
     @Override
     public void run(HashCache cache) throws IOException {
-        palettes.clear();
-        registerPalettes();
+        files.clear();
+        registerModels();
 
-        Path output = generator.getOutputFolder();
+        for (var typeEntry : files.entrySet()) {
+            String itemType = typeEntry.getKey();
 
-        for (var entry : palettes.entrySet()) {
-            ResourceLocation id = entry.getKey();
-            PaletteDefinition def = entry.getValue();
+            for (var fileEntry : typeEntry.getValue().entrySet()) {
+                String fileName = fileEntry.getKey();
+                List<GsonHandheldModel> entries = fileEntry.getValue();
 
-            Path palettePath = output.resolve(
-                    "data/" + id.getNamespace() + "/vault_configs/gear/handheld_models/" + id.getPath() + ".json"
-            );
-            DataProvider.save(GSON, cache, def.toJson(), palettePath);
+                GearModelFile file = new GearModelFile(entries);
+                JsonObject json = file.toJson();
 
-            Path keyPath = output.resolve(
-                    "data/" + id.getNamespace() + "/vault_configs/palettes/" + id.getPath() + ".json"
-            );
+                Path path = generator.getOutputFolder().resolve(
+                        "data/" + modid + "/vault_configs/gear/handheld_models/" + itemType + "/" + fileName + ".json"
+                );
 
-            JsonObject keyFile = new JsonObject();
-            JsonArray keys = new JsonArray();
+                DataProvider.save(GSON, cache, json, path);
+            }
+        }
+    }
 
-            JsonObject item = new JsonObject();
-            item.addProperty("id", id.toString());
-            item.addProperty("name", formatReadableName(id));
-            item.addProperty("1.0", id.toString());
+    public record GearModelFile(List<GsonHandheldModel> models) {
 
-            keys.add(item);
-            keyFile.add("keys", keys);
+        public JsonObject toJson() {
+            JsonObject root = new JsonObject();
+            JsonArray arr = new JsonArray();
 
-            DataProvider.save(GSON, cache, keyFile, keyPath);
+            for (GsonHandheldModel e : models) {
+                arr.add(e.toJson());
+            }
+
+            root.add("MODELS", arr);
+            return root;
         }
     }
 
     @Override
     public String getName() {
-        return modid + " Palette Provider";
+        return modid + " Gear Model Provider";
     }
 
-    private static String formatReadableName(ResourceLocation rl) {
-        String path = rl.getPath().replace('/', '_');
-
-        String[] parts = path.split("_");
-        StringBuilder sb = new StringBuilder();
-
-        for (String p : parts) {
-            if (p.isEmpty()) continue;
-            sb.append(Character.toUpperCase(p.charAt(0)))
-                    .append(p.substring(1))
-                    .append(" ");
-        }
-
-        return sb.toString().trim();
-    }
+    protected abstract void registerModels();
 }

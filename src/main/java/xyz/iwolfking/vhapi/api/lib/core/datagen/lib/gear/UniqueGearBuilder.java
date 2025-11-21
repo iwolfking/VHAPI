@@ -2,7 +2,7 @@ package xyz.iwolfking.vhapi.api.lib.core.datagen.lib.gear;
 
 import com.google.gson.JsonObject;
 import iskallia.vault.config.UniqueCodexConfig;
-import xyz.iwolfking.vhapi.api.util.builder.theme_lore.JsonDescription;
+import xyz.iwolfking.vhapi.api.util.builder.description.JsonDescription;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
