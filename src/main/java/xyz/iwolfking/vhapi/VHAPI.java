@@ -1,6 +1,11 @@
 package xyz.iwolfking.vhapi;
 
 import com.mojang.logging.LogUtils;
+import iskallia.vault.init.ModConfigs;
+import iskallia.vault.init.ModKeybinds;
+import iskallia.vault.skill.base.RemovedSkill;
+import iskallia.vault.skill.base.SpecializedSkill;
+import iskallia.vault.skill.base.TieredSkill;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -31,6 +37,7 @@ import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPIUtils;
 import xyz.iwolfking.vhapi.config.VHAPIConfig;
 import xyz.iwolfking.vhapi.mixin.accessors.BountyScreenAccessor;
+import xyz.iwolfking.vhapi.mixin.accessors.ModKeybindsAccessor;
 import xyz.iwolfking.vhapi.mixin.registry.sprites.MixinModTextureAtlases;
 import xyz.iwolfking.vhapi.networking.VHAPISyncDescriptor;
 import xyz.iwolfking.vhapi.networking.VHAPISyncNetwork;
@@ -137,6 +144,28 @@ public class VHAPI {
             if (BountyScreenAccessor.getObjectiveNames() != null) {
                 BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
             }
+
+            //If an ability isn't present during client setup, then it won't get its keybind assigned, this addresses that issue by replicating what happens during the initial client setup on login.
+            ModConfigs.ABILITIES
+                    .get()
+                    .ifPresent(
+                            tree -> tree.iterate(
+                                    SpecializedSkill.class,
+                                    skill -> {
+                                        if (skill.getSpecializations()
+                                                .stream()
+                                                .anyMatch(
+                                                        specialization -> !(
+                                                                specialization instanceof TieredSkill tieredSkill
+                                                                        && (tieredSkill.getMaxLearnableTier() <= 0 || tieredSkill.getChild(1) instanceof RemovedSkill)
+                                                        )
+                                                )) {
+                                            String name = "quickselect." + skill.getId().toLowerCase().replace(' ', '_');
+                                            ModKeybinds.abilityQuickfireKey.put(skill.getId(), ModKeybindsAccessor.mapping(ModKeybindsAccessor.name(name), KeyConflictContext.IN_GAME));
+                                        }
+                                    }
+                            )
+                    );
         }
 
         public static void onClientLogout(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
