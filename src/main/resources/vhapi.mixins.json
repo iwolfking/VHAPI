@@ -43,6 +43,7 @@
     "accessors.TemplatePoolAccessor",
     "accessors.TemporalShardConfigAccessor",
     "accessors.ThemeAccessor",
+    "accessors.TieredSkillAccessor",
     "accessors.TooltipConfigAccessor",
     "accessors.TrinketAccessor",
     "accessors.UnidentifiedTreasureKeyAccessorConfig",
