@@ -2,6 +2,7 @@ package xyz.iwolfking.vhapi.integration.jevh;
 
 import dev.attackeight.just_enough_vh.jei.LabeledLootInfo;
 import iskallia.vault.VaultMod;
+import iskallia.vault.config.VaultCrystalConfig;
 import iskallia.vault.core.Version;
 import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.vault.VaultRegistry;
@@ -11,6 +12,7 @@ import iskallia.vault.core.world.template.data.TemplateEntry;
 import iskallia.vault.core.world.template.data.TemplatePool;
 import iskallia.vault.gear.VaultGearState;
 import iskallia.vault.gear.data.AttributeGearData;
+import iskallia.vault.gear.trinket.TrinketEffectRegistry;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModGearAttributes;
 import iskallia.vault.init.ModItems;
@@ -20,6 +22,7 @@ import iskallia.vault.item.InscriptionItem;
 import iskallia.vault.item.VaultModifierItem;
 import iskallia.vault.item.data.InscriptionData;
 import iskallia.vault.item.gear.TemporalShardItem;
+import iskallia.vault.item.gear.TrinketItem;
 import iskallia.vault.util.data.LazySet;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -40,6 +43,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.fml.loading.LoadingModList;
+import org.checkerframework.checker.units.qual.A;
 import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.integration.the_vault.VaultSealHelper;
@@ -47,6 +51,7 @@ import xyz.iwolfking.vhapi.integration.wolds.WoldsSealHelper;
 import xyz.iwolfking.vhapi.mixin.accessors.*;
 
 import javax.annotation.Nullable;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -61,6 +66,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> INSCRIPTION_POOLS = RecipeType.create(VHAPI.MODID, "inscription_pools", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> VAULT_CATALYST_POOLS = RecipeType.create(VHAPI.MODID, "catalyst_pools", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> ROOM_POOLS = RecipeType.create(VHAPI.MODID, "room_pools", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> TRINKETS = RecipeType.create(VHAPI.MODID, "trinkets", LabeledLootInfo.class);
 
 
     @Override @SuppressWarnings("removal")
@@ -72,6 +78,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.INSCRIPTION), INSCRIPTION_POOLS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CATALYST_INFUSED), VAULT_CATALYST_POOLS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CRYSTAL), ROOM_POOLS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.TRINKET), TRINKETS);
     }
 
     @Override @SuppressWarnings("removal")
@@ -83,6 +90,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(INSCRIPTION_POOLS, getInscriptionPoolsPerLevel());
         registration.addRecipes(VAULT_CATALYST_POOLS, getCatalystModifierPoolsPerLevel());
         registration.addRecipes(ROOM_POOLS, getRoomPools());
+        registration.addRecipes(TRINKETS, getTrinkets());
     }
 
     @Override
@@ -95,6 +103,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, INSCRIPTION_POOLS, ModItems.INSCRIPTION, new TextComponent("Inscription Pools")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_CATALYST_POOLS, ModItems.VAULT_CATALYST_INFUSED, new TextComponent("Infused Vault Catalyst Pools")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROOM_POOLS, ModItems.INSCRIPTION, new TextComponent("Room Pools")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, TRINKETS, ModItems.TRINKET, new TextComponent("Trinkets")));
     }
 
 
@@ -125,11 +134,30 @@ public class VHAPIJEIPlugin implements IModPlugin {
             value1.forEach(themeEntry -> {
                 List<ItemStack> augments = new ArrayList<>();
                 AtomicInteger totalWeight = new AtomicInteger();
-                themeEntry.pool.forEach((key, value) -> totalWeight.getAndAdd(value.intValue()));
                 themeEntry.pool.forEach((key, value) -> {
-                    if (value > 0) {
+                    totalWeight.getAndAdd(value.intValue());
+                });
+                if(themeEntry.seasonalWeights != null) {
+                    themeEntry.seasonalWeights.forEach((resourceLocation, seasonalWeights) -> {
+                        totalWeight.getAndAdd((int) seasonalWeights.getAdditionalWeight(LocalDate.now()));
+                    });
+                }
+                themeEntry.pool.forEach((key, value) -> {
+                    boolean isSeasonalTheme = themeEntry.seasonalWeights != null && themeEntry.seasonalWeights.containsKey(key);
+                    if (value > 0 && !isSeasonalTheme) {
                         ItemStack currentAugment = AugmentItem.create(key);
-                        augments.add(formatItemStack(currentAugment, 1, 1, value, totalWeight.get(), 1));
+                        augments.add(formatItemStack(currentAugment, 1, 1, value, totalWeight.get(), null));
+                    }
+                    else if(isSeasonalTheme) {
+                        ItemStack currentAugment = AugmentItem.create(key);
+                        VaultCrystalConfig.ThemeEntry.SeasonalWeights weights = themeEntry.seasonalWeights.get(key);
+                        double additionalWeight = weights.getAdditionalWeight(LocalDate.now());
+                        StringBuilder builder = new StringBuilder();
+                        builder.append("Seasonal");
+                        weights.ranges.forEach(dateRangeWeight -> {
+                            builder.append("\n").append(dateRangeWeight.from).append(" - ").append(dateRangeWeight.to).append(" (").append(dateRangeWeight.getWeight(LocalDate.now())).append(")");
+                        });
+                        augments.add(formatItemStack(currentAugment, 1, 1, value + additionalWeight, totalWeight.get(), null, builder.toString()));
                     }
                 });
                 lootInfo.add(LabeledLootInfo.of(augments, new TextComponent(ResourceLocUtils.formatReadableName(key1) + " - Level " + themeEntry.level), null));
@@ -276,6 +304,27 @@ public class VHAPIJEIPlugin implements IModPlugin {
         TEMPLATE_POOLS.forEach(((resourceLocation, integer) -> {
             lootInfo.add(LabeledLootInfo.of(inscriptionsFromTemplatePool(resourceLocation, integer), new TextComponent(ResourceLocUtils.formatReadableName(resourceLocation)), null));
         }));
+
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getTrinkets() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+
+        AtomicInteger totalWeight = new AtomicInteger(0);
+
+        List<ItemStack> trinkets = new ArrayList<>();
+
+        ModConfigs.TRINKET.TRINKETS.forEach((resourceLocation, trinket) -> {
+            totalWeight.getAndAdd(trinket.getWeight());
+        });
+
+        ModConfigs.TRINKET.TRINKETS.forEach((resourceLocation, trinket) -> {
+            ItemStack trinketStack = TrinketItem.createBaseTrinket(TrinketEffectRegistry.getEffect(resourceLocation));
+            trinkets.add(formatItemStack(trinketStack, 1, 1, trinket.getWeight(), totalWeight.get(), null));
+        });
+
+        lootInfo.add(LabeledLootInfo.of(trinkets, new TextComponent("Trinkets"), null));
 
         return lootInfo;
     }

@@ -18,6 +18,10 @@ public class LootTableConfigLoader extends VaultConfigProcessor<LootTablesConfig
         ((KeyRegistryAccessor) VaultRegistry.LOOT_TABLE).setLocked(false);
         for(LootTablesConfig config : this.CUSTOM_CONFIGS.values()) {
             for(LootTableKey key : config.toRegistry().getKeys()) {
+                if(VaultRegistry.LOOT_TABLE.getKey(key.getId()) != null) {
+                    VaultRegistry.LOOT_TABLE.remove(VaultRegistry.LOOT_TABLE.getKey(key.getId()));
+                }
+
                 VaultRegistry.LOOT_TABLE.register(key.with(Version.latest(), key.get(Version.v1_0)));
             }
         }

@@ -1,6 +1,7 @@
 package xyz.iwolfking.vhapi.api.loaders;
 
 import iskallia.vault.config.ThemeAugmentLoreConfig;
+import iskallia.vault.config.VaultItemsConfig;
 import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
@@ -59,6 +60,8 @@ import xyz.iwolfking.vhapi.api.loaders.talents.TalentConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.talents.TalentsGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.titles.CustomTitleConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.tool.PulverizingConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.vault.VaultItemsConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.vault.VaultRoomMapsIconConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.altar.VaultAltarConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.catalyst.CatalystConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.chest.VaultChestMetaConfigLoader;
@@ -207,6 +210,8 @@ public class Processors {
         public static final VoidCrucibleConfigLoader VOID_CRUCIBLE_CONFIG_LOADER = new VoidCrucibleConfigLoader();
         public static final ThemeLoreConfigLoader THEME_AUGMENT_LORE_CONFIG = new ThemeLoreConfigLoader();
         public static final BestiaryConfigLoader BESTIARY_CONFIG_LOADER = new BestiaryConfigLoader();
+        public static final VaultRoomMapsIconConfigLoader VAULT_ROOM_MAPS_ICON_CONFIG_LOADER = new VaultRoomMapsIconConfigLoader();
+        public static final VaultItemsConfigLoader VAULT_ITEMS_CONFIG_LOADER = new VaultItemsConfigLoader();
     }
 
     public static class TransmogConfigProcessors {

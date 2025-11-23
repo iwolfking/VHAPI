@@ -46,6 +46,7 @@ import xyz.iwolfking.vhapi.proxy.client.VHAPISyncClientProxy;
 import xyz.iwolfking.vhapi.proxy.server.VHAPISyncServerProxy;
 
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 

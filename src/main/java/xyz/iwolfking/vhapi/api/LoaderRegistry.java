@@ -150,6 +150,8 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VOID_CRUCIBLE_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.THEME_AUGMENT_LORE_CONFIG);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.BESTIARY_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ROOM_MAPS_ICON_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ITEMS_CONFIG_LOADER);
 
 
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ALTAR_CONFIG_LOADER);
