@@ -4,6 +4,8 @@ import iskallia.vault.VaultMod;
 import iskallia.vault.config.VaultDiffuserConfig;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import xyz.iwolfking.vhapi.mixin.accessors.VaultDiffuserConfigAccessor;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -37,7 +39,7 @@ public abstract class AbstractVaultDiffuserProvider extends AbstractVaultConfigD
 
         public VaultDiffuserConfig build() {
             VaultDiffuserConfig newConfig = new VaultDiffuserConfig();
-            newConfig.getDiffuserOutputMap().putAll(diffuserOutputMap);
+            ((VaultDiffuserConfigAccessor)newConfig).setDiffuserOutputMap(diffuserOutputMap);
             return newConfig;
         }
 

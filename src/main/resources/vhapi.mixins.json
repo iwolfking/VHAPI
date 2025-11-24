@@ -58,6 +58,7 @@
     "accessors.VaultAltarIngredientsConfigAccessor",
     "accessors.VaultCrystalCatalystConfigAccessor",
     "accessors.VaultCrystalConfigAccessor",
+    "accessors.VaultDiffuserConfigAccessor",
     "accessors.VaultGearEnchantmentConfigAccessor",
     "accessors.VaultGearTierConfigAccessor",
     "accessors.VaultGeneralConfigAccessor",
