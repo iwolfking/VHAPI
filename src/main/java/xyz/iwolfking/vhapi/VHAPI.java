@@ -122,16 +122,6 @@ public class VHAPI {
             if(BountyScreenAccessor.getObjectiveNames() != null) {
                 BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
             }
-            return;
-        }
-
-        if(hasLoaded.get()) {
-            return;
-        }
-
-        if(hasLoaded.compareAndSet(false, true)) {
-            //VHAPILoggerUtils.debug("Rerunning Vault Configs load server-side to patch them.");
-            //ModConfigs.register();
         }
     }
 
@@ -142,6 +132,8 @@ public class VHAPI {
         public static void onClientLogin(final ClientPlayerNetworkEvent.LoggedInEvent event) {
             VHAPILoggerUtils.debug("Rerunning Vault Configs load client-side to patch them.");
             VHAPIUtils.loadConfigs();
+
+            //Handles adding the new objective names to display in Bounty tasks.
             if (BountyScreenAccessor.getObjectiveNames() != null) {
                 BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
             }

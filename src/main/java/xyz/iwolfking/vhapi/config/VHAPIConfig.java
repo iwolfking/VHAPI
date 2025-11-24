@@ -12,10 +12,12 @@ import java.util.List;
 public class VHAPIConfig {
     public static class Server {
         public final ForgeConfigSpec.ConfigValue<Boolean> syncDatapackConfigs;
+        public final ForgeConfigSpec.ConfigValue<Boolean> allowPatreonUnlocks;
 
         public Server(ForgeConfigSpec.Builder builder) {
             builder.push("Main Settings");
             this.syncDatapackConfigs = builder.comment("Whether the server should attempt to sync configs with clients with VHAPI installed. (default: true)").define("syncDatapackConfigs", true);
+            this.allowPatreonUnlocks = builder.comment("Whether Patreon transmog unlocks should be normally obtainable. (default: true)").define("allowPatreonUnlocks", true);
             builder.pop();
         }
     }

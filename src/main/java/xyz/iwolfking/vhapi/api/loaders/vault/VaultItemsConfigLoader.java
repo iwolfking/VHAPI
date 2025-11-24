@@ -1,7 +1,6 @@
 package xyz.iwolfking.vhapi.api.loaders.vault;
 
 import iskallia.vault.config.VaultItemsConfig;
-import iskallia.vault.config.VaultMapRoomIconsConfig;
 import iskallia.vault.init.ModConfigs;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
