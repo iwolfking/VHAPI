@@ -195,6 +195,9 @@ public class VHAPI {
                 //STITCH ALL RESEARCH GROUP ICONS
                 addSpritesToAtlas("SKILLS", "/textures/gui/skills");
 
+                //STITCH ALL VAULT MAP ICONS
+                addSpritesToAtlas("VAULT_MAP", "/textures/gui/map");
+
 
                 //Stitch all Gear Textures
                 Collection<ResourceLocation> gearTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/gear", s -> s.endsWith(".png"));
