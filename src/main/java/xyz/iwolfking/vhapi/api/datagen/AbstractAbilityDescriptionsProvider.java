@@ -3,6 +3,7 @@ package xyz.iwolfking.vhapi.api.datagen;
 import com.google.gson.JsonArray;
 import iskallia.vault.config.AbilitiesDescriptionsConfig;
 import net.minecraft.data.DataGenerator;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.AbilitiesDescriptionsConfigAccessor;
 
 import java.util.ArrayList;
@@ -10,22 +11,25 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
-public abstract class AbstractAbilityDescriptionsProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractAbilityDescriptionsProvider extends AbstractVaultConfigDataProvider<AbstractAbilityDescriptionsProvider.Builder> {
     protected AbstractAbilityDescriptionsProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "abilities/descriptions");
+        super(generator, modid, "abilities/descriptions", Builder::new);
     }
 
-    public abstract void registerConfigs();
 
     @Override
     public String getName() {
         return modid + " Ability Descriptions Data Provider";
     }
 
-    public static class AbilityDescriptionsDataProvider {
+    public static class Builder extends VaultConfigBuilder<AbilitiesDescriptionsConfig> {
         private TreeMap<String, AbilitiesDescriptionsConfig.DescriptionData> data;
 
-        public AbilityDescriptionsDataProvider addDescription(String name, Consumer<JsonArray> descriptionConsumer, Consumer<List<String>> currentConsumer, Consumer<List<String>> nextConsumer) {
+        public Builder() {
+            super(AbilitiesDescriptionsConfig::new);
+        }
+
+        public Builder addDescription(String name, Consumer<JsonArray> descriptionConsumer, Consumer<List<String>> currentConsumer, Consumer<List<String>> nextConsumer) {
             JsonArray descriptionArray = new JsonArray();
             descriptionConsumer.accept(descriptionArray);
             List<String> current = new ArrayList<>();
@@ -36,10 +40,9 @@ public abstract class AbstractAbilityDescriptionsProvider extends AbstractVaultC
             return this;
         }
 
-        public AbilitiesDescriptionsConfig build() {
-            AbilitiesDescriptionsConfig newConfig = new AbilitiesDescriptionsConfig();
-            ((AbilitiesDescriptionsConfigAccessor)newConfig).getData().putAll(data);
-            return newConfig;
+        @Override
+        protected void configureConfig(AbilitiesDescriptionsConfig config) {
+            ((AbilitiesDescriptionsConfigAccessor)config).setData(data);
         }
 
     }

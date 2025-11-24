@@ -1,19 +1,14 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
 import iskallia.vault.config.SoulShardConfig;
-import iskallia.vault.config.TooltipConfig;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vhapi.api.loaders.shops.NormalBlackMarketConfigLoader;
-import xyz.iwolfking.vhapi.mixin.accessors.TooltipConfigAccessor;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
-public abstract class AbstractSoulShardProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractSoulShardProvider extends AbstractVaultConfigDataProvider<AbstractSoulShardProvider.Builder> {
     protected AbstractSoulShardProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "soul_shard");
+        super(generator, modid, "soul_shard", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -23,13 +18,17 @@ public abstract class AbstractSoulShardProvider extends AbstractVaultConfigDataP
         return modid + " Black Market (Normal) Data Provider";
     }
 
-    public static class SoulShardConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<SoulShardConfig> {
         private Set<SoulShardConfig.Trades> trades;
 
+        public Builder() {
+            super(SoulShardConfig::new);
+        }
 
-        public SoulShardConfig build() {
-            SoulShardConfig newConfig = new SoulShardConfig();
-            return newConfig;
+
+        @Override
+        protected void configureConfig(SoulShardConfig config) {
+
         }
 
     }

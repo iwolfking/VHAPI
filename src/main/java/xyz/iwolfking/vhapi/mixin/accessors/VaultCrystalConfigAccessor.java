@@ -15,4 +15,7 @@ public interface VaultCrystalConfigAccessor {
 
     @Accessor("SEALS")
     void setSeals(Map<ResourceLocation, LevelEntryList<VaultCrystalConfig.SealEntry>> seals);
+
+    @Accessor("OBJECTIVES")
+    void setObjectives(Map<ResourceLocation, LevelEntryList<VaultCrystalConfig.ObjectiveEntry>> objectives);
 }

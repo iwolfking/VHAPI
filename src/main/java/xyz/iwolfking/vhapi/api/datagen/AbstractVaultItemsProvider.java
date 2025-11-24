@@ -2,10 +2,13 @@ package xyz.iwolfking.vhapi.api.datagen;
 
 import iskallia.vault.config.VaultItemsConfig;
 import net.minecraft.data.DataGenerator;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 
-public abstract class AbstractVaultItemsProvider extends AbstractVaultConfigDataProvider {
+import java.util.function.Supplier;
+
+public abstract class AbstractVaultItemsProvider extends AbstractVaultConfigDataProvider<AbstractVaultItemsProvider.Builder> {
     protected AbstractVaultItemsProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "vault/items");
+        super(generator, modid, "vault/items", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -15,10 +18,14 @@ public abstract class AbstractVaultItemsProvider extends AbstractVaultConfigData
         return modid + " Vault Items Provider";
     }
 
-    public static class VaultItemsConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<VaultItemsConfig> {
         private final VaultItemsConfig itemsConfig = new VaultItemsConfig();
 
-        public VaultItemsConfigBuilder configure(XPItem type, int minXp, int maxXp) {
+        public Builder() {
+            super(VaultItemsConfig::new);
+        }
+
+        public Builder configure(XPItem type, int minXp, int maxXp) {
             VaultItemsConfig.FlatExpFood food = new VaultItemsConfig.FlatExpFood(minXp, maxXp);
             switch (type) {
                 case VAULT_COOKIE -> itemsConfig.VAULT_COOKIE = food;
@@ -34,9 +41,14 @@ public abstract class AbstractVaultItemsProvider extends AbstractVaultConfigData
             return this;
         }
 
-        public VaultItemsConfigBuilder configureDoll(float lootPercentageMin, float lootPercentageMax, float xpPercentageMin, float xpPercentageMax) {
+        public Builder configureDoll(float lootPercentageMin, float lootPercentageMax, float xpPercentageMin, float xpPercentageMax) {
             itemsConfig.VAULT_DOLL = new VaultItemsConfig.VaultDoll(lootPercentageMin, lootPercentageMax, xpPercentageMin, xpPercentageMax);
             return this;
+        }
+
+        @Override
+        protected void configureConfig(VaultItemsConfig config) {
+
         }
 
         public VaultItemsConfig build() {

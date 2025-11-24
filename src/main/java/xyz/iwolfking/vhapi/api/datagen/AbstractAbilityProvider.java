@@ -6,16 +6,16 @@ import iskallia.vault.skill.base.SpecializedSkill;
 import iskallia.vault.skill.base.TieredSkill;
 import iskallia.vault.skill.tree.AbilityTree;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.HashCache;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.TieredSkillAccessor;
 
-import java.io.IOException;
 import java.util.function.IntFunction;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-public abstract class AbstractAbilityProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractAbilityProvider extends AbstractVaultConfigDataProvider<AbstractAbilityProvider.Builder> {
     protected AbstractAbilityProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "abilities/abilities");
+        super(generator, modid, "abilities/abilities", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -25,10 +25,14 @@ public abstract class AbstractAbilityProvider extends AbstractVaultConfigDataPro
         return modid + " Abilities Data Provider";
     }
 
-    public static class AbilityBuilder {
+    public static class Builder extends VaultConfigBuilder<AbilitiesConfig> {
         AbilityTree tree = new AbilityTree();
 
-        public <V extends TieredSkill> AbilityBuilder addSpecializedAbility(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int specializationCount, IntFunction<V> abilityFactory) {
+        public Builder() {
+            super(AbilitiesConfig::new);
+        }
+
+        public <V extends TieredSkill> Builder addSpecializedAbility(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int specializationCount, IntFunction<V> abilityFactory) {
             SpecializedSkill skill = new SpecializedSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, specializationCount).mapToObj(abilityFactory));
             assignSkillValues(skill, id, name);
             tree.skills.add(skill);
@@ -36,10 +40,9 @@ public abstract class AbstractAbilityProvider extends AbstractVaultConfigDataPro
         }
 
 
-        public AbilitiesConfig build() {
-            AbilitiesConfig newConfig = new AbilitiesConfig();
-            newConfig.tree = tree;
-            return newConfig;
+        @Override
+        protected void configureConfig(AbilitiesConfig config) {
+            config.tree = tree;
         }
 
     }

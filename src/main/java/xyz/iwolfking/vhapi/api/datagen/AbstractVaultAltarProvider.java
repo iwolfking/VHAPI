@@ -1,17 +1,15 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
 import iskallia.vault.config.VaultAltarConfig;
-import iskallia.vault.config.VaultDiffuserConfig;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Supplier;
 
-public abstract class AbstractVaultAltarProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractVaultAltarProvider extends AbstractVaultConfigDataProvider<AbstractVaultAltarProvider.Builder> {
     protected AbstractVaultAltarProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "vault/altar");
+        super(generator, modid, "vault/altar", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -21,18 +19,21 @@ public abstract class AbstractVaultAltarProvider extends AbstractVaultConfigData
         return modid + " Vault Altar Data Provider";
     }
 
-    public static class VaultAltarConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<VaultAltarConfig> {
         public List<VaultAltarConfig.Interface> INTERFACES;
 
-        public VaultAltarConfigBuilder add(VaultAltarConfig.Interface altarInterface) {
+        public Builder() {
+            super(VaultAltarConfig::new);
+        }
+
+        public Builder add(VaultAltarConfig.Interface altarInterface) {
             INTERFACES.add(altarInterface);
             return this;
         }
 
-        public VaultAltarConfig build() {
-            VaultAltarConfig newConfig = new VaultAltarConfig();
-            newConfig.INTERFACES.addAll(INTERFACES);
-            return newConfig;
+        @Override
+        protected void configureConfig(VaultAltarConfig config) {
+            config.INTERFACES.addAll(INTERFACES);
         }
 
     }

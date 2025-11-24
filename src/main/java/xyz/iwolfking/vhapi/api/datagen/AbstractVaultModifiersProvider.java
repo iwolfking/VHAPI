@@ -1,12 +1,11 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
 import iskallia.vault.config.VaultModifiersConfig;
-import iskallia.vault.core.vault.modifier.modifier.GroupedModifier;
 import iskallia.vault.core.vault.modifier.spi.VaultModifier;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.VaultModifiersConfigAccessor;
-import xyz.iwolfking.woldsvaults.WoldsVaults;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,9 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public abstract class AbstractVaultModifiersProvider extends AbstractVaultConfigDataProvider{
+public abstract class AbstractVaultModifiersProvider extends AbstractVaultConfigDataProvider<AbstractVaultModifiersProvider.Builder> {
     protected AbstractVaultModifiersProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "vault/modifiers");
+        super(generator, modid, "vault/modifiers", Builder::new);
     }
 
     @Override
@@ -24,11 +23,12 @@ public abstract class AbstractVaultModifiersProvider extends AbstractVaultConfig
         return modid + " Vault Modifiers Provider";
     }
 
-    public static class VaultModifiersConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<VaultModifiersConfig> {
         VaultModifiersConfig.ModifierTypeGroups modifierTypeGroups;
 
-        public VaultModifiersConfigBuilder() {
-             createModifierTypeGroups();
+        public Builder() {
+            super(VaultModifiersConfig::new);
+            createModifierTypeGroups();
         }
 
         private void createModifierTypeGroups() {
@@ -43,7 +43,7 @@ public abstract class AbstractVaultModifiersProvider extends AbstractVaultConfig
             }
         }
 
-        public VaultModifiersConfigBuilder addModifiersToGroup(ResourceLocation modifierTypeGroupId, Consumer<Map<ResourceLocation, VaultModifier<?>>> vaultModifiersConsumer) {
+        public Builder addModifiersToGroup(ResourceLocation modifierTypeGroupId, Consumer<Map<ResourceLocation, VaultModifier<?>>> vaultModifiersConsumer) {
             Map<ResourceLocation, VaultModifier<?>> modifierMap = new HashMap<>();
             vaultModifiersConsumer.accept(modifierMap);
             if(modifierTypeGroups.containsKey(modifierTypeGroupId)) {
@@ -55,10 +55,9 @@ public abstract class AbstractVaultModifiersProvider extends AbstractVaultConfig
             return this;
         }
 
-        public VaultModifiersConfig build() {
-            VaultModifiersConfig config = new VaultModifiersConfig();
+        @Override
+        protected void configureConfig(VaultModifiersConfig config) {
             ((VaultModifiersConfigAccessor)config).setModifierTypeGroups(modifierTypeGroups);
-            return config;
         }
     }
 }

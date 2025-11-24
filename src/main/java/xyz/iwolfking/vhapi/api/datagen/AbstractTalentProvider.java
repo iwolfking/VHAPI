@@ -24,6 +24,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.FarmerTwerkerAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.PuristTalentAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.TieredSkillAccessor;
@@ -33,11 +34,12 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
 import java.util.function.IntToDoubleFunction;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProvider<AbstractTalentProvider.Builder> {
     protected AbstractTalentProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "talents/talents");
+        super(generator, modid, "talents/talents", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -47,8 +49,12 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
         return modid + " Talents Data Provider";
     }
 
-    public static class TalentBuilder {
+    public static class Builder extends VaultConfigBuilder<TalentsConfig> {
         TalentTree tree = new TalentTree();
+
+        public Builder() {
+            super(TalentsConfig::new);
+        }
 
         private void assignSkillValues(TieredSkill skill, String id, String name, int maxLearnableTier) {
             skill.setId(id);
@@ -58,7 +64,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
         }
 
 
-        public TalentBuilder addPuristTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction, Consumer<Set<VaultGearRarity>> raritiesConsumer, Consumer<Set<EquipmentSlot>> slotsConsumer) {
+        public Builder addPuristTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction, Consumer<Set<VaultGearRarity>> raritiesConsumer, Consumer<Set<EquipmentSlot>> slotsConsumer) {
             Set<VaultGearRarity> rarities = new HashSet<>();
             Set<EquipmentSlot> slots = new HashSet<>();
             raritiesConsumer.accept(rarities);
@@ -77,7 +83,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addVanillaAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Attribute attribute, AttributeModifier.Operation operation, IntToDoubleFunction scalingFunction) {
+        public Builder addVanillaAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Attribute attribute, AttributeModifier.Operation operation, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new VanillaAttributeTalent(unlockLevel, learnPointCost, 1, attribute, operation, scalingFunction.applyAsDouble(i));
             }));
@@ -87,7 +93,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addEffectTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, MobEffect effect, IntFunction<Integer> amplitudeScalingFunction) {
+        public Builder addEffectTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, MobEffect effect, IntFunction<Integer> amplitudeScalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new EffectTalent(unlockLevel, learnPointCost, 1, effect, amplitudeScalingFunction.apply(i));
             }));
@@ -97,7 +103,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addGearAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, VaultGearAttribute<?> attribute, IntToDoubleFunction scalingFunction) {
+        public Builder addGearAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, VaultGearAttribute<?> attribute, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new GearAttributeTalent(unlockLevel, learnPointCost, 1, attribute, scalingFunction.applyAsDouble(i));
             }));
@@ -107,7 +113,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addStackingGearAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, VaultGearAttribute<?> attribute, IntToDoubleFunction scalingFunction, MobEffect effect, IntFunction<Integer> stacksScaling, IntFunction<Integer> durationScaling) {
+        public Builder addStackingGearAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, VaultGearAttribute<?> attribute, IntToDoubleFunction scalingFunction, MobEffect effect, IntFunction<Integer> stacksScaling, IntFunction<Integer> durationScaling) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new StackingGearAttributeTalent(unlockLevel, learnPointCost, 1, attribute, scalingFunction.applyAsDouble(i), effect, durationScaling.apply(i), stacksScaling.apply(i));
             }));
@@ -117,7 +123,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addHighHealthGearAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, MobEffect effect, IntToDoubleFunction healthThresholdScaling, VaultGearAttribute<?> attribute, IntToDoubleFunction valueScalingFunction) {
+        public Builder addHighHealthGearAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, MobEffect effect, IntToDoubleFunction healthThresholdScaling, VaultGearAttribute<?> attribute, IntToDoubleFunction valueScalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new HighHealthGearAttributeTalent(unlockLevel, learnPointCost, 1, effect, (float)healthThresholdScaling.applyAsDouble(i), attribute, valueScalingFunction.applyAsDouble(i), null);
             }));
@@ -127,7 +133,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addHighManaGearAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, MobEffect effect, IntToDoubleFunction manaThresholdScaling, VaultGearAttribute<?> attribute, IntToDoubleFunction valueScalingFunction) {
+        public Builder addHighManaGearAttributeTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, MobEffect effect, IntToDoubleFunction manaThresholdScaling, VaultGearAttribute<?> attribute, IntToDoubleFunction valueScalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new HighManaGearAttributeTalent(unlockLevel, learnPointCost, 1, effect, (float)manaThresholdScaling.applyAsDouble(i), attribute, valueScalingFunction.applyAsDouble(i), null);
             }));
@@ -137,7 +143,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addLowManaDamageTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, MobEffect effect, IntToDoubleFunction manaThresholdScaling, IntToDoubleFunction valueScalingFunction) {
+        public Builder addLowManaDamageTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, MobEffect effect, IntToDoubleFunction manaThresholdScaling, IntToDoubleFunction valueScalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new LowManaDamageTalent(unlockLevel, learnPointCost, 1, effect, (float)manaThresholdScaling.applyAsDouble(i), (float)valueScalingFunction.applyAsDouble(i));
             }));
@@ -147,7 +153,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addLightningDamageTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
+        public Builder addLightningDamageTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new LightningDamageTalent(unlockLevel, learnPointCost, 1, (float)scalingFunction.applyAsDouble(i));
             }));
@@ -157,7 +163,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addJavelinThrowPowerTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
+        public Builder addJavelinThrowPowerTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new JavelinThrowPowerTalent(unlockLevel, learnPointCost, 1, (float)scalingFunction.applyAsDouble(i));
             }));
@@ -167,7 +173,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addJavelinFrugalTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
+        public Builder addJavelinFrugalTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new JavelinFrugalTalent(unlockLevel, learnPointCost, 1, (float)scalingFunction.applyAsDouble(i));
             }));
@@ -178,7 +184,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
         }
 
 
-        public TalentBuilder addJavelinDamageTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
+        public Builder addJavelinDamageTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new JavelinDamageTalent(unlockLevel, learnPointCost, 1, (float)scalingFunction.applyAsDouble(i));
             }));
@@ -189,7 +195,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
         }
 
 
-        public TalentBuilder addJavelinConductTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers) {
+        public Builder addJavelinConductTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new JavelinConductTalent(unlockLevel, learnPointCost, 1);
             }));
@@ -199,7 +205,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addLuckyHitDamageTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
+        public Builder addLuckyHitDamageTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new DamageLuckyHitTalent(unlockLevel, learnPointCost, 1, (float)scalingFunction.applyAsDouble(i));
             }));
@@ -209,7 +215,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addLuckyHitManaTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
+        public Builder addLuckyHitManaTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new ManaLeechLuckyHitTalent(unlockLevel, learnPointCost, 1, (float)scalingFunction.applyAsDouble(i));
             }));
@@ -219,7 +225,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addLuckyHitSweepingTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction damagePercentageScaling, IntToDoubleFunction damageRangeScaling, IntToDoubleFunction knockbackStrengthScaling) {
+        public Builder addLuckyHitSweepingTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction damagePercentageScaling, IntToDoubleFunction damageRangeScaling, IntToDoubleFunction knockbackStrengthScaling) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new SweepingLuckyHitTalent(unlockLevel, learnPointCost, 1, (float)damagePercentageScaling.applyAsDouble(i), (float)damageRangeScaling.applyAsDouble(i), (float)knockbackStrengthScaling.applyAsDouble(i));
             }));
@@ -229,7 +235,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addFarmerTwerkerTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction adultChanceScaling, IntFunction<Integer> delayScaling, IntFunction<Integer> horizontalScaling, IntFunction<Integer> verticalScaling) {
+        public Builder addFarmerTwerkerTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction adultChanceScaling, IntFunction<Integer> delayScaling, IntFunction<Integer> horizontalScaling, IntFunction<Integer> verticalScaling) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 FarmerTwerker talent = new FarmerTwerker(unlockLevel, learnPointCost, 1);
                 ((FarmerTwerkerAccessor)talent).setAdultChance((float) adultChanceScaling.applyAsDouble(i));
@@ -244,7 +250,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addCastOnHitTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Consumer<EntityPredicate[]> filterConsumer, String ability, IntToDoubleFunction probabilityScaling) {
+        public Builder addCastOnHitTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Consumer<EntityPredicate[]> filterConsumer, String ability, IntToDoubleFunction probabilityScaling) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 EntityPredicate[] filter = new EntityPredicate[]{};
                 filterConsumer.accept(filter);
@@ -256,7 +262,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addEffectOnHitTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Consumer<EntityPredicate[]> filterConsumer, MobEffect effect, IntToDoubleFunction probabilityScaling, IntFunction<Integer> amplifierScaling, IntFunction<Integer> durationScaling) {
+        public Builder addEffectOnHitTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Consumer<EntityPredicate[]> filterConsumer, MobEffect effect, IntToDoubleFunction probabilityScaling, IntFunction<Integer> amplifierScaling, IntFunction<Integer> durationScaling) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 EntityPredicate[] filter = new EntityPredicate[]{};
                 filterConsumer.accept(filter);
@@ -268,7 +274,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addDamageOnHitTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Consumer<EntityPredicate[]> filterConsumer, IntToDoubleFunction probabilityScaling) {
+        public Builder addDamageOnHitTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Consumer<EntityPredicate[]> filterConsumer, IntToDoubleFunction probabilityScaling) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 EntityPredicate[] filter = new EntityPredicate[]{};
                 filterConsumer.accept(filter);
@@ -280,7 +286,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addCastOnKillTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Consumer<EntityPredicate[]> filterConsumer, String ability, IntToDoubleFunction probabilityScaling) {
+        public Builder addCastOnKillTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, Consumer<EntityPredicate[]> filterConsumer, String ability, IntToDoubleFunction probabilityScaling) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 EntityPredicate[] filter = new EntityPredicate[]{};
                 filterConsumer.accept(filter);
@@ -292,7 +298,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addPrudentTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
+        public Builder addPrudentTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new PrudentTalent(unlockLevel, learnPointCost, 1, (float)scalingFunction.applyAsDouble(i));
             }));
@@ -302,7 +308,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public TalentBuilder addAlchemistTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
+        public Builder addAlchemistTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntToDoubleFunction scalingFunction) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(i -> {
                 return new AlchemistTalent(unlockLevel, learnPointCost, 1, (float)scalingFunction.applyAsDouble(i));
             }));
@@ -312,7 +318,7 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
             return this;
         }
 
-        public <T extends LearnableSkill> TalentBuilder addTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntFunction<T> talentFactory) {
+        public <T extends LearnableSkill> Builder addTalent(String id, String name, int maxLearnableTier, int unlockLevel, int learnPointCost, int numberOfTiers, IntFunction<T> talentFactory) {
             TieredSkill skill = new TieredSkill(unlockLevel, learnPointCost, 1, IntStream.range(0, numberOfTiers).mapToObj(talentFactory));
 
             assignSkillValues(skill, id, name, maxLearnableTier);
@@ -321,11 +327,9 @@ public abstract class AbstractTalentProvider extends AbstractVaultConfigDataProv
         }
 
 
-
-        public TalentsConfig build() {
-            TalentsConfig newConfig = new TalentsConfig();
-            newConfig.tree = tree;
-            return newConfig;
+        @Override
+        protected void configureConfig(TalentsConfig config) {
+            config.tree = tree;
         }
 
     }

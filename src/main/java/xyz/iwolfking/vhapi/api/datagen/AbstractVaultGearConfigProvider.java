@@ -1,5 +1,6 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
+import iskallia.vault.VaultMod;
 import iskallia.vault.config.entry.FloatRollRangeEntry;
 import iskallia.vault.config.entry.IntRollRangeEntry;
 import iskallia.vault.config.gear.VaultGearTierConfig;
@@ -24,6 +25,7 @@ import iskallia.vault.gear.attribute.talent.TalentLevelAttribute;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.api.lib.core.modifiers.StringValueGenerator;
 import xyz.iwolfking.vhapi.mixin.accessors.ModifierGearTierAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.VaultGearTierConfigAccessor;
@@ -32,10 +34,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public abstract class AbstractVaultGearConfigProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractVaultGearConfigProvider extends AbstractVaultConfigDataProvider<AbstractVaultGearConfigProvider.Builder> {
     protected AbstractVaultGearConfigProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "gear/gear_modifiers");
+        super(generator, modid, "gear/gear_modifiers", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -45,22 +48,36 @@ public abstract class AbstractVaultGearConfigProvider extends AbstractVaultConfi
         return modid + " Gear Modifiers Data Provider";
     }
 
-    public static class GearModifierConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<VaultGearTierConfig> {
         private final Map<VaultGearTierConfig.ModifierAffixTagGroup, VaultGearTierConfig.AttributeGroup> modifierGroup = new LinkedHashMap<>();
+        private ResourceLocation key;
 
-        public GearModifierConfigBuilder add(VaultGearTierConfig.ModifierAffixTagGroup affixGroup, Consumer<VaultGearAttributeGroupBuilder> builderConsumer) {
+        public Builder() {
+            super(() -> new VaultGearTierConfig(null));
+        }
+
+        public Builder key(ResourceLocation key) {
+            this.key = key;
+            return this;
+        }
+
+        public Builder add(VaultGearTierConfig.ModifierAffixTagGroup affixGroup, Consumer<VaultGearAttributeGroupBuilder> builderConsumer) {
             VaultGearAttributeGroupBuilder builder = new VaultGearAttributeGroupBuilder();
             builderConsumer.accept(builder);
             modifierGroup.put(affixGroup, builder.build());
             return this;
         }
 
-        public VaultGearTierConfig build(ResourceLocation gearId) {
-            VaultGearTierConfig newConfig = new VaultGearTierConfig(gearId);
-            ((VaultGearTierConfigAccessor)newConfig).getModifierGroup().putAll(modifierGroup);
-            return newConfig;
+        @Override
+        protected void configureConfig(VaultGearTierConfig config) {
+            ((VaultGearTierConfigAccessor)config).getModifierGroup().putAll(modifierGroup);
+            if(key != null) {
+                ((VaultGearTierConfigAccessor)config).setKey(key);
+            }
+            else {
+                ((VaultGearTierConfigAccessor)config).setKey(VaultMod.id("default"));
+            }
         }
-
     }
 
     public static class VaultGearAttributeGroupBuilder {

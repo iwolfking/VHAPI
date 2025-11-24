@@ -6,12 +6,15 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.TrinketConfigTrinketAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.TrinketEffectConfigAccessor;
 
-public abstract class AbstractTrinketProvider extends AbstractVaultConfigDataProvider {
+import java.util.function.Supplier;
+
+public abstract class AbstractTrinketProvider extends AbstractVaultConfigDataProvider<AbstractTrinketProvider.Builder> {
     protected AbstractTrinketProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "trinkets");
+        super(generator, modid, "trinkets", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -21,18 +24,21 @@ public abstract class AbstractTrinketProvider extends AbstractVaultConfigDataPro
         return modid + " Trinkets Data Provider";
     }
 
-    public static class TrinketsConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<TrinketConfig> {
         public TrinketConfig.TrinketMap TRINKETS = new TrinketConfig.TrinketMap();
 
-        public TrinketsConfigBuilder addTrinket(ResourceLocation trinketId, TrinketConfig.Trinket trinket) {
+        public Builder() {
+            super(TrinketConfig::new);
+        }
+
+        public Builder addTrinket(ResourceLocation trinketId, TrinketConfig.Trinket trinket) {
             TRINKETS.put(trinketId, trinket);
             return this;
         }
 
-        public TrinketConfig build() {
-            TrinketConfig newConfig = new TrinketConfig();
-            newConfig.TRINKETS = TRINKETS;
-            return newConfig;
+        @Override
+        protected void configureConfig(TrinketConfig config) {
+            config.TRINKETS = TRINKETS;
         }
 
         public static TrinketConfig.Trinket createTrinket(int weight, String name, String effectText, int color, int minUses, int maxUses, int minCraftedUses, int maxCraftedUses, TrinketEffect.Config trinketConfig, String curiosSlot) {

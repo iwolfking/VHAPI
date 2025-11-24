@@ -4,13 +4,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import iskallia.vault.config.SkillDescriptionsConfig;
 import net.minecraft.data.DataGenerator;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.SkillDescriptionsConfigAccessor;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-public abstract class AbstractSkillDescriptionsProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractSkillDescriptionsProvider extends AbstractVaultConfigDataProvider<AbstractSkillDescriptionsProvider.Builder> {
     protected AbstractSkillDescriptionsProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "skill/descriptions");
+        super(generator, modid, "skill/descriptions", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -20,21 +21,24 @@ public abstract class AbstractSkillDescriptionsProvider extends AbstractVaultCon
         return modid + " Skill Descriptions Data Provider";
     }
 
-    public static class SkillDescriptionsConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<SkillDescriptionsConfig> {
         private final HashMap<String, JsonElement> descriptions = new HashMap<>();
 
-        public SkillDescriptionsConfigBuilder addDescription(String name, Consumer<JsonArray> descriptionConsumer) {
+        public Builder() {
+            super(SkillDescriptionsConfig::new);
+        }
+
+        public Builder addDescription(String name, Consumer<JsonArray> descriptionConsumer) {
             JsonArray descriptionArray = new JsonArray();
             descriptionConsumer.accept(descriptionArray);
             descriptions.put(name, descriptionArray);
             return this;
         }
 
-        public SkillDescriptionsConfig build() {
-            SkillDescriptionsConfig newConfig = new SkillDescriptionsConfig();
-            ((SkillDescriptionsConfigAccessor)newConfig).setDescriptions(descriptions);
-            return newConfig;
-        }
+        @Override
+        protected void configureConfig(SkillDescriptionsConfig config) {
+            ((SkillDescriptionsConfigAccessor)config).setDescriptions(descriptions);
 
+        }
     }
 }

@@ -1,16 +1,18 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
-import iskallia.vault.config.ResearchGroupConfig;
 import iskallia.vault.config.ResearchGroupStyleConfig;
 import iskallia.vault.config.entry.ResearchGroupStyle;
-import iskallia.vault.research.group.ResearchGroup;
 import net.minecraft.data.DataGenerator;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public abstract class AbstractResearchGroupStyleProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractResearchGroupStyleProvider extends AbstractVaultConfigDataProvider<AbstractResearchGroupStyleProvider.Builder> {
     protected AbstractResearchGroupStyleProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "research/group_styles");
+        super(generator, modid, "research/group_styles", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -21,19 +23,24 @@ public abstract class AbstractResearchGroupStyleProvider extends AbstractVaultCo
     }
 
 
-    public static class ResearchGroupStyleBuilder {
-        ResearchGroupStyleConfig researchConfig = new ResearchGroupStyleConfig();
+    public static class Builder extends VaultConfigBuilder<ResearchGroupStyleConfig> {
+        Map<String, ResearchGroupStyle> groupStyles = new HashMap<>();
 
-        public ResearchGroupStyleBuilder addGroupStyle(String groupName, Consumer<ResearchGroupStyle.Builder> groupConsumer) {
+        public Builder() {
+            super(ResearchGroupStyleConfig::new);
+        }
+
+        public Builder addGroupStyle(String groupName, Consumer<ResearchGroupStyle.Builder> groupConsumer) {
             ResearchGroupStyle.Builder groupBuilder = ResearchGroupStyle.builder(groupName);
             groupConsumer.accept(groupBuilder);
-            researchConfig.getStyles().put(groupName, groupBuilder.build());
+            groupStyles.put(groupName, groupBuilder.build());
             return this;
         }
 
 
-        public ResearchGroupStyleConfig build() {
-            return researchConfig;
+        @Override
+        protected void configureConfig(ResearchGroupStyleConfig config) {
+            config.getStyles().putAll(groupStyles);
         }
 
     }

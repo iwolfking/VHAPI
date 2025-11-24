@@ -1,22 +1,19 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
-import iskallia.vault.config.TooltipConfig;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.api.loaders.workstation.lib.CustomVaultRecyclerConfig;
 import xyz.iwolfking.vhapi.api.loaders.workstation.lib.GsonChanceItemStack;
 import xyz.iwolfking.vhapi.api.loaders.workstation.lib.GsonRecyclerOutput;
-import xyz.iwolfking.vhapi.mixin.accessors.TooltipConfigAccessor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
-public abstract class AbstractVaultRecyclerProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractVaultRecyclerProvider extends AbstractVaultConfigDataProvider<AbstractVaultRecyclerProvider.Builder> {
     protected AbstractVaultRecyclerProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "vault_recycler");
+        super(generator, modid, "vault_recycler", Builder::new);
     }
 
     public abstract void registerConfigs();
@@ -26,23 +23,26 @@ public abstract class AbstractVaultRecyclerProvider extends AbstractVaultConfigD
         return modid + " Vault Recycler Data Provider";
     }
 
-    public static class VaultRecyclerConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<CustomVaultRecyclerConfig> {
         public Map<ResourceLocation, GsonRecyclerOutput> OUTPUTS = new HashMap<>();
 
-        public VaultRecyclerConfigBuilder add(ResourceLocation itemId, GsonRecyclerOutput output) {
+        public Builder() {
+            super(CustomVaultRecyclerConfig::new);
+        }
+
+        public Builder add(ResourceLocation itemId, GsonRecyclerOutput output) {
             OUTPUTS.put(itemId, output);
             return this;
         }
 
-        public VaultRecyclerConfigBuilder add(ResourceLocation itemId, GsonChanceItemStack output1, GsonChanceItemStack output2, GsonChanceItemStack output3) {
+        public Builder add(ResourceLocation itemId, GsonChanceItemStack output1, GsonChanceItemStack output2, GsonChanceItemStack output3) {
             return add(itemId, new GsonRecyclerOutput(output1, output2, output3));
         }
 
+        @Override
+        protected void configureConfig(CustomVaultRecyclerConfig config) {
+            config.OUTPUTS = OUTPUTS;
 
-        public CustomVaultRecyclerConfig build() {
-            CustomVaultRecyclerConfig newConfig = new CustomVaultRecyclerConfig();
-            newConfig.OUTPUTS = OUTPUTS;
-            return newConfig;
         }
 
     }

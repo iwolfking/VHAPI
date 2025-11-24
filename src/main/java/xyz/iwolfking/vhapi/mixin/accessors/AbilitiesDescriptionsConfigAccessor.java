@@ -9,5 +9,8 @@ import java.util.TreeMap;
 @Mixin(value = AbilitiesDescriptionsConfig.class, remap = false)
 public interface AbilitiesDescriptionsConfigAccessor {
     @Accessor("data")
-    public TreeMap<String, AbilitiesDescriptionsConfig.DescriptionData> getData();
+    TreeMap<String, AbilitiesDescriptionsConfig.DescriptionData> getData();
+
+    @Accessor("data")
+    void setData(TreeMap<String, AbilitiesDescriptionsConfig.DescriptionData> data);
 }

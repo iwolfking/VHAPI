@@ -1,46 +1,45 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
-import iskallia.vault.VaultMod;
 import iskallia.vault.config.VaultDiffuserConfig;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.VaultDiffuserConfigAccessor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public abstract class AbstractVaultDiffuserProvider extends AbstractVaultConfigDataProvider {
+public abstract class AbstractVaultDiffuserProvider extends AbstractVaultConfigDataProvider<AbstractVaultDiffuserProvider.Builder> {
     protected AbstractVaultDiffuserProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "vault_diffuser");
+        super(generator, modid, "vault_diffuser", Builder::new);
     }
 
     public abstract void registerConfigs();
-
-    public void add(String fileName, Consumer<VaultDiffuserConfigBuilder> builderConsumer) {
-        VaultDiffuserConfigBuilder builder = new VaultDiffuserConfigBuilder();
-        builderConsumer.accept(builder);
-        addConfig(fileName, builder.build());
-    }
 
     @Override
     public String getName() {
         return modid + " Vault Diffuser Data Provider";
     }
 
-    public static class VaultDiffuserConfigBuilder {
+    public static class Builder extends VaultConfigBuilder<VaultDiffuserConfig> {
 
         private final Map<ResourceLocation, Integer> diffuserOutputMap = new HashMap<>();
 
-        public VaultDiffuserConfigBuilder add(ResourceLocation itemName, Integer soulValue) {
+        public Builder() {
+            super(VaultDiffuserConfig::new);
+        }
+
+        public Builder add(ResourceLocation itemName, Integer soulValue) {
             diffuserOutputMap.put(itemName, soulValue);
             return this;
         }
 
-        public VaultDiffuserConfig build() {
-            VaultDiffuserConfig newConfig = new VaultDiffuserConfig();
-            ((VaultDiffuserConfigAccessor)newConfig).setDiffuserOutputMap(diffuserOutputMap);
-            return newConfig;
+        @Override
+        protected void configureConfig(VaultDiffuserConfig config) {
+            ((VaultDiffuserConfigAccessor)config).setDiffuserOutputMap(diffuserOutputMap);
+
         }
 
     }

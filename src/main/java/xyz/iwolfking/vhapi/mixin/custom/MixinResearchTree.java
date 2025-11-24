@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Block;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import xyz.iwolfking.woldsvaults.init.ModConfigs;
+import xyz.iwolfking.vhapi.init.ModConfigs;
 
 @Mixin(value = ResearchTree.class, remap = false)
 public class MixinResearchTree {
