@@ -6,6 +6,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public abstract class AbstractVaultDiffuserProvider extends AbstractVaultConfigDataProvider {
     protected AbstractVaultDiffuserProvider(DataGenerator generator, String modid) {
@@ -13,6 +14,12 @@ public abstract class AbstractVaultDiffuserProvider extends AbstractVaultConfigD
     }
 
     public abstract void registerConfigs();
+
+    public void add(String fileName, Consumer<VaultDiffuserConfigBuilder> builderConsumer) {
+        VaultDiffuserConfigBuilder builder = new VaultDiffuserConfigBuilder();
+        builderConsumer.accept(builder);
+        addConfig(fileName, builder.build());
+    }
 
     @Override
     public String getName() {
