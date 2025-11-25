@@ -18,6 +18,7 @@
     "accessors.CatalystConfigEntryAccessor",
     "accessors.CatalystConfigPoolAccessor",
     "accessors.ClassicVaultThemeAccessor",
+    "accessors.CompanionRelicPoolAccessor",
     "accessors.CompanionRelicsConfigAccessor",
     "accessors.ConfigForgeRecipeAccessor",
     "accessors.DescriptionDataAccessor",
