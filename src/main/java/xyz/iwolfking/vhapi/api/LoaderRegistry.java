@@ -89,6 +89,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.ResearchConfigProcessors.RESEARCH_GROUP_CONFIG_LOADER);
         addConfigProcessor(Processors.ResearchConfigProcessors.RESEARCH_GUI_CONFIG_LOADER);
         addConfigProcessor(Processors.ResearchConfigProcessors.RESEARCH_GROUP_GUI_CONFIG_LOADER);
+        addConfigProcessor(Processors.ResearchConfigProcessors.RESEARCH_EXCLUSIONS_CONFIG_LOADER);
 
         addConfigProcessor(Processors.ObjectiveConfigProcessors.BINGO_CONFIG_LOADER);
         addConfigProcessor(Processors.ObjectiveConfigProcessors.ELIXIR_CONFIG_LOADER);
@@ -104,6 +105,10 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.SkillConfigProcessors.TALENTS_GUI_CONFIG_LOADER);
         addConfigProcessor(Processors.SkillConfigProcessors.EXPERTISE_CONFIG_LOADER);
         addConfigProcessor(Processors.SkillConfigProcessors.EXPERTISES_GUI_CONFIG_LOADER);
+        addConfigProcessor(Processors.SkillConfigProcessors.PRESTIGE_POWERS_CONFIG_LOADER);
+        addConfigProcessor(Processors.SkillConfigProcessors.PRESTIGE_POWERS_GUI_CONFIG_LOADER);
+        addConfigProcessor(Processors.SkillConfigProcessors.SKILL_SCROLLS_CONFIG_LOADER);
+        addConfigProcessor(Processors.SkillConfigProcessors.ROYALE_PRESETS_CONFIG_LOADER);
 
         addConfigProcessor(Processors.CardConfigProcessors.BOOSTER_PACKS_CONFIG_LOADER);
         addConfigProcessor(Processors.CardConfigProcessors.CARD_ESSENCE_EXTRACTOR_CONFIG_LOADER);
@@ -140,6 +145,10 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_STATS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.LEGACY_LOOT_TABLE_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.LOOT_INFO_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.ROYALE_LOOT_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.PREBUILT_TOOLS_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.TEMPORAL_SHARD_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ENTITIES_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CHAMPIONS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.ENTITY_GROUPS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.TILE_GROUPS_CONFIG_LOADER);

@@ -38,6 +38,7 @@ import xyz.iwolfking.vhapi.api.loaders.lib.core.GenFileProcessor;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.loaders.loot.LegacyLootTableConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.loot.LootInfoConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.loot.RoyaleLootConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.misc.*;
 import xyz.iwolfking.vhapi.api.loaders.objectives.BingoConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.objectives.ElixirConfigLoader;
@@ -45,14 +46,14 @@ import xyz.iwolfking.vhapi.api.loaders.objectives.MonolithConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.objectives.ScavengerConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.recipes.*;
 import xyz.iwolfking.vhapi.api.loaders.research.ResearchConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.research.ResearchExclusionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.research.ResearchGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.research.groups.ResearchGroupConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.research.groups.ResearchGroupGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.shops.NormalBlackMarketConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.shops.OmegaBlackMarketConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.shops.ShoppingPedestalConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.skills.AbilitiesConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.skills.AbilitiesGUIConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.skills.*;
 import xyz.iwolfking.vhapi.api.loaders.skills.descriptions.AbilitiesDescriptionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.skills.descriptions.SkillDescriptionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.skills.gates.SkillGatesConfigLoader;
@@ -77,6 +78,7 @@ import xyz.iwolfking.vhapi.api.loaders.vaultar.VaultAltarIngredientsConfigLoader
 import xyz.iwolfking.vhapi.api.loaders.workstation.VaultDiffuserConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.workstation.VaultRecyclerConfigLoader;
 import xyz.iwolfking.vhapi.mixin.accessors.UnidentifiedTreasureKeyAccessorConfig;
+import xyz.iwolfking.vhapi.mixin.accessors.VaultEntitiesConfigAccessor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -135,6 +137,7 @@ public class Processors {
         public static final ResearchGUIConfigLoader RESEARCH_GUI_CONFIG_LOADER = new ResearchGUIConfigLoader();
         public static final ResearchGroupConfigLoader RESEARCH_GROUP_CONFIG_LOADER = new ResearchGroupConfigLoader();
         public static final ResearchGroupGUIConfigLoader RESEARCH_GROUP_GUI_CONFIG_LOADER = new ResearchGroupGUIConfigLoader();
+        public static final ResearchExclusionsConfigLoader RESEARCH_EXCLUSIONS_CONFIG_LOADER = new ResearchExclusionsConfigLoader();
     }
 
     public static class ObjectiveConfigProcessors {
@@ -154,6 +157,10 @@ public class Processors {
         public static final AbilitiesDescriptionsConfigLoader ABILITIES_DESCRIPTIONS_CONFIG_LOADER = new AbilitiesDescriptionsConfigLoader();
         public static final ExpertiseConfigLoader EXPERTISE_CONFIG_LOADER = new ExpertiseConfigLoader();
         public static final ExpertisesGUIConfigLoader EXPERTISES_GUI_CONFIG_LOADER = new ExpertisesGUIConfigLoader();
+        public static final PrestigePowersConfigLoader PRESTIGE_POWERS_CONFIG_LOADER = new PrestigePowersConfigLoader();
+        public static final PrestigePowersGUIConfigLoader PRESTIGE_POWERS_GUI_CONFIG_LOADER = new PrestigePowersGUIConfigLoader();
+        public static final SkillScrollsConfigLoader SKILL_SCROLLS_CONFIG_LOADER = new SkillScrollsConfigLoader();
+        public static final RoyalePresetsConfigLoader ROYALE_PRESETS_CONFIG_LOADER = new RoyalePresetsConfigLoader();
     }
 
     public static class CardConfigProcessors {
@@ -199,6 +206,10 @@ public class Processors {
         public static final VaultStatsConfigLoader VAULT_STATS_CONFIG_LOADER = new VaultStatsConfigLoader();
         public static final LegacyLootTableConfigLoader LEGACY_LOOT_TABLE_CONFIG_LOADER = new LegacyLootTableConfigLoader();
         public static final LootInfoConfigLoader LOOT_INFO_CONFIG_LOADER = new LootInfoConfigLoader();
+        public static final RoyaleLootConfigLoader ROYALE_LOOT_CONFIG_LOADER = new RoyaleLootConfigLoader();
+        public static final PrebuiltToolsConfigLoader PREBUILT_TOOLS_CONFIG_LOADER = new PrebuiltToolsConfigLoader();
+        public static final TemporalShardConfigLoader TEMPORAL_SHARD_CONFIG_LOADER = new TemporalShardConfigLoader();
+        public static final VaultEntitiesConfigLoader VAULT_ENTITIES_CONFIG_LOADER = new VaultEntitiesConfigLoader();
         public static final ChampionsConfigLoader CHAMPIONS_CONFIG_LOADER = new ChampionsConfigLoader();
         public static final CustomEntitySpawnersLoader CUSTOM_ENTITY_SPAWNERS_LOADER = new CustomEntitySpawnersLoader();
         public static final EntityGroupsConfigLoader ENTITY_GROUPS_CONFIG_LOADER = new EntityGroupsConfigLoader();

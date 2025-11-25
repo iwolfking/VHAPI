@@ -2,6 +2,7 @@ package xyz.iwolfking.vhapi.api.datagen;
 
 import iskallia.vault.config.VaultCrystalConfig;
 import iskallia.vault.config.entry.LevelEntryList;
+import iskallia.vault.core.util.WeightedList;
 import iskallia.vault.core.vault.modifier.VaultModifierStack;
 import iskallia.vault.item.crystal.layout.CrystalLayout;
 import iskallia.vault.item.crystal.modifiers.CrystalModifiers;
@@ -30,83 +31,127 @@ public abstract class AbstractVaultCrystalConfigProvider extends AbstractVaultCo
 
     @Override
     public String getName() {
-        return modid + " Tooltip Data Provider";
+        return modid + " Vault Crystal Data Provider";
     }
 
     public static class Builder extends VaultConfigBuilder<VaultCrystalConfig> {
 
         Map<ResourceLocation, LevelEntryList<VaultCrystalConfig.ObjectiveEntry>> objectivesMap = new HashMap<>();
         Map<ResourceLocation, LevelEntryList<VaultCrystalConfig.SealEntry>> sealsMap = new HashMap<>();
+        LevelEntryList<VaultCrystalConfig.LayoutEntry>  layoutMap = new LevelEntryList<>();
+        Map<ResourceLocation, LevelEntryList<VaultCrystalConfig.ThemeEntry>>  themesMap = new HashMap<>();
 
         public Builder() {
             super(VaultCrystalConfig::new);
         }
 
-        public Builder addObjective(ResourceLocation id, Consumer<WeightedLevelEntryListBuilder<VaultCrystalConfig.ObjectiveEntry, CrystalObjective>> levelEntryListBuilderConsumer) {
+        public Builder addObjectivePool(ResourceLocation id, Consumer<WeightedLevelEntryListBuilder<VaultCrystalConfig.ObjectiveEntry, CrystalObjective>> levelEntryListBuilderConsumer) {
             WeightedLevelEntryListBuilder<VaultCrystalConfig.ObjectiveEntry, CrystalObjective> builder = new WeightedLevelEntryListBuilder<>(VaultCrystalConfig.ObjectiveEntry::new);
             levelEntryListBuilderConsumer.accept(builder);
             objectivesMap.put(id, builder.build());
             return this;
         }
 
+        public Builder addSeal(ResourceLocation id, Consumer<SealListBuilder> sealListBuilderConsumer) {
+            SealListBuilder builder = new SealListBuilder();
+            sealListBuilderConsumer.accept(builder);
+            sealsMap.put(id, builder.build());
+            return this;
+        }
+
+        public Builder addLayouts(Consumer<WeightedLevelEntryListBuilder<VaultCrystalConfig.LayoutEntry, CrystalLayout>> levelEntryListBuilderConsumer) {
+            WeightedLevelEntryListBuilder<VaultCrystalConfig.LayoutEntry, CrystalLayout> builder = new WeightedLevelEntryListBuilder<>(VaultCrystalConfig.LayoutEntry::new);
+            levelEntryListBuilderConsumer.accept(builder);
+            layoutMap.addAll(builder.build());
+            return this;
+        }
+
+        public Builder addThemePool(ResourceLocation key, Consumer<WeightedLevelEntryListBuilder<VaultCrystalConfig.ThemeEntry, ResourceLocation>> themeBuilderConsumer) {
+            WeightedLevelEntryListBuilder<VaultCrystalConfig.ThemeEntry, ResourceLocation> builder = new WeightedLevelEntryListBuilder<>(VaultCrystalConfig.ThemeEntry::new);
+            themeBuilderConsumer.accept(builder);
+            themesMap.put(key, builder.build());
+            return this;
+        }
+
+
         @Override
         protected void configureConfig(VaultCrystalConfig config) {
             ((VaultCrystalConfigAccessor)config).setObjectives(objectivesMap);
+            ((VaultCrystalConfigAccessor)config).setSeals(sealsMap);
+            ((VaultCrystalConfigAccessor)config).setThemes(themesMap);
+            ((VaultCrystalConfigAccessor)config).setLayouts(layoutMap);
         }
 
-        public static class SealEntryBuilder {
-            private final int level;
-            private final List<ResourceLocation> input = new ArrayList<>();
-            private CrystalObjective objective;
-            private CrystalLayout layout;
-            private CrystalTheme theme;
-            private CrystalTime time;
-            private final CrystalModifiers modifiers = new DefaultCrystalModifiers();
-            private Boolean exhausted;
+        public static class SealListBuilder {
+            public LevelEntryList<VaultCrystalConfig.SealEntry> sealEntries = new LevelEntryList<>();
 
-            public SealEntryBuilder(int level) {
-                this.level = level;
-            }
-
-            public SealEntryBuilder input(ResourceLocation id) {
-                input.add(id);
+            public SealListBuilder add(int level, Consumer<SealEntryBuilder> sealEntryBuilderConsumer) {
+                SealEntryBuilder builder = new SealEntryBuilder(level);
+                sealEntryBuilderConsumer.accept(builder);
+                sealEntries.add(builder.build());
                 return this;
             }
 
-            public SealEntryBuilder objective(CrystalObjective objective) {
-                this.objective = objective;
-                return this;
+            public LevelEntryList<VaultCrystalConfig.SealEntry> build() {
+                return sealEntries;
             }
 
-            public SealEntryBuilder layout(CrystalLayout layout) {
-                this.layout = layout;
-                return this;
-            }
+            public static class SealEntryBuilder {
+                private final int level;
+                private final List<ResourceLocation> input = new ArrayList<>();
+                private CrystalObjective objective;
+                private CrystalLayout layout;
+                private CrystalTheme theme;
+                private CrystalTime time;
+                private final CrystalModifiers modifiers = new DefaultCrystalModifiers();
+                private Boolean exhausted;
 
-            public SealEntryBuilder theme(CrystalTheme theme) {
-                this.theme = theme;
-                return this;
-            }
+                public SealEntryBuilder(int level) {
+                    this.level = level;
+                }
 
-            public SealEntryBuilder time(CrystalTime time) {
-                this.time = time;
-                return this;
-            }
+                public SealEntryBuilder input(ResourceLocation id) {
+                    input.add(id);
+                    return this;
+                }
 
-            public SealEntryBuilder modifier(VaultModifierStack modifier) {
-                modifiers.add(modifier);
-                return this;
-            }
+                public SealEntryBuilder objective(CrystalObjective objective) {
+                    this.objective = objective;
+                    return this;
+                }
 
-            public SealEntryBuilder exhausted(boolean exhausted) {
-                this.exhausted = exhausted;
-                return this;
-            }
+                public SealEntryBuilder layout(CrystalLayout layout) {
+                    this.layout = layout;
+                    return this;
+                }
+
+                public SealEntryBuilder theme(CrystalTheme theme) {
+                    this.theme = theme;
+                    return this;
+                }
+
+                public SealEntryBuilder time(CrystalTime time) {
+                    this.time = time;
+                    return this;
+                }
+
+                public SealEntryBuilder modifier(VaultModifierStack modifier) {
+                    modifiers.add(modifier);
+                    return this;
+                }
+
+                public SealEntryBuilder exhausted(boolean exhausted) {
+                    this.exhausted = exhausted;
+                    return this;
+                }
 
 
-            public VaultCrystalConfig.SealEntry build() {
-                return new VaultCrystalConfig.SealEntry(level, input, objective, layout, theme, time, modifiers, exhausted);
+                public VaultCrystalConfig.SealEntry build() {
+                    return new VaultCrystalConfig.SealEntry(level, input, objective, layout, theme, time, modifiers, exhausted);
+                }
             }
         }
+
+
     }
 }

@@ -9,4 +9,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface TemporalShardConfigAccessor {
     @Accessor
     LevelEntryList<TemporalShardConfig.Level> getModifiers();
+
+    @Accessor
+    void setModifiers(LevelEntryList<TemporalShardConfig.Level> levels);
 }

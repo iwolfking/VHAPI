@@ -18,4 +18,10 @@ public interface VaultCrystalConfigAccessor {
 
     @Accessor("OBJECTIVES")
     void setObjectives(Map<ResourceLocation, LevelEntryList<VaultCrystalConfig.ObjectiveEntry>> objectives);
+
+    @Accessor("THEMES")
+    void setThemes(Map<ResourceLocation, LevelEntryList<VaultCrystalConfig.ThemeEntry>> themes);
+
+    @Accessor("LAYOUTS")
+    void setLayouts(LevelEntryList<VaultCrystalConfig.LayoutEntry> layouts);
 }
