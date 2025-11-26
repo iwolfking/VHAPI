@@ -18,20 +18,15 @@ public class VHAPICommands {
     public static void onRegisterCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
 
-        // Example command: /greet <name> <times>
         dispatcher.register(
                 Commands.literal("vhapi")
                         .executes(context -> {
-                            CommandSourceStack source = context.getSource();
-                            ModConfigs.CONFIGS.forEach(config -> {
-                                try {
-                                    config.writeConfig();
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
+                            try {
+                                ModConfigs.ABILITIES.writeConfig();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                             return 0;
                         }));
-        return;
     }
 }

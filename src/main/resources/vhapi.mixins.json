@@ -6,6 +6,7 @@
   "refmap": "vhapi.refmap.json",
   "mixins": [
     "MixinModConfigs",
+    "accessors.AbilitiesConfigAccessor",
     "accessors.AbilitiesDescriptionsConfigAccessor",
     "accessors.AbilitiesGUIConfigAccessor",
     "accessors.AbilitiesGUIConfigSpecializationStyleAccessor",
@@ -33,6 +34,7 @@
     "accessors.InscriptionConfigEntryAccessor",
     "accessors.InscriptionConfigPoolAccessor",
     "accessors.KeyRegistryAccessor",
+    "accessors.LearnableSkillAccessor",
     "accessors.LegacyLootTablesConfigAccessor",
     "accessors.LootInfoConfigAccessor",
     "accessors.LootInfoGroupDefinitionRegistryAccessor",

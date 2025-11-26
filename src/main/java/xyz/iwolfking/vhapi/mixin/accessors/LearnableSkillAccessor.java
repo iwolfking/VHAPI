@@ -10,10 +10,19 @@ public interface LearnableSkillAccessor {
     @Accessor("regretCost")
     void setRegretCost(int learnCost);
 
+    @Accessor("regretCost")
+    int getRegretCost();
+
     @Accessor("unlockLevel")
     void setUnlockLevel(int level);
 
+    @Accessor("unlockLevel")
+    int getUnlockLevel();
+
     @Accessor("learnPointCost")
     void setLearnCost(int learnCost);
+
+    @Accessor("learnPointCost")
+    int getLearnCost();
 
 }
