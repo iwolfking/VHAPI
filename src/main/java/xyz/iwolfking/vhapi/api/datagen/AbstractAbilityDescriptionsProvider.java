@@ -23,7 +23,7 @@ public abstract class AbstractAbilityDescriptionsProvider extends AbstractVaultC
     }
 
     public static class Builder extends VaultConfigBuilder<AbilitiesDescriptionsConfig> {
-        private TreeMap<String, AbilitiesDescriptionsConfig.DescriptionData> data;
+        private final TreeMap<String, AbilitiesDescriptionsConfig.DescriptionData> data = new TreeMap<>();
 
         public Builder() {
             super(AbilitiesDescriptionsConfig::new);
