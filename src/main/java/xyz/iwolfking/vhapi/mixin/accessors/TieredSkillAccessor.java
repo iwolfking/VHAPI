@@ -8,4 +8,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface TieredSkillAccessor {
     @Accessor("maxLearnableTier")
     void setMaxLearnableTier(int tier);
+
 }

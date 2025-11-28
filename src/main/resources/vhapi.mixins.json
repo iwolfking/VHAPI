@@ -52,6 +52,7 @@
     "accessors.PoolChallengeActionAccessor",
     "accessors.PrebuiltToolConfigAccessor",
     "accessors.PrestigePowerAccessor",
+    "accessors.PrestigePowersGUIConfigAccessor",
     "accessors.PuristTalentAccessor",
     "accessors.RaidActionsConfigAccessor",
     "accessors.ReferenceActionConfigAccessor",

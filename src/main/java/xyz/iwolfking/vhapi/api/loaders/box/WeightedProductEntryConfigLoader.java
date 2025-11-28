@@ -25,7 +25,7 @@ public class WeightedProductEntryConfigLoader extends VaultConfigProcessor<Weigh
         for(WeightedProductEntryConfig config : this.CUSTOM_CONFIGS.values()) {
             Set<Item> entriesToRemove = new HashSet<>();
             config.POOL.forEach((productEntry, weight) -> {
-                if(productEntry.getNBT().contains("remove")) {
+                if(productEntry.getNBT() != null && productEntry.getNBT().contains("remove")) {
                     entriesToRemove.add(productEntry.getItem());
                 }
                 else {

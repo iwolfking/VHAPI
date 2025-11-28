@@ -6,6 +6,7 @@ import iskallia.vault.config.entry.SkillStyle;
 import net.minecraft.data.DataGenerator;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.ExpertisesGUIConfigAccessor;
+import xyz.iwolfking.vhapi.mixin.accessors.PrestigePowersGUIConfigAccessor;
 
 import java.util.HashMap;
 
@@ -36,7 +37,7 @@ public abstract class AbstractPrestigePowerStyleProvider extends AbstractVaultCo
 
         @Override
         protected void configureConfig(PrestigePowersGUIConfig config) {
-            ((ExpertisesGUIConfigAccessor)config).setStyles(styles);
+            ((PrestigePowersGUIConfigAccessor)config).setStyles(styles);
         }
 
 
