@@ -86,6 +86,7 @@
     "accessors.VaultGearTierConfigAccessor",
     "accessors.VaultGeneralConfigAccessor",
     "accessors.VaultLevelsConfigAccessor",
+    "accessors.VaultMapRoomIconsConfigAccessor",
     "accessors.VaultMetaChestConfigAccessor",
     "accessors.VaultMobsConfigAccessor",
     "accessors.VaultModifierRegistyAccessor",

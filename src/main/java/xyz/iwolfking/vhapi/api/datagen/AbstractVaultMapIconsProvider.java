@@ -5,6 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
+import xyz.iwolfking.vhapi.mixin.accessors.VaultMapRoomIconsConfigAccessor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public abstract class AbstractVaultMapIconsProvider extends AbstractVaultConfigD
 
         @Override
         protected void configureConfig(VaultMapRoomIconsConfig config) {
-            config.getRoomIcons().putAll(roomIcons);
+            ((VaultMapRoomIconsConfigAccessor)config).setRoomIcons(roomIcons);
         }
 
     }
