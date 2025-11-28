@@ -12,6 +12,7 @@ import xyz.iwolfking.vhapi.api.datagen.lib.WeightedListBuilder;
 import xyz.iwolfking.vhapi.api.util.builder.description.DescriptionDataBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.TooltipConfigAccessor;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -40,21 +41,43 @@ public abstract class AbstractRoyalePresetsProvider extends AbstractVaultConfigD
             super(RoyalePresetConfig::new);
         }
 
-        public Builder add(int level, Consumer<SkillPresetBuilder> builderConsumer, Consumer<WeightedListBuilder<ResourceLocation>> redTrinketsConsumer, Consumer<WeightedListBuilder<ResourceLocation>> blueTrinketsConsumer) {
-            SkillPresetBuilder builder = new SkillPresetBuilder();
-            WeightedListBuilder<ResourceLocation> redTrinkets = new WeightedListBuilder<>();
-            WeightedListBuilder<ResourceLocation> blueTrinkets = new WeightedListBuilder<>();
-            builderConsumer.accept(builder);
-            redTrinketsConsumer.accept(redTrinkets);
-            blueTrinketsConsumer.accept(blueTrinkets);
+        public Builder add(int level, @Nullable Consumer<SkillPresetBuilder> builderConsumer, @Nullable Consumer<WeightedListBuilder<ResourceLocation>> redTrinketsConsumer, @Nullable Consumer<WeightedListBuilder<ResourceLocation>> blueTrinketsConsumer) {
             RoyalePresetConfig.Level presets = new RoyalePresetConfig.Level(level);
-            builder.build().forEach((preset, aDouble) -> {
-                presets.skillPresets.add(preset, aDouble);
-            });
-            presets.blueTrinketPresets = blueTrinkets.build();
-            presets.redTrinketPresets = blueTrinkets.build();
+
+            if(builderConsumer != null) {
+                SkillPresetBuilder builder = new SkillPresetBuilder();
+                builderConsumer.accept(builder);
+                builder.build().forEach((preset, aDouble) -> {
+                    presets.skillPresets.add(preset, aDouble);
+                });
+            }
+
+            if(redTrinketsConsumer != null) {
+                WeightedListBuilder<ResourceLocation> redTrinkets = new WeightedListBuilder<>();
+                redTrinketsConsumer.accept(redTrinkets);
+                presets.redTrinketPresets = redTrinkets.build();
+            }
+
+            if(blueTrinketsConsumer != null) {
+                WeightedListBuilder<ResourceLocation> blueTrinkets = new WeightedListBuilder<>();
+                blueTrinketsConsumer.accept(blueTrinkets);
+                presets.blueTrinketPresets = blueTrinkets.build();
+            }
+
             LEVELS.add(presets);
             return this;
+        }
+
+        public Builder addSkillPreset(int level, Consumer<SkillPresetBuilder> builderConsumer) {
+            return add(level, builderConsumer, null, null);
+        }
+
+        public Builder addRedTrinkets(int level, Consumer<WeightedListBuilder<ResourceLocation>> builderConsumer) {
+            return add(level, null, builderConsumer, null);
+        }
+
+        public Builder addBlueTrinkets(int level, Consumer<WeightedListBuilder<ResourceLocation>> builderConsumer) {
+            return add(level, null, null, builderConsumer);
         }
 
         @Override

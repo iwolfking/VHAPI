@@ -76,6 +76,7 @@
     "accessors.UnidentifiedTreasureKeyAccessorConfig",
     "accessors.UniqueGearConfigAccessor",
     "accessors.VanillaAttributeChallengeActionConfigAccessor",
+    "accessors.VaultAltarConfigAccessor",
     "accessors.VaultAltarIngredientsConfigAccessor",
     "accessors.VaultCrystalCatalystConfigAccessor",
     "accessors.VaultCrystalConfigAccessor",

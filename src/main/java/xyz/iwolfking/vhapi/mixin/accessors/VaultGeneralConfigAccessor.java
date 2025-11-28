@@ -13,4 +13,10 @@ public interface VaultGeneralConfigAccessor {
 
     @Accessor("BLOCK_BLACKLIST")
     public List<String> getBlockBlacklist();
+
+    @Accessor("BLOCK_BLACKLIST")
+    void setBlockBlacklist(List<String> blockBlacklist);
+
+    @Accessor("ITEM_BLACKLIST")
+    void setItemBlacklist(List<String> itemBlacklist);
 }

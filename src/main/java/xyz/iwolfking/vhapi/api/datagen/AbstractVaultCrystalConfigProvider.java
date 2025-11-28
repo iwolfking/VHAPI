@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+//TODO: Fix StackOverflow error
 public abstract class AbstractVaultCrystalConfigProvider extends AbstractVaultConfigDataProvider<AbstractVaultCrystalConfigProvider.Builder> {
     protected AbstractVaultCrystalConfigProvider(DataGenerator generator, String modid) {
         super(generator, modid, "vault/crystal", Builder::new);
@@ -147,7 +148,7 @@ public abstract class AbstractVaultCrystalConfigProvider extends AbstractVaultCo
 
 
                 public VaultCrystalConfig.SealEntry build() {
-                    return new VaultCrystalConfig.SealEntry(level, input, objective, layout, theme, time, modifiers, exhausted);
+                    return new VaultCrystalConfig.SealEntry(level, input, objective, layout, theme, time, new DefaultCrystalModifiers(), exhausted);
                 }
             }
         }

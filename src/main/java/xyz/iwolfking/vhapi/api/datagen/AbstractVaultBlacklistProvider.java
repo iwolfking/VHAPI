@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class AbstractVaultBlacklistProvider extends AbstractVaultConfigDataProvider<AbstractVaultBlacklistProvider.Builder> {
-    protected AbstractVaultBlacklistProvider(DataGenerator generator, String modid, String configPath) {
-        super(generator, modid, configPath, Builder::new);
+    protected AbstractVaultBlacklistProvider(DataGenerator generator, String modid) {
+        super(generator, modid, "vault/general", Builder::new);
     }
 
     @Override
@@ -49,8 +49,8 @@ public abstract class AbstractVaultBlacklistProvider extends AbstractVaultConfig
             config.SAVE_PLAYER_SNAPSHOTS = true;
             config.VAULT_EXIT_TNL_MIN = 0.5F;
             config.VAULT_EXIT_TNL_MAX = 1.0F;
-            ((VaultGeneralConfigAccessor)config).getBlockBlacklist().addAll(BLOCK_BLACKLIST);
-            ((VaultGeneralConfigAccessor)config).getItemBlacklist().addAll(ITEM_BLACKLIST);
+            ((VaultGeneralConfigAccessor)config).setBlockBlacklist(BLOCK_BLACKLIST);
+            ((VaultGeneralConfigAccessor)config).setItemBlacklist(ITEM_BLACKLIST);
         }
     }
 }

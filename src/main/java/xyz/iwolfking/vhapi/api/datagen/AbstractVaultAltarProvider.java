@@ -3,7 +3,9 @@ package xyz.iwolfking.vhapi.api.datagen;
 import iskallia.vault.config.VaultAltarConfig;
 import net.minecraft.data.DataGenerator;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
+import xyz.iwolfking.vhapi.mixin.accessors.VaultAltarConfigAccessor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -20,7 +22,7 @@ public abstract class AbstractVaultAltarProvider extends AbstractVaultConfigData
     }
 
     public static class Builder extends VaultConfigBuilder<VaultAltarConfig> {
-        public List<VaultAltarConfig.Interface> INTERFACES;
+        public List<VaultAltarConfig.Interface> INTERFACES = new ArrayList<>();
 
         public Builder() {
             super(VaultAltarConfig::new);
@@ -33,7 +35,7 @@ public abstract class AbstractVaultAltarProvider extends AbstractVaultConfigData
 
         @Override
         protected void configureConfig(VaultAltarConfig config) {
-            config.INTERFACES.addAll(INTERFACES);
+            ((VaultAltarConfigAccessor)config).setInterfaces(INTERFACES);
         }
 
     }
