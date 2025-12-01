@@ -47,6 +47,7 @@
     "accessors.MixinVaultGearWorkbenchAccessor",
     "accessors.ModifierGearTierAccessor",
     "accessors.ModifierPoolAccessor",
+    "accessors.ModifierTypeGroupsAccessor",
     "accessors.PaletteAccessor",
     "accessors.PlayerTitlesConfigAccessor",
     "accessors.PoolChallengeActionAccessor",

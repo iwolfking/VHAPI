@@ -16,14 +16,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-@Deprecated
-public abstract class AbstractVaultModifierProviderDepr implements DataProvider {
+public abstract class AbstractVaultModifierProvider implements DataProvider {
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private final DataGenerator gen;
     private final String modid;
 
-    public AbstractVaultModifierProviderDepr(DataGenerator gen, String modid) {
+    public AbstractVaultModifierProvider(DataGenerator gen, String modid) {
         this.gen = gen;
         this.modid = modid;
     }
