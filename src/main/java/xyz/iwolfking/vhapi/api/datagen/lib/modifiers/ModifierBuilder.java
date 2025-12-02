@@ -9,7 +9,14 @@ public class ModifierBuilder {
     public ModifierBuilder type(String typeKey, TypeConsumer consumer) {
         TypeBuilder tb = new TypeBuilder();
         consumer.accept(tb);
-        modifiers.put(typeKey, tb.entries);
+        if(modifiers.containsKey(typeKey)) {
+            System.out.println("Existing entry for " + typeKey);
+            modifiers.get(typeKey).putAll(tb.entries);
+        }
+        else {
+            System.out.println("No existing entry for " + typeKey);
+            modifiers.put(typeKey, tb.entries);
+        }
         return this;
     }
 
@@ -17,7 +24,6 @@ public class ModifierBuilder {
         return new ModifierFile(modifiers);
     }
 
-    // -----------------------------------------------------
     public static class TypeBuilder {
         private final Map<String, ModifierDefinition> entries = new LinkedHashMap<>();
 
@@ -29,7 +35,6 @@ public class ModifierBuilder {
         }
     }
 
-    // -----------------------------------------------------
     public static class ModifierEntryBuilder {
         private final Map<String, Object> properties = new LinkedHashMap<>();
         private ModifierDisplay display;
