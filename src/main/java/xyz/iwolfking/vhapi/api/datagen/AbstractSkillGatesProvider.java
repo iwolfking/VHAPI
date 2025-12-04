@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vhapi.api.datagen.lib.BasicListBuilder;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.SkillGatesConfigAccessor;
+import xyz.iwolfking.vhapi.mixin.accessors.SkillGatesEntryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.TooltipConfigAccessor;
 
 import java.util.ArrayList;
@@ -62,6 +63,11 @@ public abstract class AbstractSkillGatesProvider extends AbstractVaultConfigData
                 TypeBuilder builder = new TypeBuilder();
                 gatesBuilder.accept(builder);
                 entry.setLockedBy(builder.build().toArray(new SkillGateType[]{}));
+                return this;
+            }
+
+            public SkillGateEntryBuilder hideArrow(boolean hideArrow) {
+                ((SkillGatesEntryAccessor)entry).setIgnoreArrow(hideArrow);
                 return this;
             }
 

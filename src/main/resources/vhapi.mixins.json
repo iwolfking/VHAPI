@@ -62,6 +62,7 @@
     "accessors.SkillDescriptionsConfigAccessor",
     "accessors.SkillGatesAccessor",
     "accessors.SkillGatesConfigAccessor",
+    "accessors.SkillGatesEntryAccessor",
     "accessors.SkillScrollConfigAccessor",
     "accessors.SpecializedSkillAccessor",
     "accessors.TemplatePoolAccessor",
