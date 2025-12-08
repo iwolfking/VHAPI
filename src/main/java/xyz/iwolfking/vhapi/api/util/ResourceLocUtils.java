@@ -108,6 +108,10 @@ public class ResourceLocUtils {
         return sb.toString().trim();
     }
 
+    public static ResourceLocation replace(ResourceLocation rl, String toReplace, String replacement) {
+        return new ResourceLocation(rl.getNamespace(), rl.getPath().replace(toReplace, replacement));
+    }
+
     public static boolean isResourceLocation(String testString) {
         return testString.matches(".+:.+");
     }
