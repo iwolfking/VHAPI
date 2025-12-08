@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import xyz.iwolfking.vhapi.api.util.ConditionalModUtils;
 import xyz.iwolfking.vhapi.init.ModConfigs;
 
 import java.util.*;
@@ -52,12 +53,15 @@ public class MixinVaultAltarIngredientsConfig {
                 v.forEach((altarIngredientEntry, number) -> {
                     List<ItemStack> itemsToRemove = new ArrayList<>();
                     for(ItemStack itemStack : altarIngredientEntry.getItems()) {
-                        if (ModConfigs.VAULTAR_RESEARCH_GATES.entries.containsKey(Objects.requireNonNull(itemStack.getItem().getRegistryName()).getNamespace())) {
+                        if(itemStack.getItem().getRegistryName() == null || !ConditionalModUtils.isModPresent(itemStack.getItem().getRegistryName().getNamespace())) {
+                            itemsToRemove.add(itemStack);
+                        }
+                        else if (ModConfigs.VAULTAR_RESEARCH_GATES.entries.containsKey(Objects.requireNonNull(itemStack.getItem().getRegistryName()).getNamespace())) {
                             if (!playerResearchTree.isResearched(ModConfigs.VAULTAR_RESEARCH_GATES.entries.get(itemStack.getItem().getRegistryName().getNamespace()))) {
                                 itemsToRemove.add(itemStack);
                             }
                             else {
-                                break;
+                                return;
                             }
                         }
                     }
