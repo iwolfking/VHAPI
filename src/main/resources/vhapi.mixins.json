@@ -85,6 +85,7 @@
     "accessors.VaultDiffuserConfigAccessor",
     "accessors.VaultEntitiesConfigAccessor",
     "accessors.VaultGearEnchantmentConfigAccessor",
+    "accessors.VaultGearTagConfigAccessor",
     "accessors.VaultGearTierConfigAccessor",
     "accessors.VaultGeneralConfigAccessor",
     "accessors.VaultLevelsConfigAccessor",
