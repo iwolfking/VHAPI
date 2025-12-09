@@ -36,6 +36,14 @@ public abstract class AbstractVaultDiffuserProvider extends AbstractVaultConfigD
             return this;
         }
 
+        public int get(ResourceLocation id) {
+            if(diffuserOutputMap.containsKey(id)) {
+                return diffuserOutputMap.get(id);
+            }
+
+            return 0;
+        }
+
         @Override
         protected void configureConfig(VaultDiffuserConfig config) {
             ((VaultDiffuserConfigAccessor)config).setDiffuserOutputMap(diffuserOutputMap);

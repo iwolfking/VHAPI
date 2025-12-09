@@ -41,11 +41,25 @@ public class VHAPIConfig {
         }
     }
 
+    public static class Client {
+        public final ForgeConfigSpec.ConfigValue<Boolean> enableDebugJEI;
+
+        public Client(ForgeConfigSpec.Builder builder) {
+            builder.push("JEI Settings");
+            this.enableDebugJEI = builder.comment("Whether to show JEI that is useful for debugging when modding Vault Hunters, this option only controls some added JEI pages, this will hide ones I deem not very useful to the general public. (default: true)").define("enableDebugJEI", true);
+            builder.pop();
+        }
+    }
+
+
     public static final Server SERVER;
     public static final ForgeConfigSpec SERVER_SPEC;
 
     public static final Common COMMON;
     public static final ForgeConfigSpec COMMON_SPEC;
+
+    public static final Client CLIENT;
+    public static final ForgeConfigSpec CLIENT_SPEC;
 
     static {
         Pair<Server, ForgeConfigSpec> serverSpecPair = new ForgeConfigSpec.Builder().configure(Server::new);
@@ -55,5 +69,9 @@ public class VHAPIConfig {
         Pair<Common, ForgeConfigSpec> commonSpecPair = new ForgeConfigSpec.Builder().configure(Common::new);
         COMMON = commonSpecPair.getLeft();
         COMMON_SPEC = commonSpecPair.getRight();
+
+        Pair<Client, ForgeConfigSpec> clientSpecPair = new ForgeConfigSpec.Builder().configure(Client::new);
+        CLIENT = clientSpecPair.getLeft();
+        CLIENT_SPEC = clientSpecPair.getRight();
     }
 }

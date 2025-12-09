@@ -3,9 +3,7 @@ package xyz.iwolfking.vhapi.integration.jevh;
 import dev.attackeight.just_enough_vh.jei.LabeledLootInfo;
 import iskallia.vault.VaultMod;
 import iskallia.vault.config.CompanionRelicsConfig;
-import iskallia.vault.config.RoyalePresetConfig;
 import iskallia.vault.config.VaultCrystalConfig;
-import iskallia.vault.config.VaultItemsConfig;
 import iskallia.vault.core.Version;
 import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.random.ChunkRandom;
@@ -13,7 +11,6 @@ import iskallia.vault.core.vault.VaultRegistry;
 import iskallia.vault.core.world.loot.LootPool;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.loot.entry.ItemLootEntry;
-import iskallia.vault.core.world.loot.entry.LootEntry;
 import iskallia.vault.core.world.template.data.DirectTemplateEntry;
 import iskallia.vault.core.world.template.data.IndirectTemplateEntry;
 import iskallia.vault.core.world.template.data.TemplateEntry;
@@ -31,8 +28,10 @@ import iskallia.vault.item.*;
 import iskallia.vault.item.data.InscriptionData;
 import iskallia.vault.item.gear.TemporalShardItem;
 import iskallia.vault.item.gear.TrinketItem;
+import iskallia.vault.item.modification.ReforgeTagModificationFocus;
 import iskallia.vault.item.tool.ToolItem;
-import iskallia.vault.util.data.LazySet;
+import iskallia.vault.util.EnchantmentCost;
+import iskallia.vault.util.VaultRarity;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -48,15 +47,20 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.checkerframework.checker.units.qual.A;
 import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
+import xyz.iwolfking.vhapi.config.VHAPIConfig;
 import xyz.iwolfking.vhapi.integration.the_vault.VaultSealHelper;
 import xyz.iwolfking.vhapi.integration.wolds.WoldsSealHelper;
 import xyz.iwolfking.vhapi.mixin.accessors.*;
@@ -86,6 +90,10 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> MODIFIER_SCROLLS = RecipeType.create(VHAPI.MODID, "modifier_scrolls", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> ROYALE_LOOT = RecipeType.create(VHAPI.MODID, "royale_loot", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> ROYALE_PRESETS = RecipeType.create(VHAPI.MODID, "royale_presets", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> VAULT_DIFFUSER = RecipeType.create(VHAPI.MODID, "vault_diffuser", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> VAULT_CHEST_META = RecipeType.create(VHAPI.MODID, "vault_chest_meta", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> VAULT_ENCHANTER = RecipeType.create(VHAPI.MODID, "vault_enchanter", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> FACETED_FOCUS = RecipeType.create(VHAPI.MODID, "faceted_focus", LabeledLootInfo.class);
 
 
     @Override @SuppressWarnings("removal")
@@ -107,6 +115,11 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.ROYALE_CRATE), ROYALE_LOOT);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CRYSTAL_SEAL_VAULT_ROYALE), ROYALE_PRESETS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CRYSTAL_SEAL_VAULT_ROYALE_PVP), ROYALE_PRESETS);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.VAULT_DIFFUSER), VAULT_DIFFUSER);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.VAULT_HARVESTER), VAULT_DIFFUSER);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CATALYST_FRAGMENT), VAULT_CHEST_META);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.VAULT_ENCHANTER), VAULT_ENCHANTER);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.FACETED_FOCUS), FACETED_FOCUS);
     }
 
     @Override @SuppressWarnings("removal")
@@ -127,12 +140,19 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(MODIFIER_SCROLLS, getModifierScrolls());
         registration.addRecipes(ROYALE_LOOT, getRoyaleLoot());
         registration.addRecipes(ROYALE_PRESETS, getRoyalePresets());
-        //TOOD: Tool Pulverizing (if doesn't exist already)
+        registration.addRecipes(VAULT_DIFFUSER, getSoulValues());
+        registration.addRecipes(VAULT_CHEST_META, getChestMetaValues());
+        registration.addRecipes(VAULT_ENCHANTER, getGearEnchantments());
+        registration.addRecipes(FACETED_FOCUS, getFacetedFoci());
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
+        if(VHAPIConfig.CLIENT.enableDebugJEI.get()) {
+            registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_CHEST_META, ModItems.VAULT_CATALYST_FRAGMENT, new TextComponent("Catalyst Fragment Chance")));
+        }
+
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, THEMES, ModItems.AUGMENT, new TextComponent("Themes")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, OBJECTIVES, ModItems.CRYSTAL_SEAL_EMPTY, new TextComponent("Objectives")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, MODIFIER_POOLS, ModItems.VAULT_CATALYST_INFUSED, new TextComponent("Modifier Pools")));
@@ -149,7 +169,89 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, MODIFIER_SCROLLS, ModItems.VAULT_MODIFIER, new TextComponent("Modifier Items")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROYALE_LOOT, ModBlocks.ROYALE_CRATE, new TextComponent("Royale Loot")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROYALE_PRESETS, ModItems.ABILITY_SCROLL, new TextComponent("Royale Presets")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_DIFFUSER, ModBlocks.VAULT_DIFFUSER, new TextComponent("Soul Diffusing")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_ENCHANTER, ModBlocks.VAULT_ENCHANTER, new TextComponent("Vault Enchanter")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, FACETED_FOCUS, ModItems.FACETED_FOCUS, new TextComponent("Faceted Focus")));
     }
+
+    public static List<LabeledLootInfo> getFacetedFoci() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
+
+        for(String tag : ModConfigs.VAULT_GEAR_TAG_CONFIG.getTags()) {
+            ItemStack focus = new ItemStack(ModItems.FACETED_FOCUS);
+            ReforgeTagModificationFocus.setModifierTag(focus, tag);
+            items.add(focus);
+        }
+
+        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Faceted Foci"), null));
+
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getGearEnchantments() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
+
+
+        for(Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
+            if(((VaultGearEnchantmentConfigAccessor)ModConfigs.VAULT_GEAR_ENCHANTMENT_CONFIG).getCosts().containsKey(enchantment)) {
+                EnchantmentCost cost = ((VaultGearEnchantmentConfigAccessor)ModConfigs.VAULT_GEAR_ENCHANTMENT_CONFIG).getCosts().get(enchantment);
+                if(cost.getItems().get(0).getItem().equals(Blocks.COMMAND_BLOCK.asItem())) {
+                    continue;
+                }
+
+                if(enchantment.isCurse()) {
+                    continue;
+                }
+
+                ItemStack bookStack = EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, cost.getLevels()));
+                items.add(formatEnchantmentCost(bookStack, cost.getItems()));
+            }
+        }
+
+        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Vault Enchanter Enchantments"), null));
+
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getChestMetaValues() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
+
+        ((VaultMetaChestConfigAccessor)ModConfigs.VAULT_CHEST_META).getCatalystChances().forEach((block, vaultRarityDoubleMap) -> {
+            ItemStack stack = new ItemStack(block);
+            vaultRarityDoubleMap.forEach(((vaultRarity, aDouble) -> {
+                items.add(formatChestMetaValue(stack, vaultRarity, aDouble));
+            }));
+        });
+
+        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Catalyst Fragment Chance - Level " + ModConfigs.VAULT_CHEST_META.getCatalystMinLevel()), null));
+
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getSoulValues() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
+
+        ModConfigs.VAULT_DIFFUSER.getDiffuserOutputMap().forEach((id, value) -> {
+
+            if(ForgeRegistries.ITEMS.containsKey(id)) {
+                Item item = ForgeRegistries.ITEMS.getValue(id);
+                items.add(new ItemStack(item));
+            }
+            else if(ForgeRegistries.BLOCKS.containsKey(id)) {
+                Block block = ForgeRegistries.BLOCKS.getValue(id);
+                items.add(new ItemStack(block));
+            }
+        });
+        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Soul Values"), null));
+
+
+        return lootInfo;
+    }
+
 
 
     public static List<LabeledLootInfo> getTemporalRelics() {
@@ -650,6 +752,43 @@ public class VHAPIJEIPlugin implements IModPlugin {
             list.add(StringTag.valueOf(Component.Serializer.toJson(rollLabel.withStyle(ChatFormatting.DARK_AQUA))));
         }
 
+        nbt.put("Lore", list);
+        return result;
+    }
+
+    private static ItemStack formatChestMetaValue(ItemStack item, VaultRarity rarity, double chance) {
+        ItemStack result = item.copy();
+        if (item.isEmpty()) {
+            result = new ItemStack(Items.BARRIER);
+            result.setHoverName(new TextComponent("Nothing"));
+        }
+        CompoundTag nbt = result.getOrCreateTagElement("display");
+        ListTag list = nbt.getList("Lore", 8);
+        MutableComponent soulLabel = new TextComponent("Rarity: ");
+        soulLabel.append(String.format("%s", rarity));
+        list.add(StringTag.valueOf(Component.Serializer.toJson(soulLabel.withStyle(rarity.color))));
+        MutableComponent chanceLabel = new TextComponent("Chance: ");
+        chanceLabel.append(String.format("%.2f", chance * 100));
+        chanceLabel.append("%");
+        list.add(StringTag.valueOf(Component.Serializer.toJson(chanceLabel.withStyle(ChatFormatting.YELLOW))));
+        nbt.put("Lore", list);
+        return result;
+    }
+
+    private static ItemStack formatEnchantmentCost(ItemStack item, List<ItemStack> costItems) {
+        ItemStack result = item.copy();
+        if (item.isEmpty()) {
+            result = new ItemStack(Items.BARRIER);
+            result.setHoverName(new TextComponent("Nothing"));
+        }
+        CompoundTag nbt = result.getOrCreateTagElement("display");
+        ListTag list = nbt.getList("Lore", 8);
+        costItems.forEach(itemStack -> {
+            MutableComponent costLabel = new TextComponent(itemStack.getCount() + "x ");
+            costLabel.append(itemStack.getHoverName());
+            list.add(StringTag.valueOf(Component.Serializer.toJson(costLabel.withStyle(itemStack.getHoverName().getStyle()))));
+
+        });
         nbt.put("Lore", list);
         return result;
     }

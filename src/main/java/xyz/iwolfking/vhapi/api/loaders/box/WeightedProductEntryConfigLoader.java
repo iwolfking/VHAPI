@@ -22,26 +22,32 @@ public class WeightedProductEntryConfigLoader extends VaultConfigProcessor<Weigh
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(WeightedProductEntryConfig config : this.CUSTOM_CONFIGS.values()) {
-            Set<Item> entriesToRemove = new HashSet<>();
-            config.POOL.forEach((productEntry, weight) -> {
-                if(productEntry.getNBT() != null && productEntry.getNBT().contains("remove")) {
-                    entriesToRemove.add(productEntry.getItem());
+        this.CUSTOM_CONFIGS.forEach(((resourceLocation, weightedProductEntryConfig) -> {
+            if(resourceLocation.getPath().contains("overwrite")) {
+                targetPool.get().clear();
+                targetPool.get().addAll(weightedProductEntryConfig.POOL);
+            }
+            else {
+                Set<Item> entriesToRemove = new HashSet<>();
+                weightedProductEntryConfig.POOL.forEach((productEntry, weight) -> {
+                    if(productEntry.getNBT() != null && productEntry.getNBT().contains("remove")) {
+                        entriesToRemove.add(productEntry.getItem());
+                    }
+                    else {
+                        targetPool.get().add(productEntry, (Integer) weight);
+                    }
+                });
+                Set<ProductEntry> productsToRemove = new HashSet<>();
+                for(WeightedList.Entry<ProductEntry> entry : targetPool.get()) {
+                    if(entriesToRemove.contains(entry.value.getItem())) {
+                        productsToRemove.add(entry.value);
+                    }
                 }
-                else {
-                    targetPool.get().add(productEntry, (Integer) weight);
-                }
-            });
-            Set<ProductEntry> productsToRemove = new HashSet<>();
-            for(WeightedList.Entry<ProductEntry> entry : targetPool.get()) {
-                if(entriesToRemove.contains(entry.value.getItem())) {
-                    productsToRemove.add(entry.value);
+                for(ProductEntry entry : productsToRemove) {
+                    targetPool.get().removeEntry(entry);
                 }
             }
-            for(ProductEntry entry : productsToRemove) {
-                targetPool.get().removeEntry(entry);
-            }
-        }
+        }));
         super.afterConfigsLoad(event);
     }
 }

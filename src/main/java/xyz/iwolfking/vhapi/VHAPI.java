@@ -65,6 +65,8 @@ public class VHAPI {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, VHAPIConfig.SERVER_SPEC, "vhapi-server.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, VHAPIConfig.COMMON_SPEC, "vhapi-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, VHAPIConfig.CLIENT_SPEC, "vhapi-client.toml");
+
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
