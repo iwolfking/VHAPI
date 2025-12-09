@@ -1,6 +1,5 @@
 package xyz.iwolfking.vhapi.integration.jevh;
 
-import dev.attackeight.just_enough_vh.jei.LabeledLootInfo;
 import iskallia.vault.VaultMod;
 import iskallia.vault.config.CompanionRelicsConfig;
 import iskallia.vault.config.VaultCrystalConfig;
