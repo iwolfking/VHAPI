@@ -1,7 +1,6 @@
 package xyz.iwolfking.vhapi.integration.jevh;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import dev.attackeight.just_enough_vh.jei.LabeledLootInfo;
 import iskallia.vault.VaultMod;
 import iskallia.vault.util.LootInitialization;
 import mezz.jei.api.constants.VanillaTypes;
