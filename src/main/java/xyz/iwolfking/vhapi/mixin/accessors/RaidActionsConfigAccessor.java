@@ -1,13 +1,13 @@
 package xyz.iwolfking.vhapi.mixin.accessors;
 
-import iskallia.vault.block.entity.challenge.raid.action.ChallengeAction;
-import iskallia.vault.config.RaidActionsConfig;
+import iskallia.vault.config.ChallengeActionsConfig;
+import iskallia.vault.core.vault.challenge.action.ChallengeAction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.Map;
 
-@Mixin(value = RaidActionsConfig.class,remap = false)
+@Mixin(value = ChallengeActionsConfig.class,remap = false)
 public interface RaidActionsConfigAccessor {
     @Accessor("values")
     Map<String, ChallengeAction<?>> getValues();

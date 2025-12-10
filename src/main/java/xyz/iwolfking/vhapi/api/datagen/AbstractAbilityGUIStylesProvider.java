@@ -75,9 +75,8 @@ public abstract class AbstractAbilityGUIStylesProvider extends AbstractVaultConf
                 this.y = y;
             }
 
-            public StyleBuilder specialization(String specializationName, ResourceLocation icon, AbilitiesGUIConfig.Type type) {
+            public StyleBuilder specialization(String specializationName, ResourceLocation icon) {
                 AbilitiesGUIConfig.SpecializationStyle specializationStyle = new AbilitiesGUIConfig.SpecializationStyle(icon);
-                ((AbilitiesGUIConfigSpecializationStyleAccessor)specializationStyle).setType(type);
                 specializationStyleMap.put(specializationName, specializationStyle);
                 return this;
             }

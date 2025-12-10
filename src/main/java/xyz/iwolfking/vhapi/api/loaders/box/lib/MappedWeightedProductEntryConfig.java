@@ -2,6 +2,7 @@ package xyz.iwolfking.vhapi.api.loaders.box.lib;
 
 import com.google.gson.annotations.Expose;
 import iskallia.vault.config.Config;
+import iskallia.vault.config.ModBoxConfig;
 import iskallia.vault.config.entry.vending.ProductEntry;
 import iskallia.vault.util.data.WeightedList;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 
 public class MappedWeightedProductEntryConfig extends Config {
     @Expose
-    public Map<String, WeightedList<ProductEntry>> POOL = new HashMap<>();
+    public Map<String, ModBoxConfig.ModPool> POOL = new HashMap<>();
 
     @Override
     public String getName() {

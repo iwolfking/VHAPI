@@ -1,7 +1,9 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
-import iskallia.vault.block.entity.challenge.raid.action.*;
-import iskallia.vault.config.RaidActionsConfig;
+import iskallia.vault.config.ChallengeActionsConfig;
+import iskallia.vault.core.vault.challenge.action.AddMobsChallengeAction;
+import iskallia.vault.core.vault.challenge.action.ChallengeAction;
+import iskallia.vault.core.vault.challenge.action.FloatingItemRewardChallengeAction;
 import iskallia.vault.core.world.data.entity.PartialEntity;
 import iskallia.vault.core.world.roll.IntRoll;
 import net.minecraft.data.DataGenerator;
@@ -14,25 +16,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public abstract class AbstractRaidActionsProvider extends AbstractVaultConfigDataProvider<AbstractRaidActionsProvider.Builder> {
     protected AbstractRaidActionsProvider(DataGenerator generator, String modid) {
-        super(generator, modid, "raid_actions", Builder::new);
+        super(generator, modid, "challenge_actions", Builder::new);
     }
 
     public abstract void registerConfigs();
 
     @Override
     public String getName() {
-        return modid + " Raid Actions Data Provider";
+        return modid + " Challenge Actions Data Provider";
     }
 
-    public static class Builder extends VaultConfigBuilder<RaidActionsConfig> {
+    public static class Builder extends VaultConfigBuilder<ChallengeActionsConfig> {
         private final Map<String, ChallengeAction<?>> values = new HashMap<>();
 
         public Builder() {
-            super(RaidActionsConfig::new);
+            super(ChallengeActionsConfig::new);
         }
 
         public Builder add(String key, Consumer<ActionBuilder> builderConsumer) {
@@ -43,7 +44,7 @@ public abstract class AbstractRaidActionsProvider extends AbstractVaultConfigDat
         }
 
         @Override
-        protected void configureConfig(RaidActionsConfig config) {
+        protected void configureConfig(ChallengeActionsConfig config) {
             ((RaidActionsConfigAccessor)config).getValues().putAll(values);
         }
 

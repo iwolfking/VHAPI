@@ -14,7 +14,7 @@ import java.util.List;
 public class WoldsSealHelper {
     public static ItemStack getSealFromObjective(CrystalObjective objective) {
         List<Component> tooltips = new ArrayList<>();
-        objective.addText(tooltips, 0, TooltipFlag.Default.NORMAL, 0);
+        objective.addText(tooltips, 0, TooltipFlag.Default.NORMAL, 0, 0);
         if(objective instanceof AlchemyCrystalObjective) {
             return ModItems.CRYSTAL_SEAL_ALCHEMY.getDefaultInstance().setHoverName(tooltips.get(0));
         }

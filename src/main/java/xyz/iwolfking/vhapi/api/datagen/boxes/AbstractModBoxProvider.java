@@ -30,7 +30,7 @@ public abstract class AbstractModBoxProvider extends AbstractVaultConfigDataProv
     }
 
     public static class Builder extends VaultConfigBuilder<ModBoxConfig> {
-        public Map<String, WeightedList<ProductEntry>> POOL = new HashMap<>();
+        public Map<String, ModBoxConfig.ModPool> POOL = new HashMap<>();
 
         public Builder() {
             super(ModBoxConfig::new);
@@ -39,7 +39,9 @@ public abstract class AbstractModBoxProvider extends AbstractVaultConfigDataProv
         public Builder addModBox(String researchName, Consumer<ProductEntryListBuilder> poolConsumer) {
             ProductEntryListBuilder pool = new ProductEntryListBuilder();
             poolConsumer.accept(pool);
-            POOL.put(researchName, pool.build());
+            ModBoxConfig.ModPool pool1 = new ModBoxConfig.ModPool();
+            pool1.entries.addAll(pool.build());
+            POOL.put(researchName, pool1);
             return this;
         }
 

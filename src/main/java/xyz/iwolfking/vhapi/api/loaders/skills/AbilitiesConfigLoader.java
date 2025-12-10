@@ -4,7 +4,9 @@ import iskallia.vault.config.AbilitiesConfig;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.skill.base.LearnableSkill;
 import iskallia.vault.skill.base.Skill;
+import iskallia.vault.skill.base.SkillContext;
 import iskallia.vault.skill.base.SpecializedSkill;
+import iskallia.vault.skill.source.SkillSource;
 import iskallia.vault.skill.tree.AbilityTree;
 import iskallia.vault.skill.tree.SkillTree;
 import oshi.util.tuples.Pair;
@@ -48,7 +50,7 @@ public class AbilitiesConfigLoader extends VaultConfigProcessor<AbilitiesConfig>
                 ModConfigs.ABILITIES.tree.skills.forEach(skill -> {
                     if(skillsToReplace.contains(skill)) {
                         if(skill instanceof SpecializedSkill specializedSkill) {
-                            ((SpecializedSkillAccessor)specializedSkill).setSpecializations(((SpecializedSkillAccessor)abilitiesConfig.getAbilityById(skill.getId()).get()).getSpecializations());
+                            specializedSkill.mergeFrom(abilitiesConfig.getAbilityById(skill.getId()).get(), new SkillContext(1, specializedSkill.getSpentLearnPoints(), SkillSource.empty()));
                         }
                     }
                 });

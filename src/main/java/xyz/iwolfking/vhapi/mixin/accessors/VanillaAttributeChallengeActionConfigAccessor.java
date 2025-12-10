@@ -1,6 +1,6 @@
 package xyz.iwolfking.vhapi.mixin.accessors;
 
-import iskallia.vault.block.entity.challenge.raid.action.VanillaAttributeChallengeAction;
+import iskallia.vault.core.vault.challenge.action.VanillaAttributeChallengeAction;
 import iskallia.vault.core.world.data.entity.EntityPredicate;
 import iskallia.vault.core.world.roll.DoubleRoll;
 import net.minecraft.world.entity.ai.attributes.Attribute;

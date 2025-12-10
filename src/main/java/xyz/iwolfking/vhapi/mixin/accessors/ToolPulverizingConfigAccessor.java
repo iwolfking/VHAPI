@@ -1,6 +1,5 @@
 package xyz.iwolfking.vhapi.mixin.accessors;
 
-import iskallia.vault.block.entity.challenge.raid.action.AddMobsChallengeAction;
 import iskallia.vault.config.tool.ToolPulverizingConfig;
 import iskallia.vault.core.world.data.entity.PartialEntity;
 import iskallia.vault.core.world.loot.LootTable;

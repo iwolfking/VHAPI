@@ -1,6 +1,6 @@
 package xyz.iwolfking.vhapi.mixin.accessors;
 
-import iskallia.vault.block.entity.challenge.raid.action.AddMobsChallengeAction;
+import iskallia.vault.core.vault.challenge.action.AddMobsChallengeAction;
 import iskallia.vault.core.world.data.entity.PartialEntity;
 import iskallia.vault.core.world.roll.IntRoll;
 import org.spongepowered.asm.mixin.Mixin;

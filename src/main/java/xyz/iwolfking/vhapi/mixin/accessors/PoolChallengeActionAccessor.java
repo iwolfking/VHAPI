@@ -1,7 +1,7 @@
 package xyz.iwolfking.vhapi.mixin.accessors;
 
-import iskallia.vault.block.entity.challenge.raid.action.PoolChallengeAction;
 import iskallia.vault.config.entry.LevelEntryList;
+import iskallia.vault.core.vault.challenge.action.PoolChallengeAction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 

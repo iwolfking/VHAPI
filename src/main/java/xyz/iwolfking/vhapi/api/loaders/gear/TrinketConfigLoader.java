@@ -1,6 +1,5 @@
 package xyz.iwolfking.vhapi.api.loaders.gear;
 
-import iskallia.vault.config.RaidActionsConfig;
 import iskallia.vault.config.TrinketConfig;
 import iskallia.vault.init.ModConfigs;
 import net.minecraft.resources.ResourceLocation;
