@@ -17,6 +17,7 @@ import xyz.iwolfking.vhapi.api.loaders.bounty.BountyRewardsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.card.*;
+import xyz.iwolfking.vhapi.api.loaders.challenge.ChallengeCurseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertiseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertisesGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gear.*;
@@ -150,6 +151,7 @@ public class Processors {
     public static class SkillConfigProcessors {
         public static final SkillGatesConfigLoader SKILL_GATES_CONFIG_LOADER = new SkillGatesConfigLoader();
         public static final AbilitiesConfigLoader ABILITIES_CONFIG_LOADER = new AbilitiesConfigLoader();
+        public static final AbilitiesGroupLoader ABILITIES_GROUP_LOADER = new AbilitiesGroupLoader();
         public static final AbilitiesGUIConfigLoader ABILITIES_GUI_CONFIG_LOADER = new AbilitiesGUIConfigLoader();
         public static final TalentConfigLoader TALENT_CONFIG_LOADER = new TalentConfigLoader();
         public static final TalentsGUIConfigLoader TALENTS_GUI_CONFIG_LOADER = new TalentsGUIConfigLoader();
@@ -223,6 +225,8 @@ public class Processors {
         public static final BestiaryConfigLoader BESTIARY_CONFIG_LOADER = new BestiaryConfigLoader();
         public static final VaultRoomMapsIconConfigLoader VAULT_ROOM_MAPS_ICON_CONFIG_LOADER = new VaultRoomMapsIconConfigLoader();
         public static final VaultItemsConfigLoader VAULT_ITEMS_CONFIG_LOADER = new VaultItemsConfigLoader();
+        public static final ChallengeCurseConfigLoader CHALLENGE_CURSE_CONFIG_LOADER = new ChallengeCurseConfigLoader();
+        public static final GodShopConfigLoader GOD_SHOP_CONFIG_LOADER = new GodShopConfigLoader();
     }
 
     public static class TransmogConfigProcessors {

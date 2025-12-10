@@ -97,6 +97,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.ObjectiveConfigProcessors.SCAVENGER_CONFIG_LOADER);
 
         addConfigProcessor(Processors.SkillConfigProcessors.ABILITIES_CONFIG_LOADER);
+        addConfigProcessor(Processors.SkillConfigProcessors.ABILITIES_GROUP_LOADER);
         addConfigProcessor(Processors.SkillConfigProcessors.ABILITIES_GUI_CONFIG_LOADER);
         addConfigProcessor(Processors.SkillConfigProcessors.ABILITIES_DESCRIPTIONS_CONFIG_LOADER);
         addConfigProcessor(Processors.SkillConfigProcessors.SKILL_GATES_CONFIG_LOADER);
@@ -161,6 +162,8 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.BESTIARY_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ROOM_MAPS_ICON_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ITEMS_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.CHALLENGE_CURSE_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.GOD_SHOP_CONFIG_LOADER);
 
 
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ALTAR_CONFIG_LOADER);
