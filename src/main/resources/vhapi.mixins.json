@@ -100,7 +100,6 @@
     "custom.MixinTransmogTableBlock",
     "custom.MixinVaultAltarIngredientsConfig",
     "custom.MixinVaultRecyclerTileEntity",
-    "events.MixinGodAltarTask",
     "gen.MixinLootTable",
     "gen.MixinPalette",
     "gen.MixinTemplateKey",
