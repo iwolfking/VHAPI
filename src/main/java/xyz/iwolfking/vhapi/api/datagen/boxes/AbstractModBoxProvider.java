@@ -36,14 +36,19 @@ public abstract class AbstractModBoxProvider extends AbstractVaultConfigDataProv
             super(ModBoxConfig::new);
         }
 
-        public Builder addModBox(String researchName, Consumer<ProductEntryListBuilder> poolConsumer) {
+        public Builder addModBox(String researchName, Consumer<ProductEntryListBuilder> poolConsumer, int weight) {
             ProductEntryListBuilder pool = new ProductEntryListBuilder();
             poolConsumer.accept(pool);
             ModBoxConfig.ModPool pool1 = new ModBoxConfig.ModPool();
+            pool1.weight = weight;
             pool1.entries.addAll(pool.build());
             POOL.put(researchName, pool1);
             return this;
         }
+        public Builder addModBox(String researchName, Consumer<ProductEntryListBuilder> poolConsumer) {
+            return addModBox(researchName, poolConsumer, 1);
+        }
+
 
         @Override
         protected void configureConfig(ModBoxConfig config) {
