@@ -3,7 +3,9 @@ package xyz.iwolfking.vhapi.integration.jevh;
 import iskallia.vault.VaultMod;
 import iskallia.vault.config.CompanionRelicsConfig;
 import iskallia.vault.config.VaultCrystalConfig;
+import iskallia.vault.config.card.BoosterPackConfig;
 import iskallia.vault.core.Version;
+import iskallia.vault.core.card.CardEntry;
 import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.random.ChunkRandom;
 import iskallia.vault.core.vault.VaultRegistry;
@@ -93,6 +95,9 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> VAULT_CHEST_META = RecipeType.create(VHAPI.MODID, "vault_chest_meta", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> VAULT_ENCHANTER = RecipeType.create(VHAPI.MODID, "vault_enchanter", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> FACETED_FOCUS = RecipeType.create(VHAPI.MODID, "faceted_focus", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> BOOSTER_PACKS = RecipeType.create(VHAPI.MODID, "booster_packs", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> CARD_DECKS = RecipeType.create(VHAPI.MODID, "card_decks", LabeledLootInfo.class);
+
 
 
     @Override @SuppressWarnings("removal")
@@ -119,6 +124,8 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CATALYST_FRAGMENT), VAULT_CHEST_META);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.VAULT_ENCHANTER), VAULT_ENCHANTER);
         registration.addRecipeCatalyst(new ItemStack(ModItems.FACETED_FOCUS), FACETED_FOCUS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.BOOSTER_PACK), BOOSTER_PACKS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.CARD_DECK), CARD_DECKS);
     }
 
     @Override @SuppressWarnings("removal")
@@ -143,6 +150,8 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(VAULT_CHEST_META, getChestMetaValues());
         registration.addRecipes(VAULT_ENCHANTER, getGearEnchantments());
         registration.addRecipes(FACETED_FOCUS, getFacetedFoci());
+        registration.addRecipes(BOOSTER_PACKS, getBoosterPacks());
+        registration.addRecipes(BOOSTER_PACKS, getCardDecks());
     }
 
     @Override
@@ -171,6 +180,8 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_DIFFUSER, ModBlocks.VAULT_DIFFUSER, new TextComponent("Soul Diffusing")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_ENCHANTER, ModBlocks.VAULT_ENCHANTER, new TextComponent("Vault Enchanter")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, FACETED_FOCUS, ModItems.FACETED_FOCUS, new TextComponent("Faceted Focus")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, BOOSTER_PACKS, ModItems.BOOSTER_PACK, new TextComponent("Booster Packs")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, CARD_DECKS, ModItems.CARD_DECK, new TextComponent("Card Decks")));
     }
 
     public static List<LabeledLootInfo> getFacetedFoci() {
@@ -248,6 +259,32 @@ public class VHAPIJEIPlugin implements IModPlugin {
         lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Soul Values"), null));
 
 
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getBoosterPacks() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> boosterPacks = new ArrayList<>();
+        ModConfigs.BOOSTER_PACK.getValues().forEach(((s, boosterPackEntry) -> {
+            ItemStack boosterPack = new ItemStack(ModItems.BOOSTER_PACK);
+            BoosterPackItem.setId(boosterPack, s);
+            boosterPacks.add(formatBoosterPack(boosterPack, s));
+        }));
+
+        lootInfo.add(LabeledLootInfo.of(boosterPacks, new TextComponent("Booster Packs"), null));
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getCardDecks() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> cardDecks = new ArrayList<>();
+        ((CardDeckConfigAccessor)ModConfigs.CARD_DECK).getValues().forEach(((s, entry) -> {
+            ItemStack cardDeck = new ItemStack(ModItems.CARD_DECK);
+            CardDeckItem.setId(cardDeck, s);
+            cardDecks.add(cardDeck);
+        }));
+
+        lootInfo.add(LabeledLootInfo.of(cardDecks, new TextComponent("Card Decks"), null));
         return lootInfo;
     }
 
@@ -788,6 +825,82 @@ public class VHAPIJEIPlugin implements IModPlugin {
             list.add(StringTag.valueOf(Component.Serializer.toJson(costLabel.withStyle(itemStack.getHoverName().getStyle()))));
 
         });
+        nbt.put("Lore", list);
+        return result;
+    }
+
+    private static ItemStack formatBoosterPack(ItemStack item, String boosterPackId) {
+        ItemStack result = item.copy();
+        if (item.isEmpty()) {
+            result = new ItemStack(Items.BARRIER);
+            result.setHoverName(new TextComponent("Nothing"));
+        }
+        CompoundTag nbt = result.getOrCreateTagElement("display");
+        ListTag list = nbt.getList("Lore", 8);
+        BoosterPackConfig.BoosterPackEntry entry = ModConfigs.BOOSTER_PACK.getValues().get(boosterPackId);
+        double totalColorWeight = ((BoosterPackEntryAccessor)entry).getColor().getTotalWeight();
+        double totalRollWeight = ((BoosterPackEntryAccessor)entry).getRolls().getTotalWeight();
+        double totalTierWeight = ((BoosterPackEntryAccessor)entry).getTiers().getTotalWeight();
+
+        ((BoosterPackEntryAccessor)entry).getRolls().forEach((roll, aDouble) -> {
+            MutableComponent rollLabel = new TextComponent(roll.toString());
+            MutableComponent weightLabel = new TextComponent(String.format("(%.2f)", aDouble/totalRollWeight * 100)).withStyle(ChatFormatting.YELLOW);
+            rollLabel.append(weightLabel);
+            list.add(StringTag.valueOf(Component.Serializer.toJson(rollLabel)));
+        });
+
+        ((BoosterPackEntryAccessor)entry).getTiers().forEach((roll, aDouble) -> {
+            MutableComponent rollLabel = new TextComponent(roll.toString());
+            MutableComponent weightLabel = new TextComponent(String.format("(%.2f)", aDouble/totalTierWeight * 100)).withStyle(ChatFormatting.YELLOW);
+            rollLabel.append(weightLabel);
+            list.add(StringTag.valueOf(Component.Serializer.toJson(rollLabel)));
+        });
+
+        ((BoosterPackEntryAccessor)entry).getColor().forEach((color, aDouble) -> {
+            MutableComponent colorLabel = new TextComponent(color.name());
+            switch(color) {
+                case RED -> colorLabel.withStyle(ChatFormatting.RED);
+                case BLUE -> colorLabel.withStyle(ChatFormatting.BLUE);
+                case YELLOW -> colorLabel.withStyle(ChatFormatting.YELLOW);
+                case GREEN -> colorLabel.withStyle(ChatFormatting.GREEN);
+            }
+            MutableComponent weightLabel = new TextComponent(String.format("(%.2f)", aDouble/totalColorWeight * 100)).withStyle(ChatFormatting.YELLOW);
+            colorLabel.append(weightLabel);
+            list.add(StringTag.valueOf(Component.Serializer.toJson(colorLabel)));
+        });
+        double totalWeight = entry.getCard().getTotalWeight();
+        entry.getCard().forEach((cards, aDouble) -> {
+                    cards.forEach(cardConfig -> {
+                        MutableComponent cardLabel;
+                        String modifier = cardConfig.getModifier();
+                        cardLabel = switch (modifier) {
+                            case "@default" -> new TextComponent("Stat").withStyle(ChatFormatting.RED);
+                            case "@deluxe_stat" -> new TextComponent("Deluxe Stat").withStyle(ChatFormatting.DARK_RED);
+                            case "@temporal" -> new TextComponent("Temporal").withStyle(ChatFormatting.LIGHT_PURPLE);
+                            case "@deluxe_temporal" ->
+                                    new TextComponent("Deluxe Temporal").withStyle(ChatFormatting.DARK_PURPLE);
+                            case "@resource" -> new TextComponent("Resource").withStyle(ChatFormatting.YELLOW);
+                            case "@deluxe_resource" ->
+                                    new TextComponent("Deluxe Resource").withStyle(ChatFormatting.GOLD);
+                            case "@scaling" -> new TextComponent("Scaling").withStyle(ChatFormatting.AQUA);
+                            case "@arcane" -> new TextComponent("Arcane").withStyle(ChatFormatting.BLUE);
+                            case "@knack" -> new TextComponent("Knack").withStyle(ChatFormatting.GREEN);
+                            case "@deluxe_knack" ->
+                                    new TextComponent("Deluxe Knack").withStyle(ChatFormatting.DARK_GREEN);
+                            default -> new TextComponent(modifier).withStyle(ChatFormatting.GRAY);
+                        };
+
+                        if(((CardConfigAccessor)cardConfig).getGroups().contains("Foil")) {
+                            MutableComponent foilLabel = new TextComponent(" - Foil ").withStyle(ChatFormatting.AQUA);
+                            cardLabel.append(foilLabel);
+                        }
+
+                        MutableComponent weightLabel = new TextComponent(String.format("(%.2f)", aDouble / totalWeight * 100)).withStyle(ChatFormatting.YELLOW);
+                        cardLabel.append(weightLabel);
+                        list.add(StringTag.valueOf(Component.Serializer.toJson(cardLabel)));
+                    });
+        });
+
         nbt.put("Lore", list);
         return result;
     }

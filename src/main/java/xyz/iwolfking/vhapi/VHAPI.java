@@ -199,7 +199,14 @@ public class VHAPI {
                     return;
                 }
 
-                //Collection<ResourceLocation> boosterTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/booster_pack", s -> s.endsWith(".png"));
+                Collection<ResourceLocation> boosterTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/booster_pack", s -> s.endsWith(".png"));
+                for(ResourceLocation loc : boosterTextures) {
+                    if(!loc.getNamespace().equals("the_vault")) {
+                        VHAPILoggerUtils.debug("Stitching custom booster pack texture: " + loc);
+                        event.addSprite(ResourceLocUtils.stripLocationForSprite(loc));
+                    }
+                }
+
                 for(ResourceLocation loc : gearTextures) {
                     if(!loc.getNamespace().equals("the_vault")) {
                         VHAPILoggerUtils.debug("Stitching custom transmog texture: " + loc);
