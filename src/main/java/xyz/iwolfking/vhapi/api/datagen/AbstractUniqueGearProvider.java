@@ -15,7 +15,9 @@ import xyz.iwolfking.vhapi.api.loaders.gear.transmog.lib.GsonHandheldModel;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -55,7 +57,7 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         JsonObject modelRolls = new JsonObject();
         String[] itemTypes = {
                 "AXE","WAND","SWORD","ARMOR","SHIELD","FOCUS","MAGNETS",
-                "TRIDENT","BATTLESTAFF","PLUSHIE","LOOT_SACK"
+                "TRIDENT","BATTLESTAFF","PLUSHIE","LOOT_SACK", "JEWEL", "RANG"
         };
 
         for (String type : itemTypes) {
@@ -65,6 +67,8 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             }
             modelRolls.add(type + "_MODEL_ROLLS", rolls);
         }
+
+        List<String> craftedPool = new ArrayList<>();
 
         addGear(result -> {
             String key = result.id().toString();
@@ -77,7 +81,7 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             JsonObject poolEntry = new JsonObject();
             poolEntry.addProperty(key, entry.weight());
             pools.add(key, poolEntry);
-            pools.add(VaultMod.id("crafted").toString(), poolEntry);
+            craftedPool.add(poolEntry.toString());
 
             // Codex index
             String type = entry.codexSlotType().toString();
@@ -129,6 +133,14 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             JsonArray uniqueArray = rolls.getAsJsonArray("UNIQUE");
             entry.models().forEach(m -> uniqueArray.add(m.value().toString()));
         });
+
+        JsonObject craftedPoolObj = new JsonObject();
+
+        craftedPool.forEach(string -> {
+            craftedPoolObj.addProperty(string, 1);
+        });
+
+        pools.add(VaultMod.id("crafted").toString(), craftedPoolObj);
 
         // Save unique_gear.json
         Path gearTarget = generator.getOutputFolder()
