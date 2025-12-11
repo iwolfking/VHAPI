@@ -151,7 +151,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(VAULT_ENCHANTER, getGearEnchantments());
         registration.addRecipes(FACETED_FOCUS, getFacetedFoci());
         registration.addRecipes(BOOSTER_PACKS, getBoosterPacks());
-        registration.addRecipes(BOOSTER_PACKS, getCardDecks());
+        registration.addRecipes(CARD_DECKS, getCardDecks());
     }
 
     @Override
@@ -838,68 +838,88 @@ public class VHAPIJEIPlugin implements IModPlugin {
         CompoundTag nbt = result.getOrCreateTagElement("display");
         ListTag list = nbt.getList("Lore", 8);
         BoosterPackConfig.BoosterPackEntry entry = ModConfigs.BOOSTER_PACK.getValues().get(boosterPackId);
-        double totalColorWeight = ((BoosterPackEntryAccessor)entry).getColor().getTotalWeight();
-        double totalRollWeight = ((BoosterPackEntryAccessor)entry).getRolls().getTotalWeight();
-        double totalTierWeight = ((BoosterPackEntryAccessor)entry).getTiers().getTotalWeight();
+        double totalColorWeight =  ((BoosterPackEntryAccessor)entry).getColor() != null ? ((BoosterPackEntryAccessor)entry).getColor().getTotalWeight() : 1;
+        double totalRollWeight =  ((BoosterPackEntryAccessor)entry).getRolls() != null ? ((BoosterPackEntryAccessor)entry).getRolls().getTotalWeight() : 1;
+        double totalTierWeight =  ((BoosterPackEntryAccessor)entry).getRolls() != null ? ((BoosterPackEntryAccessor)entry).getTiers().getTotalWeight() : 1;
 
-        ((BoosterPackEntryAccessor)entry).getRolls().forEach((roll, aDouble) -> {
-            MutableComponent rollLabel = new TextComponent(roll.toString());
-            MutableComponent weightLabel = new TextComponent(String.format("(%.2f)", aDouble/totalRollWeight * 100)).withStyle(ChatFormatting.YELLOW);
-            rollLabel.append(weightLabel);
-            list.add(StringTag.valueOf(Component.Serializer.toJson(rollLabel)));
-        });
+        if(((BoosterPackEntryAccessor)entry).getRolls() != null) {
+            MutableComponent rollHeader = new TextComponent("Rolls: ").withStyle(ChatFormatting.WHITE);
+            list.add(StringTag.valueOf(Component.Serializer.toJson(rollHeader)));
+            ((BoosterPackEntryAccessor)entry).getRolls().forEach((roll, aDouble) -> {
+                MutableComponent rollLabel = new TextComponent(roll.toString());
+                MutableComponent weightLabel = new TextComponent(String.format(" (%.2f%%)", aDouble/totalRollWeight * 100)).withStyle(ChatFormatting.YELLOW);
+                rollLabel.append(weightLabel);
+                list.add(StringTag.valueOf(Component.Serializer.toJson(rollLabel)));
+            });
+        }
 
-        ((BoosterPackEntryAccessor)entry).getTiers().forEach((roll, aDouble) -> {
-            MutableComponent rollLabel = new TextComponent(roll.toString());
-            MutableComponent weightLabel = new TextComponent(String.format("(%.2f)", aDouble/totalTierWeight * 100)).withStyle(ChatFormatting.YELLOW);
-            rollLabel.append(weightLabel);
-            list.add(StringTag.valueOf(Component.Serializer.toJson(rollLabel)));
-        });
+        if(((BoosterPackEntryAccessor)entry).getTiers() != null) {
+            list.add(StringTag.valueOf(Component.Serializer.toJson(new TextComponent(""))));
+            MutableComponent rollHeader = new TextComponent("Tiers: ").withStyle(ChatFormatting.WHITE);
+            list.add(StringTag.valueOf(Component.Serializer.toJson(rollHeader)));
+            ((BoosterPackEntryAccessor)entry).getTiers().forEach((roll, aDouble) -> {
+                MutableComponent rollLabel = new TextComponent(roll.toString());
+                MutableComponent weightLabel = new TextComponent(String.format(" (%.2f%%)", aDouble/totalTierWeight * 100)).withStyle(ChatFormatting.YELLOW);
+                rollLabel.append(weightLabel);
+                list.add(StringTag.valueOf(Component.Serializer.toJson(rollLabel)));
+            });
+        }
 
-        ((BoosterPackEntryAccessor)entry).getColor().forEach((color, aDouble) -> {
-            MutableComponent colorLabel = new TextComponent(color.name());
-            switch(color) {
-                case RED -> colorLabel.withStyle(ChatFormatting.RED);
-                case BLUE -> colorLabel.withStyle(ChatFormatting.BLUE);
-                case YELLOW -> colorLabel.withStyle(ChatFormatting.YELLOW);
-                case GREEN -> colorLabel.withStyle(ChatFormatting.GREEN);
-            }
-            MutableComponent weightLabel = new TextComponent(String.format("(%.2f)", aDouble/totalColorWeight * 100)).withStyle(ChatFormatting.YELLOW);
-            colorLabel.append(weightLabel);
-            list.add(StringTag.valueOf(Component.Serializer.toJson(colorLabel)));
-        });
-        double totalWeight = entry.getCard().getTotalWeight();
-        entry.getCard().forEach((cards, aDouble) -> {
-                    cards.forEach(cardConfig -> {
-                        MutableComponent cardLabel;
-                        String modifier = cardConfig.getModifier();
-                        cardLabel = switch (modifier) {
-                            case "@default" -> new TextComponent("Stat").withStyle(ChatFormatting.RED);
-                            case "@deluxe_stat" -> new TextComponent("Deluxe Stat").withStyle(ChatFormatting.DARK_RED);
-                            case "@temporal" -> new TextComponent("Temporal").withStyle(ChatFormatting.LIGHT_PURPLE);
-                            case "@deluxe_temporal" ->
-                                    new TextComponent("Deluxe Temporal").withStyle(ChatFormatting.DARK_PURPLE);
-                            case "@resource" -> new TextComponent("Resource").withStyle(ChatFormatting.YELLOW);
-                            case "@deluxe_resource" ->
-                                    new TextComponent("Deluxe Resource").withStyle(ChatFormatting.GOLD);
-                            case "@scaling" -> new TextComponent("Scaling").withStyle(ChatFormatting.AQUA);
-                            case "@arcane" -> new TextComponent("Arcane").withStyle(ChatFormatting.BLUE);
-                            case "@knack" -> new TextComponent("Knack").withStyle(ChatFormatting.GREEN);
-                            case "@deluxe_knack" ->
-                                    new TextComponent("Deluxe Knack").withStyle(ChatFormatting.DARK_GREEN);
-                            default -> new TextComponent(modifier).withStyle(ChatFormatting.GRAY);
-                        };
+        if(((BoosterPackEntryAccessor)entry).getColor() != null) {
+            list.add(StringTag.valueOf(Component.Serializer.toJson(new TextComponent(""))));
+            MutableComponent rollHeader = new TextComponent("Color: ").withStyle(ChatFormatting.WHITE);
+            list.add(StringTag.valueOf(Component.Serializer.toJson(rollHeader)));
+            ((BoosterPackEntryAccessor)entry).getColor().forEach((color, aDouble) -> {
+                MutableComponent colorLabel = new TextComponent(color.name());
+                switch(color) {
+                    case RED -> colorLabel.withStyle(ChatFormatting.RED);
+                    case BLUE -> colorLabel.withStyle(ChatFormatting.BLUE);
+                    case YELLOW -> colorLabel.withStyle(ChatFormatting.YELLOW);
+                    case GREEN -> colorLabel.withStyle(ChatFormatting.GREEN);
+                }
+                MutableComponent weightLabel = new TextComponent(String.format(" (%.2f%%)", aDouble/totalColorWeight * 100)).withStyle(ChatFormatting.YELLOW);
+                colorLabel.append(weightLabel);
+                list.add(StringTag.valueOf(Component.Serializer.toJson(colorLabel)));
+            });
+        }
 
-                        if(((CardConfigAccessor)cardConfig).getGroups().contains("Foil")) {
-                            MutableComponent foilLabel = new TextComponent(" - Foil ").withStyle(ChatFormatting.AQUA);
-                            cardLabel.append(foilLabel);
-                        }
+        double totalWeight = entry.getCard() != null ? entry.getCard().getTotalWeight() : 1;
+        if(entry.getCard() != null) {
+            list.add(StringTag.valueOf(Component.Serializer.toJson(new TextComponent(""))));
+            MutableComponent rollHeader = new TextComponent("Type: ").withStyle(ChatFormatting.WHITE);
+            list.add(StringTag.valueOf(Component.Serializer.toJson(rollHeader)));
+            entry.getCard().forEach((cards, aDouble) -> {
+                cards.forEach(cardConfig -> {
+                    MutableComponent cardLabel;
+                    String modifier = cardConfig.getModifier();
+                    cardLabel = switch (modifier) {
+                        case "@default" -> new TextComponent("Stat").withStyle(ChatFormatting.RED);
+                        case "@deluxe_stat" -> new TextComponent("Deluxe Stat").withStyle(ChatFormatting.DARK_RED);
+                        case "@temporal" -> new TextComponent("Temporal").withStyle(ChatFormatting.LIGHT_PURPLE);
+                        case "@deluxe_temporal" ->
+                                new TextComponent("Deluxe Temporal").withStyle(ChatFormatting.DARK_PURPLE);
+                        case "@resource" -> new TextComponent("Resource").withStyle(ChatFormatting.YELLOW);
+                        case "@deluxe_resource" ->
+                                new TextComponent("Deluxe Resource").withStyle(ChatFormatting.GOLD);
+                        case "@scaling" -> new TextComponent("Scaling").withStyle(ChatFormatting.AQUA);
+                        case "@arcane" -> new TextComponent("Arcane").withStyle(ChatFormatting.BLUE);
+                        case "@knack" -> new TextComponent("Knack").withStyle(ChatFormatting.GREEN);
+                        case "@deluxe_knack" ->
+                                new TextComponent("Deluxe Knack").withStyle(ChatFormatting.DARK_GREEN);
+                        default -> new TextComponent(modifier).withStyle(ChatFormatting.GRAY);
+                    };
 
-                        MutableComponent weightLabel = new TextComponent(String.format("(%.2f)", aDouble / totalWeight * 100)).withStyle(ChatFormatting.YELLOW);
-                        cardLabel.append(weightLabel);
-                        list.add(StringTag.valueOf(Component.Serializer.toJson(cardLabel)));
-                    });
-        });
+                    if(((CardConfigAccessor)cardConfig).getGroups() != null && ((CardConfigAccessor)cardConfig).getGroups().contains("Foil")) {
+                        MutableComponent foilLabel = new TextComponent(" [Foil] ").withStyle(ChatFormatting.AQUA);
+                        cardLabel.append(foilLabel);
+                    }
+
+                    MutableComponent weightLabel = new TextComponent(String.format(" (%.2f%%)", aDouble / totalWeight * 100)).withStyle(ChatFormatting.YELLOW);
+                    cardLabel.append(weightLabel);
+                    list.add(StringTag.valueOf(Component.Serializer.toJson(cardLabel)));
+                });
+            });
+        }
 
         nbt.put("Lore", list);
         return result;

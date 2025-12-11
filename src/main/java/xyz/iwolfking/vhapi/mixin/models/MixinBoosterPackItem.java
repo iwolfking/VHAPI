@@ -27,7 +27,7 @@ public class MixinBoosterPackItem {
         Collection<ResourceLocation> packModels = Minecraft.getInstance().getResourceManager().listResources("models/item/booster_pack", s -> s.endsWith(".json"));
         for(ResourceLocation loc : packModels) {
             if (!loc.getNamespace().equals("the_vault")) {
-                VHAPILoggerUtils.info("Register custom booster pack model: " + loc);
+                VHAPILoggerUtils.debug("Register custom booster pack model: " + loc);
                 consumer.accept(ResourceLocUtils.stripLocationForItemModel(loc));
             }
         }

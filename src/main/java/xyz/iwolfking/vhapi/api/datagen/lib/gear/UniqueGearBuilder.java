@@ -2,6 +2,7 @@ package xyz.iwolfking.vhapi.api.datagen.lib.gear;
 
 import com.google.gson.JsonObject;
 import iskallia.vault.config.UniqueCodexConfig;
+import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vhapi.api.util.builder.description.JsonDescription;
 
 import java.util.ArrayList;
@@ -12,7 +13,9 @@ import java.util.Map;
 public class UniqueGearBuilder {
 
     private final String name;
-    private String model;
+
+    private final List<UniqueGearEntry.WeightedModel> models = new ArrayList<>();
+
     private int weight = 1;
 
     private final Map<String, List<String>> identifiers = new LinkedHashMap<>();
@@ -21,7 +24,8 @@ public class UniqueGearBuilder {
     private String dropLocation = "TBD";
     private String modelType = "SWORD";
     private final List<JsonObject> descriptionData = new ArrayList<>();
-    private UniqueCodexConfig.IntroductionPage.SlotType slotType = UniqueCodexConfig.IntroductionPage.SlotType.SWORD;
+    private UniqueCodexConfig.IntroductionPage.SlotType slotType =
+            UniqueCodexConfig.IntroductionPage.SlotType.SWORD;
 
     public UniqueGearBuilder(String name) {
         this.name = name;
@@ -31,8 +35,19 @@ public class UniqueGearBuilder {
         identifiers.put("SUFFIX", new ArrayList<>());
     }
 
-    public UniqueGearBuilder model(String model) {
-        this.model = model;
+
+    public UniqueGearBuilder model(String modelPath) {
+        return model(modelPath, 1);
+    }
+
+
+    public UniqueGearBuilder model(String modelPath, int modelWeight) {
+        ResourceLocation rl = ResourceLocation.tryParse(modelPath);
+        return model(rl, modelWeight);
+    }
+
+    public UniqueGearBuilder model(ResourceLocation model, int modelWeight) {
+        this.models.add(new UniqueGearEntry.WeightedModel(model, modelWeight));
         return this;
     }
 
@@ -66,7 +81,6 @@ public class UniqueGearBuilder {
         return this;
     }
 
-
     public UniqueGearBuilder dropLocation(String dropLocation) {
         this.dropLocation = dropLocation;
         return this;
@@ -87,8 +101,21 @@ public class UniqueGearBuilder {
         return this;
     }
 
+    // -------------------------------------------------------------------------
+    // BUILD
+    // -------------------------------------------------------------------------
 
     public UniqueGearEntry build() {
-        return new UniqueGearEntry(name, model, identifiers, modifierTags, weight, modelType, slotType, dropLocation, descriptionData);
+        return new UniqueGearEntry(
+                name,
+                models,
+                identifiers,
+                modifierTags,
+                weight,
+                modelType,
+                slotType,
+                dropLocation,
+                descriptionData
+        );
     }
 }

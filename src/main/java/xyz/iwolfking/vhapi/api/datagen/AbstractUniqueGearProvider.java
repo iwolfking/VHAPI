@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import iskallia.vault.VaultMod;
 import iskallia.vault.gear.VaultGearRarity;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -52,11 +53,14 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         Map<String, JsonArray> modelsMap = new HashMap<>();
 
         JsonObject modelRolls = new JsonObject();
-        String[] itemTypes = {"AXE", "WAND", "SWORD", "ARMOR", "SHIELD", "FOCUS", "MAGNETS", "TRIDENT", "BATTLESTAFF", "PLUSHIE", "LOOT_SACK"};
+        String[] itemTypes = {
+                "AXE","WAND","SWORD","ARMOR","SHIELD","FOCUS","MAGNETS",
+                "TRIDENT","BATTLESTAFF","PLUSHIE","LOOT_SACK"
+        };
 
         for (String type : itemTypes) {
             JsonObject rolls = new JsonObject();
-            for(VaultGearRarity rarity : VaultGearRarity.values()) {
+            for (VaultGearRarity rarity : VaultGearRarity.values()) {
                 rolls.add(rarity.name(), new JsonArray());
             }
             modelRolls.add(type + "_MODEL_ROLLS", rolls);
@@ -66,22 +70,22 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             String key = result.id().toString();
             UniqueGearEntry entry = result.entry();
 
+            // Registry entry
             registry.add(key, toJson(entry));
 
+            // Pools
             JsonObject poolEntry = new JsonObject();
-            poolEntry.addProperty(result.id().toString(), entry.weight());
+            poolEntry.addProperty(key, entry.weight());
             pools.add(key, poolEntry);
+            pools.add(VaultMod.id("crafted").toString(), poolEntry);
 
+            // Codex index
             String type = entry.codexSlotType().toString();
-            JsonArray typeArray;
-            if (index.has(type)) {
-                typeArray = index.getAsJsonArray(type);
-            } else {
-                typeArray = new JsonArray();
-                index.add(type, typeArray);
-            }
+            JsonArray typeArray = index.has(type) ? index.getAsJsonArray(type) : new JsonArray();
             typeArray.add(key);
+            index.add(type, typeArray);
 
+            // Codex page
             JsonObject page = new JsonObject();
 
             JsonObject title = new JsonObject();
@@ -93,8 +97,6 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
 
             JsonObject description = new JsonObject();
             JsonArray descArray = new JsonArray();
-
-
             entry.codexDescription().forEach(descArray::add);
 
             JsonObject d2 = new JsonObject();
@@ -108,32 +110,38 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             page.addProperty("uniqueId", key);
             pages.add(page);
 
-            GsonHandheldModel handheldModel = new GsonHandheldModel(ResourceLocation.tryParse(entry.model()), entry.name(), true, true);
+            // Handheld model JSON generation
+            for (UniqueGearEntry.WeightedModel wm : entry.models()) {
+                GsonHandheldModel handheld = new GsonHandheldModel(
+                        wm.value(),
+                        entry.name(),
+                        true,
+                        true
+                );
 
-            if(modelsMap.containsKey(entry.modelType().toLowerCase())) {
-                modelsMap.get(entry.modelType().toLowerCase()).add(handheldModel.toJson());
-            }
-            else {
-                JsonArray modelArray = new JsonArray();
-                modelArray.add(handheldModel.toJson());
-                modelsMap.put(entry.modelType().toLowerCase(), modelArray);
+                modelsMap.computeIfAbsent(entry.modelType().toLowerCase(), k -> new JsonArray())
+                        .add(handheld.toJson());
             }
 
+            // Model Roll entries
             String rollKey = entry.modelType().toUpperCase() + "_MODEL_ROLLS";
             JsonObject rolls = modelRolls.getAsJsonObject(rollKey);
             JsonArray uniqueArray = rolls.getAsJsonArray("UNIQUE");
-            uniqueArray.add(entry.model());
+            entry.models().forEach(m -> uniqueArray.add(m.value().toString()));
         });
 
+        // Save unique_gear.json
         Path gearTarget = generator.getOutputFolder()
                 .resolve("data/" + modid + "/vault_configs/gear/unique_gear/unique_gear.json");
         DataProvider.save(GSON, cache, root, gearTarget);
 
+        // Save codex
         Path codexTarget = generator.getOutputFolder()
                 .resolve("data/" + modid + "/vault_configs/unique_codex/unique_codex.json");
         DataProvider.save(GSON, cache, codexRoot, codexTarget);
 
-        for(String modelType : modelsMap.keySet()) {
+        // Save handheld model definitions
+        for (String modelType : modelsMap.keySet()) {
             JsonObject modelsRoot = new JsonObject();
             modelsRoot.add("MODELS", modelsMap.get(modelType));
             Path modelsTarget = generator.getOutputFolder()
@@ -141,18 +149,26 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             DataProvider.save(GSON, cache, modelsRoot, modelsTarget);
         }
 
-
+        // Save rolls
         Path rollsTarget = generator.getOutputFolder()
                 .resolve("data/" + modid + "/vault_configs/gear/model_rolls/unique_model_rolls.json");
         DataProvider.save(GSON, cache, modelRolls, rollsTarget);
     }
 
-
     private JsonObject toJson(UniqueGearEntry entry) {
         JsonObject obj = new JsonObject();
 
         obj.addProperty("name", entry.name());
-        obj.addProperty("model", entry.model());
+
+        // NEW: models array
+        JsonArray models = new JsonArray();
+        entry.models().forEach(m -> {
+            JsonObject mObj = new JsonObject();
+            mObj.addProperty("value", m.value().toString());
+            mObj.addProperty("weight", m.weight());
+            models.add(mObj);
+        });
+        obj.add("models", models);
 
         JsonObject ids = new JsonObject();
         entry.modifierIdentifiers().forEach((type, list) -> {

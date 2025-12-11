@@ -2,13 +2,14 @@ package xyz.iwolfking.vhapi.api.datagen.lib.gear;
 
 import com.google.gson.JsonObject;
 import iskallia.vault.config.UniqueCodexConfig;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 import java.util.Map;
 
 public record UniqueGearEntry(
         String name,
-        String model,
+        List<WeightedModel> models,
         Map<String, List<String>> modifierIdentifiers,
         List<String> modifierTags,
         int weight,
@@ -16,5 +17,6 @@ public record UniqueGearEntry(
         UniqueCodexConfig.IntroductionPage.SlotType codexSlotType,
         String codexDropLocation,
         List<JsonObject> codexDescription
-) {}
-
+) {
+    public record WeightedModel(ResourceLocation value, int weight) {}
+}

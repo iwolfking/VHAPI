@@ -4,11 +4,14 @@ import com.mojang.logging.LogUtils;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModKeybinds;
 import iskallia.vault.skill.base.RemovedSkill;
+import iskallia.vault.skill.base.SkillContext;
 import iskallia.vault.skill.base.SpecializedSkill;
 import iskallia.vault.skill.base.TieredSkill;
+import iskallia.vault.world.data.PlayerAbilitiesData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -109,12 +112,14 @@ public class VHAPI {
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
         if (!event.getPlayer().getLevel().isClientSide()) {
+            System.out.println("Reached this line!!!");
             if (VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
                 VHAPISyncNetwork.syncVHAPIConfigs(
                         new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
                         (ServerPlayer) event.getPlayer()
                 );
             }
+            PlayerAbilitiesData.get((ServerLevel) event.getPlayer().getLevel()).getAbilities(event.getPlayer()).sync(SkillContext.of((ServerPlayer) event.getPlayer()));
         }
     }
 
@@ -195,14 +200,21 @@ public class VHAPI {
 
                 //Stitch all Gear Textures
                 Collection<ResourceLocation> gearTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/gear", s -> s.endsWith(".png"));
-                if(gearTextures.isEmpty()) {
-                    return;
-                }
+
 
                 Collection<ResourceLocation> boosterTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/booster_pack", s -> s.endsWith(".png"));
                 for(ResourceLocation loc : boosterTextures) {
                     if(!loc.getNamespace().equals("the_vault")) {
                         VHAPILoggerUtils.debug("Stitching custom booster pack texture: " + loc);
+                        event.addSprite(ResourceLocUtils.stripLocationForSprite(loc));
+                    }
+                }
+
+
+                Collection<ResourceLocation> deckTextures = Minecraft.getInstance().getResourceManager().listResources("textures/item/deck", s -> s.endsWith(".png"));
+                for(ResourceLocation loc : deckTextures) {
+                    if(!loc.getNamespace().equals("the_vault")) {
+                        VHAPILoggerUtils.debug("Stitching custom deck texture: " + loc);
                         event.addSprite(ResourceLocUtils.stripLocationForSprite(loc));
                     }
                 }

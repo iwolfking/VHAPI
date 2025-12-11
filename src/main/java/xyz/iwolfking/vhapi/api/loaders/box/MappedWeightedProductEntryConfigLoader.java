@@ -23,7 +23,7 @@ public class MappedWeightedProductEntryConfigLoader extends VaultConfigProcessor
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        for(MappedWeightedProductEntryConfig config : this.CUSTOM_CONFIGS.values()) {
+        CUSTOM_CONFIGS.forEach(((resourceLocation, config) -> {
             for(String modKey : config.POOL.keySet()) {
                 Set<Item> entriesToRemove = new HashSet<>();
                 if(targetPool.get().containsKey(modKey)) {
@@ -54,7 +54,7 @@ public class MappedWeightedProductEntryConfigLoader extends VaultConfigProcessor
                 }
 
             }
-        }
+        }));
         super.afterConfigsLoad(event);
     }
 }
