@@ -66,6 +66,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.RecipesConfigProcessors.TOOL_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.GEAR_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.JEWEL_CRAFTING_RECIPES_LOADER);
+        addConfigProcessor(Processors.RecipesConfigProcessors.DECK_RECIPES_LOADER);
 
         addConfigProcessor(Processors.BuiltInLootBoxConfigProcessors.MOD_BOX_CONFIG_LOADER);
         addConfigProcessor(Processors.BuiltInLootBoxConfigProcessors.MYSTERY_BOX_CONFIG_LOADER);

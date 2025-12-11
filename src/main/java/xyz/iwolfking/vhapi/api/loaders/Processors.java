@@ -106,6 +106,7 @@ public class Processors {
         public static final ToolRecipesLoader TOOL_RECIPES_LOADER = new ToolRecipesLoader();
         public static final CustomVaultGearRecipesLoader GEAR_RECIPES_LOADER = new CustomVaultGearRecipesLoader();
         public static final JewelCraftingRecipesLoader JEWEL_CRAFTING_RECIPES_LOADER = new JewelCraftingRecipesLoader();
+        public static final DeckRecipesLoader DECK_RECIPES_LOADER = new DeckRecipesLoader();
     }
 
 

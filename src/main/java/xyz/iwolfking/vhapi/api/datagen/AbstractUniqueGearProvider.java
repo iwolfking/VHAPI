@@ -81,7 +81,7 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             JsonObject poolEntry = new JsonObject();
             poolEntry.addProperty(key, entry.weight());
             pools.add(key, poolEntry);
-            craftedPool.add(poolEntry.toString());
+            craftedPool.add(result.id.toString());
 
             // Codex index
             String type = entry.codexSlotType().toString();
