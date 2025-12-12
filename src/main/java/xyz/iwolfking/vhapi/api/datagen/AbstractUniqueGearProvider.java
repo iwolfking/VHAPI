@@ -171,6 +171,7 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         JsonObject obj = new JsonObject();
 
         obj.addProperty("name", entry.name());
+        obj.addProperty("item", entry.item().getRegistryName().toString());
 
         // NEW: models array
         JsonArray models = new JsonArray();

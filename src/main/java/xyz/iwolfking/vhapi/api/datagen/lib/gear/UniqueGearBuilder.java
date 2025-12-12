@@ -3,6 +3,7 @@ package xyz.iwolfking.vhapi.api.datagen.lib.gear;
 import com.google.gson.JsonObject;
 import iskallia.vault.config.UniqueCodexConfig;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import xyz.iwolfking.vhapi.api.util.builder.description.JsonDescription;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
 public class UniqueGearBuilder {
 
     private final String name;
+    private final Item item;
 
     private final List<UniqueGearEntry.WeightedModel> models = new ArrayList<>();
 
@@ -27,8 +29,9 @@ public class UniqueGearBuilder {
     private UniqueCodexConfig.IntroductionPage.SlotType slotType =
             UniqueCodexConfig.IntroductionPage.SlotType.SWORD;
 
-    public UniqueGearBuilder(String name) {
+    public UniqueGearBuilder(String name, Item item) {
         this.name = name;
+        this.item = item;
         identifiers.put("BASE_ATTRIBUTE", new ArrayList<>());
         identifiers.put("IMPLICIT", new ArrayList<>());
         identifiers.put("PREFIX", new ArrayList<>());
@@ -39,6 +42,7 @@ public class UniqueGearBuilder {
     public UniqueGearBuilder model(String modelPath) {
         return model(modelPath, 1);
     }
+
 
 
     public UniqueGearBuilder model(String modelPath, int modelWeight) {
@@ -101,13 +105,11 @@ public class UniqueGearBuilder {
         return this;
     }
 
-    // -------------------------------------------------------------------------
-    // BUILD
-    // -------------------------------------------------------------------------
 
     public UniqueGearEntry build() {
         return new UniqueGearEntry(
                 name,
+                item,
                 models,
                 identifiers,
                 modifierTags,
