@@ -112,7 +112,6 @@ public class VHAPI {
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
         if (!event.getPlayer().getLevel().isClientSide()) {
-            System.out.println("Reached this line!!!");
             if (VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
                 VHAPISyncNetwork.syncVHAPIConfigs(
                         new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),

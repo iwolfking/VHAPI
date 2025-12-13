@@ -10,11 +10,9 @@ public class ModifierBuilder {
         TypeBuilder tb = new TypeBuilder();
         consumer.accept(tb);
         if(modifiers.containsKey(typeKey)) {
-            System.out.println("Existing entry for " + typeKey);
             modifiers.get(typeKey).putAll(tb.entries);
         }
         else {
-            System.out.println("No existing entry for " + typeKey);
             modifiers.put(typeKey, tb.entries);
         }
         return this;

@@ -61,7 +61,7 @@ public class MixinVaultAltarIngredientsConfig {
                                 itemsToRemove.add(itemStack);
                             }
                             else {
-                                return;
+                                continue;
                             }
                         }
                     }
