@@ -1,11 +1,17 @@
 package xyz.iwolfking.vhapi.api.config;
 
+import com.google.gson.annotations.Expose;
 import iskallia.vault.config.Config;
 
 public class AttributeCapConfig extends Config {
 
+    @Expose
     public float luckyHitCap;
+
+    @Expose
     public float aoeCap;
+
+    @Expose
     public boolean enableOverrides;
 
     @Override
