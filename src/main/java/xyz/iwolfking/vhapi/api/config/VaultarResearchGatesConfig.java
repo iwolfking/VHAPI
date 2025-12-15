@@ -1,11 +1,13 @@
 package xyz.iwolfking.vhapi.api.config;
 
+import com.google.gson.annotations.Expose;
 import iskallia.vault.config.Config;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class VaultarResearchGatesConfig extends Config {
+    @Expose
     public Map<String, String> entries = new HashMap<>();
 
     @Override
