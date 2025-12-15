@@ -145,26 +145,26 @@ public class VHAPI {
             }
 
             //If an ability isn't present during client setup, then it won't get its keybind assigned, this addresses that issue by replicating what happens during the initial client setup on login.
-            ModConfigs.ABILITIES
-                    .get()
-                    .ifPresent(
-                            tree -> tree.iterate(
-                                    SpecializedSkill.class,
-                                    skill -> {
-                                        if (skill.getSpecializations()
-                                                .stream()
-                                                .anyMatch(
-                                                        specialization -> !(
-                                                                specialization instanceof TieredSkill tieredSkill
-                                                                        && (tieredSkill.getMaxLearnableTier() <= 0 || tieredSkill.getChild(1) instanceof RemovedSkill)
-                                                        )
-                                                )) {
-                                            String name = "quickselect." + skill.getId().toLowerCase().replace(' ', '_');
-                                            ModKeybinds.abilityQuickfireKey.put(skill.getId(), ModKeybindsAccessor.mapping(ModKeybindsAccessor.name(name), KeyConflictContext.IN_GAME));
-                                        }
-                                    }
-                            )
-                    );
+//            ModConfigs.ABILITIES
+//                    .get()
+//                    .ifPresent(
+//                            tree -> tree.iterate(
+//                                    SpecializedSkill.class,
+//                                    skill -> {
+//                                        if (skill.getSpecializations()
+//                                                .stream()
+//                                                .anyMatch(
+//                                                        specialization -> !(
+//                                                                specialization instanceof TieredSkill tieredSkill
+//                                                                        && (tieredSkill.getMaxLearnableTier() <= 0 || tieredSkill.getChild(1) instanceof RemovedSkill)
+//                                                        )
+//                                                )) {
+//                                            String name = "quickselect." + skill.getId().toLowerCase().replace(' ', '_');
+//                                            ModKeybinds.abilityQuickfireKey.put(skill.getId(), ModKeybindsAccessor.mapping(ModKeybindsAccessor.name(name), KeyConflictContext.IN_GAME));
+//                                        }
+//                                    }
+//                            )
+//                    );
         }
 
         public static void onClientLogout(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
