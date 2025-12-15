@@ -24,7 +24,7 @@ public class VaultarResearchGatesConfig extends Config {
         entries.put("integrateddynamics", "Integrated Dynamics");
         entries.put("mekanism", "Mekanism");
         entries.put("moremekanismprocessing", "Mekanism");
-        entries.put("immersivenengineering", "Immersive Engineering");
+        entries.put("immersiveengineering", "Immersive Engineering");
         entries.put("thermal", "Thermal Expansion");
         entries.put("create", "Create");
         entries.put("occultism", "Occultism");
