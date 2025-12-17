@@ -14,10 +14,7 @@ import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.TooltipConfigAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.VaultGearEnchantmentConfigAccessor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class AbstractGearEnchantmentProvider extends AbstractVaultConfigDataProvider<AbstractGearEnchantmentProvider.Builder> {
@@ -33,7 +30,7 @@ public abstract class AbstractGearEnchantmentProvider extends AbstractVaultConfi
     }
 
     public static class Builder extends VaultConfigBuilder<VaultGearEnchantmentConfig> {
-        private final Map<Enchantment, EnchantmentCost> costsMap = new HashMap<>();
+        private final LinkedHashMap<Enchantment, EnchantmentCost> costsMap = new LinkedHashMap<>();
 
         public Builder() {
             super(VaultGearEnchantmentConfig::new);

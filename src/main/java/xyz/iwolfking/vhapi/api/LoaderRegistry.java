@@ -116,6 +116,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.CardConfigProcessors.CARD_ESSENCE_EXTRACTOR_CONFIG_LOADER);
         addConfigProcessor(Processors.CardConfigProcessors.CARD_MODIFIERS_CONFIG_LOADER);
         addConfigProcessor(Processors.CardConfigProcessors.CARD_TASKS_CONFIG_LOADER);
+        addConfigProcessor(Processors.CardConfigProcessors.DECK_MODIFIERS_CONFIG_LOADER);
         addConfigProcessor(Processors.CardConfigProcessors.DECKS_CONFIG_LOADER);
 
         addConfigProcessor(Processors.ToolConfigProcessors.PULVERIZING_CONFIG_LOADER);

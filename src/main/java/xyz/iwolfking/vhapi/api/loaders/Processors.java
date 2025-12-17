@@ -172,6 +172,7 @@ public class Processors {
         public static final CardModifiersConfigLoader CARD_MODIFIERS_CONFIG_LOADER = new CardModifiersConfigLoader();
         public static final DecksConfigLoader DECKS_CONFIG_LOADER = new DecksConfigLoader();
         public static final CardTasksConfigLoader CARD_TASKS_CONFIG_LOADER = new CardTasksConfigLoader();
+        public static final DeckModifiersConfigLoader DECK_MODIFIERS_CONFIG_LOADER = new DeckModifiersConfigLoader();
     }
 
     public static class ToolConfigProcessors {
