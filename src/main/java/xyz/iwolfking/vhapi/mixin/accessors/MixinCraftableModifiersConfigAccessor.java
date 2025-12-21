@@ -1,11 +1,12 @@
 package xyz.iwolfking.vhapi.mixin.accessors;
 
 import iskallia.vault.config.gear.VaultGearTierConfig;
+import iskallia.vault.config.gear.VaultGearWorkbenchConfig;
 import net.minecraft.world.item.Item;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(targets = "iskallia.vault.config.gear.VaultGearWorkbenchConfig$CraftableModifierConfig", remap = false)
+@Mixin(value = VaultGearWorkbenchConfig.CraftableModifierConfig.class, remap = false)
 public interface MixinCraftableModifiersConfigAccessor {
     @Accessor("gearItem")
     void setGearItem(Item item);

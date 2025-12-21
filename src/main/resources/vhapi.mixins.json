@@ -80,7 +80,6 @@
     "accessors.TileRewardChallengeActionConfigAccessor",
     "accessors.ToolPulverizingConfigAccessor",
     "accessors.TooltipConfigAccessor",
-    "accessors.TrinketAccessor",
     "accessors.TrinketConfigTrinketAccessor",
     "accessors.TrinketEffectConfigAccessor",
     "accessors.UnidentifiedTreasureKeyAccessorConfig",
