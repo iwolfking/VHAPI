@@ -126,7 +126,7 @@ public abstract class AbstractVaultModifierProvider implements DataProvider {
         });
     }
 
-    public static void decoratorAdd(ModifierBuilder builder, ResourceLocation modifierId, PartialTile tile, int attemptsPerChunk, boolean requiresConditions, Set<RoomCache.RoomType> roomTypes, String name, String color, String description, String formattedDescription, ResourceLocation icon) {
+    public static void decoratorAdd(ModifierBuilder builder, ResourceLocation modifierId, PartialTile tile, int attemptsPerChunk, boolean requiresConditions, List<RoomCache.RoomType> roomTypes, String name, String color, String description, String formattedDescription, ResourceLocation icon) {
         builder.type(VaultMod.id("modifier_type/decorator_add").toString(), typeBuilder -> {
             typeBuilder.modifier(modifierId.toString(), modifierEntryBuilder -> {
                 modifierEntryBuilder.property("output", tile.toString());
@@ -139,7 +139,7 @@ public abstract class AbstractVaultModifierProvider implements DataProvider {
     }
 
     public static void decoratorAdd(ModifierBuilder builder, ResourceLocation modifierId, PartialTile tile, int attemptsPerChunk, boolean requiresConditions, String name, String color, String description, String formattedDescription, ResourceLocation icon) {
-       decoratorAdd(builder, modifierId, tile, attemptsPerChunk, requiresConditions, Set.of(RoomCache.RoomType.ORE, RoomCache.RoomType.COMMON), name, color, description, formattedDescription, icon);
+       decoratorAdd(builder, modifierId, tile, attemptsPerChunk, requiresConditions, List.of(RoomCache.RoomType.ORE, RoomCache.RoomType.COMMON), name, color, description, formattedDescription, icon);
     }
 
     public static void castOnKill(ModifierBuilder builder, ResourceLocation modifierId, EntityPredicate filter, String abilityId, float probability, String name, String color, String description, String formattedDescription, ResourceLocation icon) {

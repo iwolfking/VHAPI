@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.Map;
 
-@Mixin(VaultDiffuserConfig.class)
+@Mixin(value = VaultDiffuserConfig.class, remap = false)
 public interface VaultDiffuserConfigAccessor {
     @Accessor("diffuserOutputMap")
     void setDiffuserOutputMap(Map<ResourceLocation, Integer> map);
