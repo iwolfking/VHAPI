@@ -62,6 +62,7 @@
     "accessors.PrestigePowerAccessor",
     "accessors.PrestigePowersGUIConfigAccessor",
     "accessors.PuristTalentAccessor",
+    "accessors.QuestConfigAccessor",
     "accessors.RaidActionsConfigAccessor",
     "accessors.ReferenceActionConfigAccessor",
     "accessors.ReforgeTagModificationFocusAccessor",

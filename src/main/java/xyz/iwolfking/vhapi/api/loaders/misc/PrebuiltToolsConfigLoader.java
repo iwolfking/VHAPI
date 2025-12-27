@@ -1,15 +1,12 @@
 package xyz.iwolfking.vhapi.api.loaders.misc;
 
 import iskallia.vault.config.PreBuiltToolConfig;
-import iskallia.vault.config.VaultEntitiesConfig;
 import iskallia.vault.init.ModConfigs;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.mixin.accessors.PrebuiltToolConfigAccessor;
-import xyz.iwolfking.vhapi.mixin.accessors.VaultEntitiesConfigAccessor;
 
-public class
-PrebuiltToolsConfigLoader extends VaultConfigProcessor<PreBuiltToolConfig> {
+public class PrebuiltToolsConfigLoader extends VaultConfigProcessor<PreBuiltToolConfig> {
     public PrebuiltToolsConfigLoader() {
         super(new PreBuiltToolConfig(), "prebuilt_tools");
     }

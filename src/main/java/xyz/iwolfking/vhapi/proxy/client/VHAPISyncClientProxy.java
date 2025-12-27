@@ -16,6 +16,6 @@ public class VHAPISyncClientProxy implements IVHAPISyncProxy
 
     @SubscribeEvent
     public void onLogout(ClientPlayerNetworkEvent.LoggedOutEvent event) {
-        LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.clear();
+        //LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.clear();
     }
 }

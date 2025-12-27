@@ -1,23 +1,15 @@
 package xyz.iwolfking.vhapi;
 
 import com.mojang.logging.LogUtils;
-import iskallia.vault.init.ModConfigs;
-import iskallia.vault.init.ModKeybinds;
-import iskallia.vault.skill.base.RemovedSkill;
-import iskallia.vault.skill.base.SkillContext;
-import iskallia.vault.skill.base.SpecializedSkill;
-import iskallia.vault.skill.base.TieredSkill;
-import iskallia.vault.world.data.PlayerAbilitiesData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -30,6 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.events.vault.VaultEvents;
@@ -40,8 +33,6 @@ import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPIUtils;
 import xyz.iwolfking.vhapi.config.VHAPIConfig;
 import xyz.iwolfking.vhapi.mixin.accessors.BountyScreenAccessor;
-import xyz.iwolfking.vhapi.mixin.accessors.ModKeybindsAccessor;
-import xyz.iwolfking.vhapi.mixin.registry.sprites.MixinModTextureAtlases;
 import xyz.iwolfking.vhapi.networking.VHAPISyncDescriptor;
 import xyz.iwolfking.vhapi.networking.VHAPISyncNetwork;
 import xyz.iwolfking.vhapi.proxy.IVHAPISyncProxy;
@@ -111,15 +102,23 @@ public class VHAPI {
 
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
-        if (!event.getPlayer().getLevel().isClientSide()) {
+        if (!event.getPlayer().getLevel().isClientSide() || isLanHost(event.getPlayer().getServer())) {
             if (VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
-                VHAPISyncNetwork.syncVHAPIConfigs(
-                        new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
-                        (ServerPlayer) event.getPlayer()
-                );
+                if(event.getPlayer() instanceof ServerPlayer serverPlayer) {
+                    VHAPISyncNetwork.syncVHAPIConfigs(
+                            new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
+                            serverPlayer
+                    );
+                }
             }
-            PlayerAbilitiesData.get((ServerLevel) event.getPlayer().getLevel()).getAbilities(event.getPlayer()).sync(SkillContext.of((ServerPlayer) event.getPlayer()));
         }
+    }
+
+    public static boolean isLanHost(MinecraftServer server) {
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            return server.isSingleplayer() && server.isPublished();
+        }
+        return false;
     }
 
     private void worldLoad(final WorldEvent.Load event)  {
@@ -144,32 +143,16 @@ public class VHAPI {
                 BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
             }
 
-            //If an ability isn't present during client setup, then it won't get its keybind assigned, this addresses that issue by replicating what happens during the initial client setup on login.
-            ModConfigs.ABILITIES
-                    .get()
-                    .ifPresent(
-                            tree -> tree.iterate(
-                                    SpecializedSkill.class,
-                                    skill -> {
-                                        if (skill.getSpecializations()
-                                                .stream()
-                                                .anyMatch(
-                                                        specialization -> !(
-                                                                specialization instanceof TieredSkill tieredSkill
-                                                                        && (tieredSkill.getMaxLearnableTier() <= 0 || tieredSkill.getChild(1) instanceof RemovedSkill)
-                                                        )
-                                                )) {
-                                            String name = "quickselect." + skill.getId().toLowerCase().replace(' ', '_');
-                                            ModKeybinds.abilityQuickfireKey.put(skill.getId(), ModKeybindsAccessor.mapping(ModKeybindsAccessor.name(name), KeyConflictContext.IN_GAME));
-                                        }
-                                    }
-                            )
-                    );
         }
 
         public static void onClientLogout(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
-            VHAPILoggerUtils.debug("Clearing cached config data.");
-            VHAPIUtils.purgeConfigs();
+            if(event.getPlayer() != null && isLanHost(event.getPlayer().getServer())) {
+                return;
+            }
+
+            //VHAPILoggerUtils.debug("Clearing cached config data.");
+
+            //VHAPIUtils.purgeConfigs();
         }
 
 

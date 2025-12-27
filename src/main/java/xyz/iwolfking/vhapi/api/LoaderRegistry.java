@@ -149,6 +149,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.LOOT_INFO_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.ROYALE_LOOT_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.PREBUILT_TOOLS_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.QUEST_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.TEMPORAL_SHARD_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ENTITIES_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CHAMPIONS_CONFIG_LOADER);

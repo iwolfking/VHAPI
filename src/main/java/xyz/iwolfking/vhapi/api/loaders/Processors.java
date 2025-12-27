@@ -211,6 +211,7 @@ public class Processors {
         public static final LootInfoConfigLoader LOOT_INFO_CONFIG_LOADER = new LootInfoConfigLoader();
         public static final RoyaleLootConfigLoader ROYALE_LOOT_CONFIG_LOADER = new RoyaleLootConfigLoader();
         public static final PrebuiltToolsConfigLoader PREBUILT_TOOLS_CONFIG_LOADER = new PrebuiltToolsConfigLoader();
+        public static final QuestConfigLoader QUEST_CONFIG_LOADER = new QuestConfigLoader();
         public static final TemporalShardConfigLoader TEMPORAL_SHARD_CONFIG_LOADER = new TemporalShardConfigLoader();
         public static final VaultEntitiesConfigLoader VAULT_ENTITIES_CONFIG_LOADER = new VaultEntitiesConfigLoader();
         public static final ChampionsConfigLoader CHAMPIONS_CONFIG_LOADER = new ChampionsConfigLoader();
