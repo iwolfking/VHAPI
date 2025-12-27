@@ -1,11 +1,13 @@
 package xyz.iwolfking.vhapi.api.config;
 
+import com.google.gson.annotations.Expose;
 import iskallia.vault.config.Config;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class VaultarResearchGatesConfig extends Config {
+    @Expose
     public Map<String, String> entries = new HashMap<>();
 
     @Override
@@ -22,7 +24,7 @@ public class VaultarResearchGatesConfig extends Config {
         entries.put("integrateddynamics", "Integrated Dynamics");
         entries.put("mekanism", "Mekanism");
         entries.put("moremekanismprocessing", "Mekanism");
-        entries.put("immersivenengineering", "Immersive Engineering");
+        entries.put("immersiveengineering", "Immersive Engineering");
         entries.put("thermal", "Thermal Expansion");
         entries.put("create", "Create");
         entries.put("occultism", "Occultism");

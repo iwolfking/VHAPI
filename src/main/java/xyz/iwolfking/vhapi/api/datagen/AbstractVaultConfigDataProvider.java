@@ -12,6 +12,7 @@ import xyz.iwolfking.vhapi.api.datagen.recipes.AbstractCatalystRecipesProvider;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -20,8 +21,8 @@ public abstract class AbstractVaultConfigDataProvider<B extends VaultConfigBuild
     private final DataGenerator generator;
     public final String modid;
     private final Gson gson = Config.GSON;
-    protected final Map<String, Config> configMap = new HashMap<>();
-    protected final Map<String, Map.Entry<String, Config>> extendedConfigMap = new HashMap<>();
+    protected final Map<String, Config> configMap = new LinkedHashMap<>();
+    protected final Map<String, Map.Entry<String, Config>> extendedConfigMap = new LinkedHashMap<>();
     private final String configPath;
     private final Supplier<B> builderFactory;
 

@@ -20,10 +20,23 @@ public class VaultConfigEvent extends Event {
             return type;
         }
 
-        private Type type;
+        private final Type type;
 
         public Begin(Type type) {
             this.type = type;
+        }
+    }
+
+    public static class Read<T extends Config> extends VaultConfigEvent {
+
+        public T getConfig() {
+            return config;
+        }
+
+        private final T config;
+
+        public Read(T config) {
+            this.config = config;
         }
     }
 
@@ -32,7 +45,7 @@ public class VaultConfigEvent extends Event {
             return type;
         }
 
-        private Type type;
+        private final Type type;
 
         public End(Type type) {
             this.type = type;

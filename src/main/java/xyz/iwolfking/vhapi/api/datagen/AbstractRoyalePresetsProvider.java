@@ -3,8 +3,10 @@ package xyz.iwolfking.vhapi.api.datagen;
 import com.google.gson.annotations.Expose;
 import iskallia.vault.config.RoyalePresetConfig;
 import iskallia.vault.config.TooltipConfig;
+import iskallia.vault.config.entry.DescriptionData;
 import iskallia.vault.config.entry.LevelEntryList;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vhapi.api.datagen.lib.BasicListBuilder;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
@@ -89,16 +91,14 @@ public abstract class AbstractRoyalePresetsProvider extends AbstractVaultConfigD
         }
 
         public static class SkillPresetBuilder extends WeightedListBuilder<RoyalePresetConfig.SkillPreset> {
-            public SkillPresetBuilder add(String name, int weight, Consumer<BasicListBuilder<RoyalePresetConfig.SkillEntry>> skillEntriesConsumer, Consumer<BasicListBuilder<RoyalePresetConfig.SkillEntry>> talentEntriesConsumer, Consumer<DescriptionDataBuilder> builderConsumer) {
+            public SkillPresetBuilder add(String name, int weight, Consumer<BasicListBuilder<RoyalePresetConfig.SkillEntry>> skillEntriesConsumer, Consumer<BasicListBuilder<RoyalePresetConfig.SkillEntry>> talentEntriesConsumer, TextComponent description) {
                 RoyalePresetConfig.SkillPreset preset = new RoyalePresetConfig.SkillPreset();
                 BasicListBuilder<RoyalePresetConfig.SkillEntry> skillEntries = new BasicListBuilder<>();
                 BasicListBuilder<RoyalePresetConfig.SkillEntry> talentEntries = new BasicListBuilder<>();
-                DescriptionDataBuilder builder = new DescriptionDataBuilder();
                 skillEntriesConsumer.accept(skillEntries);
                 talentEntriesConsumer.accept(talentEntries);
-                builderConsumer.accept(builder);
 
-                preset.description = builder.build()[0];
+                preset.description = DescriptionData.of(description);
                 preset.abilities = skillEntries.build();
                 preset.talents = talentEntries.build();
                 preset.name = name;

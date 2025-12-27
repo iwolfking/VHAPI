@@ -516,6 +516,10 @@ public class VHAPIJEIPlugin implements IModPlugin {
 
     private static List<ItemStack> inscriptionsFromTemplatePool(ResourceLocation templatePoolId, int inscriptionColor) {
         TemplatePoolKey templatePoolKey = VaultRegistry.TEMPLATE_POOL.getKey(templatePoolId);
+        if(templatePoolKey == null) {
+            return List.of();
+        }
+
         TemplatePool rooms = templatePoolKey.get(Version.latest());
         List<ItemStack> inscriptions = new ArrayList<>();
 

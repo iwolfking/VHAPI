@@ -34,10 +34,10 @@ public abstract class AbstractChampionProvider extends AbstractVaultConfigDataPr
 
     public static class Builder extends VaultConfigBuilder<ChampionsConfig> {
         private float defaultChampionChance = 0.01F;
-        private final Map<EntityPredicate, Float> entityChampionChance = new HashMap<>();
+        private final LinkedHashMap<EntityPredicate, Float> entityChampionChance = new LinkedHashMap<>();
         private final List<ChampionsConfig.AttributeOverride> defaultAttributeOverrides = new ArrayList<>();
-        private final Map<EntityPredicate, List<ChampionsConfig.AttributeOverride>> entityAttributeOverrides = new LinkedHashMap<>();
-        private final Map<EntityPredicate, WeightedList<CompoundTag>> entityAffixesData = new LinkedHashMap<>();
+        private final LinkedHashMap<EntityPredicate, List<ChampionsConfig.AttributeOverride>> entityAttributeOverrides = new LinkedHashMap<>();
+        private final LinkedHashMap<EntityPredicate, WeightedList<CompoundTag>> entityAffixesData = new LinkedHashMap<>();
 
 
         public Builder() {
