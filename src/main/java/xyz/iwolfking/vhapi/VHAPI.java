@@ -104,7 +104,7 @@ public class VHAPI {
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
         if (!event.getPlayer().getLevel().isClientSide() || isLanHost(event.getPlayer().getServer())) {
             if (VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
-                if(event.getPlayer() instanceof ServerPlayer serverPlayer) {
+                if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
                     VHAPISyncNetwork.syncVHAPIConfigs(
                             new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
                             serverPlayer
