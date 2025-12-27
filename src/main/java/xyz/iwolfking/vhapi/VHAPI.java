@@ -102,7 +102,7 @@ public class VHAPI {
 
 
     private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
-        if (!event.getPlayer().getLevel().isClientSide() || isLanHost(event.getPlayer().getServer())) {
+        if (!event.getPlayer().getLevel().isClientSide()) {
             if (VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
                 if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
                     VHAPISyncNetwork.syncVHAPIConfigs(
@@ -112,13 +112,6 @@ public class VHAPI {
                 }
             }
         }
-    }
-
-    public static boolean isLanHost(MinecraftServer server) {
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            return server.isSingleplayer() && server.isPublished();
-        }
-        return false;
     }
 
     private void worldLoad(final WorldEvent.Load event)  {
@@ -142,35 +135,9 @@ public class VHAPI {
             if (BountyScreenAccessor.getObjectiveNames() != null) {
                 BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
             }
-
-            //If an ability isn't present during client setup, then it won't get its keybind assigned, this addresses that issue by replicating what happens during the initial client setup on login.
-//            ModConfigs.ABILITIES
-//                    .get()
-//                    .ifPresent(
-//                            tree -> tree.iterate(
-//                                    SpecializedSkill.class,
-//                                    skill -> {
-//                                        if (skill.getSpecializations()
-//                                                .stream()
-//                                                .anyMatch(
-//                                                        specialization -> !(
-//                                                                specialization instanceof TieredSkill tieredSkill
-//                                                                        && (tieredSkill.getMaxLearnableTier() <= 0 || tieredSkill.getChild(1) instanceof RemovedSkill)
-//                                                        )
-//                                                )) {
-//                                            String name = "quickselect." + skill.getId().toLowerCase().replace(' ', '_');
-//                                            ModKeybinds.abilityQuickfireKey.put(skill.getId(), ModKeybindsAccessor.mapping(ModKeybindsAccessor.name(name), KeyConflictContext.IN_GAME));
-//                                        }
-//                                    }
-//                            )
-//                    );
         }
 
         public static void onClientLogout(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
-            if(event.getPlayer() != null && isLanHost(event.getPlayer().getServer())) {
-                return;
-            }
-
             //VHAPILoggerUtils.debug("Clearing cached config data.");
 
             //VHAPIUtils.purgeConfigs();
