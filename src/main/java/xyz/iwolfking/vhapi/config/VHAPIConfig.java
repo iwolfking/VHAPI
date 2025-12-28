@@ -43,10 +43,12 @@ public class VHAPIConfig {
 
     public static class Client {
         public final ForgeConfigSpec.ConfigValue<Boolean> enableDebugJEI;
+        public final ForgeConfigSpec.ConfigValue<Boolean> clearConfigsOnLogout;
 
         public Client(ForgeConfigSpec.Builder builder) {
             builder.push("JEI Settings");
             this.enableDebugJEI = builder.comment("Whether to show JEI that is useful for debugging when modding Vault Hunters, this option only controls some added JEI pages, this will hide ones I deem not very useful to the general public. (default: true)").define("enableDebugJEI", true);
+            this.clearConfigsOnLogout = builder.comment("Whether to clear VHAPI data out in-between logins to singleplayer worlds or servers, prevent issues with combining different data from servers, also saves some RAM. Note: This breaks VHAPI on LAN, so is disabled by default at the moment.").define("clearConfigsOnLogout", false);
             builder.pop();
         }
     }
