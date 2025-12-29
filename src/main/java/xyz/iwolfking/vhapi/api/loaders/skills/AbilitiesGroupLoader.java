@@ -30,7 +30,9 @@ public class AbilitiesGroupLoader extends VaultConfigProcessor<AbilitiesGroups> 
             }
             else {
                 ((AbilitiesGroupsAccessor)ModConfigs.ABILITIES_GROUPS).getTypes().forEach((abilityType, strings) -> {
-                    strings.addAll(((AbilitiesGroupsAccessor)abilitiesGroups).getTypes().get(abilityType));
+                    if(((AbilitiesGroupsAccessor)abilitiesGroups).getTypes().containsKey(abilityType)) {
+                        strings.addAll(((AbilitiesGroupsAccessor)abilitiesGroups).getTypes().get(abilityType));
+                    }
                 });
             }
         }));
