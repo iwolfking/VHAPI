@@ -74,6 +74,7 @@
     "accessors.SkillGatesEntryAccessor",
     "accessors.SkillScrollConfigAccessor",
     "accessors.SpecializedSkillAccessor",
+    "accessors.TaskConfigAccessor",
     "accessors.TemplatePoolAccessor",
     "accessors.TemporalShardConfigAccessor",
     "accessors.ThemeAccessor",
