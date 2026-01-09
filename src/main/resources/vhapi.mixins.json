@@ -115,6 +115,7 @@
     "gen.MixinTemplateKey",
     "gen.MixinTemplatePool",
     "gen.MixinTheme",
+    "models.MixinDeckCoreItem",
     "models.MixinInfusedCatalystItem",
     "models.MixinInscriptionItem",
     "registry.gear.MixinGearModelRollRaritiesConfig",

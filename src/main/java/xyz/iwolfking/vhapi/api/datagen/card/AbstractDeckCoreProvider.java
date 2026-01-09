@@ -46,8 +46,13 @@ public abstract class AbstractDeckCoreProvider extends AbstractVaultConfigDataPr
             super(DeckModifiersConfig::new);
         }
 
-        public <T extends DeckModifier<C>, C extends DeckModifier.Config> Builder addCore(String id, Function<C, T> coreFactory, C modifierConfig) {
-            entries.put(id, coreFactory.apply(modifierConfig));
+        public <T extends DeckModifier<C>, C extends DeckModifier.Config> Builder addCore(String id, Function<C, T> coreFactory, C modifierConfig, String name, int colour, String model) {
+            DeckModifier<C> modifier = coreFactory.apply(modifierConfig);
+            modifier.setName(name);
+            modifier.setColour(colour);
+            modifier.setId(id);
+            modifier.setModelId(model);
+            entries.put(id, modifier);
             return this;
         }
 
