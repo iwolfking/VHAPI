@@ -10,7 +10,7 @@ import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IRecipeSyncer;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 
-public class DeckRecipesLoader extends VaultConfigProcessor<DeckCraftingRecipesConfig> implements IRecipeSyncer {
+public class DeckRecipesLoader extends VaultConfigProcessor<DeckCraftingRecipesConfig> implements IRecipeSyncer{
     public DeckRecipesLoader() {
         super(new DeckCraftingRecipesConfig(), "vault_recipes/deck");
     }
@@ -26,7 +26,6 @@ public class DeckRecipesLoader extends VaultConfigProcessor<DeckCraftingRecipesC
                 ModConfigs.DECK_CRAFTING_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
             }
         }
-        syncRecipes();
         super.afterConfigsLoad(event);
     }
 

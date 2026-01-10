@@ -138,10 +138,10 @@ public class VHAPI {
         }
 
         public static void onClientLogout(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
-            if(VHAPIConfig.CLIENT.clearConfigsOnLogout.get()) {
-                VHAPIUtils.purgeConfigs();
-                VHAPILoggerUtils.debug("Clearing cached config data.");
-            }
+            //if(VHAPIConfig.CLIENT.clearConfigsOnLogout.get()) {
+                //VHAPIUtils.purgeConfigs();
+                //VHAPILoggerUtils.debug("Clearing cached config data.");
+            //}
         }
 
 
