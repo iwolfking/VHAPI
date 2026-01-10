@@ -6,6 +6,7 @@ import iskallia.vault.config.VaultCrystalConfig;
 import iskallia.vault.config.card.BoosterPackConfig;
 import iskallia.vault.core.Version;
 import iskallia.vault.core.card.CardEntry;
+import iskallia.vault.core.card.modifier.deck.DeckModifier;
 import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.random.ChunkRandom;
 import iskallia.vault.core.vault.VaultRegistry;
@@ -32,6 +33,7 @@ import iskallia.vault.item.gear.TrinketItem;
 import iskallia.vault.item.modification.ReforgeTagModificationFocus;
 import iskallia.vault.item.tool.ToolItem;
 import iskallia.vault.util.EnchantmentCost;
+import iskallia.vault.util.StringUtils;
 import iskallia.vault.util.VaultRarity;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -48,10 +50,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.ItemLike;
@@ -97,6 +96,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> FACETED_FOCUS = RecipeType.create(VHAPI.MODID, "faceted_focus", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> BOOSTER_PACKS = RecipeType.create(VHAPI.MODID, "booster_packs", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> CARD_DECKS = RecipeType.create(VHAPI.MODID, "card_decks", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> DECK_SOCKETS = RecipeType.create(VHAPI.MODID, "deck_sockets", LabeledLootInfo.class);
 
 
 
@@ -126,6 +126,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.FACETED_FOCUS), FACETED_FOCUS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.BOOSTER_PACK), BOOSTER_PACKS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CARD_DECK), CARD_DECKS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.DECK_SOCKET), DECK_SOCKETS);
     }
 
     @Override @SuppressWarnings("removal")
@@ -152,6 +153,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(FACETED_FOCUS, getFacetedFoci());
         registration.addRecipes(BOOSTER_PACKS, getBoosterPacks());
         registration.addRecipes(CARD_DECKS, getCardDecks());
+        registration.addRecipes(DECK_SOCKETS, getDeckSockets());
     }
 
     @Override
@@ -182,6 +184,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, FACETED_FOCUS, ModItems.FACETED_FOCUS, new TextComponent("Faceted Focus")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, BOOSTER_PACKS, ModItems.BOOSTER_PACK, new TextComponent("Booster Packs")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, CARD_DECKS, ModItems.CARD_DECK, new TextComponent("Card Decks")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, DECK_SOCKETS, ModItems.DECK_SOCKET, new TextComponent("Deck Cores")));
     }
 
     public static List<LabeledLootInfo> getFacetedFoci() {
@@ -285,6 +288,57 @@ public class VHAPIJEIPlugin implements IModPlugin {
         }));
 
         lootInfo.add(LabeledLootInfo.of(cardDecks, new TextComponent("Card Decks"), null));
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getDeckSockets() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        ((DeckModifiersConfigAccessor)ModConfigs.DECK_MODIFIERS).getPools().forEach(((s, entries) -> {
+            List<ItemStack> deckSockets = new ArrayList<>();
+
+            int totalWeight = (int) entries.getTotalWeight();
+            entries.forEach((string, weight) -> {
+                ItemStack deckSocket = new ItemStack(ModItems.DECK_SOCKET);
+
+                DeckModifier<?> mod = ModConfigs.DECK_MODIFIERS.getById(string).orElse(null);
+                if(mod == null) {
+                    deckSockets.add(formatItemStack(new ItemStack(Blocks.BARRIER), 1, 1, weight, totalWeight, 1));
+                    return;
+                }
+
+                DeckSocketItem.setDeckModifier(deckSocket, mod);
+
+                if(deckSocket.getItem() instanceof DeckSocketItem deckSocketItem) {
+                    deckSocketItem.initialize(deckSocket, ChunkRandom.any());
+                }
+
+
+                deckSockets.add(formatItemStack(deckSocket, 1, 1, weight, totalWeight, 1));
+
+            });
+
+
+            lootInfo.add(LabeledLootInfo.of(deckSockets, new TextComponent(StringUtils.convertToTitleCase(s) + " Pool"), null));
+        }));
+
+        List<ItemStack> deckSockets = new ArrayList<>();
+
+        ModConfigs.DECK_MODIFIERS.getValues().forEach((s, deckModifier) -> {
+
+            ItemStack deckSocket = new ItemStack(ModItems.DECK_SOCKET);
+
+            DeckSocketItem.setDeckModifier(deckSocket, deckModifier);
+
+            if(deckSocket.getItem() instanceof DeckSocketItem deckSocketItem) {
+                deckSocketItem.initialize(deckSocket, ChunkRandom.any());
+            }
+
+            deckSockets.add(deckSocket);
+        });
+
+        lootInfo.add(LabeledLootInfo.of(deckSockets, new TextComponent("All Deck Cores"), null));
+
+
         return lootInfo;
     }
 
@@ -771,6 +825,9 @@ public class VHAPIJEIPlugin implements IModPlugin {
         if (item.isEmpty()) {
             result = new ItemStack(Items.BARRIER);
             result.setHoverName(new TextComponent("Nothing"));
+        }
+        else if(item.getItem() instanceof BlockItem blockItem && blockItem.getBlock().equals(Blocks.BARRIER)) {
+            result.setHoverName(new TextComponent("Invalid Entry"));
         }
 
         result.setCount(amount == null ? amountMax : amount);
