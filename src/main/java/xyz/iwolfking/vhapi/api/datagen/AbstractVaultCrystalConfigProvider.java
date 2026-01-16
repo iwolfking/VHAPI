@@ -1,5 +1,6 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
+import iskallia.vault.config.Config;
 import iskallia.vault.config.VaultCrystalConfig;
 import iskallia.vault.config.entry.LevelEntryList;
 import iskallia.vault.core.util.WeightedList;
@@ -137,7 +138,7 @@ public abstract class AbstractVaultCrystalConfigProvider extends AbstractVaultCo
                 }
 
                 public SealEntryBuilder modifier(VaultModifierStack modifier) {
-                    modifiers.add(modifier);
+                    this.modifiers.add(modifier);
                     return this;
                 }
 
@@ -148,7 +149,7 @@ public abstract class AbstractVaultCrystalConfigProvider extends AbstractVaultCo
 
 
                 public VaultCrystalConfig.SealEntry build() {
-                    return new VaultCrystalConfig.SealEntry(level, input, objective, layout, theme, time, new DefaultCrystalModifiers(), exhausted);
+                    return new VaultCrystalConfig.SealEntry(level, input, objective, layout, theme, time, modifiers, exhausted);
                 }
             }
         }

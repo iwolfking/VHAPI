@@ -110,6 +110,7 @@
     "custom.MixinTransmogTableBlock",
     "custom.MixinVaultAltarIngredientsConfig",
     "custom.MixinVaultRecyclerTileEntity",
+    "fixes.MixinDefaultCrystalModifiers",
     "gen.MixinLootTable",
     "gen.MixinPalette",
     "gen.MixinTemplateKey",
