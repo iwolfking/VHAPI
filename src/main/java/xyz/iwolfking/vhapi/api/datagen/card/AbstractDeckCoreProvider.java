@@ -66,7 +66,7 @@ public abstract class AbstractDeckCoreProvider extends AbstractVaultConfigDataPr
         @Override
         protected void configureConfig(DeckModifiersConfig config) {
             config.getValues().putAll(entries);
-            ((DeckModifiersConfigAccessor)config).getPools().putAll(((DeckModifiersConfigAccessor)config).getPools());
+            ((DeckModifiersConfigAccessor)config).getPools().putAll(pools);
         }
     }
 }

@@ -26,6 +26,7 @@ public class DeckRecipesLoader extends VaultConfigProcessor<DeckCraftingRecipesC
                 ModConfigs.DECK_CRAFTING_RECIPES.getConfigRecipes().addAll(config.getConfigRecipes());
             }
         }
+        syncRecipes();
         super.afterConfigsLoad(event);
     }
 
