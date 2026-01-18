@@ -2,6 +2,7 @@ package xyz.iwolfking.vhapi.integration.jevh;
 
 import iskallia.vault.VaultMod;
 import iskallia.vault.config.CompanionRelicsConfig;
+import iskallia.vault.config.UniqueGearConfig;
 import iskallia.vault.config.VaultCrystalConfig;
 import iskallia.vault.config.card.BoosterPackConfig;
 import iskallia.vault.core.Version;
@@ -17,10 +18,14 @@ import iskallia.vault.core.world.template.data.DirectTemplateEntry;
 import iskallia.vault.core.world.template.data.IndirectTemplateEntry;
 import iskallia.vault.core.world.template.data.TemplateEntry;
 import iskallia.vault.core.world.template.data.TemplatePool;
+import iskallia.vault.gear.GearRollHelper;
+import iskallia.vault.gear.VaultGearRarity;
 import iskallia.vault.gear.VaultGearState;
 import iskallia.vault.gear.data.AttributeGearData;
 import iskallia.vault.gear.data.ToolGearData;
 import iskallia.vault.gear.data.VaultGearData;
+import iskallia.vault.gear.item.IdentifiableItem;
+import iskallia.vault.gear.item.VaultGearItem;
 import iskallia.vault.gear.trinket.TrinketEffectRegistry;
 import iskallia.vault.init.ModBlocks;
 import iskallia.vault.init.ModConfigs;
@@ -97,6 +102,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> BOOSTER_PACKS = RecipeType.create(VHAPI.MODID, "booster_packs", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> CARD_DECKS = RecipeType.create(VHAPI.MODID, "card_decks", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> DECK_SOCKETS = RecipeType.create(VHAPI.MODID, "deck_sockets", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> UNIQUE_GEAR = RecipeType.create(VHAPI.MODID, "unique_gear", LabeledLootInfo.class);
 
 
 
@@ -127,6 +133,8 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.BOOSTER_PACK), BOOSTER_PACKS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CARD_DECK), CARD_DECKS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.DECK_SOCKET), DECK_SOCKETS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.UNIQUE_SHARD), UNIQUE_GEAR);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.UNIQUE_CODEX), UNIQUE_GEAR);
     }
 
     @Override @SuppressWarnings("removal")
@@ -154,6 +162,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(BOOSTER_PACKS, getBoosterPacks());
         registration.addRecipes(CARD_DECKS, getCardDecks());
         registration.addRecipes(DECK_SOCKETS, getDeckSockets());
+        registration.addRecipes(UNIQUE_GEAR, getUniqueGear());
     }
 
     @Override
@@ -185,6 +194,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, BOOSTER_PACKS, ModItems.BOOSTER_PACK, new TextComponent("Booster Packs")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, CARD_DECKS, ModItems.CARD_DECK, new TextComponent("Card Decks")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, DECK_SOCKETS, ModItems.DECK_SOCKET, new TextComponent("Deck Cores")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, UNIQUE_GEAR, ModItems.UNIQUE_CODEX, new TextComponent("Unique Gear")));
     }
 
     public static List<LabeledLootInfo> getFacetedFoci() {
@@ -288,6 +298,23 @@ public class VHAPIJEIPlugin implements IModPlugin {
         }));
 
         lootInfo.add(LabeledLootInfo.of(cardDecks, new TextComponent("Card Decks"), null));
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getUniqueGear() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> uniqueGearPieces = new ArrayList<>();
+        ModConfigs.UNIQUE_GEAR.getRegistry().forEach(((resourceLocation, entry) -> {
+            ItemStack uniqueGearPiece = new ItemStack(entry.getItem());
+            VaultGearData data = VaultGearData.read(uniqueGearPiece);
+            data.setRarity(VaultGearRarity.UNIQUE);
+            data.createOrReplaceAttributeValue(ModGearAttributes.UNIQUE_ITEM_KEY, entry.getId());
+            data.write(uniqueGearPiece);
+            GearRollHelper.initializeGear(uniqueGearPiece);
+            uniqueGearPieces.add(uniqueGearPiece);
+        }));
+
+        lootInfo.add(LabeledLootInfo.of(uniqueGearPieces, new TextComponent("Unique Gear"), null));
         return lootInfo;
     }
 
