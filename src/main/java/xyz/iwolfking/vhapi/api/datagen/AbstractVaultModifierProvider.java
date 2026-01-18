@@ -574,7 +574,7 @@ public abstract class AbstractVaultModifierProvider implements DataProvider {
         chance(builder, VaultMod.id("modifier_type/chance_artifact"), modifierId, chance, name, color, description, formattedDescription, icon);
     }
 
-    public static void catalystChacne(ModifierBuilder builder, ResourceLocation modifierId, float chance, String name, String color, String description, String formattedDescription, ResourceLocation icon) {
+    public static void catalystChance(ModifierBuilder builder, ResourceLocation modifierId, float chance, String name, String color, String description, String formattedDescription, ResourceLocation icon) {
         chance(builder, VaultMod.id("modifier_type/chance_catalyst"), modifierId, chance, name, color, description, formattedDescription, icon);
     }
 
