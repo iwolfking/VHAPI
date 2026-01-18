@@ -18,7 +18,16 @@ public class DeckModifiersConfigLoader extends VaultConfigProcessor<DeckModifier
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         this.CUSTOM_CONFIGS.forEach((resourceLocation, deckModifiersConfig) -> {
             ModConfigs.DECK_MODIFIERS.getValues().putAll(deckModifiersConfig.getValues());
-            ((DeckModifiersConfigAccessor)ModConfigs.DECK_MODIFIERS).getPools().putAll(((DeckModifiersConfigAccessor)deckModifiersConfig).getPools());
+            ((DeckModifiersConfigAccessor)deckModifiersConfig).getPools().forEach((pool, values) -> {
+                if(((DeckModifiersConfigAccessor)ModConfigs.DECK_MODIFIERS).getPools().containsKey(pool)) {
+                    ((DeckModifiersConfigAccessor) deckModifiersConfig).getPools().get(pool).forEach((value, weight) -> {
+                        ((DeckModifiersConfigAccessor)ModConfigs.DECK_MODIFIERS).getPools().get(pool).add(value, weight);
+                    });
+                }
+                else {
+                    ((DeckModifiersConfigAccessor)ModConfigs.DECK_MODIFIERS).getPools().put(pool, values);
+                }
+            });
         });
     }
 }

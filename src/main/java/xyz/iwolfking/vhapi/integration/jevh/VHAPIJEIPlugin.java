@@ -313,7 +313,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
                 }
 
 
-                deckSockets.add(formatItemStack(deckSocket, 1, 1, weight, totalWeight, 1));
+                deckSockets.add(formatDeckCore(deckSocket, 1, 1, weight, totalWeight, 1, mod.getId()));
 
             });
 
@@ -814,6 +814,47 @@ public class VHAPIJEIPlugin implements IModPlugin {
         data.createOrReplaceAttributeValue(ModGearAttributes.STATE, VaultGearState.IDENTIFIED);
         data.write(modifierItem);
         return modifierItem;
+    }
+
+    protected static ItemStack formatDeckCore(ItemStack item, int amountMin, int amountMax, double weight, double totalWeight, @Nullable Integer amount, String deckModId) {
+        ItemStack result = item.copy();
+        if (item.isEmpty()) {
+            result = new ItemStack(Items.BARRIER);
+            result.setHoverName(new TextComponent("Nothing"));
+        }
+        else if(item.getItem() instanceof BlockItem blockItem && blockItem.getBlock().equals(Blocks.BARRIER)) {
+            result.setHoverName(new TextComponent("Invalid Entry"));
+        }
+
+        result.setCount(amount == null ? amountMax : amount);
+        double chance = weight / totalWeight * (double)100.0F;
+        CompoundTag nbt = result.getOrCreateTagElement("display");
+        ListTag list = nbt.getList("Lore", 8);
+        MutableComponent chanceLabel = new TextComponent("Chance: ");
+        chanceLabel.append(String.format("%.2f", chance));
+        chanceLabel.append("%");
+        list.add(StringTag.valueOf(Component.Serializer.toJson(chanceLabel.withStyle(ChatFormatting.YELLOW))));
+        if (amountMin != amountMax) {
+            MutableComponent countLabel = new TextComponent(amount == null ? "Count: " : "Cost: ");
+            countLabel.append(amountMin + " - " + amountMax);
+            list.add(StringTag.valueOf(Component.Serializer.toJson(countLabel)));
+        }
+
+        list.add(StringTag.valueOf(Component.Serializer.toJson(new TextComponent("Rolls: ").withStyle(ChatFormatting.AQUA))));
+        DeckModifier<?> mod = ModConfigs.DECK_MODIFIERS.getById(deckModId).orElse(null);
+        if(mod == null) {
+            return result;
+        }
+
+        mod.getConfig().modifierRolls.forEach((s, rollVariant) -> {
+            list.add(StringTag.valueOf(Component.Serializer.toJson(new TextComponent(s).withStyle(ChatFormatting.YELLOW))));
+            list.add(StringTag.valueOf(Component.Serializer.toJson(new TextComponent("Min: ").withStyle(ChatFormatting.GREEN).append(new TextComponent(String.valueOf(rollVariant.roll.getMin()))))));
+            list.add(StringTag.valueOf(Component.Serializer.toJson(new TextComponent("Max: ").withStyle(ChatFormatting.GREEN).append(new TextComponent(String.valueOf(rollVariant.roll.getMax()))))));
+            list.add(StringTag.valueOf(Component.Serializer.toJson(new TextComponent(""))));
+        });
+
+        nbt.put("Lore", list);
+        return result;
     }
 
     protected static ItemStack formatItemStack(ItemStack item, int amountMin, int amountMax, double weight, double totalWeight, @Nullable Integer amount) {
