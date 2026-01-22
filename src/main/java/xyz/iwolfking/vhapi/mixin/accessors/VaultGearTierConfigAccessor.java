@@ -14,4 +14,7 @@ public interface VaultGearTierConfigAccessor {
 
     @Accessor("key")
     void setKey(ResourceLocation key);
+
+    @Accessor("key")
+    ResourceLocation getKey();
 }
