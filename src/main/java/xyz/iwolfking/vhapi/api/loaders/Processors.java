@@ -7,11 +7,15 @@ import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
 import iskallia.vault.core.world.template.data.TemplatePool;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
+import iskallia.vault.dynamodel.model.item.PlainItemModel;
 import iskallia.vault.dynamodel.model.item.shield.ShieldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModDynamicModels;
+import iskallia.vault.item.MagnetItem;
+import iskallia.vault.item.gear.FocusItem;
 import iskallia.vault.item.gear.VaultShieldItem;
+import iskallia.vault.item.gear.WandItem;
 import net.minecraft.world.item.Item;
 import xyz.iwolfking.vhapi.api.loaders.bounty.BountyRewardsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.MappedWeightedProductEntryConfigLoader;
@@ -21,10 +25,7 @@ import xyz.iwolfking.vhapi.api.loaders.challenge.ChallengeCurseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertiseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertisesGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gear.*;
-import xyz.iwolfking.vhapi.api.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.transmog.GearModelRollRaritiesConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.transmog.HandheldModelRegistryConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.transmog.ShieldModelRegistryConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.gear.transmog.*;
 import xyz.iwolfking.vhapi.api.loaders.gen.loot_table.LootTableConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.palettes.PalettesConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.template_pools.TemplatePoolsLoader;
@@ -239,6 +240,10 @@ public class Processors {
                 if(item instanceof VaultShieldItem) {
                     ShieldModelRegistryConfigLoader<DynamicModelRegistry<ShieldModel>> shieldTransmogLoader = new ShieldModelRegistryConfigLoader<>("vhapi", (DynamicModelRegistry<ShieldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
                     result.add(shieldTransmogLoader);
+                }
+                if(item instanceof FocusItem || item instanceof MagnetItem || item instanceof WandItem)  {
+                    PlainModelRegistryConfigLoader<DynamicModelRegistry<PlainItemModel>> plainTransmogLoader = new PlainModelRegistryConfigLoader<>("vhapi", (DynamicModelRegistry<PlainItemModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
+                    result.add(plainTransmogLoader);
                 }
                 else {
                     HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> transmogLoader = new HandheldModelRegistryConfigLoader<>((DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);

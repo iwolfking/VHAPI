@@ -10,6 +10,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import xyz.iwolfking.vhapi.api.datagen.lib.gear.UniqueGearEntry;
 import xyz.iwolfking.vhapi.api.loaders.gear.transmog.lib.GsonHandheldModel;
 
@@ -156,8 +157,8 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         for (String modelType : modelsMap.keySet()) {
             JsonObject modelsRoot = new JsonObject();
             modelsRoot.add("MODELS", modelsMap.get(modelType));
-            Path modelsTarget = generator.getOutputFolder()
-                    .resolve("data/" + modid + "/vault_configs/gear/handheld_models/" + modelType + "/unique_models.json");
+            Path modelsTarget = getPath(modelType);
+
             DataProvider.save(GSON, cache, modelsRoot, modelsTarget);
         }
 
@@ -165,6 +166,23 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         Path rollsTarget = generator.getOutputFolder()
                 .resolve("data/" + modid + "/vault_configs/gear/model_rolls/unique_model_rolls.json");
         DataProvider.save(GSON, cache, modelRolls, rollsTarget);
+    }
+
+    private @NotNull Path getPath(String modelType) {
+        Path modelsTarget;
+        if(modelType.equals("focus") || modelType.equals("wand") || modelType.equals("magnets")) {
+            modelsTarget = generator.getOutputFolder()
+                    .resolve("data/" + modid + "/vault_configs/gear/plain_models/" + modelType + "/unique_models.json");
+        }
+        else if(modelType.equals("shield")) {
+            modelsTarget = generator.getOutputFolder()
+                    .resolve("data/" + modid + "/vault_configs/gear/shield_models/" + modelType + "/unique_models.json");
+        }
+        else {
+            modelsTarget = generator.getOutputFolder()
+                    .resolve("data/" + modid + "/vault_configs/gear/handheld_models/" + modelType + "/unique_models.json");
+        }
+        return modelsTarget;
     }
 
     private JsonObject toJson(UniqueGearEntry entry) {
