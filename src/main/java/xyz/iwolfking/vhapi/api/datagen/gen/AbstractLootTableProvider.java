@@ -10,15 +10,13 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import xyz.iwolfking.vhapi.api.datagen.lib.gen.palette.PaletteDefinition;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class AbstractLootTableProvider implements DataProvider {
@@ -198,8 +196,10 @@ public abstract class AbstractLootTableProvider implements DataProvider {
             return this;
         }
 
-        public PoolBuilder itemNbt(int weight, String id, int min, int max, Map<String,Object> nbt) {
+        public PoolBuilder itemNbt(int weight, String id, int min, int max, Consumer<LinkedHashMap<String,Object>> nbtConsumer) {
             LootItem item = new LootItem(id, new Count(min, max));
+            LinkedHashMap<String, Object> nbt = new LinkedHashMap<>();
+            nbtConsumer.accept(nbt);
             item.nbt = nbt;
             pool.pool.add(new LootPoolItem(weight, item));
             return this;
