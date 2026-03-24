@@ -19,6 +19,9 @@ public class MixinModConfigs {
 
     @Inject(method = "register", at = @At("TAIL"))
     private static void resetPatchedStateForPatchers(CallbackInfo ci) {
+        //Add built-in VHAPI configs
+        xyz.iwolfking.vhapi.init.ModConfigs.register();
+
         MinecraftForge.EVENT_BUS.post(new VaultConfigEvent.End(VaultConfigEvent.Type.NORMAL));
     }
 

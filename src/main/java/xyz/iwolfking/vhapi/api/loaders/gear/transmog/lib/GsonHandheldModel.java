@@ -1,5 +1,7 @@
 package xyz.iwolfking.vhapi.api.loaders.gear.transmog.lib;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import iskallia.vault.dynamodel.DynamicModelProperties;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
@@ -63,5 +65,14 @@ public class GsonHandheldModel {
 
     public PlainItemModel getPlainModel() {
         return new PlainItemModel(id, displayName).properties(getProperties());
+    }
+
+    public JsonObject toJson() {
+        JsonObject model = new JsonObject();
+        model.addProperty("id", id.toString());
+        model.addProperty("displayName", displayName);
+        model.addProperty("discoverOnRoll", discoverOnRoll);
+        model.addProperty("allowTransmogrification", allowTransmogrification);
+        return model;
     }
 }

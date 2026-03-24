@@ -22,7 +22,7 @@ public class MixinDeckItem {
     public void loadModels(Consumer<ModelResourceLocation> consumer, CallbackInfo ci) {
         Collection<ResourceLocation> packModels = Minecraft.getInstance().getResourceManager().listResources("models/item/deck", s -> s.endsWith(".json"));
         for(ResourceLocation loc : packModels) {
-            if (loc.getNamespace().equals("vhapi")) {
+            if (!loc.getNamespace().equals("the_vault")) {
                 VHAPILoggerUtils.debug("Register custom deck model: " + loc);
                 consumer.accept(ResourceLocUtils.stripLocationForItemModel(loc));
             }

@@ -24,7 +24,7 @@ public class InscriptionConfigLoader extends VaultConfigProcessor<InscriptionCon
                     ModConfigs.INSCRIPTION.pools.put(key, config.pools.get(key));
                 }
             }
-            if(config.ringWeights != null) {
+            if(config.ringWeights != null && !config.ringWeights.isEmpty()) {
                 ModConfigs.INSCRIPTION.ringWeights = config.ringWeights;
             }
         }

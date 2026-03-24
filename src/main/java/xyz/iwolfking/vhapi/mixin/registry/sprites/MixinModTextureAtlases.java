@@ -90,4 +90,20 @@ public class MixinModTextureAtlases {
     //SKIP 9: MOB HEADS
     //SKIP 10: QUESTS
     //SKIP 11: ACHIEVEMENTS
+    //SKIP 12: TITLE
+    //SKIP 13: MOB_GROUPS
+
+    /**
+     * @author iwolfking
+     * @reason Modify texture atlas to contain all ability textures under /gui/map
+     */
+    @Inject(method = "lambda$static$14", at = @At("HEAD"), cancellable = true)
+    private static void lambda$static$14(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+        if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("VAULT_MAP")) {
+            return;
+        }
+        if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("VAULT_MAP").isEmpty()) {
+            cir.setReturnValue(VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.get("VAULT_MAP"));
+        }
+    }
 }

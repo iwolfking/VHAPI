@@ -11,4 +11,7 @@ import java.util.HashMap;
 public interface SkillDescriptionsConfigAccessor {
     @Accessor("descriptions")
     public HashMap<String, JsonElement> getDescriptions();
+
+    @Accessor("descriptions")
+    void setDescriptions(HashMap<String, JsonElement> descriptions);
 }

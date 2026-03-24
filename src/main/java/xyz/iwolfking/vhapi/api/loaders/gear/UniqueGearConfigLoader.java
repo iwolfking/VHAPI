@@ -22,7 +22,16 @@ public class UniqueGearConfigLoader extends VaultConfigProcessor<UniqueGearConfi
             }
             else {
                 ((UniqueGearConfigAccessor)ModConfigs.UNIQUE_GEAR).getEntries().putAll(((UniqueGearConfigAccessor)config).getEntries());
-                ((UniqueGearConfigAccessor)ModConfigs.UNIQUE_GEAR).getPools().putAll(((UniqueGearConfigAccessor)config).getPools());
+                ((UniqueGearConfigAccessor)config).getPools().forEach(((resourceLocation, resourceLocationWeightedList) -> {
+                    if(((UniqueGearConfigAccessor)ModConfigs.UNIQUE_GEAR).getPools().containsKey(resourceLocation)) {
+                        resourceLocationWeightedList.forEach((resourceLocation1, aDouble) -> {
+                            ((UniqueGearConfigAccessor)ModConfigs.UNIQUE_GEAR).getPools().get(resourceLocation).add(resourceLocation1, aDouble);
+                        });
+                    }
+                    else {
+                        ((UniqueGearConfigAccessor)ModConfigs.UNIQUE_GEAR).getPools().put(resourceLocation, resourceLocationWeightedList);
+                    }
+                }));
             }
         }
         super.afterConfigsLoad(event);

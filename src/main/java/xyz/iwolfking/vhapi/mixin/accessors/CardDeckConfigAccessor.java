@@ -9,5 +9,9 @@ import java.util.Map;
 @Mixin(value = CardDeckConfig.class, remap = false)
 public interface CardDeckConfigAccessor {
     @Accessor("values")
-    public Map<String, CardDeckConfig.Entry> getValues();
+    Map<String, CardDeckConfig.Entry> getValues();
+
+    @Accessor("values")
+    void setValues(Map<String, CardDeckConfig.Entry> values);
+
 }

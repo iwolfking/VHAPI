@@ -1,31 +1,36 @@
 package xyz.iwolfking.vhapi.api.loaders;
 
+import iskallia.vault.config.ThemeAugmentLoreConfig;
+import iskallia.vault.config.VaultItemsConfig;
 import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
 import iskallia.vault.core.world.template.data.TemplatePool;
 import iskallia.vault.dynamodel.model.item.HandHeldModel;
+import iskallia.vault.dynamodel.model.item.PlainItemModel;
 import iskallia.vault.dynamodel.model.item.shield.ShieldModel;
 import iskallia.vault.dynamodel.registry.DynamicModelRegistry;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModDynamicModels;
+import iskallia.vault.item.MagnetItem;
+import iskallia.vault.item.gear.FocusItem;
 import iskallia.vault.item.gear.VaultShieldItem;
+import iskallia.vault.item.gear.WandItem;
 import net.minecraft.world.item.Item;
 import xyz.iwolfking.vhapi.api.loaders.bounty.BountyRewardsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.card.*;
+import xyz.iwolfking.vhapi.api.loaders.challenge.ChallengeCurseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertiseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertisesGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gear.*;
-import xyz.iwolfking.vhapi.api.loaders.gear.transmog.CustomGearModelRollRaritiesConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.transmog.GearModelRollRaritiesConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.transmog.HandheldModelRegistryConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.gear.transmog.ShieldModelRegistryConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.gear.transmog.*;
 import xyz.iwolfking.vhapi.api.loaders.gen.loot_table.LootTableConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.palettes.PalettesConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.template_pools.TemplatePoolsLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.theme.ThemeConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.general.ThemeLoreConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TooltipConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TranslationsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.VaultStatsConfigLoader;
@@ -35,6 +40,7 @@ import xyz.iwolfking.vhapi.api.loaders.lib.core.GenFileProcessor;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.loaders.loot.LegacyLootTableConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.loot.LootInfoConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.loot.RoyaleLootConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.misc.*;
 import xyz.iwolfking.vhapi.api.loaders.objectives.BingoConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.objectives.ElixirConfigLoader;
@@ -42,14 +48,14 @@ import xyz.iwolfking.vhapi.api.loaders.objectives.MonolithConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.objectives.ScavengerConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.recipes.*;
 import xyz.iwolfking.vhapi.api.loaders.research.ResearchConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.research.ResearchExclusionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.research.ResearchGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.research.groups.ResearchGroupConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.research.groups.ResearchGroupGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.shops.NormalBlackMarketConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.shops.OmegaBlackMarketConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.shops.ShoppingPedestalConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.skills.AbilitiesConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.skills.AbilitiesGUIConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.skills.*;
 import xyz.iwolfking.vhapi.api.loaders.skills.descriptions.AbilitiesDescriptionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.skills.descriptions.SkillDescriptionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.skills.gates.SkillGatesConfigLoader;
@@ -57,6 +63,8 @@ import xyz.iwolfking.vhapi.api.loaders.talents.TalentConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.talents.TalentsGUIConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.titles.CustomTitleConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.tool.PulverizingConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.vault.VaultItemsConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.vault.VaultRoomMapsIconConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.altar.VaultAltarConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.catalyst.CatalystConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.chest.VaultChestMetaConfigLoader;
@@ -72,6 +80,7 @@ import xyz.iwolfking.vhapi.api.loaders.vaultar.VaultAltarIngredientsConfigLoader
 import xyz.iwolfking.vhapi.api.loaders.workstation.VaultDiffuserConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.workstation.VaultRecyclerConfigLoader;
 import xyz.iwolfking.vhapi.mixin.accessors.UnidentifiedTreasureKeyAccessorConfig;
+import xyz.iwolfking.vhapi.mixin.accessors.VaultEntitiesConfigAccessor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -98,6 +107,7 @@ public class Processors {
         public static final ToolRecipesLoader TOOL_RECIPES_LOADER = new ToolRecipesLoader();
         public static final CustomVaultGearRecipesLoader GEAR_RECIPES_LOADER = new CustomVaultGearRecipesLoader();
         public static final JewelCraftingRecipesLoader JEWEL_CRAFTING_RECIPES_LOADER = new JewelCraftingRecipesLoader();
+        public static final DeckRecipesLoader DECK_RECIPES_LOADER = new DeckRecipesLoader();
     }
 
 
@@ -117,6 +127,7 @@ public class Processors {
         public static final GearEnchantmentConfigLoader GEAR_ENCHANTMENT_CONFIG_LOADER = new GearEnchantmentConfigLoader();
         public static final TrinketConfigLoader TRINKET_CONFIG_LOADER = new TrinketConfigLoader();
         public static final UniqueGearConfigLoader UNIQUE_GEAR_CONFIG_LOADER = new UniqueGearConfigLoader();
+        public static final UniqueCodexConfigLoader UNIQUE_CODEX_CONFIG_LOADER = new UniqueCodexConfigLoader();
     }
 
     public static class VaultModifierConfigProcessors {
@@ -129,6 +140,7 @@ public class Processors {
         public static final ResearchGUIConfigLoader RESEARCH_GUI_CONFIG_LOADER = new ResearchGUIConfigLoader();
         public static final ResearchGroupConfigLoader RESEARCH_GROUP_CONFIG_LOADER = new ResearchGroupConfigLoader();
         public static final ResearchGroupGUIConfigLoader RESEARCH_GROUP_GUI_CONFIG_LOADER = new ResearchGroupGUIConfigLoader();
+        public static final ResearchExclusionsConfigLoader RESEARCH_EXCLUSIONS_CONFIG_LOADER = new ResearchExclusionsConfigLoader();
     }
 
     public static class ObjectiveConfigProcessors {
@@ -141,6 +153,7 @@ public class Processors {
     public static class SkillConfigProcessors {
         public static final SkillGatesConfigLoader SKILL_GATES_CONFIG_LOADER = new SkillGatesConfigLoader();
         public static final AbilitiesConfigLoader ABILITIES_CONFIG_LOADER = new AbilitiesConfigLoader();
+        public static final AbilitiesGroupLoader ABILITIES_GROUP_LOADER = new AbilitiesGroupLoader();
         public static final AbilitiesGUIConfigLoader ABILITIES_GUI_CONFIG_LOADER = new AbilitiesGUIConfigLoader();
         public static final TalentConfigLoader TALENT_CONFIG_LOADER = new TalentConfigLoader();
         public static final TalentsGUIConfigLoader TALENTS_GUI_CONFIG_LOADER = new TalentsGUIConfigLoader();
@@ -148,6 +161,10 @@ public class Processors {
         public static final AbilitiesDescriptionsConfigLoader ABILITIES_DESCRIPTIONS_CONFIG_LOADER = new AbilitiesDescriptionsConfigLoader();
         public static final ExpertiseConfigLoader EXPERTISE_CONFIG_LOADER = new ExpertiseConfigLoader();
         public static final ExpertisesGUIConfigLoader EXPERTISES_GUI_CONFIG_LOADER = new ExpertisesGUIConfigLoader();
+        public static final PrestigePowersConfigLoader PRESTIGE_POWERS_CONFIG_LOADER = new PrestigePowersConfigLoader();
+        public static final PrestigePowersGUIConfigLoader PRESTIGE_POWERS_GUI_CONFIG_LOADER = new PrestigePowersGUIConfigLoader();
+        public static final SkillScrollsConfigLoader SKILL_SCROLLS_CONFIG_LOADER = new SkillScrollsConfigLoader();
+        public static final RoyalePresetsConfigLoader ROYALE_PRESETS_CONFIG_LOADER = new RoyalePresetsConfigLoader();
     }
 
     public static class CardConfigProcessors {
@@ -156,6 +173,7 @@ public class Processors {
         public static final CardModifiersConfigLoader CARD_MODIFIERS_CONFIG_LOADER = new CardModifiersConfigLoader();
         public static final DecksConfigLoader DECKS_CONFIG_LOADER = new DecksConfigLoader();
         public static final CardTasksConfigLoader CARD_TASKS_CONFIG_LOADER = new CardTasksConfigLoader();
+        public static final DeckModifiersConfigLoader DECK_MODIFIERS_CONFIG_LOADER = new DeckModifiersConfigLoader();
     }
 
     public static class ToolConfigProcessors {
@@ -193,6 +211,11 @@ public class Processors {
         public static final VaultStatsConfigLoader VAULT_STATS_CONFIG_LOADER = new VaultStatsConfigLoader();
         public static final LegacyLootTableConfigLoader LEGACY_LOOT_TABLE_CONFIG_LOADER = new LegacyLootTableConfigLoader();
         public static final LootInfoConfigLoader LOOT_INFO_CONFIG_LOADER = new LootInfoConfigLoader();
+        public static final RoyaleLootConfigLoader ROYALE_LOOT_CONFIG_LOADER = new RoyaleLootConfigLoader();
+        public static final PrebuiltToolsConfigLoader PREBUILT_TOOLS_CONFIG_LOADER = new PrebuiltToolsConfigLoader();
+        public static final QuestConfigLoader QUEST_CONFIG_LOADER = new QuestConfigLoader();
+        public static final TemporalShardConfigLoader TEMPORAL_SHARD_CONFIG_LOADER = new TemporalShardConfigLoader();
+        public static final VaultEntitiesConfigLoader VAULT_ENTITIES_CONFIG_LOADER = new VaultEntitiesConfigLoader();
         public static final ChampionsConfigLoader CHAMPIONS_CONFIG_LOADER = new ChampionsConfigLoader();
         public static final CustomEntitySpawnersLoader CUSTOM_ENTITY_SPAWNERS_LOADER = new CustomEntitySpawnersLoader();
         public static final EntityGroupsConfigLoader ENTITY_GROUPS_CONFIG_LOADER = new EntityGroupsConfigLoader();
@@ -201,6 +224,13 @@ public class Processors {
         public static final VaultCrystalConfigLoader VAULT_CRYSTAL_CONFIG_LOADER = new VaultCrystalConfigLoader();
         public static final RaidActionsConfigLoader RAID_ACTIONS_CONFIG_LOADER = new RaidActionsConfigLoader();
         public static final TranslationsConfigLoader TRANSLATIONS_CONFIG_LOADER = new TranslationsConfigLoader();
+        public static final VoidCrucibleConfigLoader VOID_CRUCIBLE_CONFIG_LOADER = new VoidCrucibleConfigLoader();
+        public static final ThemeLoreConfigLoader THEME_AUGMENT_LORE_CONFIG = new ThemeLoreConfigLoader();
+        public static final BestiaryConfigLoader BESTIARY_CONFIG_LOADER = new BestiaryConfigLoader();
+        public static final VaultRoomMapsIconConfigLoader VAULT_ROOM_MAPS_ICON_CONFIG_LOADER = new VaultRoomMapsIconConfigLoader();
+        public static final VaultItemsConfigLoader VAULT_ITEMS_CONFIG_LOADER = new VaultItemsConfigLoader();
+        public static final ChallengeCurseConfigLoader CHALLENGE_CURSE_CONFIG_LOADER = new ChallengeCurseConfigLoader();
+        public static final GodShopConfigLoader GOD_SHOP_CONFIG_LOADER = new GodShopConfigLoader();
     }
 
     public static class TransmogConfigProcessors {
@@ -210,7 +240,10 @@ public class Processors {
                 if(item instanceof VaultShieldItem) {
                     ShieldModelRegistryConfigLoader<DynamicModelRegistry<ShieldModel>> shieldTransmogLoader = new ShieldModelRegistryConfigLoader<>("vhapi", (DynamicModelRegistry<ShieldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
                     result.add(shieldTransmogLoader);
-
+                }
+                if(item instanceof FocusItem || item instanceof MagnetItem || item instanceof WandItem)  {
+                    PlainModelRegistryConfigLoader<DynamicModelRegistry<PlainItemModel>> plainTransmogLoader = new PlainModelRegistryConfigLoader<>("vhapi", (DynamicModelRegistry<PlainItemModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);
+                    result.add(plainTransmogLoader);
                 }
                 else {
                     HandheldModelRegistryConfigLoader<DynamicModelRegistry<HandHeldModel>> transmogLoader = new HandheldModelRegistryConfigLoader<>((DynamicModelRegistry<HandHeldModel>) ModDynamicModels.REGISTRIES.getAssociatedRegistry(item).get(), item);

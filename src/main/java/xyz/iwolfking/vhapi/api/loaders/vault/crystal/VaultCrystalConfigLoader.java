@@ -2,11 +2,13 @@ package xyz.iwolfking.vhapi.api.loaders.vault.crystal;
 
 import iskallia.vault.config.VaultCrystalConfig;
 import iskallia.vault.config.entry.LevelEntryList;
+import iskallia.vault.core.util.WeightedList;
 import iskallia.vault.init.ModConfigs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
+import xyz.iwolfking.vhapi.api.util.LevelEntryListHelper;
 import xyz.iwolfking.vhapi.mixin.accessors.VaultCrystalConfigAccessor;
 
 @Mod.EventBusSubscriber(modid = "vhapi", bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -20,9 +22,16 @@ public class VaultCrystalConfigLoader extends VaultConfigProcessor<VaultCrystalC
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         for(VaultCrystalConfig config : this.CUSTOM_CONFIGS.values()) {
+
             if(config.LAYOUTS != null) {
-                ModConfigs.VAULT_CRYSTAL.LAYOUTS.addAll(config.LAYOUTS);
+                LevelEntryListHelper.mergeList(
+                        config.LAYOUTS,
+                        ModConfigs.VAULT_CRYSTAL.LAYOUTS,
+                        VaultCrystalConfig.LayoutEntry::getLevel,
+                        (VaultCrystalConfig.LayoutEntry e) -> e.pool
+                );
             }
+
             //Motes
             if(config.MOTES != null) {
                 ModConfigs.VAULT_CRYSTAL.MOTES.clarityLevelCost = config.MOTES.clarityLevelCost;
@@ -37,47 +46,92 @@ public class VaultCrystalConfigLoader extends VaultConfigProcessor<VaultCrystalC
                 ModConfigs.VAULT_CRYSTAL.MODIFIER_STABILITY.instabilityPerCraft = config.MODIFIER_STABILITY.instabilityPerCraft;
             }
 
-            //Themes
-            if(config.THEMES != null) {
-                for(ResourceLocation key : config.THEMES.keySet()) {
-                    LevelEntryList<VaultCrystalConfig.ThemeEntry> levelEntryList = config.THEMES.get(key);
-                    if(ModConfigs.VAULT_CRYSTAL.THEMES.containsKey(key)) {
-                        levelEntryList.forEach(themeEntry -> {
-                            ModConfigs.VAULT_CRYSTAL.THEMES.get(key).getForLevel(themeEntry.level).ifPresentOrElse(themeEntry1 -> themeEntry1.pool.putAll(levelEntryList.getForLevel(themeEntry.level).get().pool), () -> ModConfigs.VAULT_CRYSTAL.THEMES.get(key).add(themeEntry));
-                        });
-                    }
-                    else {
-                        ModConfigs.VAULT_CRYSTAL.THEMES.put(key, levelEntryList);
-                    }
-                }
-                //ModConfigs.VAULT_CRYSTAL.THEMES.putAll(config.THEMES);
+            if (config.THEMES != null) {
+                LevelEntryListHelper.mergeMap(
+                        config.THEMES,
+                        ModConfigs.VAULT_CRYSTAL.THEMES,
+                        themeEntry -> themeEntry.level,
+                        (existing, incoming, list) -> {
+                            // Merge seasonalWeights if both exist
+                            if (existing.seasonalWeights != null && incoming.seasonalWeights != null) {
+                                incoming.seasonalWeights.forEach((k, v) -> {
+                                    existing.seasonalWeights.merge(k, v, (oldVal, newVal) -> {
+                                        // merge the DateRangeWeight lists
+                                        oldVal.ranges.addAll(newVal.ranges);
+                                        return oldVal;
+                                    });
+                                });
+                            }
+
+                            // Merge pool if both exist
+                            if (existing.pool != null && incoming.pool != null) {
+                                existing.pool.putAll(incoming.pool);
+                            }
+                        }
+                );
             }
 
-            //Objectives
-            //Unfortunately can't add to individual pools due to ObjectiveEntry being private.
+
+//            //Themes
+//            if(config.THEMES != null) {
+//                for(ResourceLocation key : config.THEMES.keySet()) {
+//                    LevelEntryList<VaultCrystalConfig.ThemeEntry> levelEntryList = config.THEMES.get(key);
+//                    if(ModConfigs.VAULT_CRYSTAL.THEMES.containsKey(key)) {
+//                        levelEntryList.forEach(themeEntry -> {
+//                            ModConfigs.VAULT_CRYSTAL.THEMES.get(key)
+//                                    .getForLevel(themeEntry.level)
+//                                    .ifPresentOrElse(themeEntry1 -> {
+//                                        if(themeEntry1.seasonalWeights != null && themeEntry.seasonalWeights != null) {
+//                                            themeEntry1.seasonalWeights.putAll(levelEntryList.getForLevel(themeEntry.level).get().seasonalWeights);
+//                                        }
+//                                        else if(themeEntry1.pool != null && !themeEntry1.pool.isEmpty()) {
+//                                            themeEntry1.pool.putAll(levelEntryList.getForLevel(themeEntry.level).get().pool);
+//                                        }
+//                                    }, () -> ModConfigs.VAULT_CRYSTAL.THEMES.get(key).add(themeEntry));
+//                        });
+//                    }
+//                    else {
+//                        ModConfigs.VAULT_CRYSTAL.THEMES.put(key, levelEntryList);
+//                    }
+//                }
+//            }
+
             if(config.OBJECTIVES != null) {
-                ModConfigs.VAULT_CRYSTAL.OBJECTIVES.putAll(config.OBJECTIVES);
+                LevelEntryListHelper.mergeMap(
+                        config.OBJECTIVES,
+                        ModConfigs.VAULT_CRYSTAL.OBJECTIVES,
+                        VaultCrystalConfig.ObjectiveEntry::getLevel,
+                        objectiveEntry -> objectiveEntry.pool
+                );
             }
 
-            //Times
-            //Unfortunately can't add to individual pools due to TimeEntry being private.
             if(config.TIMES != null) {
-                ModConfigs.VAULT_CRYSTAL.TIMES.putAll(config.TIMES);
+                LevelEntryListHelper.mergeMap(
+                        config.TIMES,
+                        ModConfigs.VAULT_CRYSTAL.TIMES,
+                        VaultCrystalConfig.TimeEntry::getLevel,
+                        timeEntry -> timeEntry.pool
+                );
             }
 
-            //Properties
-            //Unfortunately can't add to individual pools due to PropertyEntry being private.
-            if(config.PROPERTIES != null) {
-                ModConfigs.VAULT_CRYSTAL.PROPERTIES.putAll(config.PROPERTIES);
-            }
-
-            //Seals
-            //Has same caveat as both, multiple overrides to same pool with overwrite each other.
             if(((VaultCrystalConfigAccessor)config).getSeals() != null) {
-                ((VaultCrystalConfigAccessor)ModConfigs.VAULT_CRYSTAL).getSeals().putAll(((VaultCrystalConfigAccessor) config).getSeals());
+                LevelEntryListHelper.mergeMap(
+                        ((VaultCrystalConfigAccessor)config).getSeals(),
+                        ((VaultCrystalConfigAccessor)ModConfigs.VAULT_CRYSTAL).getSeals(),
+                        VaultCrystalConfig.SealEntry::getLevel,
+                        (existing, src, list) -> list.add(src)
+                );
             }
 
         }
         super.afterConfigsLoad(event);
+    }
+
+    public <T> WeightedList<?> getPool(T entry) {
+        if(entry instanceof VaultCrystalConfig.ObjectiveEntry objectiveEntry) {
+            return objectiveEntry.pool;
+        }
+
+        return WeightedList.empty();
     }
 }

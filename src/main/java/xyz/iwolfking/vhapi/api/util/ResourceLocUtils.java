@@ -76,6 +76,42 @@ public class ResourceLocUtils {
         return new ResourceLocation(newNamespace, loc.getPath());
     }
 
+    /**
+     *
+     * @param loc A ResourceLocation, formatted like "the_vault:remove/axe"
+     * @return A String containing the path of the ResourceLocation with any prefixes remove, "axe" for the above.
+     */
+    public static String getStrippedPath(ResourceLocation loc) {
+        String result = loc.getPath();
+        int index = result.lastIndexOf('/');
+        return index == -1 ? result : result.substring(index + 1);
+    }
+
+    /**
+     *
+     * @param rl A ResourceLocation that will be used to generate a readable name from.
+     * @return A String containing a more readable version of the Resource location
+     */
+    public static String formatReadableName(ResourceLocation rl) {
+        String path = rl.getPath().replace('/', '_');
+
+        String[] parts = path.split("_");
+        StringBuilder sb = new StringBuilder();
+
+        for (String p : parts) {
+            if (p.isEmpty()) continue;
+            sb.append(Character.toUpperCase(p.charAt(0)))
+                    .append(p.substring(1))
+                    .append(" ");
+        }
+
+        return sb.toString().trim();
+    }
+
+    public static ResourceLocation replace(ResourceLocation rl, String toReplace, String replacement) {
+        return new ResourceLocation(rl.getNamespace(), rl.getPath().replace(toReplace, replacement));
+    }
+
     public static boolean isResourceLocation(String testString) {
         return testString.matches(".+:.+");
     }

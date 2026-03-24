@@ -36,7 +36,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
 
         dataMap.forEach((resourceLocation, jsonElement) -> {
             if(!getIgnoredConfigs().contains(resourceLocation)) {
-                JSON_DATA.put(new ResourceLocation(namespace, resourceLocation.getPath()), jsonElement);
+                JSON_DATA.put(resourceLocation, jsonElement);
             }
         });
 
