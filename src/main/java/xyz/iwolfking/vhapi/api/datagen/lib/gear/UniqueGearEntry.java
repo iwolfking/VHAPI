@@ -18,7 +18,8 @@ public record UniqueGearEntry(
         String modelType,
         UniqueCodexConfig.IntroductionPage.SlotType codexSlotType,
         String codexDropLocation,
-        List<JsonObject> codexDescription
+        List<JsonObject> codexDescription,
+        boolean uncraftable
 ) {
     public record WeightedModel(ResourceLocation value, int weight) {}
 }
