@@ -37,7 +37,6 @@
     "accessors.FarmerTwerkerAccessor",
     "accessors.FloatingItemRewardChallengeActionConfigAccessor",
     "accessors.GearModelRollRaritiesAccessor",
-    "accessors.GodShopConfigAccessor",
     "accessors.GroupChallengeActionConfigAccessor",
     "accessors.InscriptionConfigEntryAccessor",
     "accessors.InscriptionConfigPoolAccessor",
