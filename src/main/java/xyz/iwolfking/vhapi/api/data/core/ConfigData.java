@@ -55,5 +55,5 @@ import java.util.Set;
 
 public class ConfigData {
     public static final Gson CONFIG_LOADER_GSON = Config.GSON;
-    public static final Gson GEN_CONFIG_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(LootTable.class, Adapters.LOOT_TABLE).registerTypeHierarchyAdapter(Palette.class, PaletteAdapter.INSTANCE).registerTypeAdapter(TemplatePool.class, Adapters.TEMPLATE_POOL).registerTypeAdapterFactory(ThemeAdapter.FACTORY).setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+    public static final Gson GEN_CONFIG_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(LootTable.class, Adapters.LOOT_TABLE).registerTypeHierarchyAdapter(Palette.class, PaletteAdapter.INSTANCE).registerTypeAdapter(TemplatePool.class, Adapters.TEMPLATE_POOL).registerTypeAdapter(Theme.class, Theme.ADAPTER).setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
 }

@@ -166,7 +166,6 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ROOM_MAPS_ICON_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ITEMS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CHALLENGE_CURSE_CONFIG_LOADER);
-        addConfigProcessor(Processors.GeneralVaultConfigProcessors.GOD_SHOP_CONFIG_LOADER);
 
 
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ALTAR_CONFIG_LOADER);

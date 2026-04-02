@@ -1,11 +1,9 @@
 package xyz.iwolfking.vhapi.api.loaders.misc;
 
-import iskallia.vault.config.GodShopConfig;
 import iskallia.vault.config.VaultMobLoot;
 import iskallia.vault.init.ModConfigs;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
-import xyz.iwolfking.vhapi.mixin.accessors.GodShopConfigAccessor;
 
 public class
 VaultMobsLootConfigLoader extends VaultConfigProcessor<VaultMobLoot> {

@@ -10,7 +10,7 @@ public interface PrestigePowerAccessor {
     @Accessor("learnKnowledgeCost")
     void setKnowledgeCost(int knowledgeCost);
 
-    @Accessor("tierLock")
+    @Accessor("requiredGreedTier")
     void setTierLock(int tierLock);
 
     @Accessor("tier")

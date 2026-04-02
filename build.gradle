@@ -163,7 +163,7 @@ dependencies {
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.3.3")) {
         jarJar.ranged(it, "[0.3.3,)")
     }
-    implementation fg.deobf("curse.maven:vault-hunters-official-mod-458203:7354454")
+    implementation fg.deobf("curse.maven:vault-hunters-official-mod-458203:7862564")
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     implementation fg.deobf("curse.maven:just-enough-vh-1035310:7160447")
     compileOnly fg.deobf("curse.maven:wolds-vaults-official-mod-958799:7221672")

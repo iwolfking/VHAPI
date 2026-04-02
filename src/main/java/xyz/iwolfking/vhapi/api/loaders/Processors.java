@@ -230,7 +230,6 @@ public class Processors {
         public static final VaultRoomMapsIconConfigLoader VAULT_ROOM_MAPS_ICON_CONFIG_LOADER = new VaultRoomMapsIconConfigLoader();
         public static final VaultItemsConfigLoader VAULT_ITEMS_CONFIG_LOADER = new VaultItemsConfigLoader();
         public static final ChallengeCurseConfigLoader CHALLENGE_CURSE_CONFIG_LOADER = new ChallengeCurseConfigLoader();
-        public static final GodShopConfigLoader GOD_SHOP_CONFIG_LOADER = new GodShopConfigLoader();
     }
 
     public static class TransmogConfigProcessors {
