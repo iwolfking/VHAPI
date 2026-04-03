@@ -29,6 +29,7 @@ public class UniqueGearBuilder {
     private UniqueCodexConfig.IntroductionPage.SlotType slotType =
             UniqueCodexConfig.IntroductionPage.SlotType.SWORD;
     private boolean uncraftable = false;
+    private boolean uncollectable = false;
 
     public UniqueGearBuilder(String name, Item item) {
         this.name = name;
@@ -111,6 +112,11 @@ public class UniqueGearBuilder {
         return this;
     }
 
+    public UniqueGearBuilder uncollectable() {
+        this.uncollectable = true;
+        return this;
+    }
+
 
     public UniqueGearEntry build() {
         return new UniqueGearEntry(
@@ -124,7 +130,8 @@ public class UniqueGearBuilder {
                 slotType,
                 dropLocation,
                 descriptionData,
-                uncraftable
+                uncraftable,
+                uncollectable
         );
     }
 }

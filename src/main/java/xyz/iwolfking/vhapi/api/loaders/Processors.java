@@ -128,6 +128,7 @@ public class Processors {
         public static final TrinketConfigLoader TRINKET_CONFIG_LOADER = new TrinketConfigLoader();
         public static final UniqueGearConfigLoader UNIQUE_GEAR_CONFIG_LOADER = new UniqueGearConfigLoader();
         public static final UniqueCodexConfigLoader UNIQUE_CODEX_CONFIG_LOADER = new UniqueCodexConfigLoader();
+        public static final UniqueDiscoveryConfigLoader UNIQUE_DISCOVERY_CONFIG_LOADER = new UniqueDiscoveryConfigLoader();
     }
 
     public static class VaultModifierConfigProcessors {

@@ -84,6 +84,7 @@
     "accessors.TrinketConfigTrinketAccessor",
     "accessors.TrinketEffectConfigAccessor",
     "accessors.UnidentifiedTreasureKeyAccessorConfig",
+    "accessors.UniqueDiscoveryConfigAccessor",
     "accessors.UniqueGearConfigAccessor",
     "accessors.VanillaAttributeChallengeActionConfigAccessor",
     "accessors.VaultAltarConfigAccessor",

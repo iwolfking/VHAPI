@@ -45,6 +45,11 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         root.add("registry", registry);
         root.add("pools", pools);
 
+        JsonObject discoveryRoot = new JsonObject();
+        JsonObject discoveryHints = new JsonObject();
+        discoveryRoot.add("discoveryHints", discoveryHints);
+
+
         JsonObject codexRoot = new JsonObject();
         JsonObject introduction = new JsonObject();
         JsonObject index = new JsonObject();
@@ -70,6 +75,7 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         }
 
         List<String> craftedPool = new ArrayList<>();
+        List<String> collectionPool = new ArrayList<>();
 
         addGear(result -> {
             String key = result.id().toString();
@@ -84,6 +90,10 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             pools.add(key, poolEntry);
             if(!result.entry.uncraftable()) {
                 craftedPool.add(result.id.toString());
+            }
+
+            if(!result.entry.uncollectable()) {
+                collectionPool.add(result.id.toString());
             }
 
             // Codex index
@@ -135,15 +145,27 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
             JsonObject rolls = modelRolls.getAsJsonObject(rollKey);
             JsonArray uniqueArray = rolls.getAsJsonArray("UNIQUE");
             entry.models().forEach(m -> uniqueArray.add(m.value().toString()));
+
+            //Discovery
+            discoveryHints.addProperty(result.id.toString(), entry.codexDropLocation());
         });
 
         JsonObject craftedPoolObj = new JsonObject();
+        JsonObject collectionPoolObj = new JsonObject();
 
         craftedPool.forEach(string -> {
             craftedPoolObj.addProperty(string, 1);
         });
 
+        collectionPool.forEach(string -> {
+            collectionPoolObj.addProperty(string, 1);
+        });
+
+
+
+
         pools.add(VaultMod.id("crafted").toString(), craftedPoolObj);
+        pools.add(VaultMod.id("collection").toString(), collectionPoolObj);
 
         // Save unique_gear.json
         Path gearTarget = generator.getOutputFolder()
@@ -154,6 +176,11 @@ public abstract class AbstractUniqueGearProvider implements DataProvider {
         Path codexTarget = generator.getOutputFolder()
                 .resolve("data/" + modid + "/vault_configs/unique_codex/unique_codex.json");
         DataProvider.save(GSON, cache, codexRoot, codexTarget);
+
+        // Save discovery
+        Path discoveryTarget = generator.getOutputFolder()
+                .resolve("data/" + modid + "/vault_configs/unique_discovery/unique_discovery.json");
+        DataProvider.save(GSON, cache, discoveryRoot, discoveryTarget);
 
         // Save handheld model definitions
         for (String modelType : modelsMap.keySet()) {
