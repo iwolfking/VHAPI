@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import iskallia.vault.config.Config;
 import iskallia.vault.config.customisation.CustomisationDiscovery;
+import iskallia.vault.config.customisation.CustomisationDiscoveryConfig;
 import iskallia.vault.config.customisation.VaultLevelDiscovery;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractPlayerTitlesProvider implements DataProvider {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().registerTypeHierarchyAdapter(CustomisationDiscovery.class, CustomisationDiscovery.ADAPTER).create();
 
     protected final DataGenerator generator;
     protected final String modId;
@@ -38,7 +39,7 @@ public abstract class AbstractPlayerTitlesProvider implements DataProvider {
         obj.addProperty("display", display);
         obj.addProperty("color", color);
         obj.addProperty("cost", cost);
-        obj.addProperty("customization", Config.GSON.toJsonTree(requirement).toString());
+        obj.add("requirement", Config.GSON.toJsonTree(requirement));
         prefixes.add(obj);
     }
 
@@ -52,7 +53,7 @@ public abstract class AbstractPlayerTitlesProvider implements DataProvider {
         obj.addProperty("display", display);
         obj.addProperty("color", color);
         obj.addProperty("cost", cost);
-        obj.addProperty("customization", Config.GSON.toJsonTree(requirement).toString());
+        obj.add("requirement", Config.GSON.toJsonTree(requirement));
         suffixes.add(obj);
     }
 

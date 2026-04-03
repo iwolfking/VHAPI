@@ -103,6 +103,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> CARD_DECKS = RecipeType.create(VHAPI.MODID, "card_decks", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> DECK_SOCKETS = RecipeType.create(VHAPI.MODID, "deck_sockets", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> UNIQUE_GEAR = RecipeType.create(VHAPI.MODID, "unique_gear", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> GREED_CAULDRON = RecipeType.create(VHAPI.MODID, "greed_cauldron", LabeledLootInfo.class);
 
 
 
@@ -135,6 +136,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.DECK_SOCKET), DECK_SOCKETS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.UNIQUE_SHARD), UNIQUE_GEAR);
         registration.addRecipeCatalyst(new ItemStack(ModItems.UNIQUE_CODEX), UNIQUE_GEAR);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.GREED_CAULDRON), GREED_CAULDRON);
     }
 
     @Override @SuppressWarnings("removal")
@@ -163,6 +165,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(CARD_DECKS, getCardDecks());
         registration.addRecipes(DECK_SOCKETS, getDeckSockets());
         registration.addRecipes(UNIQUE_GEAR, getUniqueGear());
+        registration.addRecipes(GREED_CAULDRON, getGreedCauldron());
     }
 
     @Override
@@ -195,6 +198,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, CARD_DECKS, ModItems.CARD_DECK, new TextComponent("Card Decks")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, DECK_SOCKETS, ModItems.DECK_SOCKET, new TextComponent("Deck Cores")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, UNIQUE_GEAR, ModItems.UNIQUE_CODEX, new TextComponent("Unique Gear")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, GREED_CAULDRON, ModBlocks.GREED_CAULDRON, new TextComponent("Greed Cauldron")));
     }
 
     public static List<LabeledLootInfo> getFacetedFoci() {
@@ -789,6 +793,25 @@ public class VHAPIJEIPlugin implements IModPlugin {
         });
 
         lootInfo.add(LabeledLootInfo.of(tools, new TextComponent("Prebuilt Tools"), null));
+
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getGreedCauldron() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+
+        List<ItemStack> items = new ArrayList<>();
+
+        ((GreedCauldronConfigAccessor)ModConfigs.GREED_CAULDRON).getDemands().forEach((key) -> {
+            if(ResourceLocUtils.isResourceLocation(((DemandEntryAccessor)key).getItem())) {
+                Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(((DemandEntryAccessor)key).getItem()));
+                if(item != null) {
+                    items.add(formatItemStack(item.getDefaultInstance(), ((DemandEntryAccessor)key).getMinAmount(), ((DemandEntryAccessor) key).getMaxAmount(), 1, ((GreedCauldronConfigAccessor)ModConfigs.GREED_CAULDRON).getDemands().size(), ((DemandEntryAccessor) key).getCoinOutput()));
+                }
+            }
+        });
+
+        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Cauldron Demands"), null));
 
         return lootInfo;
     }

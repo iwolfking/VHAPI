@@ -1,6 +1,7 @@
 package xyz.iwolfking.vhapi.api.loaders.titles;
 
 import iskallia.vault.config.PlayerTitlesConfig;
+import iskallia.vault.config.customisation.VaultLevelDiscovery;
 import iskallia.vault.init.ModConfigs;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.titles.lib.CustomTitleConfig;
@@ -20,13 +21,14 @@ public class CustomTitleConfigLoader extends VaultConfigProcessor<CustomTitleCon
             for(GsonPlayerTitle title : config.PREFIXES) {
                 ModConfigs.PLAYER_TITLES.getAll(PlayerTitlesConfig.Affix.PREFIX).put(title.id, title.title());
                 ModConfigs.ASCENSION_FORGE.getListings().add(title.titleStack(PlayerTitlesConfig.Affix.PREFIX));
-                ((CustomizationDiscoveryConfigAccessor)ModConfigs.CUSTOMISATION_DISCOVERY).getPrefixes().put(title.id, title.requirement);
+                ((CustomizationDiscoveryConfigAccessor)ModConfigs.CUSTOMISATION_DISCOVERY).getPrefixes().put(title.id, title.getRequirement());
             }
 
             for(GsonPlayerTitle title : config.SUFFIXES) {
                 ModConfigs.PLAYER_TITLES.getAll(PlayerTitlesConfig.Affix.SUFFIX).put(title.id, title.title());
                 ModConfigs.ASCENSION_FORGE.getListings().add(title.titleStack(PlayerTitlesConfig.Affix.SUFFIX));
-                ((CustomizationDiscoveryConfigAccessor)ModConfigs.CUSTOMISATION_DISCOVERY).getSuffixes().put(title.id, title.requirement);
+                ((CustomizationDiscoveryConfigAccessor)ModConfigs.CUSTOMISATION_DISCOVERY).getSuffixes().put(title.id, title.getRequirement());
+
             }
         }
         super.afterConfigsLoad(event);

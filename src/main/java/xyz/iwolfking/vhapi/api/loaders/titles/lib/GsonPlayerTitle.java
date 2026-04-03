@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import iskallia.vault.config.AscensionForgeConfig;
 import iskallia.vault.config.PlayerTitlesConfig;
 import iskallia.vault.config.customisation.CustomisationDiscovery;
+import iskallia.vault.config.customisation.VaultLevelDiscovery;
 import iskallia.vault.init.ModItems;
 import iskallia.vault.util.StringUtils;
 import iskallia.vault.world.data.PlayerTitlesData;
@@ -23,7 +24,7 @@ public class GsonPlayerTitle {
     int cost;
 
     @Expose
-    public CustomisationDiscovery requirement;
+    CustomisationDiscovery requirement;
 
     public PlayerTitlesConfig.Title title() {
         return new PlayerTitlesConfig.Title(cost).put(PlayerTitlesData.Type.CHAT, new PlayerTitlesConfig.Display(display, color)).put(PlayerTitlesData.Type.TAB_LIST, new PlayerTitlesConfig.Display(display, color));
@@ -36,6 +37,14 @@ public class GsonPlayerTitle {
     private String getNbtStringForType(PlayerTitlesConfig.Affix affix) {
         String affixString = affix.name();
         return "{Affix:\"" + affixString + "\",TitleId:\"" + this.id + "\", display:{Name:\u0027{\"text\":\"" + StringUtils.convertToTitleCase(affix.name().toLowerCase()) + " Title: \", \"extra\":[{\"text\":\"" + this.display + "\",\"color\":\"" + this.color +"\"}]}\u0027}}";
+    }
+
+    public CustomisationDiscovery getRequirement() {
+        if(requirement == null) {
+            return new VaultLevelDiscovery(50);
+        }
+
+        return requirement;
     }
 
 }
