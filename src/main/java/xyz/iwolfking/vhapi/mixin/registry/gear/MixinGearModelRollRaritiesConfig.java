@@ -30,12 +30,13 @@ import java.util.Optional;
 @Mixin(value = GearModelRollRaritiesConfig.class, remap = false)
 public abstract class MixinGearModelRollRaritiesConfig extends Config {
 
-    @Shadow abstract Map<String, List<String>> getRolls(Item item);
+    @Shadow
+    public abstract Map<String, List<String>> getRolls(Item item);
 
-    @Inject(method = "getRolls", at = @At("HEAD"), cancellable = true)
-    private void getRollsHook(CallbackInfoReturnable<Map<String, List<String>>> cir, @Local ItemStack stack) {
-        if(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.containsKey(stack.getItem().getRegistryName())) {
-            cir.setReturnValue(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(stack.getItem().getRegistryName()));
+    @Inject(method = "getRolls(Lnet/minecraft/world/item/Item;)Ljava/util/Map;", at = @At("HEAD"), cancellable = true)
+    private void getRollsHook(CallbackInfoReturnable<Map<String, List<String>>> cir, @Local(argsOnly = true) Item stack) {
+        if(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.containsKey(stack.getRegistryName())) {
+            cir.setReturnValue(CustomGearModelRolls.CUSTOM_MODEL_ROLLS_MAP.get(stack.getRegistryName()));
         }
     }
 
@@ -46,18 +47,17 @@ public abstract class MixinGearModelRollRaritiesConfig extends Config {
     @Overwrite
     public VaultGearRarity getRarityOf(Item stack, ResourceLocation modelId) {
         Map<String, List<String>> rolls = this.getRolls(stack);
-        if (rolls == null) {
-            return VaultGearRarity.SCRAPPY;
-        } else {
+        System.out.println(rolls);
+        if (rolls != null) {
             if (stack instanceof VaultArmorItem) {
-                modelId = (ResourceLocation) ModDynamicModels.Armor.PIECE_REGISTRY.get(modelId).map(ArmorPieceModel::getArmorModel).map(DynamicModel::getId).orElse(modelId);
+                modelId = ModDynamicModels.Armor.PIECE_REGISTRY.get(modelId).map(ArmorPieceModel::getArmorModel).map(DynamicModel::getId).orElse(modelId);
             }
 
             boolean isSpecial = false;
             Optional<DynamicModelRegistry<?>> registry = ModDynamicModels.REGISTRIES.getAssociatedRegistry(stack);
             if (registry.isPresent()) {
-                DynamicModelRegistry<?> reg = (DynamicModelRegistry) registry.get();
-                isSpecial = (Boolean) reg.get(modelId).map((m) -> m.getModelProperties().doesRequireRewards()).orElse(false);
+                DynamicModelRegistry<?> reg = registry.get();
+                isSpecial = reg.get(modelId).map((m) -> m.getModelProperties().doesRequireRewards()).orElse(false);
             }
 
             if (isSpecial) {
@@ -66,7 +66,7 @@ public abstract class MixinGearModelRollRaritiesConfig extends Config {
 
             for (int i = VaultGearRarity.values().length - 1; i >= 0; --i) {
                 VaultGearRarity rarity = VaultGearRarity.values()[i];
-                List<String> modelIds = (List) rolls.get(rarity.name());
+                List<String> modelIds = rolls.get(rarity.name());
                 if (modelIds == null) {
                     modelIds = rolls.get(rarity);
                 }
@@ -75,8 +75,9 @@ public abstract class MixinGearModelRollRaritiesConfig extends Config {
                 }
             }
 
-            return VaultGearRarity.SCRAPPY;
         }
+
+        return VaultGearRarity.SCRAPPY;
     }
 
 }
