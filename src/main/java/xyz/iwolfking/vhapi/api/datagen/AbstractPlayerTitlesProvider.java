@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import iskallia.vault.config.Config;
+import iskallia.vault.config.customisation.CustomisationDiscovery;
+import iskallia.vault.config.customisation.VaultLevelDiscovery;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -29,22 +32,32 @@ public abstract class AbstractPlayerTitlesProvider implements DataProvider {
 
     protected abstract void buildModifiers();
 
-    protected void addPrefix(String id, String display, String color, int cost) {
+    protected void addPrefix(String id, String display, String color, int cost, CustomisationDiscovery requirement) {
         JsonObject obj = new JsonObject();
         obj.addProperty("id", id);
         obj.addProperty("display", display);
         obj.addProperty("color", color);
         obj.addProperty("cost", cost);
+        obj.addProperty("customization", Config.GSON.toJsonTree(requirement).toString());
         prefixes.add(obj);
     }
 
-    protected void addSuffix(String id, String display, String color, int cost) {
+    protected void addPrefix(String id, String display, String color, int cost) {
+        addPrefix(id, display, color, cost, new VaultLevelDiscovery(50));
+    }
+
+    protected void addSuffix(String id, String display, String color, int cost, CustomisationDiscovery requirement) {
         JsonObject obj = new JsonObject();
         obj.addProperty("id", id);
         obj.addProperty("display", display);
         obj.addProperty("color", color);
         obj.addProperty("cost", cost);
+        obj.addProperty("customization", Config.GSON.toJsonTree(requirement).toString());
         suffixes.add(obj);
+    }
+
+    protected void addSuffix(String id, String display, String color, int cost) {
+        addSuffix(id, display, color, cost, new VaultLevelDiscovery(50));
     }
 
     @Override

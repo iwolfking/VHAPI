@@ -3,6 +3,7 @@ package xyz.iwolfking.vhapi.api.loaders.titles.lib;
 import com.google.gson.annotations.Expose;
 import iskallia.vault.config.AscensionForgeConfig;
 import iskallia.vault.config.PlayerTitlesConfig;
+import iskallia.vault.config.customisation.CustomisationDiscovery;
 import iskallia.vault.init.ModItems;
 import iskallia.vault.util.StringUtils;
 import iskallia.vault.world.data.PlayerTitlesData;
@@ -20,6 +21,9 @@ public class GsonPlayerTitle {
 
     @Expose
     int cost;
+
+    @Expose
+    public CustomisationDiscovery requirement;
 
     public PlayerTitlesConfig.Title title() {
         return new PlayerTitlesConfig.Title(cost).put(PlayerTitlesData.Type.CHAT, new PlayerTitlesConfig.Display(display, color)).put(PlayerTitlesData.Type.TAB_LIST, new PlayerTitlesConfig.Display(display, color));

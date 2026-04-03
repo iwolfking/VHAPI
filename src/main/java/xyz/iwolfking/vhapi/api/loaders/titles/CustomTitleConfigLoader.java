@@ -6,6 +6,7 @@ import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.titles.lib.CustomTitleConfig;
 import xyz.iwolfking.vhapi.api.loaders.titles.lib.GsonPlayerTitle;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
+import xyz.iwolfking.vhapi.mixin.accessors.CustomizationDiscoveryConfigAccessor;
 
 public class CustomTitleConfigLoader extends VaultConfigProcessor<CustomTitleConfig> {
 
@@ -19,11 +20,13 @@ public class CustomTitleConfigLoader extends VaultConfigProcessor<CustomTitleCon
             for(GsonPlayerTitle title : config.PREFIXES) {
                 ModConfigs.PLAYER_TITLES.getAll(PlayerTitlesConfig.Affix.PREFIX).put(title.id, title.title());
                 ModConfigs.ASCENSION_FORGE.getListings().add(title.titleStack(PlayerTitlesConfig.Affix.PREFIX));
+                ((CustomizationDiscoveryConfigAccessor)ModConfigs.CUSTOMISATION_DISCOVERY).getPrefixes().put(title.id, title.requirement);
             }
 
             for(GsonPlayerTitle title : config.SUFFIXES) {
                 ModConfigs.PLAYER_TITLES.getAll(PlayerTitlesConfig.Affix.SUFFIX).put(title.id, title.title());
                 ModConfigs.ASCENSION_FORGE.getListings().add(title.titleStack(PlayerTitlesConfig.Affix.SUFFIX));
+                ((CustomizationDiscoveryConfigAccessor)ModConfigs.CUSTOMISATION_DISCOVERY).getSuffixes().put(title.id, title.requirement);
             }
         }
         super.afterConfigsLoad(event);

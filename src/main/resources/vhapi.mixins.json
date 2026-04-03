@@ -28,6 +28,7 @@
     "accessors.CompanionRelicPoolAccessor",
     "accessors.CompanionRelicsConfigAccessor",
     "accessors.ConfigForgeRecipeAccessor",
+    "accessors.CustomizationDiscoveryConfigAccessor",
     "accessors.DeckModifiersConfigAccessor",
     "accessors.DescriptionDataAccessor",
     "accessors.DynamicModelPropertiesAccessor",
