@@ -47,7 +47,6 @@ public abstract class MixinGearModelRollRaritiesConfig extends Config {
     @Overwrite
     public VaultGearRarity getRarityOf(Item stack, ResourceLocation modelId) {
         Map<String, List<String>> rolls = this.getRolls(stack);
-        System.out.println(rolls);
         if (rolls != null) {
             if (stack instanceof VaultArmorItem) {
                 modelId = ModDynamicModels.Armor.PIECE_REGISTRY.get(modelId).map(ArmorPieceModel::getArmorModel).map(DynamicModel::getId).orElse(modelId);
