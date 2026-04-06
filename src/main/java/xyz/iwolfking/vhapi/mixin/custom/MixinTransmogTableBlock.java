@@ -28,7 +28,7 @@ public abstract class MixinTransmogTableBlock {
     private static void preventPatreonCheck(Player player, Collection<ResourceLocation> discoveredModelIds, ResourceLocation modelId, CallbackInfoReturnable<Boolean> cir) {
         if(VHAPIConfig.SERVER.allowPatreonUnlocks.get()) {
             Boolean allowed = checkModelAccess(player, modelId);
-            cir.setReturnValue(allowed != null || discoveredModelIds.contains(modelId));
+            cir.setReturnValue((allowed != null && allowed) || discoveredModelIds.contains(modelId));
         }
     }
 

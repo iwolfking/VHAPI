@@ -97,6 +97,14 @@ public abstract class AbstractVaultModifierProvider implements DataProvider {
         return PartialTile.of(PartialBlockState.of(ModBlocks.CUSTOM_ENTITY_SPAWNER), PartialCompoundNbt.of(tag));
     }
 
+    public static void empty(ModifierBuilder builder, ResourceLocation modifierId,  String name, String color, String description, String formattedDescription, ResourceLocation icon) {
+        builder.type(VaultMod.id("modifier_type/empty").toString(), typeBuilder -> {
+            typeBuilder.modifier(modifierId.toString(), modifierEntryBuilder -> {
+                createModifierDisplay(modifierEntryBuilder, name, color, description, formattedDescription, icon);
+            });
+        });
+    }
+
 
     public static void difficultyLock(ModifierBuilder builder, ResourceLocation modifierId, VaultDifficulty difficulty, boolean shouldLockHigher, String name, String color, String description, String formattedDescription, ResourceLocation icon) {
         builder.type(VaultMod.id("modifier_type/difficulty_lock").toString(), typeBuilder -> {
