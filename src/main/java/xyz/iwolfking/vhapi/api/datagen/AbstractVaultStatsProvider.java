@@ -37,35 +37,35 @@ public abstract class AbstractVaultStatsProvider extends AbstractVaultConfigData
         }
 
         public Builder addChest(VaultChestType type, Consumer<Map<VaultRarity, Float>> values) {
-            Map<VaultRarity, Float> chestMap = new HashMap<>();
+            Map<VaultRarity, Float> chestMap = new LinkedHashMap<>();
             values.accept(chestMap);
             chests.put(type, chestMap);
             return this;
         }
 
         public Builder addBarrel(VaultChestType type, Consumer<Map<VaultRarity, Float>> values) {
-            Map<VaultRarity, Float> chestMap = new HashMap<>();
+            Map<VaultRarity, Float> chestMap = new LinkedHashMap<>();
             values.accept(chestMap);
             barrels.put(type, chestMap);
             return this;
         }
 
         public Builder addBlockMined(Consumer<Map<ResourceLocation, Float>> values) {
-            Map<ResourceLocation, Float> chestMap = new HashMap<>();
+            Map<ResourceLocation, Float> chestMap = new LinkedHashMap<>();
             values.accept(chestMap);
             blocksMined.putAll(chestMap);
             return this;
         }
 
         public Builder addMobsKilled(Consumer<Map<ResourceLocation, Float>> values) {
-            Map<ResourceLocation, Float> chestMap = new HashMap<>();
+            Map<ResourceLocation, Float> chestMap = new LinkedHashMap<>();
             values.accept(chestMap);
             mobsKilled.putAll(chestMap);
             return this;
         }
 
         public Builder addCompletion(String objective, Consumer<Map<Completion, Float>> values) {
-            Map<Completion, Float> chestMap = new HashMap<>();
+            Map<Completion, Float> chestMap = new LinkedHashMap<>();
             values.accept(chestMap);
             completion.put(objective, chestMap);
             return this;

@@ -9,10 +9,7 @@ import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.AbilitiesGroupsAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.TooltipConfigAccessor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class AbstractAbilitiesGroupsProvider extends AbstractVaultConfigDataProvider<AbstractAbilitiesGroupsProvider.Builder> {
@@ -28,7 +25,7 @@ public abstract class AbstractAbilitiesGroupsProvider extends AbstractVaultConfi
     }
 
     public static class Builder extends VaultConfigBuilder<AbilitiesGroups> {
-        Map<AbilityType, List<String>> types = new HashMap<>();
+        Map<AbilityType, List<String>> types = new LinkedHashMap<>();
 
         public Builder() {
             super(AbilitiesGroups::new);
