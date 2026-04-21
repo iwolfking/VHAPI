@@ -129,7 +129,8 @@
     "registry.modifiers.MixinVaultModifiersConfig",
     "registry.objective.MixinClassicListenersLogic",
     "registry.objective.MixinCompletionProperties",
-    "registry.objective.MixinVaultRegistry"
+    "registry.objective.MixinVaultRegistry",
+    "tags.MixinTagLoader"
   ],
   "client": [
     "accessors.BountyScreenAccessor",
