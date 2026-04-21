@@ -122,6 +122,8 @@ public class LoaderRegistry {
 
         addConfigProcessor(Processors.ToolConfigProcessors.PULVERIZING_CONFIG_LOADER);
 
+        addConfigProcessor(Processors.GreedConfigProcessors.GREED_CAULDRON_CONFIG_LOADER);
+
         addConfigProcessor(Processors.VaultAltarIngredientConfigProcessors.VAULT_ALTAR_INGREDIENTS_CONFIG_LOADER);
 
         addConfigProcessor(Processors.WorkstationConfigProcessors.VAULT_RECYCLER_CONFIG_LOADER);

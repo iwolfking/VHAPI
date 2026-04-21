@@ -34,6 +34,7 @@ import xyz.iwolfking.vhapi.api.loaders.general.ThemeLoreConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TooltipConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TranslationsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.VaultStatsConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.greed.GreedCauldronConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.items.AugmentConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.items.InscriptionConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.GenFileProcessor;
@@ -179,6 +180,10 @@ public class Processors {
 
     public static class ToolConfigProcessors {
         public static final PulverizingConfigLoader PULVERIZING_CONFIG_LOADER = new PulverizingConfigLoader();
+    }
+
+    public static class GreedConfigProcessors {
+        public static final GreedCauldronConfigLoader GREED_CAULDRON_CONFIG_LOADER = new GreedCauldronConfigLoader();
     }
 
     public static class VaultAltarIngredientConfigProcessors {
