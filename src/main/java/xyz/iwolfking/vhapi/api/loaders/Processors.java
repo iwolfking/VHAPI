@@ -21,6 +21,7 @@ import xyz.iwolfking.vhapi.api.loaders.bounty.BountyRewardsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.card.*;
+import xyz.iwolfking.vhapi.api.loaders.challenge.ChallengeCrystalConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.challenge.ChallengeCurseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertiseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.expertises.ExpertisesGUIConfigLoader;
@@ -236,6 +237,7 @@ public class Processors {
         public static final VaultRoomMapsIconConfigLoader VAULT_ROOM_MAPS_ICON_CONFIG_LOADER = new VaultRoomMapsIconConfigLoader();
         public static final VaultItemsConfigLoader VAULT_ITEMS_CONFIG_LOADER = new VaultItemsConfigLoader();
         public static final ChallengeCurseConfigLoader CHALLENGE_CURSE_CONFIG_LOADER = new ChallengeCurseConfigLoader();
+        public static final ChallengeCrystalConfigLoader CHALLENGE_CRYSTAL_CONFIG_LOADER = new ChallengeCrystalConfigLoader();
     }
 
     public static class TransmogConfigProcessors {

@@ -23,6 +23,7 @@
     "accessors.CardTasksConfigAccessor",
     "accessors.CatalystConfigEntryAccessor",
     "accessors.CatalystConfigPoolAccessor",
+    "accessors.ChallengeCrystalConfigAccessor",
     "accessors.ChallengeCurseConfigAccessor",
     "accessors.ClassicVaultThemeAccessor",
     "accessors.CompanionRelicPoolAccessor",
