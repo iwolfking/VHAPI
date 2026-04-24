@@ -1,5 +1,6 @@
 package xyz.iwolfking.vhapi.api.util.gear;
 
+import iskallia.vault.config.gear.EtchingTierConfig;
 import iskallia.vault.config.gear.VaultGearTierConfig;
 import iskallia.vault.gear.attribute.ability.AbilityLevelAttribute;
 import iskallia.vault.gear.attribute.config.DoubleAttributeGenerator;
@@ -7,6 +8,7 @@ import iskallia.vault.gear.attribute.config.FloatAttributeGenerator;
 import iskallia.vault.gear.attribute.config.IntegerAttributeGenerator;
 import iskallia.vault.gear.attribute.custom.effect.EffectCloudAttribute;
 import net.minecraft.resources.ResourceLocation;
+import xyz.iwolfking.vhapi.mixin.accessors.EtchingModifierTierAccessor;
 import xyz.iwolfking.woldsvaults.WoldsVaults;
 import xyz.iwolfking.woldsvaults.mixins.vaulthunters.accessors.ModifierGearTierAccessor;
 
@@ -28,6 +30,10 @@ public class GearModifierRegistryHelper {
         return group;
     }
 
+    public static EtchingTierConfig.EtchingModifierTierGroup createEtching(ResourceLocation modifierTypeId, String modifierGroup, ResourceLocation modifierId) {
+        return new EtchingTierConfig.EtchingModifierTierGroup(modifierTypeId, modifierGroup, modifierId);
+    }
+
     public static <T> VaultGearTierConfig.ModifierTier<T> createTier(Integer minLevel, Integer maxLevel, Integer weight, Integer modifierTier, T config) {
         VaultGearTierConfig.ModifierTier<T> tier = new VaultGearTierConfig.ModifierTier<T>(minLevel, weight, config);
 
@@ -37,6 +43,20 @@ public class GearModifierRegistryHelper {
 
         if(modifierTier != null) {
             ((ModifierGearTierAccessor)tier).setModifierTier(modifierTier);
+        }
+
+        return tier;
+    }
+
+    public static <T> EtchingTierConfig.EtchingModifierTier<T> createEtchingTier(Integer minGreedTier, Integer maxLevel, Integer weight, Integer modifierTier, T config) {
+        EtchingTierConfig.EtchingModifierTier<T> tier = new EtchingTierConfig.EtchingModifierTier<T>(minGreedTier, weight, config);
+
+        if(maxLevel != null) {
+            ((EtchingModifierTierAccessor)tier).setMaxGreedTier(maxLevel);
+        }
+
+        if(modifierTier != null) {
+            ((EtchingModifierTierAccessor)tier).setModifierTier(modifierTier);
         }
 
         return tier;
@@ -102,6 +122,33 @@ public class GearModifierRegistryHelper {
 
         return modifierTiers;
     }
+
+//    public static List<EtchingTierConfig.EtchingModifierTier<?>> createNumberRangeEtchingTiers(List<Integer> levels, List<Integer> maxLevels, List<Number> minValues, List<Number> maxValues, Number step, int weight) {
+//        List<VaultGearTierConfig.ModifierTier<?>> modifierTiers = new ArrayList<>();
+//        if (levels.isEmpty() || minValues.isEmpty() || maxValues.isEmpty() || (minValues.size() != maxValues.size()) || (levels.size() != maxLevels.size())) {
+//            logInvalidModifierTier();
+//            return List.of();
+//        }
+//
+//        for (int i = 0; i < levels.size(); i++) {
+//            VaultGearTierConfig.ModifierTier<?> tier = null;
+//            if (step instanceof Integer) {
+//                tier = createTier(levels.get(i), maxLevels.get(i), weight, i, new IntegerAttributeGenerator.Range(minValues.get(i).intValue(), maxValues.get(i).intValue(), step.intValue()));
+//            } else if (step instanceof Float) {
+//                tier = createTier(levels.get(i), maxLevels.get(i), weight, i, new FloatAttributeGenerator.Range(minValues.get(i).floatValue(), maxValues.get(i).floatValue(), step.floatValue()));
+//            } else if (step instanceof Double) {
+//                tier = createTier(levels.get(i), maxLevels.get(i), weight, i, new DoubleAttributeGenerator.Range(minValues.get(i).doubleValue(), maxValues.get(i).doubleValue(), step.doubleValue()));
+//            }
+//
+//            if (tier == null) {
+//                continue;
+//            }
+//
+//            modifierTiers.add(tier);
+//        }
+//
+//        return modifierTiers;
+//    }
 
     private static void logInvalidModifierTier() {
         WoldsVaults.LOGGER.warn(INVALID_MODIFIER_TIER);

@@ -20,13 +20,11 @@ public class CustomTitleConfigLoader extends VaultConfigProcessor<CustomTitleCon
         for(CustomTitleConfig config : this.CUSTOM_CONFIGS.values()) {
             for(GsonPlayerTitle title : config.PREFIXES) {
                 ModConfigs.PLAYER_TITLES.getAll(PlayerTitlesConfig.Affix.PREFIX).put(title.id, title.title());
-                ModConfigs.ASCENSION_FORGE.getListings().add(title.titleStack(PlayerTitlesConfig.Affix.PREFIX));
                 ((CustomizationDiscoveryConfigAccessor)ModConfigs.CUSTOMISATION_DISCOVERY).getPrefixes().put(title.id, title.getRequirement());
             }
 
             for(GsonPlayerTitle title : config.SUFFIXES) {
                 ModConfigs.PLAYER_TITLES.getAll(PlayerTitlesConfig.Affix.SUFFIX).put(title.id, title.title());
-                ModConfigs.ASCENSION_FORGE.getListings().add(title.titleStack(PlayerTitlesConfig.Affix.SUFFIX));
                 ((CustomizationDiscoveryConfigAccessor)ModConfigs.CUSTOMISATION_DISCOVERY).getSuffixes().put(title.id, title.getRequirement());
 
             }

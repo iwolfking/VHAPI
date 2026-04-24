@@ -128,6 +128,7 @@ public class Processors {
         public static final GearModelRollRaritiesConfigLoader GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new GearModelRollRaritiesConfigLoader();
         public static final CustomGearModelRollRaritiesConfigLoader CUSTOM_GEAR_MODEL_ROLL_RARITIES_CONFIG_LOADER = new CustomGearModelRollRaritiesConfigLoader();
         public static final GearEnchantmentConfigLoader GEAR_ENCHANTMENT_CONFIG_LOADER = new GearEnchantmentConfigLoader();
+        public static final EtchingConfigLoader ETCHING_CONFIG_LOADER = new EtchingConfigLoader();
         public static final TrinketConfigLoader TRINKET_CONFIG_LOADER = new TrinketConfigLoader();
         public static final UniqueGearConfigLoader UNIQUE_GEAR_CONFIG_LOADER = new UniqueGearConfigLoader();
         public static final UniqueCodexConfigLoader UNIQUE_CODEX_CONFIG_LOADER = new UniqueCodexConfigLoader();
