@@ -3,6 +3,7 @@ package xyz.iwolfking.vhapi.mixin.registry.sprites;
 import iskallia.vault.init.ModTextureAtlases;
 import me.fallenbreath.conditionalmixin.api.annotation.Condition;
 import me.fallenbreath.conditionalmixin.api.annotation.Restriction;
+import me.fallenbreath.conditionalmixin.api.mixin.ConditionTester;
 import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,10 +15,10 @@ import xyz.iwolfking.vhapi.api.util.RemasteredConditionTester;
 import java.util.List;
 
 @Restriction(
-        conflict = @Condition(type = Condition.Type.TESTER, tester = RemasteredConditionTester.class)
+        require = @Condition(type = Condition.Type.TESTER, tester = RemasteredConditionTester.class)
 )
 @Mixin(value = ModTextureAtlases.class, remap = false)
-public class MixinModTextureAtlases {
+public class MixinModTextureAtlasesRemastered {
     /**
      * @author iwolfking
      * @reason Modify texture atlas to contain all modifier textures under /gui/modifiers
@@ -46,14 +47,12 @@ public class MixinModTextureAtlases {
         }
     }
 
-    //SKIP 2: Archetypes
-
     /**
      * @author iwolfking
      * @reason Modify texture atlas to contain all ability textures under /gui/researches
      */
-    @Inject(method = "lambda$static$3", at = @At("HEAD"), cancellable = true)
-    private static void lambda$static$3(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+    @Inject(method = "lambda$static$2", at = @At("HEAD"), cancellable = true)
+    private static void lambda$static$2(CallbackInfoReturnable<List<ResourceLocation>> cir) {
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("RESEARCH")) {
             return;
         }
@@ -66,8 +65,8 @@ public class MixinModTextureAtlases {
      * @author iwolfking
      * @reason Modify texture atlas to contain all ability textures under /gui/research_groups
      */
-    @Inject(method = "lambda$static$4", at = @At("HEAD"), cancellable = true)
-    private static void lambda$static$4(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+    @Inject(method = "lambda$static$3", at = @At("HEAD"), cancellable = true)
+    private static void lambda$static$3(CallbackInfoReturnable<List<ResourceLocation>> cir) {
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("RESEARCH_GROUP")) {
             return;
         }
@@ -80,8 +79,8 @@ public class MixinModTextureAtlases {
      * @author iwolfking
      * @reason Modify texture atlas to contain all ability textures under /gui/skills
      */
-    @Inject(method = "lambda$static$5", at = @At("HEAD"), cancellable = true)
-    private static void lambda$static$5(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+    @Inject(method = "lambda$static$4", at = @At("HEAD"), cancellable = true)
+    private static void lambda$static$4(CallbackInfoReturnable<List<ResourceLocation>> cir) {
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("SKILLS")) {
             return;
         }
@@ -103,8 +102,8 @@ public class MixinModTextureAtlases {
      * @author iwolfking
      * @reason Modify texture atlas to contain all ability textures under /gui/map
      */
-    @Inject(method = "lambda$static$14", at = @At("HEAD"), cancellable = true)
-    private static void lambda$static$14(CallbackInfoReturnable<List<ResourceLocation>> cir) {
+    @Inject(method = "lambda$static$13", at = @At("HEAD"), cancellable = true)
+    private static void lambda$static$13(CallbackInfoReturnable<List<ResourceLocation>> cir) {
         if(!VHAPI.Client.CUSTOM_TEXTURE_ATLAS_MAP.containsKey("VAULT_MAP")) {
             return;
         }
@@ -113,3 +112,4 @@ public class MixinModTextureAtlases {
         }
     }
 }
+

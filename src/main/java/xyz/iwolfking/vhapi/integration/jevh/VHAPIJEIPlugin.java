@@ -62,8 +62,10 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fml.loading.LoadingModList;
+import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 import net.minecraftforge.registries.ForgeRegistries;
 import xyz.iwolfking.vhapi.VHAPI;
+import xyz.iwolfking.vhapi.api.util.RemasteredHelper;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.config.VHAPIConfig;
 import xyz.iwolfking.vhapi.integration.the_vault.VaultSealHelper;
@@ -92,7 +94,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> VAULT_PORTAL_BLOCKS = RecipeType.create(VHAPI.MODID, "vault_portal_blocks", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> ABILITY_SCROLLS = RecipeType.create(VHAPI.MODID, "skill_scrolls", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> TALENT_SCROLLS = RecipeType.create(VHAPI.MODID, "talent_scrolls", LabeledLootInfo.class);
-    public static final RecipeType<LabeledLootInfo> MODIFIER_SCROLLS = RecipeType.create(VHAPI.MODID, "modifier_scrolls", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> ROYALE_LOOT = RecipeType.create(VHAPI.MODID, "royale_loot", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> ROYALE_PRESETS = RecipeType.create(VHAPI.MODID, "royale_presets", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> VAULT_DIFFUSER = RecipeType.create(VHAPI.MODID, "vault_diffuser", LabeledLootInfo.class);
@@ -122,7 +123,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CRYSTAL), VAULT_PORTAL_BLOCKS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.ABILITY_SCROLL), ABILITY_SCROLLS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.TALENT_SCROLL), TALENT_SCROLLS);
-        registration.addRecipeCatalyst(new ItemStack(ModItems.MODIFIER_SCROLL), MODIFIER_SCROLLS);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.ROYALE_CRATE), ROYALE_LOOT);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CRYSTAL_SEAL_VAULT_ROYALE), ROYALE_PRESETS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CRYSTAL_SEAL_VAULT_ROYALE_PVP), ROYALE_PRESETS);
@@ -137,6 +137,9 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.UNIQUE_SHARD), UNIQUE_GEAR);
         registration.addRecipeCatalyst(new ItemStack(ModItems.UNIQUE_CODEX), UNIQUE_GEAR);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.GREED_CAULDRON), GREED_CAULDRON);
+        if(!RemasteredHelper.isRemasteredVaultMod()) {
+            VHAPIJEIPluginBase.registerModifierScrolls(registration);
+        }
     }
 
     @Override @SuppressWarnings("removal")
@@ -154,7 +157,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(VAULT_PORTAL_BLOCKS, getValidVaultPortalBlocks());
         registration.addRecipes(ABILITY_SCROLLS, getAbilityScrolls());
         registration.addRecipes(TALENT_SCROLLS, getTalentScrolls());
-        registration.addRecipes(MODIFIER_SCROLLS, getModifierScrolls());
         registration.addRecipes(ROYALE_LOOT, getRoyaleLoot());
         registration.addRecipes(ROYALE_PRESETS, getRoyalePresets());
         registration.addRecipes(VAULT_DIFFUSER, getSoulValues());
@@ -166,6 +168,9 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(DECK_SOCKETS, getDeckSockets());
         registration.addRecipes(UNIQUE_GEAR, getUniqueGear());
         registration.addRecipes(GREED_CAULDRON, getGreedCauldron());
+        if(!RemasteredHelper.isRemasteredVaultMod()) {
+            VHAPIJEIPluginBase.registerModifierScrollsRecipes(registration);
+        }
     }
 
     @Override
@@ -188,7 +193,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_PORTAL_BLOCKS, ModBlocks.POLISHED_VAULT_STONE, new TextComponent("Vault Portal Blocks")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ABILITY_SCROLLS, ModItems.ABILITY_SCROLL, new TextComponent("Ability Scrolls")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, TALENT_SCROLLS, ModItems.TALENT_SCROLL, new TextComponent("Talent Scrolls")));
-        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, MODIFIER_SCROLLS, ModItems.VAULT_MODIFIER, new TextComponent("Modifier Items")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROYALE_LOOT, ModBlocks.ROYALE_CRATE, new TextComponent("Royale Loot")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROYALE_PRESETS, ModItems.ABILITY_SCROLL, new TextComponent("Royale Presets")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_DIFFUSER, ModBlocks.VAULT_DIFFUSER, new TextComponent("Soul Diffusing")));
@@ -199,6 +203,9 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, DECK_SOCKETS, ModItems.DECK_SOCKET, new TextComponent("Deck Cores")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, UNIQUE_GEAR, ModItems.UNIQUE_CODEX, new TextComponent("Unique Gear")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, GREED_CAULDRON, ModBlocks.GREED_CAULDRON, new TextComponent("Greed Cauldron")));
+        if(!RemasteredHelper.isRemasteredVaultMod()) {
+            VHAPIJEIPluginBase.registerModifierScrollsCategory(registration);
+        }
     }
 
     public static List<LabeledLootInfo> getFacetedFoci() {
@@ -703,28 +710,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
         });
 
         lootInfo.add(LabeledLootInfo.of(scrolls, new TextComponent("Talent Scrolls"), null));
-
-        return lootInfo;
-    }
-
-    public static List<LabeledLootInfo> getModifierScrolls() {
-        List<LabeledLootInfo> lootInfo = new ArrayList<>();
-
-        List<ItemStack> scrolls = new ArrayList<>();
-
-        AtomicInteger abilityTotalWeight = new AtomicInteger();
-
-        ((SkillScrollConfigAccessor)ModConfigs.SKILL_SCROLLS).getModifiers().forEach((s, number) -> {
-            abilityTotalWeight.getAndAdd((Integer) number);
-        });
-
-        ((SkillScrollConfigAccessor)ModConfigs.SKILL_SCROLLS).getModifiers().forEach((s, number) -> {
-            ItemStack scrollStack = new ItemStack(ModItems.VAULT_MODIFIER);
-            scrollStack.getOrCreateTag().putString("Modifier", s.toString());
-            scrolls.add(formatItemStack(scrollStack, 1, 1, (int)number, abilityTotalWeight.get(), null));
-        });
-
-        lootInfo.add(LabeledLootInfo.of(scrolls, new TextComponent("Modifier Items"), null));
 
         return lootInfo;
     }
