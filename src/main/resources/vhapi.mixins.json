@@ -4,6 +4,7 @@
   "package": "xyz.iwolfking.vhapi.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "vhapi.refmap.json",
+  "plugin": "xyz.iwolfking.vhapi.mixin.plugin.VHAPIConditionalMixinPlugin",
   "mixins": [
     "MixinModConfigs",
     "accessors.AbilitiesConfigAccessor",
@@ -144,6 +145,7 @@
     "models.MixinDeckItem",
     "registry.objective.MixinBountyScreen",
     "registry.sprites.MixinModTextureAtlases",
+    "registry.sprites.MixinModTextureAtlasesRemastered",
     "registry.sprites.MixinResourceTextureAtlasHolder"
   ],
   "injectors": {
