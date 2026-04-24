@@ -126,6 +126,7 @@
     "gen.MixinTemplateKey",
     "gen.MixinTemplatePool",
     "gen.MixinTheme",
+    "models.MixinEtchingItem",
     "models.MixinInfusedCatalystItem",
     "models.MixinInscriptionItem",
     "registry.gear.MixinGearModelRollRaritiesConfig",
