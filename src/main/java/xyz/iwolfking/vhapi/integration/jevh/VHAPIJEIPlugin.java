@@ -32,6 +32,7 @@ import iskallia.vault.init.ModConfigs;
 import iskallia.vault.init.ModGearAttributes;
 import iskallia.vault.init.ModItems;
 import iskallia.vault.item.*;
+import iskallia.vault.item.crystal.CrystalData;
 import iskallia.vault.item.data.InscriptionData;
 import iskallia.vault.item.gear.TemporalShardItem;
 import iskallia.vault.item.gear.TrinketItem;
@@ -105,7 +106,10 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> DECK_SOCKETS = RecipeType.create(VHAPI.MODID, "deck_sockets", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> UNIQUE_GEAR = RecipeType.create(VHAPI.MODID, "unique_gear", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> GREED_CAULDRON = RecipeType.create(VHAPI.MODID, "greed_cauldron", LabeledLootInfo.class);
-
+    public static final RecipeType<LabeledLootInfo> CHALLENGE_CRYSTALS = RecipeType.create("vhapi", "challenge_crystals", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> COMPANION_RELIC_CHANCES = RecipeType.create("vhapi", "companion_relic_chances", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> COSMIC_DUST_CHANCES = RecipeType.create("vhapi", "cosmic_dust_chances", LabeledLootInfo.class);
+    public static final RecipeType<LabeledLootInfo> ANCIENT_RELIC_CHANCES = RecipeType.create("vhapi", "ancient_relic_chances", LabeledLootInfo.class);
 
 
     @Override @SuppressWarnings("removal")
@@ -123,7 +127,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.VAULT_CRYSTAL), VAULT_PORTAL_BLOCKS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.ABILITY_SCROLL), ABILITY_SCROLLS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.TALENT_SCROLL), TALENT_SCROLLS);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.ROYALE_CRATE), ROYALE_LOOT);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CRYSTAL_SEAL_VAULT_ROYALE), ROYALE_PRESETS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.CRYSTAL_SEAL_VAULT_ROYALE_PVP), ROYALE_PRESETS);
         registration.addRecipeCatalyst(new ItemStack(ModBlocks.VAULT_DIFFUSER), VAULT_DIFFUSER);
@@ -136,7 +139,15 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.DECK_SOCKET), DECK_SOCKETS);
         registration.addRecipeCatalyst(new ItemStack(ModItems.UNIQUE_SHARD), UNIQUE_GEAR);
         registration.addRecipeCatalyst(new ItemStack(ModItems.UNIQUE_CODEX), UNIQUE_GEAR);
-        registration.addRecipeCatalyst(new ItemStack(ModBlocks.GREED_CAULDRON), GREED_CAULDRON);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.GREEDY_ANCHOR), CHALLENGE_CRYSTALS);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.COMPANION_RELIC_FRAGMENT),  COMPANION_RELIC_CHANCES);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.COSMIC_DUST), COSMIC_DUST_CHANCES);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.COMPANION_RELIC_FRAGMENT), ANCIENT_RELIC_CHANCES);
+        ModFileInfo justEnoughVHMod = LoadingModList.get().getModFileById("just_enough_vh");
+        if (justEnoughVHMod == null || justEnoughVHMod.getFile().getJarVersion().getMinorVersion() < 9) {
+            registration.addRecipeCatalyst(new ItemStack(ModBlocks.GREED_CAULDRON), GREED_CAULDRON );
+            registration.addRecipeCatalyst(new ItemStack(ModBlocks.ROYALE_CRATE), ROYALE_LOOT );
+        }
         if(!RemasteredHelper.isRemasteredVaultMod()) {
             VHAPIJEIPluginBase.registerModifierScrolls(registration);
         }
@@ -157,7 +168,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(VAULT_PORTAL_BLOCKS, getValidVaultPortalBlocks());
         registration.addRecipes(ABILITY_SCROLLS, getAbilityScrolls());
         registration.addRecipes(TALENT_SCROLLS, getTalentScrolls());
-        registration.addRecipes(ROYALE_LOOT, getRoyaleLoot());
         registration.addRecipes(ROYALE_PRESETS, getRoyalePresets());
         registration.addRecipes(VAULT_DIFFUSER, getSoulValues());
         registration.addRecipes(VAULT_CHEST_META, getChestMetaValues());
@@ -167,7 +177,15 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(CARD_DECKS, getCardDecks());
         registration.addRecipes(DECK_SOCKETS, getDeckSockets());
         registration.addRecipes(UNIQUE_GEAR, getUniqueGear());
-        registration.addRecipes(GREED_CAULDRON, getGreedCauldron());
+        registration.addRecipes(CHALLENGE_CRYSTALS, getChallengeCrystals());
+        registration.addRecipes(COMPANION_RELIC_CHANCES, getCompanionRelicMetaValues());
+        registration.addRecipes(COSMIC_DUST_CHANCES, getCosmicDustChances());
+        registration.addRecipes(ANCIENT_RELIC_CHANCES, getAncientRelicChances());
+        ModFileInfo justEnoughVHMod = LoadingModList.get().getModFileById("just_enough_vh");
+        if (justEnoughVHMod == null || justEnoughVHMod.getFile().getJarVersion().getMinorVersion() < 9) {
+            registration.addRecipes(GREED_CAULDRON, getGreedCauldron());
+            registration.addRecipes(ROYALE_LOOT, getRoyaleLoot());
+        }
         if(!RemasteredHelper.isRemasteredVaultMod()) {
             VHAPIJEIPluginBase.registerModifierScrollsRecipes(registration);
         }
@@ -193,7 +211,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_PORTAL_BLOCKS, ModBlocks.POLISHED_VAULT_STONE, new TextComponent("Vault Portal Blocks")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ABILITY_SCROLLS, ModItems.ABILITY_SCROLL, new TextComponent("Ability Scrolls")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, TALENT_SCROLLS, ModItems.TALENT_SCROLL, new TextComponent("Talent Scrolls")));
-        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROYALE_LOOT, ModBlocks.ROYALE_CRATE, new TextComponent("Royale Loot")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROYALE_PRESETS, ModItems.ABILITY_SCROLL, new TextComponent("Royale Presets")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_DIFFUSER, ModBlocks.VAULT_DIFFUSER, new TextComponent("Soul Diffusing")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, VAULT_ENCHANTER, ModBlocks.VAULT_ENCHANTER, new TextComponent("Vault Enchanter")));
@@ -202,10 +219,46 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, CARD_DECKS, ModItems.CARD_DECK, new TextComponent("Card Decks")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, DECK_SOCKETS, ModItems.DECK_SOCKET, new TextComponent("Deck Cores")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, UNIQUE_GEAR, ModItems.UNIQUE_CODEX, new TextComponent("Unique Gear")));
-        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, GREED_CAULDRON, ModBlocks.GREED_CAULDRON, new TextComponent("Greed Cauldron")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, CHALLENGE_CRYSTALS, ModItems.VAULT_CRYSTAL, new TextComponent("Challenge Crystals")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, COMPANION_RELIC_CHANCES, ModItems.COMPANION_RELIC_FRAGMENT, new TextComponent("Companion Relic Fragment Chances")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, COSMIC_DUST_CHANCES, ModItems.COSMIC_DUST, new TextComponent("Cosmic Dust Chances")));
+        registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ANCIENT_RELIC_CHANCES, ModItems.COMPANION_RELIC, new TextComponent("Ancient Companion Relic Chances")));
+        ModFileInfo justEnoughVHMod = LoadingModList.get().getModFileById("just_enough_vh");
+        if (justEnoughVHMod == null || justEnoughVHMod.getFile().getJarVersion().getMinorVersion() < 9) {
+            registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, GREED_CAULDRON, ModBlocks.GREED_CAULDRON, new TextComponent("Greed Cauldron")));
+            registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ROYALE_LOOT, ModBlocks.ROYALE_CRATE, new TextComponent("Royale Loot")));
+        }
         if(!RemasteredHelper.isRemasteredVaultMod()) {
             VHAPIJEIPluginBase.registerModifierScrollsCategory(registration);
         }
+    }
+
+    public static List<LabeledLootInfo> getChallengeCrystals() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
+        ModConfigs.CHALLENGE_CRYSTALS.getChallenges().forEach((s, entry) -> {
+            ItemStack crystal = new ItemStack((ItemLike)ModItems.VAULT_CRYSTAL);
+            CrystalData data = CrystalData.read(crystal);
+            if (entry.getModifiers() != null)
+                data.setModifiers(entry.getModifiers());
+            if (entry.getLayout() != null)
+                data.setLayout(entry.getLayout());
+            if (entry.getHazards() != null)
+                data.setHazards(entry.getHazards());
+            if (entry.getObjective() != null)
+                data.setObjective(entry.getObjective());
+            if (entry.getTheme() != null)
+                data.setTheme(entry.getTheme());
+            if (entry.getTime() != null)
+                data.setTime(entry.getTime());
+            if (entry.getSigil() != null)
+                data.setSigil(entry.getSigil());
+            data.write(crystal);
+            crystal.setHoverName(new TextComponent(s));
+            items.add(crystal);
+        });
+        lootInfo.add(LabeledLootInfo.of(items, (Component)new TextComponent("Challenge Crystals"), null));
+        return lootInfo;
     }
 
     public static List<LabeledLootInfo> getFacetedFoci() {
@@ -1077,6 +1130,45 @@ public class VHAPIJEIPlugin implements IModPlugin {
 
     public static LabeledLootInfoRecipeCategory makeLabeledIngredientPoolCategory(IGuiHelper guiHelper, RecipeType<LabeledLootInfo> recipeType, ItemLike icon) {
         return new LabeledLootInfoRecipeCategory(guiHelper, recipeType, new ItemStack(icon), INPUT);
+    }
+
+    public static List<LabeledLootInfo> getCompanionRelicMetaValues() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
+        ((CompanionRelicsConfigAccessor)ModConfigs.COMPANION_RELICS).getRelicChances().forEach((block, vaultRarityDoubleMap) -> {
+            ItemStack stack = new ItemStack(block);
+            vaultRarityDoubleMap.forEach(((vaultRarity, aDouble) -> {
+                items.add(formatChestMetaValue(stack, vaultRarity, aDouble));
+            }));
+        });
+        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Companion Relic Fragment Chances"), null));
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getCosmicDustChances() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
+        ((CompanionRelicsConfigAccessor)ModConfigs.COMPANION_RELICS).getParticleChances().forEach((block, vaultRarityDoubleMap) -> {
+            ItemStack stack = new ItemStack(block);
+            vaultRarityDoubleMap.forEach(((vaultRarity, aDouble) -> {
+                items.add(formatChestMetaValue(stack, vaultRarity, aDouble));
+            }));
+        });
+        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Cosmic Dust Chances"), null));
+        return lootInfo;
+    }
+
+    public static List<LabeledLootInfo> getAncientRelicChances() {
+        List<LabeledLootInfo> lootInfo = new ArrayList<>();
+        List<ItemStack> items = new ArrayList<>();
+        ((CompanionRelicsConfigAccessor)ModConfigs.COMPANION_RELICS).getAncientRelicChances().forEach((block, vaultRarityDoubleMap) -> {
+            ItemStack stack = new ItemStack(block);
+            vaultRarityDoubleMap.forEach(((vaultRarity, aDouble) -> {
+                items.add(formatChestMetaValue(stack, vaultRarity, aDouble));
+            }));
+        });
+        lootInfo.add(LabeledLootInfo.of(items, (Component)new TextComponent("Ancient Relic Chances"), null));
+        return lootInfo;
     }
 
     @Override

@@ -18,6 +18,9 @@ public interface CompanionRelicsConfigAccessor {
     @Accessor("relicChances")
     Map<Block, Map<VaultRarity, Double>> getRelicChances();
 
+    @Accessor("ancientRelicChances")
+    Map<Block, Map<VaultRarity, Double>> getAncientRelicChances();
+
     @Accessor("particleChances")
     Map<Block, Map<VaultRarity, Double>> getParticleChances();
 
