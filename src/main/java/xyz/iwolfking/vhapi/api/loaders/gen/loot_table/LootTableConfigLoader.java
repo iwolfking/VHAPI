@@ -7,18 +7,17 @@ import iskallia.vault.core.vault.VaultRegistry;
 import iskallia.vault.core.world.loot.LootPool;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.loot.entry.LootEntry;
-import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
+import xyz.iwolfking.vhapi.api.events.VaultGenConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
-
 public class LootTableConfigLoader extends VaultConfigProcessor<LootTablesConfig> {
     public LootTableConfigLoader() {
         super(new LootTablesConfig(), "vault_loot_tables");
     }
 
     @Override
-    public void afterConfigsLoad(VaultConfigEvent.End event) {
+    public void afterGenConfigsRegistriesBuilt(VaultGenConfigEvent.RegistriesBuilt event) {
         ((KeyRegistryAccessor) VaultRegistry.LOOT_TABLE).setLocked(false);
         for(LootTablesConfig config : this.CUSTOM_CONFIGS.values()) {
             for(LootTableKey key : config.toRegistry().getKeys()) {
@@ -44,7 +43,7 @@ public class LootTableConfigLoader extends VaultConfigProcessor<LootTablesConfig
             }
         }
         ((KeyRegistryAccessor)VaultRegistry.LOOT_TABLE).setLocked(true);
-        super.afterConfigsLoad(event);
+        super.afterGenConfigsRegistriesBuilt(event);
     }
 
     public static LootPool mergePools(LootPool a, LootPool b) {

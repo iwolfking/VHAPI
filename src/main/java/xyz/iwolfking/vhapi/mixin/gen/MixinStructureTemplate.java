@@ -22,7 +22,7 @@ public abstract class MixinStructureTemplate {
 
     @Inject(method = "lambda$initializeIfNot$4", at = @At("HEAD"), cancellable = true)
     private void structureFromRL(CallbackInfoReturnable<Void> cir){
-        if (ResourceLocUtils.isResourceLocation(this.path.replace(".nbt", ""))) {
+        if (ResourceLocUtils.isResourceLocation(this.path)) {
             var manager = ServerLifecycleHooks.getCurrentServer().getResourceManager();
             var rl = ResourceLocation.parse(this.path);
             if (!manager.hasResource(rl)) {

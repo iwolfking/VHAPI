@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
+import xyz.iwolfking.vhapi.api.events.VaultGenConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.core.readers.CustomVaultConfigReader;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
@@ -27,6 +28,11 @@ public abstract class VaultConfigProcessor<T extends Config> implements IConfigP
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         //this.CUSTOM_CONFIGS.clear();
+    }
+
+    @Override
+    public void afterGenConfigsRegistriesBuilt(VaultGenConfigEvent.RegistriesBuilt event) {
+
     }
 
     public void processMatchingConfigs() {

@@ -8,29 +8,21 @@ import iskallia.vault.core.world.template.data.DirectTemplateEntry;
 import iskallia.vault.core.world.template.data.IndirectTemplateEntry;
 import iskallia.vault.core.world.template.data.TemplatePool;
 import xyz.iwolfking.vhapi.VHAPI;
-import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
+import xyz.iwolfking.vhapi.api.events.VaultGenConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
-import xyz.iwolfking.vhapi.api.lib.core.processors.IPreProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.DirectTemplateEntryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 
-public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfig> implements IPreProcessor {
+public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfig> {
     public TemplatePoolsLoader() {
         super(new TemplatePoolsConfig(), "template_pools");
     }
 
     @Override
-    public void afterConfigsLoad(VaultConfigEvent.End event) {
-        if(event.getType().equals(VaultConfigEvent.Type.GEN)) {
-            registerTemplatePools();
-        }
-        super.afterConfigsLoad(event);
-    }
-
-    @Override
-    public void preProcessStep() {
+    public void afterGenConfigsRegistriesBuilt(VaultGenConfigEvent.RegistriesBuilt event) {
         registerTemplatePools();
+        super.afterGenConfigsRegistriesBuilt(event);
     }
 
     private void registerTemplatePools() {

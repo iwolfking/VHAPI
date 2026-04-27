@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.Mod;
 import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
+import xyz.iwolfking.vhapi.api.events.VaultGenConfigEvent;
 import xyz.iwolfking.vhapi.api.lib.core.readers.GenFileReader;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
@@ -38,5 +39,8 @@ public class GenFileProcessor<T> implements IConfigProcessor {
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
+    }
+
+    @Override public void afterGenConfigsRegistriesBuilt(VaultGenConfigEvent.RegistriesBuilt event) {
     }
 }
