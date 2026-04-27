@@ -6,6 +6,7 @@ import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.vault.VaultRegistry;
 import iskallia.vault.core.world.template.data.TemplatePool;
 import iskallia.vault.util.data.WeightedList;
+import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IPreProcessor;
@@ -36,6 +37,10 @@ public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfi
             for(TemplatePoolKey key : config.toRegistry().getKeys()) {
                 if(key.getId().getPath().endsWith("_merge")) {
                     TemplatePoolKey existingKey = VaultRegistry.TEMPLATE_POOL.getKey(ResourceLocUtils.removeSuffixFromId("_merge", key.getId()));
+                    if (existingKey == null) {
+                        VHAPI.LOGGER.error("Failed to merge \"{}\", existing template pool not found",  key.getId().getPath());
+                        continue;
+                    }
                     TemplatePool existingPool = existingKey.get(Version.latest());
                     TemplatePool mergePool = key.get(Version.v1_0);
                     mergePool.getChildren().forEach((o, aDouble) -> {

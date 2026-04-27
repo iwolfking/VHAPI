@@ -29,6 +29,7 @@ import xyz.iwolfking.vhapi.api.loaders.gear.*;
 import xyz.iwolfking.vhapi.api.loaders.gear.transmog.*;
 import xyz.iwolfking.vhapi.api.loaders.gen.loot_table.LootTableConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.palettes.PalettesConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.gen.template.TemplatesConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.template_pools.TemplatePoolsLoader;
 import xyz.iwolfking.vhapi.api.loaders.gen.theme.ThemeConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.ThemeLoreConfigLoader;
@@ -101,6 +102,7 @@ public class Processors {
         public static final TemplatePoolsLoader TEMPLATE_POOLS_CONFIG_LOADER = new TemplatePoolsLoader();
         public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader();
         public static final LootTableConfigLoader LOOT_TABLE_CONFIG_LOADER = new LootTableConfigLoader();
+        public static final TemplatesConfigLoader TEMPLATES_CONFIG_LOADER = new TemplatesConfigLoader();
     }
 
     public static class RecipesConfigProcessors {

@@ -60,6 +60,8 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GenerationFileProcessors.GEN_LOOT_TABLE_LOADER);
         addConfigProcessor(Processors.GenerationConfigProcessors.LOOT_TABLE_CONFIG_LOADER);
 
+        addConfigProcessor(Processors.GenerationConfigProcessors.TEMPLATES_CONFIG_LOADER);
+
         addConfigProcessor(Processors.RecipesConfigProcessors.CATALYST_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.INSCRIPTION_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.TRINKET_RECIPES_LOADER);

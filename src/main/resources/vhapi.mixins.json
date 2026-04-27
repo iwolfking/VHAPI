@@ -123,6 +123,7 @@
     "fixes.MixinDefaultCrystalModifiers",
     "gen.MixinLootTable",
     "gen.MixinPalette",
+    "gen.MixinStructureTemplate",
     "gen.MixinTemplateKey",
     "gen.MixinTemplatePool",
     "gen.MixinTheme",
