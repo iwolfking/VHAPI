@@ -3,6 +3,7 @@ package xyz.iwolfking.vhapi.api.loaders.gen.loot_table;
 import iskallia.vault.config.core.LootTablesConfig;
 import iskallia.vault.core.Version;
 import iskallia.vault.core.data.key.LootTableKey;
+import iskallia.vault.core.data.key.registry.KeyRegistry;
 import iskallia.vault.core.vault.VaultRegistry;
 import iskallia.vault.core.world.loot.LootPool;
 import iskallia.vault.core.world.loot.LootTable;
@@ -11,6 +12,8 @@ import xyz.iwolfking.vhapi.api.events.VaultGenConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
+import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryConfigAccessor;
+
 public class LootTableConfigLoader extends VaultConfigProcessor<LootTablesConfig> {
     public LootTableConfigLoader() {
         super(new LootTablesConfig(), "vault_loot_tables");
@@ -20,7 +23,7 @@ public class LootTableConfigLoader extends VaultConfigProcessor<LootTablesConfig
     public void afterGenConfigsRegistriesBuilt(VaultGenConfigEvent.RegistriesBuilt event) {
         ((KeyRegistryAccessor) VaultRegistry.LOOT_TABLE).setLocked(false);
         for(LootTablesConfig config : this.CUSTOM_CONFIGS.values()) {
-            for(LootTableKey key : config.toRegistry().getKeys()) {
+            for(LootTableKey key : toRegistry(config).getKeys()) {
                 if(key.getId().getPath().endsWith("_merge")) {
                     LootTableKey existingKey = VaultRegistry.LOOT_TABLE.getKey(ResourceLocUtils.removeSuffixFromId("_merge", key.getId()));
                     LootTable existingPool = existingKey.get(Version.latest());
@@ -44,6 +47,12 @@ public class LootTableConfigLoader extends VaultConfigProcessor<LootTablesConfig
         }
         ((KeyRegistryAccessor)VaultRegistry.LOOT_TABLE).setLocked(true);
         super.afterGenConfigsRegistriesBuilt(event);
+    }
+
+    public KeyRegistry<LootTableKey, LootTable, Version> toRegistry(LootTablesConfig config) {
+        KeyRegistry<LootTableKey, LootTable, Version> registry = config.create();
+        ((KeyRegistryConfigAccessor<LootTableKey>)config).getKeys().forEach(registry::register);
+        return registry;
     }
 
     public static LootPool mergePools(LootPool a, LootPool b) {

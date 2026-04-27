@@ -51,6 +51,7 @@
     "accessors.InscriptionConfigEntryAccessor",
     "accessors.InscriptionConfigPoolAccessor",
     "accessors.KeyRegistryAccessor",
+    "accessors.KeyRegistryConfigAccessor",
     "accessors.LearnableSkillAccessor",
     "accessors.LegacyLootTablesConfigAccessor",
     "accessors.LootInfoConfigAccessor",

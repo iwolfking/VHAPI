@@ -93,6 +93,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
         }
 
         ModConfigs.register();
+        ModConfigs.registerGen();
 
     }
 }

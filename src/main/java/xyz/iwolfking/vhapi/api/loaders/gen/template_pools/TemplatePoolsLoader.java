@@ -3,6 +3,7 @@ package xyz.iwolfking.vhapi.api.loaders.gen.template_pools;
 import iskallia.vault.config.core.TemplatePoolsConfig;
 import iskallia.vault.core.Version;
 import iskallia.vault.core.data.key.TemplatePoolKey;
+import iskallia.vault.core.data.key.registry.KeyRegistry;
 import iskallia.vault.core.vault.VaultRegistry;
 import iskallia.vault.core.world.template.data.DirectTemplateEntry;
 import iskallia.vault.core.world.template.data.IndirectTemplateEntry;
@@ -13,6 +14,7 @@ import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.DirectTemplateEntryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
+import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryConfigAccessor;
 
 public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfig> {
     public TemplatePoolsLoader() {
@@ -28,7 +30,7 @@ public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfi
     private void registerTemplatePools() {
         ((KeyRegistryAccessor) VaultRegistry.TEMPLATE_POOL).setLocked(false);
         for(TemplatePoolsConfig config : this.CUSTOM_CONFIGS.values()) {
-            for(TemplatePoolKey key : config.toRegistry().getKeys()) {
+            for(TemplatePoolKey key : toRegistry(config).getKeys()) {
                 if(key.getId().getPath().endsWith("_merge")) {
                     TemplatePoolKey existingKey = VaultRegistry.TEMPLATE_POOL.getKey(ResourceLocUtils.removeSuffixFromId("_merge", key.getId()));
                     if (existingKey == null) {
@@ -78,5 +80,12 @@ public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfi
             }
         }
         ((KeyRegistryAccessor)VaultRegistry.TEMPLATE_POOL).setLocked(true);
+    }
+
+
+    public KeyRegistry<TemplatePoolKey, TemplatePool, Version> toRegistry(TemplatePoolsConfig config) {
+        KeyRegistry<TemplatePoolKey, TemplatePool, Version> registry = config.create();
+        ((KeyRegistryConfigAccessor<TemplatePoolKey>)config).getKeys().forEach(registry::register);
+        return registry;
     }
 }
