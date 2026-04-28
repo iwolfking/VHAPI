@@ -27,6 +27,7 @@ public class GenFileProcessor<T> implements IConfigProcessor {
     }
 
     public void processMatchingConfigs() {
+        this.CUSTOM_CONFIGS.clear();
         GenFileReader<T> configReader = new GenFileReader<>();
         for(ResourceLocation key : LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.keySet()) {
             //Attempt to process all configs under the specified directory.

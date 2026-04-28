@@ -33,7 +33,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         profilerFiller.startTick();
-
+        JSON_DATA.clear();
         dataMap.forEach((resourceLocation, jsonElement) -> {
             if(!getIgnoredConfigs().contains(resourceLocation)) {
                 JSON_DATA.put(resourceLocation, jsonElement);
