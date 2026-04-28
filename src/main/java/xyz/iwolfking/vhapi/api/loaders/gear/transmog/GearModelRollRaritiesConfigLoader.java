@@ -78,6 +78,16 @@ public class GearModelRollRaritiesConfigLoader extends VaultConfigProcessor<Gear
                     }
                 }
             }
+            if(((GearModelRollRaritiesAccessor)config).getMagnetsModelRolls() != null) {
+                for(String key : ((GearModelRollRaritiesAccessor)config).getMagnetsModelRolls().keySet()) {
+                    if( ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getMagnetsModelRolls().containsKey(key)) {
+                        ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getMagnetsModelRolls().get(key).addAll(((GearModelRollRaritiesAccessor) config).getMagnetsModelRolls().get(key));
+                    }
+                    else {
+                        ((GearModelRollRaritiesAccessor)ModConfigs.GEAR_MODEL_ROLL_RARITIES).getMagnetsModelRolls().put(key, ((GearModelRollRaritiesAccessor) config).getMagnetsModelRolls().get(key));
+                    }
+                }
+            }
         }
     }
 
