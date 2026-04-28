@@ -34,7 +34,6 @@
     "accessors.DeckModifiersConfigAccessor",
     "accessors.DemandEntryAccessor",
     "accessors.DescriptionDataAccessor",
-    "accessors.DirectTemplateEntryAccessor",
     "accessors.DynamicModelPropertiesAccessor",
     "accessors.DynamicModelRegistryAccessor",
     "accessors.ElixirConfigAccessor",

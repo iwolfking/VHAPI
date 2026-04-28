@@ -5,14 +5,11 @@ import iskallia.vault.core.Version;
 import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.data.key.registry.KeyRegistry;
 import iskallia.vault.core.vault.VaultRegistry;
-import iskallia.vault.core.world.template.data.DirectTemplateEntry;
-import iskallia.vault.core.world.template.data.IndirectTemplateEntry;
 import iskallia.vault.core.world.template.data.TemplatePool;
 import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.events.VaultGenConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
-import xyz.iwolfking.vhapi.mixin.accessors.DirectTemplateEntryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryConfigAccessor;
 
@@ -40,42 +37,14 @@ public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfi
                     TemplatePool existingPool = existingKey.get(Version.latest());
                     TemplatePool mergePool = key.get(Version.v1_0);
                     mergePool.getChildren().forEach((o, aDouble) -> {
-
-                        boolean contains = false;
-                        if (o instanceof IndirectTemplateEntry newChild) {
-                            for (var existingChild: existingPool.getChildren().keySet()) {
-                                if (existingChild instanceof IndirectTemplateEntry existingChildI) {
-                                    if (newChild.getReferenceId().equals(existingChildI.getReferenceId())) {
-                                        contains = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (o instanceof DirectTemplateEntry newChild) {
-                            for (var existingChild: existingPool.getChildren().keySet()) {
-                                if (existingChild instanceof DirectTemplateEntry existingChildD) {
-                                    if (((DirectTemplateEntryAccessor)newChild).getTemplateID().equals(((DirectTemplateEntryAccessor)existingChildD).getTemplateID())) {
-                                        contains = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (!contains) {
-                            existingPool.getChildren().add(o, aDouble);
-                        }
+                        existingPool.getChildren().add(o, aDouble);
                     });
 
                     VaultRegistry.TEMPLATE_POOL.register(existingKey.with(Version.latest(), existingPool));
                 }
                 else {
-                    TemplatePoolKey existingKey = VaultRegistry.TEMPLATE_POOL.getKey(key.getId());
-                    if (existingKey == null) {
-                        VaultRegistry.TEMPLATE_POOL.register(key.with(Version.latest(), key.get(Version.v1_0)));
-                    }
+                    VaultRegistry.TEMPLATE_POOL.register(key.with(Version.latest(), key.get(Version.v1_0)));
+
                 }
             }
         }
