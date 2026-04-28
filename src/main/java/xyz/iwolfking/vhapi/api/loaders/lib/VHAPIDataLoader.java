@@ -43,6 +43,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
         profilerFiller.push("process_vault_configs");
 
         gatherConfigsToProcessors();
+        gatherGenConfigsToProcessors();
 
         profilerFiller.pop();
 
@@ -93,6 +94,26 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
         }
 
         ModConfigs.register();
+
+    }
+
+    public void gatherGenConfigsToProcessors() {
+        if(!isInitialized) {
+            isInitialized = true;
+            LoaderRegistry.initProcessors();
+        }
+
+        for(int i = 0; i < LoaderRegistry.GEN_CONFIG_PROCESSORS.size(); i++) {
+
+            IConfigProcessor configProcessor = LoaderRegistry.GEN_CONFIG_PROCESSORS.get(i);
+            configProcessor.processMatchingConfigs();
+
+            if (configProcessor instanceof IPreProcessor preConfigProcessor) {
+                preConfigProcessor.preProcessStep();
+            }
+
+        }
+
         ModConfigs.registerGen();
 
     }

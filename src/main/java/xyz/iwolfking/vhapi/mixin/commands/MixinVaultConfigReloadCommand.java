@@ -23,6 +23,6 @@ public class MixinVaultConfigReloadCommand {
     @Inject(method = "reloadGenConfigs", at = @At("HEAD"))
     private void onReloadGenConfigs(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Integer> cir) {
         VHAPILoggerUtils.info("Reloading vault configs at runtime, this is unsupported, here be dragons!");
-        LoaderRegistry.VHAPI_DATA_LOADER.gatherConfigsToProcessors();
+        LoaderRegistry.VHAPI_DATA_LOADER.gatherGenConfigsToProcessors();
     }
 }

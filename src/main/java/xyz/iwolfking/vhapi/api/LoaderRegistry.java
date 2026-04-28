@@ -18,8 +18,10 @@ import java.util.*;
 @Mod.EventBusSubscriber(modid = "vhapi", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LoaderRegistry {
     private static int ordinal = -1;
+    private static int genOrdinal = -1;
 
     public static final Map<Integer, IConfigProcessor> CONFIG_PROCESSORS = new HashMap<>();
+    public static final Map<Integer, IConfigProcessor> GEN_CONFIG_PROCESSORS = new HashMap<>();
 
     /**
      * All Gen file data loaders (found under gen/ file path)
@@ -41,8 +43,13 @@ public class LoaderRegistry {
     public static void addConfigProcessor(IConfigProcessor processor) {
         ordinal += 1;
         MinecraftForge.EVENT_BUS.addListener(processor::afterConfigsLoad);
-        MinecraftForge.EVENT_BUS.addListener(processor::afterGenConfigsRegistriesBuilt);
         CONFIG_PROCESSORS.put(ordinal, processor);
+    }
+
+    public static void addGenConfigProcessor(IConfigProcessor processor) {
+        genOrdinal += 1;
+        MinecraftForge.EVENT_BUS.addListener(processor::afterGenConfigsRegistriesBuilt);
+        GEN_CONFIG_PROCESSORS.put(genOrdinal, processor);
     }
 
     public static void initProcessors() {
@@ -52,16 +59,19 @@ public class LoaderRegistry {
             addConfigProcessor(transmogProcessor);
         }
 
-        addConfigProcessor(Processors.GenerationFileProcessors.GEN_PALETTE_LOADER);
-        addConfigProcessor(Processors.GenerationConfigProcessors.PALETTES_CONFIG_LOADER);
+        addGenConfigProcessor(Processors.GenerationFileProcessors.GEN_PALETTE_LOADER);
+        addGenConfigProcessor(Processors.GenerationConfigProcessors.PALETTES_CONFIG_LOADER);
 
-        addConfigProcessor(Processors.GenerationFileProcessors.GEN_TEMPLATE_POOL_LOADER);
-        addConfigProcessor(Processors.GenerationConfigProcessors.TEMPLATE_POOLS_CONFIG_LOADER);
+        addGenConfigProcessor(Processors.GenerationFileProcessors.GEN_TEMPLATE_POOL_LOADER);
+        addGenConfigProcessor(Processors.GenerationConfigProcessors.TEMPLATE_POOLS_CONFIG_LOADER);
 
-        addConfigProcessor(Processors.GenerationFileProcessors.GEN_LOOT_TABLE_LOADER);
-        addConfigProcessor(Processors.GenerationConfigProcessors.LOOT_TABLE_CONFIG_LOADER);
+        addGenConfigProcessor(Processors.GenerationFileProcessors.GEN_LOOT_TABLE_LOADER);
+        addGenConfigProcessor(Processors.GenerationConfigProcessors.LOOT_TABLE_CONFIG_LOADER);
 
-        addConfigProcessor(Processors.GenerationConfigProcessors.TEMPLATES_CONFIG_LOADER);
+        addGenConfigProcessor(Processors.GenerationConfigProcessors.TEMPLATES_CONFIG_LOADER);
+
+        addGenConfigProcessor(Processors.GenerationFileProcessors.GEN_THEME_LOADER);
+        addGenConfigProcessor(Processors.GenerationConfigProcessors.THEME_CONFIG_LOADER);
 
         addConfigProcessor(Processors.RecipesConfigProcessors.CATALYST_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.INSCRIPTION_RECIPES_LOADER);
@@ -138,9 +148,6 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.ShopConfigProcessors.SHOPPING_PEDESTAL_CONFIG_LOADER);
         addConfigProcessor(Processors.ShopConfigProcessors.NORMAL_BLACK_MARKET_CONFIG_LOADER);
         addConfigProcessor(Processors.ShopConfigProcessors.OMEGA_BLACK_MARKET_CONFIG_LOADER);
-
-        addConfigProcessor(Processors.GenerationFileProcessors.GEN_THEME_LOADER);
-        addConfigProcessor(Processors.GenerationConfigProcessors.THEME_CONFIG_LOADER);
 
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.AUGMENT_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.INSCRIPTION_CONFIG_LOADER);
