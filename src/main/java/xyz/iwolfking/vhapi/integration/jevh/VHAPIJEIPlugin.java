@@ -308,8 +308,10 @@ public class VHAPIJEIPlugin implements IModPlugin {
 
         ((VaultMetaChestConfigAccessor)ModConfigs.VAULT_CHEST_META).getCatalystChances().forEach((block, vaultRarityDoubleMap) -> {
             ItemStack stack = new ItemStack(block);
-            vaultRarityDoubleMap.forEach(((vaultRarity, aDouble) -> {
-                items.add(formatChestMetaValue(stack, vaultRarity, aDouble));
+            vaultRarityDoubleMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(((entry) -> {
+                if (entry.getValue() > 0) {
+                    items.add(formatChestMetaValue(stack, entry.getKey(), entry.getValue()));
+                }
             }));
         });
 

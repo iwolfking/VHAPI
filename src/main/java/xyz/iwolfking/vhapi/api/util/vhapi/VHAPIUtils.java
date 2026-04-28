@@ -6,6 +6,7 @@ import xyz.iwolfking.vhapi.api.LoaderRegistry;
 public class VHAPIUtils {
     public static void loadConfigs() {
         LoaderRegistry.VHAPI_DATA_LOADER.gatherConfigsToProcessors();
+        LoaderRegistry.VHAPI_DATA_LOADER.gatherGenConfigsToProcessors();
     }
 
     public static void purgeConfigs() {
