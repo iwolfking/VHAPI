@@ -13,6 +13,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'com.radimous.vh-addon-dev' version '0.3.6'
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -150,6 +151,9 @@ repositories {
     mavenCentral()
 
 }
+vhaddon {
+    moddedConfigDestinations = ["run-data"]
+}
 
 dependencies {
     // Specify the version of Minecraft to use.
@@ -170,6 +174,7 @@ dependencies {
     //Base
     implementation fg.deobf("curse.maven:vault-hunters-official-mod-458203:7952001")
 
+    implementation fg.deobf("curse.maven:vault-hunters-official-mod-458203:7952001")
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     implementation fg.deobf("curse.maven:just-enough-vh-1035310:7160447")
     compileOnly fg.deobf("curse.maven:wolds-vaults-official-mod-958799:7221672")
@@ -177,6 +182,22 @@ dependencies {
     jarJar(group: 'me.fallenbreath', name: 'conditional-mixin-forge', version: '[0.6.2,)') {
         jarJar.pin(it, '0.6.2')
     }
+
+
+    // runtime dev deps
+    runtimeOnly fg.deobf("curse.maven:sophisticated-backpacks-vault-hunters-edition-696425:4287544")
+    runtimeOnly fg.deobf("curse.maven:sophisticated-core-618298:4489807")
+    runtimeOnly fg.deobf("curse.maven:sophisticated-backpacks-422301:4515363")
+    runtimeOnly fg.deobf("curse.maven:autoreglib-250363:3642382")
+    runtimeOnly fg.deobf("curse.maven:quark-243121:3840125")
+    runtimeOnly fg.deobf("curse.maven:geckolib-388172:4181370")
+    runtimeOnly fg.deobf("curse.maven:alexs-mobs-426558:3853078")
+    runtimeOnly fg.deobf("curse.maven:citadel-331936:3783096")
+    runtimeOnly fg.deobf("curse.maven:architects-palette-433862:4498424")
+    runtimeOnly fg.deobf("curse.maven:lazy-dfu-forge-460819:3544496")
+    runtimeOnly fg.deobf("curse.maven:ksyxis-537533:6174567")
+    runtimeOnly fg.deobf("curse.maven:modernfix-790626:5399365")
+
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
