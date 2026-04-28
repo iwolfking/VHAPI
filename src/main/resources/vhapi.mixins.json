@@ -30,6 +30,7 @@
     "accessors.CompanionRelicPoolAccessor",
     "accessors.CompanionRelicsConfigAccessor",
     "accessors.ConfigForgeRecipeAccessor",
+    "accessors.ConfigOverworldInscriptionRecipeAccessor",
     "accessors.CustomizationDiscoveryConfigAccessor",
     "accessors.DeckModifiersConfigAccessor",
     "accessors.DemandEntryAccessor",
