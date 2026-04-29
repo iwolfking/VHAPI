@@ -123,6 +123,7 @@
     "custom.MixinVaultAltarIngredientsConfig",
     "custom.MixinVaultRecyclerTileEntity",
     "fixes.MixinDefaultCrystalModifiers",
+    "fixes.MixinOverworldInscriptionItem",
     "fixes.MixinTieredLootTableGenCDF",
     "gen.MixinLootTable",
     "gen.MixinPalette",
