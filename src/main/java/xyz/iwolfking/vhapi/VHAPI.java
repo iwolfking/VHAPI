@@ -186,7 +186,7 @@ public class VHAPI {
                             try (var is =  manager.getResource(rl).getInputStream()) {
                                 tags.add(new Pair<>(rl, is.readAllBytes()));
                             } catch (IOException e) {
-                                throw new RuntimeException("[VHAPI] Failed to send template " + id, e);
+                                VHAPI.LOGGER.error("Failed to send template {} {}", rl, e);
                             }
                         } else {
                             VHAPI.LOGGER.error("Structure {} not found", rl);

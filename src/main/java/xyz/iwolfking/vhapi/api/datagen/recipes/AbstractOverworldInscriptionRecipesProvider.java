@@ -2,7 +2,11 @@ package xyz.iwolfking.vhapi.api.datagen.recipes;
 
 import iskallia.vault.config.entry.recipe.ConfigOverworldInscriptionRecipe;
 import iskallia.vault.config.recipe.OverworldInscriptionRecipesConfig;
+import iskallia.vault.init.ModItems;
+import iskallia.vault.item.OverworldInscriptionItem;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import xyz.iwolfking.vhapi.api.datagen.AbstractVaultConfigDataProvider;
@@ -29,10 +33,15 @@ public abstract class AbstractOverworldInscriptionRecipesProvider extends Abstra
             super(OverworldInscriptionRecipesConfig::new);
         }
 
-        public Builder addRecipe(ResourceLocation id, ItemStack output, Consumer<List<ItemStack>> inputs, String creator) {
+        public Builder addRecipe(ResourceLocation id, Consumer<List<ItemStack>> inputs, ResourceLocation templateID, String name, String creator) {
+            ItemStack inscription = new ItemStack(ModItems.OVERWORLD_INSCRIPTION);
+            OverworldInscriptionItem.setColor(inscription, 3118792);
+            OverworldInscriptionItem.setStructureId(inscription, templateID);
+            inscription.setHoverName(new TextComponent(name).withStyle(Style.EMPTY.withColor(0x2F96C8)));
             ConfigOverworldInscriptionRecipe recipe = new ConfigOverworldInscriptionRecipe();
             ((ConfigOverworldInscriptionRecipeAccessor) recipe).setCreator(creator);
-            addAndConfigureRecipe(recipe, inputs, id, output);
+
+            addAndConfigureRecipe(recipe, inputs, id, inscription);
             return this;
         }
 
