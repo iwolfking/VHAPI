@@ -42,7 +42,9 @@ public abstract class VaultConfigProcessor<T extends Config> implements IConfigP
             //Attempt to process all configs under the specified directory.
             if(key.getPath().startsWith(directory)) {
                 T config = configReader.readCustomConfig(key.getPath(), LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.get(key), instance.getClass());
-                CUSTOM_CONFIGS.put(new ResourceLocation(key.getNamespace(), ResourceLocUtils.removePrefixFromId(directory + "/", key).getPath()), config);
+                if(config != null) {
+                    CUSTOM_CONFIGS.put(new ResourceLocation(key.getNamespace(), ResourceLocUtils.removePrefixFromId(directory + "/", key).getPath()), config);
+                }
             }
         }
     }

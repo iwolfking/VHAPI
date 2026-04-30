@@ -85,7 +85,9 @@ public class VaultConfigDataLoader<T extends Config> extends SimpleJsonResourceR
             if(!CONFIGS_TO_IGNORE.contains(resourceLocation)) {
                 CustomVaultConfigReader<T> configReader = new CustomVaultConfigReader<>();
                 T config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, instance.getClass());
-                CUSTOM_CONFIGS.put(new ResourceLocation(namespace, resourceLocation.getPath()), config);
+                if(config != null) {
+                    CUSTOM_CONFIGS.put(new ResourceLocation(namespace, resourceLocation.getPath()), config);
+                }
             }
         });
 

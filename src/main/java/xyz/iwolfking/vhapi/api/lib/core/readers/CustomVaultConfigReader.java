@@ -51,8 +51,9 @@ public class CustomVaultConfigReader<T extends Config> {
             }
 
             readConfig = config;
-        } catch (JsonSyntaxException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            VHAPILoggerUtils.info("Failed to read " + name);
+            return null;
         }
         return readConfig;
     }
