@@ -106,7 +106,7 @@ public class VHAPI {
     }
 
     public static ResourceLocation of(String name) {
-        return new ResourceLocation(MODID, name);
+        return ResourceLocation.fromNamespaceAndPath(MODID, name);
     }
 
 

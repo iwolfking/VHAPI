@@ -7,6 +7,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.*;
 import org.jetbrains.annotations.Nullable;
 import xyz.iwolfking.vhapi.api.registry.gear.CustomVaultGearRegistryEntry;
+import xyz.iwolfking.vhapi.VHAPI;
 
 import xyz.iwolfking.vhapi.mixin.accessors.ReforgeTagModificationFocusAccessor;
 
@@ -20,7 +21,7 @@ public class VaultGearRegistry {
 
 
     public static void newRegistry(NewRegistryEvent event) {
-        RegistryBuilder<CustomVaultGearRegistryEntry> builder = new RegistryBuilder<CustomVaultGearRegistryEntry>().setType(CustomVaultGearRegistryEntry.class).setName(new ResourceLocation("vhapi", "custom_gear_registry")).add(new VaultGearRegistry.Callback());
+        RegistryBuilder<CustomVaultGearRegistryEntry> builder = new RegistryBuilder<CustomVaultGearRegistryEntry>().setType(CustomVaultGearRegistryEntry.class).setName(VHAPI.of("custom_gear_registry")).add(new VaultGearRegistry.Callback());
         customGearRegistry = event.create(builder);
     }
 

@@ -31,7 +31,7 @@ public class ResourceLocUtils {
      * @return A ResourceLocation with the suffix removed from it.
      */
     public static ResourceLocation removeSuffixFromId(String suffix, ResourceLocation id) {
-        return id.getPath().endsWith(suffix) ? new ResourceLocation(id.getNamespace(), id.getPath().replaceFirst(suffix, "")) : id;
+        return id.getPath().endsWith(suffix) ? ResourceLocation.fromNamespaceAndPath(id.getNamespace(), id.getPath().replaceFirst(suffix, "")) : id;
     }
 
     /**
@@ -41,7 +41,7 @@ public class ResourceLocUtils {
      * @return A ResourceLocation with the prefix removed from it.
      */
     public static ResourceLocation removePrefixFromId(String prefix, ResourceLocation id) {
-        return id.getPath().startsWith(prefix) ? new ResourceLocation(id.getNamespace(), id.getPath().replaceFirst(prefix, "")) : id;
+        return id.getPath().startsWith(prefix) ? ResourceLocation.fromNamespaceAndPath(id.getNamespace(), id.getPath().replaceFirst(prefix, "")) : id;
     }
 
     /**
@@ -53,7 +53,7 @@ public class ResourceLocUtils {
     public static ResourceLocation appendToId(ResourceLocation id, String append) {
         String namespace = id.getNamespace();
         String path = id.getPath();
-        return new ResourceLocation(namespace, path + append);
+        return ResourceLocation.fromNamespaceAndPath(namespace, path + append);
     }
 
     /**
@@ -63,7 +63,7 @@ public class ResourceLocUtils {
      * @return A ResourceLocation with the string passed in prepended.
      */
     public static ResourceLocation prependToId(String prepend, ResourceLocation id) {
-        return new ResourceLocation(id.getNamespace(), prepend + id.getPath());
+        return ResourceLocation.fromNamespaceAndPath(id.getNamespace(), prepend + id.getPath());
     }
 
     /**
@@ -73,7 +73,7 @@ public class ResourceLocUtils {
      * @return A ResourceLocation with the namespace swapped for what is passed in.
      */
     public static ResourceLocation swapNamespace(ResourceLocation loc, String newNamespace) {
-        return new ResourceLocation(newNamespace, loc.getPath());
+        return ResourceLocation.fromNamespaceAndPath(newNamespace, loc.getPath());
     }
 
     /**
@@ -109,7 +109,7 @@ public class ResourceLocUtils {
     }
 
     public static ResourceLocation replace(ResourceLocation rl, String toReplace, String replacement) {
-        return new ResourceLocation(rl.getNamespace(), rl.getPath().replace(toReplace, replacement));
+        return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath().replace(toReplace, replacement));
     }
 
     public static boolean isResourceLocation(String testString) {

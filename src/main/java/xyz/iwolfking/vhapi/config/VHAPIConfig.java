@@ -34,7 +34,7 @@ public class VHAPIConfig {
         public List<ResourceLocation> getIgnoredConfigs() {
             List<ResourceLocation> locations = new ArrayList<>();
             for(String config : this.disabledConfigs.get()) {
-                locations.add(new ResourceLocation(config));
+                locations.add(ResourceLocation.parse(config));
             }
 
             return locations;

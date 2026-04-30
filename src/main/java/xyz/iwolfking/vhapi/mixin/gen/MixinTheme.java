@@ -27,8 +27,8 @@ public class MixinTheme {
     private static void fromPath(String path, CallbackInfoReturnable<Theme> cir) {
         Theme theme = null;
         if(ResourceLocUtils.isResourceLocation(path)) {
-            if(Processors.GenerationFileProcessors.GEN_THEME_LOADER.CUSTOM_CONFIGS.containsKey(new ResourceLocation(path))) {
-                theme = Processors.GenerationFileProcessors.GEN_THEME_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation(path));
+            if(Processors.GenerationFileProcessors.GEN_THEME_LOADER.CUSTOM_CONFIGS.containsKey(ResourceLocation.parse(path))) {
+                theme = Processors.GenerationFileProcessors.GEN_THEME_LOADER.CUSTOM_CONFIGS.get(ResourceLocation.parse(path));
             }
         }
 

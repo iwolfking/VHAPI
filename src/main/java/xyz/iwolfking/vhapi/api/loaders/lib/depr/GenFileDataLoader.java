@@ -87,7 +87,7 @@ public class GenFileDataLoader<T> extends SimpleJsonResourceReloadListener {
             if(!CONFIGS_TO_IGNORE.contains(resourceLocation)) {
                 GenFileReader<T> configReader = new GenFileReader<>();
                 T config = configReader.readCustomConfig(resourceLocation.getPath(), jsonElement, instance);
-                CUSTOM_CONFIGS.put(new ResourceLocation(namespace, resourceLocation.getPath()), config);
+                CUSTOM_CONFIGS.put(ResourceLocation.fromNamespaceAndPath(namespace, resourceLocation.getPath()), config);
             }
         });
         MinecraftForge.EVENT_BUS.addListener(this::afterConfigsLoad);
@@ -118,6 +118,6 @@ public class GenFileDataLoader<T> extends SimpleJsonResourceReloadListener {
     }
 
     public ResourceLocation namespaceLoc(String name) {
-        return new ResourceLocation(namespace, name);
+        return ResourceLocation.fromNamespaceAndPath(namespace, name);
     }
 }

@@ -68,7 +68,7 @@ public class ShieldModelRegistryConfigLoader<T extends DynamicModelRegistry<Shie
             else {
                 bakedIcon = handHeldModel.bakeModel(modelResourceLocation, modelLoader, unbakedModel);
             }
-            ResourceLocation bakeId = new ResourceLocation(modelResourceLocation.getNamespace(), modelResourceLocation.getPath());
+            ResourceLocation bakeId = ResourceLocation.fromNamespaceAndPath(modelResourceLocation.getNamespace(), modelResourceLocation.getPath());
             this.registry.bakeIcon(bakeId, bakedIcon);
         });
 

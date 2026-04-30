@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.*;
 import org.jetbrains.annotations.Nullable;
+import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.registry.objective.CustomObjectiveRegistryEntry;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.LootInfoGroupDefinitionRegistryAccessor;
@@ -28,7 +29,7 @@ public class VaultObjectiveRegistry {
 
 
     public static void newRegistry(NewRegistryEvent event) {
-        RegistryBuilder<CustomObjectiveRegistryEntry> builder = new RegistryBuilder<CustomObjectiveRegistryEntry>().setType(CustomObjectiveRegistryEntry.class).setName(new ResourceLocation("vhapi", "custom_objective_registry")).add(new Callback());
+        RegistryBuilder<CustomObjectiveRegistryEntry> builder = new RegistryBuilder<CustomObjectiveRegistryEntry>().setType(CustomObjectiveRegistryEntry.class).setName(VHAPI.of( "custom_objective_registry")).add(new Callback());
         customObjectiveRegistry = event.create(builder);
     }
 
