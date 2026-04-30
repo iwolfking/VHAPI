@@ -172,7 +172,12 @@ public class VHAPI {
         List<Pair<ResourceLocation, byte[]>> tags = new ArrayList<>();
         if (manager != null) {
             for (var id: ids) {
-                var template = VaultRegistry.TEMPLATE.getKey(id).get(Version.latest());
+                var templateKey = VaultRegistry.TEMPLATE.getKey(id);
+                if (templateKey == null) {
+                    VHAPI.LOGGER.error("Template {} not found", id);
+                    continue;
+                }
+                var template = templateKey.get(Version.latest());
                 if (template instanceof StructureTemplate st) {
                     var path = st.getPath();
                     if (ResourceLocUtils.isResourceLocation(path)) {

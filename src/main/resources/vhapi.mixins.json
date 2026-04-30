@@ -124,6 +124,7 @@
     "custom.MixinVaultRecyclerTileEntity",
     "fixes.MixinDefaultCrystalModifiers",
     "fixes.MixinOverworldInscriptionItem",
+    "fixes.MixinSchematicStructurePreview",
     "fixes.MixinTieredLootTableGenCDF",
     "gen.MixinLootTable",
     "gen.MixinPalette",
