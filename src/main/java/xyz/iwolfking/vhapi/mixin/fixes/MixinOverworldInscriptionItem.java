@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = OverworldInscriptionItem.class)
 public class MixinOverworldInscriptionItem {
-    @WrapOperation(method = "appendHoverText", at = @At(value = "INVOKE", target = "Liskallia/vault/core/data/key/TemplateKey;getName()Ljava/lang/String;"))
+    @WrapOperation(method = "appendHoverText", at = @At(value = "INVOKE", target = "Liskallia/vault/core/data/key/TemplateKey;getName()Ljava/lang/String;", remap = false))
     private String nullCheck(TemplateKey instance, Operation<String> original) {
         if (instance == null){
             return null;
