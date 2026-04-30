@@ -140,6 +140,7 @@ public abstract class AbstractChallengeCrystalProvider extends AbstractVaultConf
 
 
         public ChallengeCrystalConfig.Entry build() {
+            modifiers.setRandomModifiers(false);
             return new ChallengeCrystalConfig.Entry(objective, layout, theme, time, modifiers, hazards, sigil, exhausted);
         }
     }

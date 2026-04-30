@@ -44,6 +44,7 @@
     "accessors.GearModelRollRaritiesAccessor",
     "accessors.GreedCauldronConfigAccessor",
     "accessors.GreedChallengeEntryAccessor",
+    "accessors.GreedTraderConfigAccessor",
     "accessors.GreedTraderConfigPoolEntry",
     "accessors.GreedTraderConfigTradeEntryAccessor",
     "accessors.GroupChallengeActionConfigAccessor",
