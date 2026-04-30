@@ -2,6 +2,7 @@ package xyz.iwolfking.vhapi.api.loaders.lib;
 
 import com.google.gson.JsonElement;
 import iskallia.vault.init.ModConfigs;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -24,6 +25,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     private boolean isInitialized = false;
     private final String namespace = VHAPI.MODID;
     public Map<ResourceLocation, JsonElement> JSON_DATA = new HashMap<>();
+    public Map<ResourceLocation, CompoundTag> TEMPLATES = new HashMap<>();
     private final Set<ResourceLocation> CONFIGS_TO_IGNORE = new HashSet<>();
 
     public VHAPIDataLoader() {
@@ -77,6 +79,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     }
 
     public void gatherConfigsToProcessors() {
+        long start = System.currentTimeMillis();
         if(!isInitialized) {
             isInitialized = true;
             LoaderRegistry.initProcessors();
@@ -94,10 +97,13 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
         }
 
         ModConfigs.register();
+        long end = System.currentTimeMillis();
+        VHAPI.LOGGER.debug("GCTP took {}ms", end-start);
 
     }
 
     public void gatherGenConfigsToProcessors() {
+        long start = System.currentTimeMillis();
         if(!isInitialized) {
             isInitialized = true;
             LoaderRegistry.initProcessors();
@@ -115,6 +121,8 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
         }
 
         ModConfigs.registerGen();
+        long end = System.currentTimeMillis();
+        VHAPI.LOGGER.debug("GCTP GEN took {}ms", end-start);
 
     }
 }

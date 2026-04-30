@@ -98,10 +98,10 @@ public abstract class AbstractTemplatePoolProvider implements DataProvider {
     }
 
     protected void createStandardPoolsForTheme(String name, ResourceLocation themePaletteId, ResourceLocation orePaletteId) {
-        addCommonRoomsPool(new ResourceLocation(modid, name + "_common_rooms"), themePaletteId, orePaletteId);
-        addTunnelsPool(new ResourceLocation(modid, name + "_tunnels"), themePaletteId);
-        addStartsPool(new ResourceLocation(modid, name + "_starts"), themePaletteId);
-        addStandardRoomsPool(new ResourceLocation(modid, name + "_rooms"), new ResourceLocation(modid, name + "_common_rooms"));
+        addCommonRoomsPool(ResourceLocation.fromNamespaceAndPath(modid, name + "_common_rooms"), themePaletteId, orePaletteId);
+        addTunnelsPool(ResourceLocation.fromNamespaceAndPath(modid, name + "_tunnels"), themePaletteId);
+        addStartsPool(ResourceLocation.fromNamespaceAndPath(modid, name + "_starts"), themePaletteId);
+        addStandardRoomsPool(ResourceLocation.fromNamespaceAndPath(modid, name + "_rooms"), ResourceLocation.fromNamespaceAndPath(modid, name + "_common_rooms"));
     }
 
     @Override

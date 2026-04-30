@@ -18,8 +18,8 @@ public class MixinTemplatePool {
     private static void fromPath(String path, CallbackInfoReturnable<TemplatePool> cir) {
         TemplatePool pool = null;
         if(ResourceLocUtils.isResourceLocation(path)) {
-            if(Processors.GenerationFileProcessors.GEN_TEMPLATE_POOL_LOADER.CUSTOM_CONFIGS.containsKey(new ResourceLocation(path))) {
-                pool = Processors.GenerationFileProcessors.GEN_TEMPLATE_POOL_LOADER.CUSTOM_CONFIGS.get(new ResourceLocation(path));
+            if(Processors.GenerationFileProcessors.GEN_TEMPLATE_POOL_LOADER.CUSTOM_CONFIGS.containsKey(ResourceLocation.parse(path))) {
+                pool = Processors.GenerationFileProcessors.GEN_TEMPLATE_POOL_LOADER.CUSTOM_CONFIGS.get(ResourceLocation.parse(path));
             }
         }
 

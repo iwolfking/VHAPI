@@ -23,7 +23,7 @@ public class GenFileProcessor<T> implements IConfigProcessor {
     public GenFileProcessor(Type instance, String directory) {
         this.instance = instance;
         this.directory = directory;
-        LoaderRegistry.GEN_FILE_LOADERS.put(new ResourceLocation(VHAPI.MODID, this.directory), this);
+        LoaderRegistry.GEN_FILE_LOADERS.put(VHAPI.of(this.directory), this);
     }
 
     public void processMatchingConfigs() {
@@ -33,7 +33,7 @@ public class GenFileProcessor<T> implements IConfigProcessor {
             //Attempt to process all configs under the specified directory.
             if(key.getPath().startsWith(directory)) {
                 T config = configReader.readCustomConfig(key.getPath(), LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.get(key), instance);
-                CUSTOM_CONFIGS.put(new ResourceLocation(key.getNamespace(), ResourceLocUtils.removePrefixFromId(directory + "/", key).getPath()), config);
+                CUSTOM_CONFIGS.put(ResourceLocation.fromNamespaceAndPath(key.getNamespace(), ResourceLocUtils.removePrefixFromId(directory + "/", key).getPath()), config);
             }
         }
     }

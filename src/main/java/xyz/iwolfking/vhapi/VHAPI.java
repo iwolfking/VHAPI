@@ -1,16 +1,23 @@
 package xyz.iwolfking.vhapi;
 
 import com.mojang.logging.LogUtils;
+import iskallia.vault.core.Version;
+import iskallia.vault.core.vault.VaultRegistry;
+import iskallia.vault.core.world.template.StructureTemplate;
+import iskallia.vault.init.ModConfigs;
+import iskallia.vault.item.OverworldInscriptionItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -23,7 +30,9 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
+import oshi.util.tuples.Pair;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.events.vault.VaultEvents;
 import xyz.iwolfking.vhapi.api.registry.VaultGearRegistry;
@@ -35,6 +44,7 @@ import xyz.iwolfking.vhapi.config.VHAPIConfig;
 import xyz.iwolfking.vhapi.mixin.accessors.BountyScreenAccessor;
 import xyz.iwolfking.vhapi.networking.VHAPISyncDescriptor;
 import xyz.iwolfking.vhapi.networking.VHAPISyncNetwork;
+import xyz.iwolfking.vhapi.networking.VHAPISyncTemplates;
 import xyz.iwolfking.vhapi.proxy.IVHAPISyncProxy;
 import xyz.iwolfking.vhapi.proxy.client.VHAPISyncClientProxy;
 import xyz.iwolfking.vhapi.proxy.server.VHAPISyncServerProxy;
@@ -75,7 +85,6 @@ public class VHAPI {
         modEventBus.addListener(VaultGearRegistry::newRegistry);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-            MinecraftForge.EVENT_BUS.addListener(Client::onClientLogin);
             MinecraftForge.EVENT_BUS.addListener(Client::onClientLogout);
         });
 
@@ -97,21 +106,98 @@ public class VHAPI {
     }
 
     public static ResourceLocation of(String name) {
-        return new ResourceLocation(MODID, name);
+        return ResourceLocation.fromNamespaceAndPath(MODID, name);
     }
 
 
-    private void onLogin(final PlayerEvent.PlayerLoggedInEvent event) {
-        if (!event.getPlayer().getLevel().isClientSide()) {
-            if (VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
-                if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
+    private void onLogin(final OnDatapackSyncEvent event) {
+        if (VHAPIConfig.SERVER.syncDatapackConfigs.get()) {
+            var templates = getOwInscriptionTemplates();
+            if (event.getPlayer() != null) {
+                for (var template: templates) {
                     VHAPISyncNetwork.syncVHAPIConfigs(
-                            new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
-                            serverPlayer
+                        new VHAPISyncTemplates(template.getA(), template.getB()),
+                        event.getPlayer()
                     );
                 }
+
+                VHAPISyncNetwork.syncVHAPIConfigs(
+                    new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
+                    event.getPlayer()
+                );
+                for (var template: templates) {
+                    VHAPISyncNetwork.syncVHAPIConfigs(
+                        new VHAPISyncTemplates(template.getA(), template.getB()),
+                        event.getPlayer()
+                    );
+                }
+
+                return; // 1 player joined
+            }
+
+            // /reload
+            for (var player : event.getPlayerList().getPlayers()) {
+                for (var template: templates) {
+                    VHAPISyncNetwork.syncVHAPIConfigs(
+                        new VHAPISyncTemplates(template.getA(), template.getB()),
+                        player
+                    );
+                }
+
+                VHAPISyncNetwork.syncVHAPIConfigs(
+                    new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
+                    player
+                );
+
             }
         }
+    }
+
+    private List<Pair<ResourceLocation, byte[]>> getOwInscriptionTemplates(){
+
+        List<ResourceLocation> ids = new ArrayList<>();
+        var insRecipes = ModConfigs.OVERWORLD_INSCRIPTION_RECIPES.getConfigRecipes();
+        for (var recipe : insRecipes) {
+            var stack = recipe.makeRecipe().createOutput(List.of(), null, 0);
+            var id = OverworldInscriptionItem.getStructureId(stack);
+            if (id != null) {
+                ids.add(id);
+            }
+        }
+        ResourceManager manager = null;
+        var server = ServerLifecycleHooks.getCurrentServer();
+        if (server != null) {
+            manager = server.getResourceManager();
+        }
+        List<Pair<ResourceLocation, byte[]>> tags = new ArrayList<>();
+        if (manager != null) {
+            for (var id: ids) {
+                var templateKey = VaultRegistry.TEMPLATE.getKey(id);
+                if (templateKey == null) {
+                    VHAPI.LOGGER.error("Template {} not found", id);
+                    continue;
+                }
+                var template = templateKey.get(Version.latest());
+                if (template instanceof StructureTemplate st) {
+                    var path = st.getPath();
+                    if (ResourceLocUtils.isResourceLocation(path)) {
+                        var rl = ResourceLocation.parse(path);
+                        if (manager.hasResource(rl)) {
+                            try (var is =  manager.getResource(rl).getInputStream()) {
+                                tags.add(new Pair<>(rl, is.readAllBytes()));
+                            } catch (IOException e) {
+                                VHAPI.LOGGER.error("Failed to send template {} {}", rl, e);
+                            }
+                        } else {
+                            VHAPI.LOGGER.error("Structure {} not found", rl);
+                        }
+                    }
+                }
+
+
+            }
+        }
+        return tags;
     }
 
     private void worldLoad(final WorldEvent.Load event)  {
@@ -127,15 +213,6 @@ public class VHAPI {
     public static class Client {
         public static final Map<String, List<ResourceLocation>> CUSTOM_TEXTURE_ATLAS_MAP = new HashMap<>();
 
-        public static void onClientLogin(final ClientPlayerNetworkEvent.LoggedInEvent event) {
-            VHAPILoggerUtils.debug("Rerunning Vault Configs load client-side to patch them.");
-            VHAPIUtils.loadConfigs();
-
-            //Handles adding the new objective names to display in Bounty tasks.
-            if (BountyScreenAccessor.getObjectiveNames() != null) {
-                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
-            }
-        }
 
         public static void onClientLogout(final ClientPlayerNetworkEvent.LoggedOutEvent event) {
             //if(VHAPIConfig.CLIENT.clearConfigsOnLogout.get()) {
