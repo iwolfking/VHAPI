@@ -226,6 +226,7 @@ public abstract class AbstractPaletteProvider implements DataProvider {
             CEILING_ACCENT("minecraft:pink_wool"),
             CEILING_ACCENT_SECONDARY("minecraft:lime_wool"),
             CEILING_ACCENT_TERTIARY("minecraft:brown_wool"),
+            CEILING_SOLID_ACCENT("minecraft:polished_blackstone_bricks"),
 
             TUNNEL_LANTERN("minecraft:soul_lantern"),
             TUNNEL_PILLAR("quark:azalea_log"),
