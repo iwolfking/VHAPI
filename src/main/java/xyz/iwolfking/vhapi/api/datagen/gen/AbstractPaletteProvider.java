@@ -182,7 +182,7 @@ public abstract class AbstractPaletteProvider implements DataProvider {
             POI_MAIN_ALT_SECONDARY("minecraft:mossy_cobblestone"),
             POI_ACCENT("minecraft:chiseled_stone_bricks"),
             POI_PILLAR("create:andesite_pillar"),
-            POI_STAIRS("minecraft:stone_bricks_stairs"),
+            POI_STAIRS("minecraft:stone_brick_stairs"),
             POI_STAIRS_SECONDARY("minecraft:cobblestone_stairs"),
             POI_WALL("minecraft:stone_brick_wall"),
             POI_WALL_SECONDARY("minecraft:cobblestone_wall"),
@@ -242,7 +242,7 @@ public abstract class AbstractPaletteProvider implements DataProvider {
 
             GOD_ALTAR_ACCENT("minecraft:end_stone"),
             GOD_ALTAR_MAIN("minecraft:end_stone_bricks"),
-            GOD_ALTAR_STAIRS("minecraft:end_stone_bricks_stairs"),
+            GOD_ALTAR_STAIRS("minecraft:end_stone_brick_stairs"),
             GOD_ALTAR_SLAB("minecraft:end_stone_brick_slab"),
 
             POST_FENCE("minecraft:warped_fence"),
