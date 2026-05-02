@@ -183,9 +183,11 @@ public abstract class AbstractPaletteProvider implements DataProvider {
             POI_ACCENT("minecraft:chiseled_stone_bricks"),
             POI_PILLAR("create:andesite_pillar"),
             POI_STAIRS("minecraft:stone_brick_stairs"),
+            POI_STONE_STAIRS("minecraft:stone_stairs"),
             POI_STAIRS_SECONDARY("minecraft:cobblestone_stairs"),
             POI_WALL("minecraft:stone_brick_wall"),
             POI_WALL_SECONDARY("minecraft:cobblestone_wall"),
+            POI_WALL_TERTIARY("minecraft:mossy_cobblestone_wall"),
             POI_SLAB("minecraft:stone_brick_slab"),
             POI_SLAB_TERTIARY("minecraft:stone_slab"),
             POI_LOG("minecraft:oak_log"),
@@ -205,6 +207,8 @@ public abstract class AbstractPaletteProvider implements DataProvider {
             POI_VERTICAL_SLAB_BRICK("quark:stone_brick_vertical_slab"),
             POI_VERTICAL_SLAB("quark:stone_vertical_slab"),
             POI_SUPPORT("decorative_blocks:oak_support"),
+            POI_RUBBLE("minecraft:gravel"),
+            POI_CONCRETE("minecraft:green_concrete"),
 
             FLOOR("minecraft:dirt"),
             FLOOR_SLAB("minecraft:spruce_slab"),
@@ -269,12 +273,40 @@ public abstract class AbstractPaletteProvider implements DataProvider {
 
             //Misc
             CANDLE("minecraft:candle"),
+            CANDLE_VARIANT("minecraft:yellow_candle"),
+            CANDLE_VARIANT_ORE("minecraft:red_candle"),
             CHAIN("minecraft:chain"),
             BIG_CHAIN("decorative_blocks:chain"),
             COBWEB("minecraft:cobweb"),
             RAIL("minecraft:rail"),
             GRINDSTONE("minecraft:grindstone"),
             SAND("minecraft:sand"),
+            LECTERN("minecraft:lectern"),
+            COMPOSTER("minecraft:composter"),
+            CRYSTAL("auxiliaryblocks:yellow_crystal"),
+            ORE_WOOD_SLAB("minecraft:petrified_oak_slab"),
+            ORE_CRATE("thermal:carrot_block"),
+            ORE_CRATE_VARIANT("thermal:potato_block"),
+            ORE_STICK_BLOCK("quark:stick_block"),
+            PEBBLE("twigs:pebble"),
+            ASH("supplementaries:ash"),
+            SUNSTONE("architects_palette:sunstone"),
+            FLOWER_POT("minecraft:flower_pot"),
+            VINES("minecraft:vine"),
+            CORUNDUM("quark:indigo_corundum"),
+            CORUNDUM_ALT("quark:yellow_corundum"),
+            CORUNDUM_CLUSTER("quark:indigo_corundum_cluster"),
+            CORUNDUM_CLUSTER_ALT("quark:yellow_corundum_cluster"),
+            SEA_PICKLE("minecraft:sea_pickle"),
+            POT("ecologics:pot"),
+            GILDED_STONE("minecraft:gilded_blackstone"),
+            GILDED_STRIPPED_WOOD("ecologics:stripped_azalea_wood"),
+            GILDED_FLOWER_SHELF("ecologics:mcfur/ecologics/flowering_azalea_bookshelf"),
+            GILDED_FLOWER_TORCH("ecologics:mcl/ecologics/flowering_azalea_tiki_torch"),
+            PINK_BLOSSOM_CARPET("quark:pink_blossom_leaf_carpet"),
+            PINK_CANDLE_HOLDER("supplementaries:candle_holder_pink"),
+
+
 
             METAL_STAIRS("architects_palette:plating_stairs"),
             METAL_PIPE("architects_palette:pipe"),
@@ -282,8 +314,26 @@ public abstract class AbstractPaletteProvider implements DataProvider {
             METAL_TILES("architects_palette:flint_tiles"),
 
 
+            POI_DARK_BRICKS("minecraft:deepslate_bricks"),
+            POI_DARK_BRICKS_SLAB("minecraft:deepslate_brick_slab"),
+            POI_DARK_BRICKS_STAIRS("minecraft:deepslate_tile_stairs"),
+            POI_DARK_BRICKS_VARIANT("minecraft:cracked_deepslate_bricks"),
+            POI_DARK_WALL("architects_palette:warpstone_wall"),
+            POI_DARK_WALL_VARIANT("minecraft:deepslate_tile_wall"),
+            POI_LIT_SKULL("architects_palette:lit_withered_osseous_skull"),
+            POI_DARK_BRICKS_SECONDARY("architects_palette:withered_osseous_bricks"),
+            POI_DARK_WALL_SECONDARY("architects_palette:withered_osseous_brick_wall"),
+            POI_DARK_PILLAR("architects_palette:withered_osseous_pillar"),
+            POI_SKULL("architects_palette:osseous_skull"),
+            POI_SKULL_PILLAR("architects_palette:osseous_pillar"),
+            POI_RAILING("architects_palette:twisted_railing"),
+            CONCRETE_POWDER("minecraft:yellow_concrete_powder"),
+            GOLD_PLATE("minecraft:light_weighted_pressure_plate"),
+            GOLD_BUTTON("quark:gold_button"),
+
+
+
             //Unknown purpose
-            NATURE("minecraft:green_concrete"),
             FENCE_WOOD_SECONDARY("ecologics:azalea_fence"),
             HEDGE("quark:oak_hedge");
 
