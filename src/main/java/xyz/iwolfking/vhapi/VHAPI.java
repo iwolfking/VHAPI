@@ -125,12 +125,6 @@ public class VHAPI {
                     new VHAPISyncDescriptor(LoaderRegistry.VHAPI_DATA_LOADER.getCompressedConfigMap()),
                     event.getPlayer()
                 );
-                for (var template: templates) {
-                    VHAPISyncNetwork.syncVHAPIConfigs(
-                        new VHAPISyncTemplates(template.getA(), template.getB()),
-                        event.getPlayer()
-                    );
-                }
 
                 return; // 1 player joined
             }
