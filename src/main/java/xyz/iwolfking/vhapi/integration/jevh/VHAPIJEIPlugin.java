@@ -335,7 +335,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
                 items.add(new ItemStack(block));
             }
         });
-        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Soul Values"), null));
+        lootInfo.addAll(LabeledLootInfo.pages(items, new TextComponent("Soul Values"), null));
 
 
         return lootInfo;
@@ -380,7 +380,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
             uniqueGearPieces.add(uniqueGearPiece);
         }));
 
-        lootInfo.add(LabeledLootInfo.of(uniqueGearPieces, new TextComponent("Unique Gear"), null));
+        lootInfo.addAll(LabeledLootInfo.pages(uniqueGearPieces, new TextComponent("Unique Gear"), null));
         return lootInfo;
     }
 
