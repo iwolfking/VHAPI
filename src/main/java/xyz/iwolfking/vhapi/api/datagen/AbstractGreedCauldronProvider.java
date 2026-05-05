@@ -29,7 +29,7 @@ public abstract class AbstractGreedCauldronProvider extends AbstractVaultConfigD
         }
 
         public Builder add(String itemName, int minAmount, int maxAmount, Integer coinOutput) {
-            new GreedCauldronConfig.DemandEntry(itemName, minAmount, maxAmount, coinOutput);
+            demands.add(new GreedCauldronConfig.DemandEntry(itemName, minAmount, maxAmount, coinOutput));
             return this;
         }
 
