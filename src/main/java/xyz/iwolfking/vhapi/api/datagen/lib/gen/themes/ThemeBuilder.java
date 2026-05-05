@@ -1,9 +1,11 @@
 package xyz.iwolfking.vhapi.api.datagen.lib.gen.themes;
 
 import iskallia.vault.config.ThemeAugmentLoreConfig;
+import xyz.iwolfking.vhapi.api.util.builder.description.ThemeLoreDescriptionBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class ThemeBuilder {
 
@@ -96,8 +98,10 @@ public class ThemeBuilder {
         return this;
     }
 
-    public ThemeBuilder themeLore(ThemeAugmentLoreConfig.AugmentLore augmentLore) {
-        def.themeLore = augmentLore;
+    public ThemeBuilder themeLore(String themeGroupName, int color, Consumer<ThemeLoreDescriptionBuilder> descriptionBuilderConsumer) {
+        ThemeLoreDescriptionBuilder builder = new ThemeLoreDescriptionBuilder();
+        descriptionBuilderConsumer.accept(builder);
+        def.themeLore = new ThemeAugmentLoreConfig.AugmentLore(themeGroupName, builder.build(), color);
         return this;
     }
 

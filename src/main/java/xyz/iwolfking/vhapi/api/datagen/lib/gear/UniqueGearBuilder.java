@@ -98,7 +98,7 @@ public class UniqueGearBuilder {
     }
 
     public UniqueGearBuilder description(String description, String color) {
-        this.descriptionData.add(JsonDescription.simple(description, color));
+        this.descriptionData.add(JsonDescription.text(description, color));
         return this;
     }
 

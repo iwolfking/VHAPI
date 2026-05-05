@@ -358,9 +358,26 @@ public abstract class AbstractPaletteProvider implements DataProvider {
 
         public enum Placeholder {
             ORE_PLACEHOLDER_VOID(VaultMod.id("generic/ore_placeholder_void")),
+            ORE_PLACEHOLDER_NETHER(VaultMod.id("generic/ore_placeholder_nether")),
+            ORE_PLACEHOLDER_WHITE(VaultMod.id("generic/ore_placeholder_white")),
+            ORE_PLACEHOLDER_BLOOD_MOON(VaultMod.id("generic/ore_placeholder_blood_moon")),
+            ORE_PLACEHOLDER(VaultMod.id("generic/ore_placeholder")),
+            ORNATE_CHEST_PLACEHOLDER(VaultMod.id("generic/ornate_chest_placeholder")),
+            GILDED_CHEST_PLACEHOLDER(VaultMod.id("generic/gilded_chest_placeholder")),
+            LIVING_CHEST_PLACEHOLDER(VaultMod.id("generic/living_chest_placeholder")),
+            WOODEN_CHEST_PLACEHOLDER(VaultMod.id("generic/wooden_chest_placeholder")),
+            COIN_STACK_PLACEHOLDER(VaultMod.id("generic/coin_stack_placeholder")),
             TREASURE_DOOR(VaultMod.id("generic/treasure_door_placeholder")),
+            VENDOR_PEDESTAL(VaultMod.id("generic/vendor_pedestal_placeholder")),
+            PYLON_PLACEHOLDER(VaultMod.id("generic/pylon_placeholder")),
+            OASIS_COIN_PLACEHOLDER(VaultMod.id("generic/oasis_coin_stack_placeholder")),
+            GOD_ALTARS(VaultMod.id("generic/god_altars")),
+            GOD_ALTAR_DATA(VaultMod.id("generic/altar_nbt")),
             COMMON_ELITE_SPAWNERS(VaultMod.id("generic/common_elite_spawners")),
-            ROOM_BASE(VaultMod.id("generic/room_base"));
+            ROOM_BASE(VaultMod.id("generic/room_base")),
+            SPAWNER_BASE(VaultMod.id("generic/spawner_base")),
+            AIR_TO_CAVE_AIR(VaultMod.id("generic/air_to_cave_air")),
+            DEFAULT_PLACEHOLDERS(VaultMod.id("generic/treasure"));
 
             private final ResourceLocation id;
 

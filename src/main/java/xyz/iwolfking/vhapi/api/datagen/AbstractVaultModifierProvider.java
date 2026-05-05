@@ -109,7 +109,7 @@ public abstract class AbstractVaultModifierProvider implements DataProvider {
     public static void difficultyLock(ModifierBuilder builder, ResourceLocation modifierId, VaultDifficulty difficulty, boolean shouldLockHigher, String name, String color, String description, String formattedDescription, ResourceLocation icon) {
         builder.type(VaultMod.id("modifier_type/difficulty_lock").toString(), typeBuilder -> {
             typeBuilder.modifier(modifierId.toString(), modifierEntryBuilder -> {
-                modifierEntryBuilder.property("difficulty", difficulty.name());
+                modifierEntryBuilder.property("amount", difficulty.name());
                 modifierEntryBuilder.property("lockHigher", shouldLockHigher);
                 createModifierDisplay(modifierEntryBuilder, name, color, description, formattedDescription, icon);
             });
