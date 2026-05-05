@@ -20,7 +20,7 @@ public class JsonDescription {
     }
 
     public static JsonObject simple(String text) {
-        return text(text);
+        return text(text, "$text");
     }
 
     public static JsonObject simple(String text, String color) {
