@@ -71,6 +71,7 @@ import xyz.iwolfking.vhapi.api.loaders.vault.VaultItemsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.VaultRoomMapsIconConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.altar.VaultAltarConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.catalyst.CatalystConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.vault.chest.VaultChestConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.chest.VaultChestMetaConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.crystal.VaultCrystalCatalystModifiersConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.vault.crystal.VaultCrystalConfigLoader;
@@ -215,6 +216,7 @@ public class Processors {
         public static final CatalystConfigLoader CATALYST_CONFIG_LOADER = new CatalystConfigLoader();
         public static final VaultCrystalCatalystModifiersConfigLoader VAULT_CRYSTAL_CATALYST_MODIFIERS_CONFIG_LOADER = new VaultCrystalCatalystModifiersConfigLoader("vhapi");
         public static final VaultChestMetaConfigLoader VAULT_CHEST_META_CONFIG_LOADER = new VaultChestMetaConfigLoader();
+        public static final VaultChestConfigLoader VAULT_CHEST_CONFIG_LOADER = new VaultChestConfigLoader();
         public static final VaultGeneralConfigLoader VAULT_GENERAL_CONFIG_LOADER = new VaultGeneralConfigLoader();
         public static final VaultLevelsConfigLoader VAULT_LEVELS_CONFIG_LOADER = new VaultLevelsConfigLoader();
         public static final VaultMobsConfigLoader VAULT_MOBS_CONFIG_LOADER = new VaultMobsConfigLoader();

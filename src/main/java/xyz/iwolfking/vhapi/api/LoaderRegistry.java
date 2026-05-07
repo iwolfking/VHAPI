@@ -157,6 +157,7 @@ public class LoaderRegistry {
 
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_CRYSTAL_CATALYST_MODIFIERS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_CHEST_META_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_CHEST_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_GENERAL_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_LEVELS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_MOBS_CONFIG_LOADER);
