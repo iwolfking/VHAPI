@@ -14,6 +14,7 @@ public class BountyScreenData {
             Map.entry("monolith", new TextComponent("Light the Braziers")),
             Map.entry("elixir", new TextComponent("Gather Elixir")),
             Map.entry("bingo", new TextComponent("Bingo")),
-            Map.entry("rune_boss", new TextComponent("Slay the Rune Boss"))
+            Map.entry("rune_boss", new TextComponent("Slay the Rune Boss")),
+            Map.entry("scavenger_bingo", new TextComponent("Collector"))
     );
 }
