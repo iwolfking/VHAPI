@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @Mixin(value = StructureTemplate.class, remap = false)
@@ -40,11 +41,15 @@ public abstract class MixinStructureTemplate {
                     throw new RuntimeException("[VHAPI] Failed to load template from " + this.path, e);
                 }
             }
-            var localTemplate = LoaderRegistry.VHAPI_DATA_LOADER.TEMPLATES.get(rl);
+            byte[] localTemplate = LoaderRegistry.VHAPI_DATA_LOADER.TEMPLATES.get(rl);
             if (localTemplate != null) {
-                this.deserializeNBT(localTemplate);
-                cir.setReturnValue(null);
-                return;
+                try {
+                    this.deserializeNBT(NbtIo.readCompressed(new ByteArrayInputStream(localTemplate)));
+                    cir.setReturnValue(null);
+                    return;
+                } catch (IOException e) {
+                    throw new RuntimeException("[VHAPI] Failed to load template from " + this.path, e);
+                }
             }
 
             throw new RuntimeException("[VHAPI] Failed to get structure for " + this.path);

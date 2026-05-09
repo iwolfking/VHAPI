@@ -38,15 +38,8 @@ public class VHAPISyncTemplates {
 
     public void handle(NetworkEvent.Context context) {
         context.enqueueWork(() -> {
-            VHAPI.LOGGER.info("Received VHAPI template packet for {}, handling...", this.id);
-            CompoundTag tag = null;
-            try {
-                tag = NbtIo.readCompressed(new ByteArrayInputStream(this.structureNbt));
-            } catch (IOException e) {
-                VHAPI.LOGGER.info("Failed to receive template {}", this.id);
-                throw new RuntimeException(e);
-            }
-            LoaderRegistry.VHAPI_DATA_LOADER.TEMPLATES.put(this.id, tag);
+            VHAPI.LOGGER.debug("Received VHAPI template packet for {}, handling...", this.id);
+            LoaderRegistry.VHAPI_DATA_LOADER.TEMPLATES.put(this.id, this.structureNbt);
         });
         context.setPacketHandled(true);
     }

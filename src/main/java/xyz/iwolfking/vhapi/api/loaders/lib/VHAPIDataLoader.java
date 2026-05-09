@@ -25,7 +25,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     private boolean isInitialized = false;
     private final String namespace = VHAPI.MODID;
     public Map<ResourceLocation, JsonElement> JSON_DATA = new HashMap<>();
-    public Map<ResourceLocation, CompoundTag> TEMPLATES = new HashMap<>();
+    public Map<ResourceLocation, byte[]> TEMPLATES = new HashMap<>();
     private final Set<ResourceLocation> CONFIGS_TO_IGNORE = new HashSet<>();
 
     public VHAPIDataLoader() {
