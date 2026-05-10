@@ -14,11 +14,11 @@ public class GreedTraderConfigLoader extends VaultConfigProcessor<GreedTraderCon
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
         this.CUSTOM_CONFIGS.forEach((resourceLocation, greedTraderConfig) -> {
-            ((GreedTraderConfigAccessor)greedTraderConfig).getTierPoolsMap().forEach((tier, tradeEntries) -> {
-                tradeEntries.forEach(tradeEntry -> {
-                    ModConfigs.GREED_TRADER.addTradeEntry(tier, tradeEntry);
-                });
-            });
+//            ((GreedTraderConfigAccessor)greedTraderConfig).getTierPoolsMap().forEach((tier, tradeEntries) -> {
+//                tradeEntries.forEach(tradeEntry -> {
+//                    ModConfigs.GREED_TRADER.addTradeEntry(tier, tradeEntry);
+//                });
+//            });
 
             ((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getPoolsMap().putAll(((GreedTraderConfigAccessor)greedTraderConfig).getPoolsMap());
 
