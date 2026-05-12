@@ -3,6 +3,7 @@ package xyz.iwolfking.vhapi.integration.jevh;
 import iskallia.vault.VaultMod;
 import iskallia.vault.config.CompanionRelicsConfig;
 import iskallia.vault.config.UniqueGearConfig;
+import iskallia.vault.config.VaultAltarConfig;
 import iskallia.vault.config.VaultCrystalConfig;
 import iskallia.vault.config.card.BoosterPackConfig;
 import iskallia.vault.core.Version;
@@ -11,6 +12,9 @@ import iskallia.vault.core.card.modifier.deck.DeckModifier;
 import iskallia.vault.core.data.key.TemplatePoolKey;
 import iskallia.vault.core.random.ChunkRandom;
 import iskallia.vault.core.vault.VaultRegistry;
+import iskallia.vault.core.world.data.item.ItemPredicate;
+import iskallia.vault.core.world.data.item.PartialItem;
+import iskallia.vault.core.world.data.item.PartialStack;
 import iskallia.vault.core.world.loot.LootPool;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.loot.entry.ItemLootEntry;
@@ -69,6 +73,8 @@ import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.util.RemasteredHelper;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.config.VHAPIConfig;
+import xyz.iwolfking.vhapi.integration.jevh.categories.VaultAltarRecipeCategory;
+import xyz.iwolfking.vhapi.integration.jevh.lib.VaultAltarRecipe;
 import xyz.iwolfking.vhapi.integration.the_vault.VaultSealHelper;
 import xyz.iwolfking.vhapi.integration.wolds.WoldsSealHelper;
 import xyz.iwolfking.vhapi.mixin.accessors.*;
@@ -110,6 +116,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
     public static final RecipeType<LabeledLootInfo> COMPANION_RELIC_CHANCES = RecipeType.create("vhapi", "companion_relic_chances", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> COSMIC_DUST_CHANCES = RecipeType.create("vhapi", "cosmic_dust_chances", LabeledLootInfo.class);
     public static final RecipeType<LabeledLootInfo> ANCIENT_RELIC_CHANCES = RecipeType.create("vhapi", "ancient_relic_chances", LabeledLootInfo.class);
+    public static final RecipeType<VaultAltarRecipe> VAULT_ALTAR = RecipeType.create("vhapi", "vault_altar", VaultAltarRecipe.class);
 
 
     @Override @SuppressWarnings("removal")
@@ -143,6 +150,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(ModItems.COMPANION_RELIC_FRAGMENT),  COMPANION_RELIC_CHANCES);
         registration.addRecipeCatalyst(new ItemStack(ModItems.COSMIC_DUST), COSMIC_DUST_CHANCES);
         registration.addRecipeCatalyst(new ItemStack(ModItems.COMPANION_RELIC_FRAGMENT), ANCIENT_RELIC_CHANCES);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.VAULT_ALTAR), VAULT_ALTAR);
         ModFileInfo justEnoughVHMod = LoadingModList.get().getModFileById("just_enough_vh");
         if (justEnoughVHMod == null || justEnoughVHMod.getFile().getJarVersion().getMinorVersion() < 9) {
             registration.addRecipeCatalyst(new ItemStack(ModBlocks.GREED_CAULDRON), GREED_CAULDRON );
@@ -181,6 +189,26 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipes(COMPANION_RELIC_CHANCES, getCompanionRelicMetaValues());
         registration.addRecipes(COSMIC_DUST_CHANCES, getCosmicDustChances());
         registration.addRecipes(ANCIENT_RELIC_CHANCES, getAncientRelicChances());
+
+        List<VaultAltarRecipe> altarRecipes = new ArrayList<>();
+
+        for (VaultAltarConfig.Interface iface : ModConfigs.VAULT_ALTAR.INTERFACES) {
+            ItemPredicate predicate = ((VaultAltarConfig$InterfaceAccessor)iface).getInput();
+            if(predicate instanceof PartialItem partialItem) {
+                partialItem.asWhole().ifPresent(item -> {
+                    altarRecipes.add(new VaultAltarRecipe(item.getDefaultInstance(), iface.getOutput(), item.equals(ModItems.SOUL_FLAME)));
+                });
+            }
+            if(predicate instanceof PartialStack partialStack) {
+                partialStack.generate(1).ifPresent(item -> {
+                    altarRecipes.add(new VaultAltarRecipe(item, iface.getOutput(), item.getItem().equals(ModItems.SOUL_FLAME)));
+                });
+            }
+        }
+
+        registration.addRecipes(altarRecipes, VaultAltarRecipeCategory.UID);
+
+
         ModFileInfo justEnoughVHMod = LoadingModList.get().getModFileById("just_enough_vh");
         if (justEnoughVHMod == null || justEnoughVHMod.getFile().getJarVersion().getMinorVersion() < 9) {
             registration.addRecipes(GREED_CAULDRON, getGreedCauldron());
@@ -223,6 +251,7 @@ public class VHAPIJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, COMPANION_RELIC_CHANCES, ModItems.COMPANION_RELIC_FRAGMENT, new TextComponent("Companion Relic Fragment Chances")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, COSMIC_DUST_CHANCES, ModItems.COSMIC_DUST, new TextComponent("Cosmic Dust Chances")));
         registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, ANCIENT_RELIC_CHANCES, ModItems.COMPANION_RELIC, new TextComponent("Ancient Companion Relic Chances")));
+        registration.addRecipeCategories(new VaultAltarRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         ModFileInfo justEnoughVHMod = LoadingModList.get().getModFileById("just_enough_vh");
         if (justEnoughVHMod == null || justEnoughVHMod.getFile().getJarVersion().getMinorVersion() < 9) {
             registration.addRecipeCategories(makeLabeledLootInfoCategory(guiHelper, GREED_CAULDRON, ModBlocks.GREED_CAULDRON, new TextComponent("Greed Cauldron")));

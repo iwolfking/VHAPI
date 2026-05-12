@@ -101,6 +101,7 @@
     "accessors.UniqueDiscoveryConfigAccessor",
     "accessors.UniqueGearConfigAccessor",
     "accessors.VanillaAttributeChallengeActionConfigAccessor",
+    "accessors.VaultAltarConfig$InterfaceAccessor",
     "accessors.VaultAltarConfigAccessor",
     "accessors.VaultAltarIngredientsConfigAccessor",
     "accessors.VaultCrystalCatalystConfigAccessor",
