@@ -147,6 +147,7 @@
     "registry.objective.MixinClassicListenersLogic",
     "registry.objective.MixinCompletionProperties",
     "registry.objective.MixinVaultRegistry",
+    "recipes.MixinSealAnvilRecipe",
     "tags.MixinTagLoader"
   ],
   "client": [
