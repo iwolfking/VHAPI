@@ -25,6 +25,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     private boolean isInitialized = false;
     private final String namespace = VHAPI.MODID;
     public Map<ResourceLocation, JsonElement> JSON_DATA = new HashMap<>();
+    public Map<ResourceLocation, JsonElement> MANUAL_JSON_DATA = new HashMap<>();
     public Map<ResourceLocation, byte[]> TEMPLATES = new HashMap<>();
     private final Set<ResourceLocation> CONFIGS_TO_IGNORE = new HashSet<>();
 
@@ -36,6 +37,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> dataMap, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
         profilerFiller.startTick();
         JSON_DATA.clear();
+        JSON_DATA.putAll(MANUAL_JSON_DATA);
         dataMap.forEach((resourceLocation, jsonElement) -> {
             if(!getIgnoredConfigs().contains(resourceLocation)) {
                 JSON_DATA.put(resourceLocation, jsonElement);
@@ -67,7 +69,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
 
     public Map<ResourceLocation, byte[]> getCompressedConfigMap() {
         Map<ResourceLocation, byte[]> returnMap = new HashMap<>();
-
+        JSON_DATA.putAll(MANUAL_JSON_DATA);
         for(ResourceLocation loc : JSON_DATA.keySet()) {
             if(getIgnoredConfigs().contains(loc)) {
                 continue;

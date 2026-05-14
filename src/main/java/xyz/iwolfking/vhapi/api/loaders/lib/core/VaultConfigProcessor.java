@@ -19,6 +19,7 @@ public abstract class VaultConfigProcessor<T extends Config> implements IConfigP
     private final T instance;
     public final String directory;
     public final Map<ResourceLocation, T> CUSTOM_CONFIGS = new HashMap<>();
+    private final Map<ResourceLocation, T> MANUAL_CONFIGS = new HashMap<>();
 
     public VaultConfigProcessor(T instance, String directory) {
         this.instance = instance;
@@ -27,7 +28,7 @@ public abstract class VaultConfigProcessor<T extends Config> implements IConfigP
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        //this.CUSTOM_CONFIGS.clear();
+        this.CUSTOM_CONFIGS.clear();
     }
 
     @Override
@@ -35,8 +36,13 @@ public abstract class VaultConfigProcessor<T extends Config> implements IConfigP
 
     }
 
+    public void addManualConfig(ResourceLocation key, T config) {
+        this.MANUAL_CONFIGS.put(key, config);
+    }
+
     public void processMatchingConfigs() {
         this.CUSTOM_CONFIGS.clear();
+        this.CUSTOM_CONFIGS.putAll(MANUAL_CONFIGS);
         CustomVaultConfigReader<T> configReader = new CustomVaultConfigReader<>();
         for(ResourceLocation key : LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.keySet()) {
             //Attempt to process all configs under the specified directory.
