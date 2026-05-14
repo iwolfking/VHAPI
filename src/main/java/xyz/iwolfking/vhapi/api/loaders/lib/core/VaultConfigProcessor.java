@@ -28,7 +28,7 @@ public abstract class VaultConfigProcessor<T extends Config> implements IConfigP
 
     @Override
     public void afterConfigsLoad(VaultConfigEvent.End event) {
-        this.CUSTOM_CONFIGS.clear();
+
     }
 
     @Override
@@ -43,6 +43,7 @@ public abstract class VaultConfigProcessor<T extends Config> implements IConfigP
     public void processMatchingConfigs() {
         this.CUSTOM_CONFIGS.clear();
         this.CUSTOM_CONFIGS.putAll(MANUAL_CONFIGS);
+
         CustomVaultConfigReader<T> configReader = new CustomVaultConfigReader<>();
         for(ResourceLocation key : LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.keySet()) {
             //Attempt to process all configs under the specified directory.

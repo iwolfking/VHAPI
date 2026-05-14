@@ -23,9 +23,8 @@ import java.util.Set;
 
 public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
     private boolean isInitialized = false;
-    private final String namespace = VHAPI.MODID;
-    public Map<ResourceLocation, JsonElement> JSON_DATA = new HashMap<>();
-    public Map<ResourceLocation, JsonElement> MANUAL_JSON_DATA = new HashMap<>();
+    public final Map<ResourceLocation, JsonElement> JSON_DATA = new HashMap<>();
+    public final Map<ResourceLocation, JsonElement> MANUAL_JSON_DATA = new HashMap<>();
     public Map<ResourceLocation, byte[]> TEMPLATES = new HashMap<>();
     private final Set<ResourceLocation> CONFIGS_TO_IGNORE = new HashSet<>();
 
@@ -87,6 +86,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
             LoaderRegistry.initProcessors();
         }
 
+        JSON_DATA.putAll(MANUAL_JSON_DATA);
         for(int i = 0; i < LoaderRegistry.CONFIG_PROCESSORS.size(); i++) {
 
             IConfigProcessor configProcessor = LoaderRegistry.CONFIG_PROCESSORS.get(i);
@@ -111,6 +111,7 @@ public class VHAPIDataLoader extends SimpleJsonResourceReloadListener {
             LoaderRegistry.initProcessors();
         }
 
+        JSON_DATA.putAll(MANUAL_JSON_DATA);
         for(int i = 0; i < LoaderRegistry.GEN_CONFIG_PROCESSORS.size(); i++) {
 
             IConfigProcessor configProcessor = LoaderRegistry.GEN_CONFIG_PROCESSORS.get(i);
