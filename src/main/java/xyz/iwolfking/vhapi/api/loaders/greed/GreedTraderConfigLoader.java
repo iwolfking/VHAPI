@@ -20,31 +20,31 @@ public class GreedTraderConfigLoader extends VaultConfigProcessor<GreedTraderCon
 //                });
 //            });
 
-            ((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getPoolsMap().putAll(((GreedTraderConfigAccessor)greedTraderConfig).getPoolsMap());
+//            ((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getPoolsMap().putAll(((GreedTraderConfigAccessor)greedTraderConfig).getPoolsMap());
+//
+//            ((GreedTraderConfigAccessor)greedTraderConfig).getRoomPoolsByType().forEach((s, weightedRoomPools) -> {
+//                if(((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getRoomPoolsByType().containsKey(s)) {
+//                    ((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getRoomPoolsByType().get(s).addAll(weightedRoomPools);
+//                }
+//                else {
+//                    ((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getRoomPoolsByType().put(s, weightedRoomPools);
+//                }
+//            });
 
-            ((GreedTraderConfigAccessor)greedTraderConfig).getRoomPoolsByType().forEach((s, weightedRoomPools) -> {
-                if(((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getRoomPoolsByType().containsKey(s)) {
-                    ((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getRoomPoolsByType().get(s).addAll(weightedRoomPools);
-                }
-                else {
-                    ((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getRoomPoolsByType().put(s, weightedRoomPools);
-                }
-            });
+//            ((GreedTraderConfigAccessor)greedTraderConfig).getModifierPools().forEach((s, weightedModifiers) -> {
+//                if(((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getModifierPools().containsKey(s)) {
+//                    ((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getModifierPools().get(s).addAll(weightedModifiers);
+//                }
+//                else {
+//                    ((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getModifierPools().put(s, weightedModifiers);
+//                }
+//            });
 
-            ((GreedTraderConfigAccessor)greedTraderConfig).getModifierPools().forEach((s, weightedModifiers) -> {
-                if(((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getModifierPools().containsKey(s)) {
-                    ((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getModifierPools().get(s).addAll(weightedModifiers);
-                }
-                else {
-                    ((GreedTraderConfigAccessor) ModConfigs.GREED_TRADER).getModifierPools().put(s, weightedModifiers);
-                }
-            });
+            //((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getQuestsList().addAll(((GreedTraderConfigAccessor)greedTraderConfig).getQuestsList());
+            //((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getChallengesList().addAll(((GreedTraderConfigAccessor)greedTraderConfig).getChallengesList());
 
-            ((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getQuestsList().addAll(((GreedTraderConfigAccessor)greedTraderConfig).getQuestsList());
-            ((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getChallengesList().addAll(((GreedTraderConfigAccessor)greedTraderConfig).getChallengesList());
-
-            ((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getMaxQuestsPerTier().putAll(((GreedTraderConfigAccessor) greedTraderConfig).getMaxQuestsPerTier());
-            ((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getMaxChallengesPerTier().putAll(((GreedTraderConfigAccessor) greedTraderConfig).getMaxChallengesPerTier());
+           // ((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getMaxQuestsPerTier().putAll(((GreedTraderConfigAccessor) greedTraderConfig).getMaxQuestsPerTier());
+            //((GreedTraderConfigAccessor)ModConfigs.GREED_TRADER).getMaxChallengesPerTier().putAll(((GreedTraderConfigAccessor) greedTraderConfig).getMaxChallengesPerTier());
 
         });
 
