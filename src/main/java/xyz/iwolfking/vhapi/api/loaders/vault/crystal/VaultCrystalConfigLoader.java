@@ -71,31 +71,6 @@ public class VaultCrystalConfigLoader extends VaultConfigProcessor<VaultCrystalC
                 );
             }
 
-
-//            //Themes
-//            if(config.THEMES != null) {
-//                for(ResourceLocation key : config.THEMES.keySet()) {
-//                    LevelEntryList<VaultCrystalConfig.ThemeEntry> levelEntryList = config.THEMES.get(key);
-//                    if(ModConfigs.VAULT_CRYSTAL.THEMES.containsKey(key)) {
-//                        levelEntryList.forEach(themeEntry -> {
-//                            ModConfigs.VAULT_CRYSTAL.THEMES.get(key)
-//                                    .getForLevel(themeEntry.level)
-//                                    .ifPresentOrElse(themeEntry1 -> {
-//                                        if(themeEntry1.seasonalWeights != null && themeEntry.seasonalWeights != null) {
-//                                            themeEntry1.seasonalWeights.putAll(levelEntryList.getForLevel(themeEntry.level).get().seasonalWeights);
-//                                        }
-//                                        else if(themeEntry1.pool != null && !themeEntry1.pool.isEmpty()) {
-//                                            themeEntry1.pool.putAll(levelEntryList.getForLevel(themeEntry.level).get().pool);
-//                                        }
-//                                    }, () -> ModConfigs.VAULT_CRYSTAL.THEMES.get(key).add(themeEntry));
-//                        });
-//                    }
-//                    else {
-//                        ModConfigs.VAULT_CRYSTAL.THEMES.put(key, levelEntryList);
-//                    }
-//                }
-//            }
-
             if(config.OBJECTIVES != null) {
                 LevelEntryListHelper.mergeMap(
                         config.OBJECTIVES,
