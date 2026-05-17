@@ -8,12 +8,13 @@ import iskallia.vault.core.vault.VaultRegistry;
 import iskallia.vault.core.world.template.data.TemplatePool;
 import xyz.iwolfking.vhapi.VHAPI;
 import xyz.iwolfking.vhapi.api.events.VaultGenConfigEvent;
+import xyz.iwolfking.vhapi.api.lib.core.processors.IPreProcessor;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.KeyRegistryConfigAccessor;
 
-public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfig> {
+public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfig> implements IPreProcessor {
     public TemplatePoolsLoader() {
         super(new TemplatePoolsConfig(), "template_pools");
     }
@@ -56,5 +57,10 @@ public class TemplatePoolsLoader extends VaultConfigProcessor<TemplatePoolsConfi
         KeyRegistry<TemplatePoolKey, TemplatePool, Version> registry = config.create();
         ((KeyRegistryConfigAccessor<TemplatePoolKey>)config).getKeys().forEach(registry::register);
         return registry;
+    }
+
+    @Override
+    public void preProcessStep() {
+       registerTemplatePools();
     }
 }
