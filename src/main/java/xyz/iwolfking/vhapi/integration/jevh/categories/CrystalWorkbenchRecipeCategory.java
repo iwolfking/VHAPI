@@ -58,5 +58,20 @@ public class CrystalWorkbenchRecipeCategory implements IRecipeCategory<CrystalWo
     @Override
     public void draw(CrystalWorkbenchRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
         this.altarIcon.draw(stack, 50, 20);
+        if (recipe.tooltips() != null && !recipe.tooltips().isEmpty()) {
+            Minecraft minecraft = Minecraft.getInstance();
+            int startY = 55;
+            int lineHeight = 10;
+
+            for (int i = 0; i < recipe.tooltips().size(); i++) {
+                String line = recipe.tooltips().get(i);
+
+                int textWidth = minecraft.font.width(line);
+                int centerX = (120 - textWidth) / 2;
+
+                minecraft.font.draw(stack, line, centerX, startY + (i * lineHeight), 0x404040);
+            }
+        }
     }
+
 }
