@@ -2,6 +2,9 @@ package xyz.iwolfking.vhapi.api.data.core;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import iskallia.vault.antique.condition.AntiqueCondition;
 import iskallia.vault.antique.reward.AntiqueReward;
 import iskallia.vault.config.*;
@@ -50,10 +53,42 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 public class ConfigData {
-    public static final Gson CONFIG_LOADER_GSON = Config.GSON;
+    public static final Gson CONFIG_LOADER_GSON = Config.GSON.newBuilder()
+            .enableComplexMapKeySerialization()
+            .registerTypeHierarchyAdapter(VaultGearTierConfig.ModifierAffixTagGroup.class, new TypeAdapter<VaultGearTierConfig.ModifierAffixTagGroup>() {
+                @Override
+                public void write(JsonWriter out, VaultGearTierConfig.ModifierAffixTagGroup value) throws IOException {
+                    if (value == null) {
+                        out.nullValue();
+                    } else {
+                        String name = value.name();
+                        if ("null".equals(name)) {
+                            name = value.toString();
+                        }
+                        out.value(name);
+                    }
+                }
+
+                @Override
+                public VaultGearTierConfig.ModifierAffixTagGroup read(JsonReader in) throws IOException {
+                    String name = in.nextString();
+                    try {
+                        return VaultGearTierConfig.ModifierAffixTagGroup.valueOf(name);
+                    } catch (IllegalArgumentException e) {
+                        for (VaultGearTierConfig.ModifierAffixTagGroup group : VaultGearTierConfig.ModifierAffixTagGroup.values()) {
+                            if (group.toString().equalsIgnoreCase(name)) {
+                                return group;
+                            }
+                        }
+                        return null;
+                    }
+                }
+            })
+            .create();
     public static final Gson GEN_CONFIG_GSON = (new GsonBuilder()).registerTypeHierarchyAdapter(LootTable.class, Adapters.LOOT_TABLE).registerTypeHierarchyAdapter(Palette.class, PaletteAdapter.INSTANCE).registerTypeAdapter(TemplatePool.class, Adapters.TEMPLATE_POOL).registerTypeAdapter(Theme.class, Theme.ADAPTER).setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
 }

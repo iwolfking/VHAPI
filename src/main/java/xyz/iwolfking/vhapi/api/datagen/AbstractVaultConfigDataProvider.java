@@ -10,6 +10,7 @@ import iskallia.vault.config.gear.VaultGearTierConfig;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
+import xyz.iwolfking.vhapi.api.data.core.ConfigData;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.api.datagen.recipes.AbstractCatalystRecipesProvider;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
@@ -25,7 +26,7 @@ import java.util.function.Supplier;
 public abstract class AbstractVaultConfigDataProvider<B extends VaultConfigBuilder<?>> implements DataProvider {
     private final DataGenerator generator;
     public final String modid;
-    private final Gson gson;
+    private final Gson gson = ConfigData.CONFIG_LOADER_GSON;
     protected final Map<String, Config> configMap = new LinkedHashMap<>();
     protected final Map<String, Map.Entry<String, Config>> extendedConfigMap = new LinkedHashMap<>();
     private final String configPath;
@@ -36,39 +37,6 @@ public abstract class AbstractVaultConfigDataProvider<B extends VaultConfigBuild
         this.modid = modid;
         this.configPath = configPath;
         this.builderFactory = builderFactory;
-        this.gson = Config.GSON.newBuilder()
-                .enableComplexMapKeySerialization()
-                .registerTypeHierarchyAdapter(VaultGearTierConfig.ModifierAffixTagGroup.class, new TypeAdapter<VaultGearTierConfig.ModifierAffixTagGroup>() {
-                    @Override
-                    public void write(JsonWriter out, VaultGearTierConfig.ModifierAffixTagGroup value) throws IOException {
-                        if (value == null) {
-                            out.nullValue();
-                        } else {
-                            String name = value.name();
-                            if ("null".equals(name)) {
-                                name = value.toString();
-                            }
-                            out.value(name);
-                        }
-                    }
-
-                    @Override
-                    public VaultGearTierConfig.ModifierAffixTagGroup read(JsonReader in) throws IOException {
-                        String name = in.nextString();
-                        try {
-                            return VaultGearTierConfig.ModifierAffixTagGroup.valueOf(name);
-                        } catch (IllegalArgumentException e) {
-                            for (VaultGearTierConfig.ModifierAffixTagGroup group : VaultGearTierConfig.ModifierAffixTagGroup.values()) {
-                                if (group.toString().equalsIgnoreCase(name)) {
-                                    return group;
-                                }
-                            }
-                            return null;
-                        }
-                    }
-                })
-                .create();
-
     }
 
     public void addConfig(String fileName, Config config) {
