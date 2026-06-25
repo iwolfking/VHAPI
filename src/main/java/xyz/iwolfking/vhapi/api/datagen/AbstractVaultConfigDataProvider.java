@@ -8,6 +8,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.api.datagen.recipes.AbstractCatalystRecipesProvider;
+import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -38,16 +39,25 @@ public abstract class AbstractVaultConfigDataProvider<B extends VaultConfigBuild
     }
 
 
-    protected <C extends Config> void add(
-            String fileName,
-            Consumer<B> consumer
-    ) {
-        B builder = builderFactory.get();
+    protected <C extends Config> void add(String fileName, Consumer<B> consumer) {
+        B builder = this.builderFactory.get();
         consumer.accept(builder);
 
-        C config = ((Buildable<C>) builder).build();
+        C newConfig = (C) builder.build();
 
-        configMap.put(fileName, config);
+        if (this.configMap.containsKey(fileName)) {
+            Config existingConfig = this.configMap.get(fileName);
+
+            if (builder instanceof MergableBuilder) {
+                MergableBuilder rawBuilder = (MergableBuilder) builder;
+
+                rawBuilder.mergeInto(existingConfig, newConfig);
+            } else {
+                this.configMap.put(fileName, newConfig);
+            }
+        } else {
+            this.configMap.put(fileName, newConfig);
+        }
     }
 
     public abstract void registerConfigs();
@@ -73,6 +83,10 @@ public abstract class AbstractVaultConfigDataProvider<B extends VaultConfigBuild
 
     public interface Buildable<C extends Config> {
         C build();
+    }
+
+    public interface MergableBuilder<C extends Config> {
+        void mergeInto(C existingConfig, C newConfig);
     }
 
 }

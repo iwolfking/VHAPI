@@ -48,7 +48,7 @@ public abstract class AbstractVaultGearConfigProvider extends AbstractVaultConfi
         return modid + " Gear Modifiers Data Provider";
     }
 
-    public static class Builder extends VaultConfigBuilder<VaultGearTierConfig> {
+    public static class Builder extends VaultConfigBuilder<VaultGearTierConfig> implements MergableBuilder<VaultGearTierConfig> {
         private final Map<VaultGearTierConfig.ModifierAffixTagGroup, VaultGearTierConfig.AttributeGroup> modifierGroup = new LinkedHashMap<>();
         private ResourceLocation key;
 
@@ -76,6 +76,26 @@ public abstract class AbstractVaultGearConfigProvider extends AbstractVaultConfi
             }
             else {
                 ((VaultGearTierConfigAccessor)config).setKey(VaultMod.id("default"));
+            }
+        }
+
+        @Override
+        public void mergeInto(VaultGearTierConfig existingConfig, VaultGearTierConfig newConfig) {
+            VaultGearTierConfigAccessor existingAccessor = (VaultGearTierConfigAccessor) existingConfig;
+            VaultGearTierConfigAccessor newAccessor = (VaultGearTierConfigAccessor) newConfig;
+
+            newAccessor.getModifierGroup().forEach((affixGroup, newAttributeGroup) -> {
+                if (existingAccessor.getModifierGroup().containsKey(affixGroup)) {
+                    VaultGearTierConfig.AttributeGroup existingAttributeGroup = existingAccessor.getModifierGroup().get(affixGroup);
+
+                    existingAttributeGroup.addAll(newAttributeGroup);
+                } else {
+                    existingAccessor.getModifierGroup().put(affixGroup, newAttributeGroup);
+                }
+            });
+
+            if (newAccessor.getKey() != null && !newAccessor.getKey().getPath().equals("default")) {
+                existingAccessor.setKey(newAccessor.getKey());
             }
         }
     }
