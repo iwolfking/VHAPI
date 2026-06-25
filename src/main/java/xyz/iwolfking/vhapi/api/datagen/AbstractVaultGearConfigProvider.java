@@ -113,6 +113,11 @@ public abstract class AbstractVaultGearConfigProvider extends AbstractVaultConfi
             return this;
         }
 
+        public VaultGearAttributeGroupBuilder addModifier(VaultGearTierConfig.ModifierTierGroup tierGroup) {
+            attributeGroup.add(tierGroup);
+            return this;
+        }
+
         public VaultGearTierConfig.AttributeGroup build() {
             return attributeGroup;
         }
