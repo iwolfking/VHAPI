@@ -184,6 +184,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ITEMS_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CHALLENGE_CURSE_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CHALLENGE_CRYSTAL_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.COMPANION_CONFIG_LOADER);
 
 
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_ALTAR_CONFIG_LOADER);

@@ -31,6 +31,7 @@
     "accessors.ClassicVaultThemeAccessor",
     "accessors.CompanionRelicPoolAccessor",
     "accessors.CompanionRelicsConfigAccessor",
+    "accessors.CompanionsConfigAccessor",
     "accessors.ConfigForgeRecipeAccessor",
     "accessors.ConfigOverworldInscriptionRecipeAccessor",
     "accessors.CustomizationDiscoveryConfigAccessor",
@@ -138,6 +139,7 @@
     "gen.MixinTheme",
     "models.MixinInfusedCatalystItem",
     "models.MixinInscriptionItem",
+    "recipes.MixinSealAnvilRecipe",
     "registry.gear.MixinGearModelRollRaritiesConfig",
     "registry.gear.MixinMainModDynamicModels",
     "registry.gear.MixinModModels",
@@ -147,7 +149,6 @@
     "registry.objective.MixinClassicListenersLogic",
     "registry.objective.MixinCompletionProperties",
     "registry.objective.MixinVaultRegistry",
-    "recipes.MixinSealAnvilRecipe",
     "tags.MixinTagLoader"
   ],
   "client": [
