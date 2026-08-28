@@ -8,12 +8,11 @@ import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.LegacyLootTablesConfigAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.LootInfoConfigAccessor;
 
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public abstract class AbstractLootInfoProvider extends AbstractVaultConfigDataProvider<AbstractLootInfoProvider.Builder> {
     protected AbstractLootInfoProvider(DataGenerator generator, String modid) {
@@ -28,9 +27,9 @@ public abstract class AbstractLootInfoProvider extends AbstractVaultConfigDataPr
     }
 
     public static class Builder extends VaultConfigBuilder<LootInfoConfig> {
-        private final Set<ResourceLocation> excludeFromTooltipSet = new HashSet<>();
+        private final Set<ResourceLocation> excludeFromTooltipSet = new LinkedHashSet<>();
 
-        private final Map<ResourceLocation, LootInfoConfig.LootInfo> lootInfoMap = new HashMap<>();
+        private final Map<ResourceLocation, LootInfoConfig.LootInfo> lootInfoMap = new LinkedHashMap<>();
 
         public Builder() {
             super(LootInfoConfig::new);
@@ -42,8 +41,8 @@ public abstract class AbstractLootInfoProvider extends AbstractVaultConfigDataPr
         }
 
         public Builder lootInfo(ResourceLocation id, String display, Consumer<Map<ResourceLocation, Integer>> lootTableKeysConsumer) {
-            Map<ResourceLocation, Integer> lootTableKeysMap = new HashMap<>();
-            Map<ResourceLocation, LootInfoConfig.LootTableData> lootTableDataHashMap = new HashMap<>();
+            Map<ResourceLocation, Integer> lootTableKeysMap = new LinkedHashMap<>();
+            Map<ResourceLocation, LootInfoConfig.LootTableData> lootTableDataHashMap = new LinkedHashMap<>();
             lootTableKeysConsumer.accept(lootTableKeysMap);
             lootTableKeysMap.forEach((resourceLocation, integer) -> lootTableDataHashMap.put(resourceLocation, new LootInfoConfig.LootTableData(integer)));
             lootInfoMap.put(id, new LootInfoConfig.LootInfo(display, lootTableDataHashMap));
