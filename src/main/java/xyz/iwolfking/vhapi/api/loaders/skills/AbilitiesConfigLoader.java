@@ -4,9 +4,7 @@ import iskallia.vault.config.AbilitiesConfig;
 import iskallia.vault.init.ModConfigs;
 import iskallia.vault.skill.base.LearnableSkill;
 import iskallia.vault.skill.base.Skill;
-import iskallia.vault.skill.base.SkillContext;
 import iskallia.vault.skill.base.SpecializedSkill;
-import iskallia.vault.skill.source.SkillSource;
 import iskallia.vault.skill.tree.AbilityTree;
 import iskallia.vault.skill.tree.SkillTree;
 import oshi.util.tuples.Pair;
@@ -40,22 +38,18 @@ public class AbilitiesConfigLoader extends VaultConfigProcessor<AbilitiesConfig>
                 });
                 ModConfigs.ABILITIES.tree.skills.removeAll(skillsToRemove);
             }
-            if(resourceLocation.getPath().contains("replace")) {
-                List<Skill> skillsToReplace = new ArrayList<>();
+            else if(resourceLocation.getPath().contains("replace")) {
                 abilitiesConfig.tree.skills.forEach(skill -> {
-                    if(ModConfigs.ABILITIES.getAbilityById(skill.getId()).isPresent()) {
-                        skillsToReplace.add(ModConfigs.ABILITIES.getAbilityById(skill.getId()).get());
-                    }
-                });
-                ModConfigs.ABILITIES.tree.skills.forEach(skill -> {
-                    if(skillsToReplace.contains(skill)) {
-                        if(skill instanceof SpecializedSkill specializedSkill) {
-                            specializedSkill.mergeFrom(abilitiesConfig.getAbilityById(skill.getId()).get(), new SkillContext(1, specializedSkill.getSpentLearnPoints(), SkillSource.empty()));
+                    List<Skill> skills = ModConfigs.ABILITIES.tree.skills;
+                    for(int i = 0; i < skills.size(); i++) {
+                        if(skills.get(i).getId().equals(skill.getId())) {
+                            skills.set(i, skill);
+                            return;
                         }
                     }
                 });
             }
-            if(resourceLocation.getPath().contains("add_specialization")) {
+            else if(resourceLocation.getPath().contains("add_specialization")) {
                 List<Skill> skillsToReplace = new ArrayList<>();
                 abilitiesConfig.tree.skills.forEach(skill -> {
                     if(ModConfigs.ABILITIES.getAbilityById(skill.getId()).isPresent()) {

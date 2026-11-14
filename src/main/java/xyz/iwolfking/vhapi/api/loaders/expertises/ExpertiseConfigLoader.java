@@ -31,7 +31,7 @@ public class ExpertiseConfigLoader extends VaultConfigProcessor<ExpertisesConfig
                 });
                 ModConfigs.EXPERTISES.tree.skills.removeAll(skillsToRemove);
             }
-            if(resourceLocation.getPath().contains("replace")) {
+            else if(resourceLocation.getPath().contains("replace")) {
                 List<Skill> skillsToReplace = new ArrayList<>();
                 expertisesConfig.tree.skills.forEach(skill -> {
                     if(getSkillById(ModConfigs.EXPERTISES.tree, skill.getId()).isPresent()) {
