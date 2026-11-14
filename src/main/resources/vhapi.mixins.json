@@ -7,6 +7,10 @@
   "plugin": "xyz.iwolfking.vhapi.mixin.plugin.VHAPIConditionalMixinPlugin",
   "mixins": [
     "MixinModConfigs",
+    "accessors.ConfigAccessor",
+    "patches.MixinConfigPatches",
+    "patches.MixinLootTablePatches",
+    "patches.MixinVoidCrucibleCustomItemConfigPatches",
     "accessors.AbilitiesConfigAccessor",
     "accessors.AbilitiesDescriptionsConfigAccessor",
     "accessors.AbilitiesGroupsAccessor",
