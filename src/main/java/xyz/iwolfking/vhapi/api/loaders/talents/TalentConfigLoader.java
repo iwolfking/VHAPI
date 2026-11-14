@@ -31,7 +31,7 @@ public class TalentConfigLoader extends VaultConfigProcessor<TalentsConfig> {
                 });
                 ModConfigs.TALENTS.tree.skills.removeAll(skillsToRemove);
             }
-            if(resourceLocation.getPath().contains("replace")) {
+            else if(resourceLocation.getPath().contains("replace")) {
                 List<Skill> skillsToReplace = new ArrayList<>();
                 talentsConfig.tree.skills.forEach(skill -> {
                     if(getSkillById(ModConfigs.TALENTS.tree, skill.getId()).isPresent()) {

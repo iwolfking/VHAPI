@@ -33,7 +33,7 @@ public class PrestigePowersConfigLoader extends VaultConfigProcessor<PrestigePow
                 });
                 ModConfigs.PRESTIGE_POWERS.tree.skills.removeAll(skillsToRemove);
             }
-            if(resourceLocation.getPath().contains("replace")) {
+            else if(resourceLocation.getPath().contains("replace")) {
                 List<Skill> skillsToReplace = new ArrayList<>();
                 prestigeConfig.tree.skills.forEach(skill -> {
                     if(getSkillById(ModConfigs.PRESTIGE_POWERS.tree, skill.getId()).isPresent()) {
