@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public final class ConfigPatch {
+public record ConfigPatch(@Nullable JsonElement create, List<Op> ops) {
     public static final String SET = "set";
     public static final String ADD = "add";
     public static final String REMOVE = "remove";
@@ -19,26 +19,23 @@ public final class ConfigPatch {
     public static final String SCALE = "scale";
     public static final String VALUE_SELECTOR = "$value";
 
-    @Nullable
-    private final JsonElement create;
-    private final List<Op> ops;
-
-    public ConfigPatch(@Nullable JsonElement create, List<Op> ops) {
-        this.create = create;
-        this.ops = List.copyOf(ops);
+    public record Op(String type, JsonArray path, @Nullable JsonElement value) {
     }
 
-    @Nullable
-    public JsonElement create() {
-        return this.create;
+    public record Result(JsonElement json, List<String> failures) {
     }
 
-    public List<Op> ops() {
-        return this.ops;
+    private static final class Failure extends RuntimeException {
+        private Failure(String message) {
+            super(message, null, false, false);
+        }
+    }
+
+    public ConfigPatch {
+        ops = List.copyOf(ops);
     }
 
     public static ConfigPatch fromJson(JsonObject json) {
-        JsonElement create = json.has("create") ? json.get("create") : null;
         List<Op> ops = new ArrayList<>();
         if (json.has("ops")) {
             for (JsonElement element : json.getAsJsonArray("ops")) {
@@ -46,7 +43,7 @@ public final class ConfigPatch {
                 ops.add(new Op(op.get("op").getAsString(), op.getAsJsonArray("path"), op.get("value")));
             }
         }
-        return new ConfigPatch(create, ops);
+        return new ConfigPatch(json.get("create"), ops);
     }
 
     public JsonObject toJson() {
@@ -73,163 +70,118 @@ public final class ConfigPatch {
         List<String> failures = new ArrayList<>();
         for (int i = 0; i < this.ops.size(); i++) {
             Op op = this.ops.get(i);
-            String problem = applyOp(root, op);
-            if (problem != null) {
-                failures.add("op " + i + " " + op.type() + " " + op.path() + ": " + problem);
+            try {
+                applyOp(root, op);
+            } catch (Failure e) {
+                failures.add("op " + i + " " + op.type() + " " + op.path() + ": " + e.getMessage());
             }
         }
         return new Result(root, failures);
     }
 
-    @Nullable
-    private static String applyOp(JsonElement root, Op op) {
+    private static void applyOp(JsonElement root, Op op) {
         JsonArray path = op.path();
-        if (path.size() == 0) {
-            return "empty path";
+        String type = op.type();
+        JsonElement value = op.value();
+        check(path.size() > 0, "empty path");
+        check(REMOVE.equals(type) || value != null, type + " has no value");
+        check(!SCALE.equals(type) || isNumber(value), "scale factor " + value + " is not a number");
+        if (APPEND.equals(type)) {
+            JsonElement target = walk(root, path, path.size());
+            check(target.isJsonArray(), "target is not an array");
+            target.getAsJsonArray().add(value.deepCopy());
+            return;
         }
-        if (!REMOVE.equals(op.type()) && op.value() == null) {
-            return op.type() + " has no value";
-        }
-        if (SCALE.equals(op.type()) && !isNumber(op.value())) {
-            return "scale factor " + op.value() + " is not a number";
-        }
-        if (APPEND.equals(op.type())) {
-            Located target = locate(root, path, path.size());
-            if (target.problem != null) {
-                return target.problem;
-            }
-            if (!target.node.isJsonArray()) {
-                return "target is not an array";
-            }
-            target.node.getAsJsonArray().add(op.value().deepCopy());
-            return null;
-        }
-        Located parent = locate(root, path, path.size() - 1);
-        if (parent.problem != null) {
-            return parent.problem;
-        }
+        JsonElement parent = walk(root, path, path.size() - 1);
         JsonElement last = path.get(path.size() - 1);
-        if (parent.node.isJsonObject()) {
-            if (!isKey(last)) {
-                return "object step needs a key, got " + last;
-            }
-            JsonObject object = parent.node.getAsJsonObject();
+        if (parent.isJsonObject()) {
+            check(isKey(last), "object step needs a key, got " + last);
+            JsonObject object = parent.getAsJsonObject();
             String key = last.getAsString();
-            switch (op.type()) {
-                case SET -> {
-                    if (!object.has(key)) {
-                        return "key " + key + " is missing";
-                    }
-                    object.add(key, op.value().deepCopy());
-                }
+            switch (type) {
                 case ADD -> {
-                    if (object.has(key)) {
-                        return "key " + key + " already exists";
-                    }
-                    object.add(key, op.value().deepCopy());
+                    check(!object.has(key), "key " + key + " already exists");
+                    object.add(key, value.deepCopy());
+                }
+                case SET -> {
+                    present(object, key);
+                    object.add(key, value.deepCopy());
                 }
                 case REMOVE -> {
-                    if (object.remove(key) == null) {
-                        return "key " + key + " is missing";
-                    }
+                    present(object, key);
+                    object.remove(key);
                 }
-                case SCALE -> {
-                    if (!object.has(key)) {
-                        return "key " + key + " is missing";
-                    }
-                    if (!isNumber(object.get(key))) {
-                        return "key " + key + " holds " + object.get(key) + ", not a number";
-                    }
-                    object.add(key, scaled(object.get(key), op.value()));
-                }
-                default -> {
-                    return "unknown op";
-                }
+                case SCALE -> object.add(key, scaled(numberAt(present(object, key), "key " + key), value));
+                default -> throw new Failure("unknown op");
             }
-            return null;
+        } else if (parent.isJsonArray()) {
+            JsonArray array = parent.getAsJsonArray();
+            int index = index(array, last);
+            switch (type) {
+                case SET -> array.set(index, value.deepCopy());
+                case REMOVE -> array.remove(index);
+                case SCALE -> array.set(index, scaled(numberAt(array.get(index), "element " + index), value));
+                default -> throw new Failure(type + " cannot target an array element");
+            }
+        } else {
+            throw new Failure("parent is not an object or array");
         }
-        if (parent.node.isJsonArray()) {
-            JsonArray array = parent.node.getAsJsonArray();
-            Selected selected = select(array, last);
-            if (selected.problem != null) {
-                return selected.problem;
-            }
-            switch (op.type()) {
-                case SET -> array.set(selected.index, op.value().deepCopy());
-                case REMOVE -> array.remove(selected.index);
-                case SCALE -> {
-                    if (!isNumber(array.get(selected.index))) {
-                        return "element " + selected.index + " holds " + array.get(selected.index) + ", not a number";
-                    }
-                    array.set(selected.index, scaled(array.get(selected.index), op.value()));
-                }
-                default -> {
-                    return op.type() + " cannot target an array element";
-                }
-            }
-            return null;
-        }
-        return "parent is not an object or array";
     }
 
-    private static Located locate(JsonElement root, JsonArray path, int steps) {
+    private static JsonElement walk(JsonElement root, JsonArray path, int steps) {
         JsonElement node = root;
         for (int i = 0; i < steps; i++) {
             JsonElement step = path.get(i);
             if (node.isJsonObject()) {
-                if (!isKey(step)) {
-                    return Located.failed("step " + i + " needs a key, got " + step);
-                }
-                JsonElement next = node.getAsJsonObject().get(step.getAsString());
-                if (next == null) {
-                    return Located.failed("key " + step.getAsString() + " is missing");
-                }
-                node = next;
+                check(isKey(step), "step " + i + " needs a key, got " + step);
+                node = present(node.getAsJsonObject(), step.getAsString());
             } else if (node.isJsonArray()) {
-                Selected selected = select(node.getAsJsonArray(), step);
-                if (selected.problem != null) {
-                    return Located.failed(selected.problem);
-                }
-                node = node.getAsJsonArray().get(selected.index);
+                node = node.getAsJsonArray().get(index(node.getAsJsonArray(), step));
             } else {
-                return Located.failed("step " + i + " walks into a value");
+                throw new Failure("step " + i + " walks into a value");
             }
         }
-        return new Located(node, null);
+        return node;
     }
 
-    private static Selected select(JsonArray array, JsonElement step) {
+    private static JsonElement present(JsonObject object, String key) {
+        JsonElement element = object.get(key);
+        check(element != null, "key " + key + " is missing");
+        return element;
+    }
+
+    private static int index(JsonArray array, JsonElement step) {
         if (step.isJsonPrimitive() && step.getAsJsonPrimitive().isNumber()) {
             int index = step.getAsInt();
-            if (index < 0 || index >= array.size()) {
-                return Selected.failed("index " + index + " is outside 0.." + (array.size() - 1));
-            }
-            return new Selected(index, null);
+            check(index >= 0 && index < array.size(), "index " + index + " is outside 0.." + (array.size() - 1));
+            return index;
         }
-        if (!step.isJsonObject() || step.getAsJsonObject().size() != 1) {
-            return Selected.failed("array step needs an index or a one-entry selector, got " + step);
-        }
+        check(step.isJsonObject() && step.getAsJsonObject().size() == 1, "array step needs an index or a one-entry selector, got " + step);
         Map.Entry<String, JsonElement> selector = step.getAsJsonObject().entrySet().iterator().next();
         int found = -1;
         for (int i = 0; i < array.size(); i++) {
             JsonElement element = array.get(i);
-            boolean matches;
-            if (VALUE_SELECTOR.equals(selector.getKey())) {
-                matches = element.equals(selector.getValue());
-            } else {
-                matches = element.isJsonObject() && selector.getValue().equals(element.getAsJsonObject().get(selector.getKey()));
-            }
+            boolean matches = VALUE_SELECTOR.equals(selector.getKey())
+                    ? element.equals(selector.getValue())
+                    : element.isJsonObject() && selector.getValue().equals(element.getAsJsonObject().get(selector.getKey()));
             if (matches) {
-                if (found >= 0) {
-                    return Selected.failed("selector " + step + " matches more than one element");
-                }
+                check(found < 0, "selector " + step + " matches more than one element");
                 found = i;
             }
         }
-        if (found < 0) {
-            return Selected.failed("selector " + step + " matches nothing");
+        check(found >= 0, "selector " + step + " matches nothing");
+        return found;
+    }
+
+    private static JsonElement numberAt(JsonElement element, String where) {
+        check(isNumber(element), where + " holds " + element + ", not a number");
+        return element;
+    }
+
+    private static void check(boolean condition, String problem) {
+        if (!condition) {
+            throw new Failure(problem);
         }
-        return new Selected(found, null);
     }
 
     private static boolean isKey(JsonElement step) {
@@ -242,27 +194,6 @@ public final class ConfigPatch {
 
     public static JsonPrimitive scaled(JsonElement number, JsonElement factor) {
         BigDecimal product = number.getAsBigDecimal().multiply(factor.getAsBigDecimal()).stripTrailingZeros();
-        if (product.scale() < 0) {
-            product = product.setScale(0);
-        }
-        return new JsonPrimitive(product);
-    }
-
-    public record Op(String type, JsonArray path, @Nullable JsonElement value) {
-    }
-
-    public record Result(JsonElement json, List<String> failures) {
-    }
-
-    private record Located(JsonElement node, @Nullable String problem) {
-        static Located failed(String problem) {
-            return new Located(null, problem);
-        }
-    }
-
-    private record Selected(int index, @Nullable String problem) {
-        static Selected failed(String problem) {
-            return new Selected(-1, problem);
-        }
+        return new JsonPrimitive(product.scale() < 0 ? product.setScale(0) : product);
     }
 }
