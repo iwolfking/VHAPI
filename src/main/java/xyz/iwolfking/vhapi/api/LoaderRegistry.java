@@ -11,6 +11,7 @@ import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
 import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.GenFileProcessor;
 import xyz.iwolfking.vhapi.api.loaders.lib.VHAPIDataLoader;
+import xyz.iwolfking.vhapi.api.patches.ConfigPatchProcessor;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
 
 import java.util.*;
@@ -54,6 +55,8 @@ public class LoaderRegistry {
 
     public static void initProcessors() {
         MinecraftForge.EVENT_BUS.post(new VHAPIProcessorsEvent.Init());
+
+        addConfigProcessor(new ConfigPatchProcessor());
 
         for(VaultConfigProcessor<?> transmogProcessor : Processors.TransmogConfigProcessors.getStandardTransmogProcessors()) {
             addConfigProcessor(transmogProcessor);
