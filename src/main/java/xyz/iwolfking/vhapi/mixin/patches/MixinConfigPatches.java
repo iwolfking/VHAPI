@@ -23,11 +23,6 @@ import java.util.List;
 @Mixin(value = Config.class, remap = false)
 public abstract class MixinConfigPatches {
 
-    /**
-     * Applies the config patches for this file, when there are any, to the disk JSON before the base mod
-     * deserializes it. A patched tree that fails to deserialize falls back to the unpatched file, so the base mod
-     * never replaces the disk file with its Java defaults because of a patch.
-     */
     @WrapOperation(method = "readConfig", at = @At(value = "INVOKE", target = "Lcom/google/gson/Gson;fromJson(Ljava/io/Reader;Ljava/lang/reflect/Type;)Ljava/lang/Object;"))
     private Object vhapi$patchConfig(Gson gson, Reader reader, Type type, Operation<Object> original) {
         String path = ConfigPatches.relativePath(((ConfigAccessor) this).vhapi$getConfigFile());
@@ -38,10 +33,6 @@ public abstract class MixinConfigPatches {
         return ConfigPatches.deserializePatched(path, patches, reader, patched -> original.call(gson, patched, type));
     }
 
-    /**
-     * Loads a config from the patch that creates it. The patch wins over any file already on disk (a stale copy or
-     * one the base mod wrote with its defaults); a create that fails falls through to the base mod's own read.
-     */
     @Inject(method = "readConfig", at = @At("HEAD"), cancellable = true)
     private void vhapi$createConfig(CallbackInfoReturnable<Config> cir) {
         Config self = (Config) (Object) this;

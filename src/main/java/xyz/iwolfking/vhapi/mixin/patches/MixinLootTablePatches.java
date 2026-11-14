@@ -15,7 +15,6 @@ import java.util.List;
 @Mixin(value = LootTable.class, remap = false)
 public abstract class MixinLootTablePatches {
 
-    /** Applies the config patches for a generation loot table, when there are any, to its disk JSON before it is read. */
     @WrapOperation(method = "fromPath", at = @At(value = "INVOKE", target = "Lcom/google/gson/Gson;fromJson(Ljava/io/Reader;Ljava/lang/Class;)Ljava/lang/Object;"))
     private static Object vhapi$patchLootTable(Gson gson, Reader reader, Class<?> type, Operation<Object> original, @Local(argsOnly = true) String filePath) {
         String path = ConfigPatches.relativePath(filePath);

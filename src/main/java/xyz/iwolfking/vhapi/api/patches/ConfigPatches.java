@@ -18,13 +18,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
-/**
- * Field-level patches for base Vault Hunters config files. Datapacks ship them as
- * {@code data/<namespace>/vault_configs/patches/<path below config/the_vault/>}, so they sync to clients with the
- * rest of VHAPI's configs, and they apply to the disk JSON as the_vault reads it, before VHAPI's own config
- * processors merge their additions. When several namespaces patch one file, their ops apply in namespace order.
- * A data run has no datapacks, so providers hand their patches over with {@link #useDataRunPatches}.
- */
 public final class ConfigPatches {
     public static final String DIRECTORY = "patches";
     private static final String CONFIG_ROOT = "config/the_vault/";
@@ -35,11 +28,9 @@ public final class ConfigPatches {
     private ConfigPatches() {
     }
 
-    /** One namespace's patch for one config file. */
     public record Entry(String namespace, ConfigPatch patch) {
     }
 
-    /** Rebuilds the datapack patches from VHAPI's gathered configs; runs before the_vault re-reads its files. */
     public static void reload(Map<ResourceLocation, JsonElement> configs) {
         Map<String, List<Entry>> patches = new TreeMap<>();
         configs.forEach((id, json) -> {
@@ -58,7 +49,6 @@ public final class ConfigPatches {
         loaded = patches;
     }
 
-    /** Hands a data run the patches one provider writes, keyed by the config's path below {@code config/the_vault/}. */
     public static void useDataRunPatches(String namespace, Map<String, ConfigPatch> patches) {
         patches.forEach((path, patch) -> {
             List<Entry> entries = DATA_RUN.computeIfAbsent(path, p -> new ArrayList<>());
@@ -68,7 +58,6 @@ public final class ConfigPatches {
         });
     }
 
-    /** The config's path below {@code config/the_vault/}, with forward slashes, or null for a file outside it. */
     @Nullable
     public static String relativePath(File file) {
         return relativePath(file.getPath());
@@ -81,7 +70,6 @@ public final class ConfigPatches {
         return at < 0 ? null : normalized.substring(at + CONFIG_ROOT.length());
     }
 
-    /** Every patch for the config at {@code path}, in the order they apply; empty when it has none. */
     public static List<Entry> find(@Nullable String path) {
         if (path == null) {
             return List.of();
@@ -90,10 +78,6 @@ public final class ConfigPatches {
         return source.getOrDefault(path, List.of());
     }
 
-    /**
-     * The content of a config one patch creates (its {@code create} plus every patch's ops), or null when no patch
-     * creates it. Two patches creating the same file log an error and the first namespace's wins.
-     */
     @Nullable
     public static JsonElement created(String path) {
         List<Entry> entries = find(path);
@@ -111,7 +95,6 @@ public final class ConfigPatches {
         return creator == null ? null : apply(path, entries, creator.patch().create());
     }
 
-    /** Applies every patch for the config to {@code base}, logging an error for each op that does not resolve. */
     public static JsonElement apply(String path, List<Entry> entries, JsonElement base) {
         JsonElement json = base;
         for (Entry entry : entries) {
@@ -126,11 +109,6 @@ public final class ConfigPatches {
         return json;
     }
 
-    /**
-     * Reads the disk config, applies its patches and hands the patched JSON to the base mod's own deserializer. When
-     * the patched tree does not deserialize, the unpatched file is used instead and the failure is logged, so a bad
-     * patch never sends the base mod into its write-defaults fallback.
-     */
     public static Object deserializePatched(String path, List<Entry> entries, Reader reader, Function<Reader, Object> deserialize) {
         JsonElement base = JsonParser.parseReader(reader);
         JsonElement patched = apply(path, entries, base);

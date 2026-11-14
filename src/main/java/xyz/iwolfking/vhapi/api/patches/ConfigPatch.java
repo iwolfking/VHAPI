@@ -11,19 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A field-level patch to one base Vault Hunters config file, applied as the game reads it. The patch
- * carries only the values it changes, so every other upstream value keeps flowing through.
- *
- * <p>Ops address nodes by a path of object keys, array indices and array selectors. A selector is a one-entry
- * object: {@code {"id": "X"}} picks the single array element whose {@code id} equals {@code "X"}, and
- * {@code {"$value": v}} picks the single element equal to {@code v}. Each op is strict: {@code set} and
- * {@code remove} need the target to exist, {@code add} needs the key to be absent, {@code append} needs an array,
- * and {@code scale} needs an existing number, which it multiplies by the op's numeric value. An op that does not
- * resolve is reported and skipped, leaving the upstream value in place.</p>
- *
- * <p>{@code create} supplies the whole file for a config upstream does not ship; the ops then apply on top.</p>
- */
 public final class ConfigPatch {
     public static final String SET = "set";
     public static final String ADD = "add";
@@ -81,10 +68,6 @@ public final class ConfigPatch {
         return json;
     }
 
-    /**
-     * Applies every op to a copy of {@code base}. Ops that do not resolve are skipped and described in the result's
-     * failures, so the caller decides whether that is an error log (runtime) or a failed datagen run.
-     */
     public Result apply(JsonElement base) {
         JsonElement root = base.deepCopy();
         List<String> failures = new ArrayList<>();
@@ -257,11 +240,6 @@ public final class ConfigPatch {
         return element != null && element.isJsonPrimitive() && element.getAsJsonPrimitive().isNumber();
     }
 
-    /**
-     * {@code number} times {@code factor}, both JSON numbers, multiplied as decimals so a scaled {@code 0.03} reads
-     * {@code 0.09} rather than a binary rounding artefact. The {@code scale} op and any text quoting a scaled value
-     * use this, so the two always agree.
-     */
     public static JsonPrimitive scaled(JsonElement number, JsonElement factor) {
         BigDecimal product = number.getAsBigDecimal().multiply(factor.getAsBigDecimal()).stripTrailingZeros();
         if (product.scale() < 0) {

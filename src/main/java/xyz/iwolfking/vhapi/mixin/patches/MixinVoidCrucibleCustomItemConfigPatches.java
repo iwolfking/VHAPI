@@ -15,7 +15,6 @@ import java.util.List;
 @Mixin(value = VoidCrucibleCustomItemConfig.class, remap = false)
 public abstract class MixinVoidCrucibleCustomItemConfigPatches {
 
-    /** Applies the config patches for each void crucible item file the folder scan reads. */
     @WrapOperation(method = "readConfig", at = @At(value = "INVOKE", target = "Lcom/google/gson/Gson;fromJson(Ljava/io/Reader;Ljava/lang/Class;)Ljava/lang/Object;"))
     private Object vhapi$patchCrucibleItem(Gson gson, Reader reader, Class<?> type, Operation<Object> original, @Local String id) {
         String path = "void_crucible/" + id + ".json";

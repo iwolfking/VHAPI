@@ -26,14 +26,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Writes field-level patches for base Vault Hunters configs to {@code data/<modId>/vault_configs/patches/}. A patch
- * holds only the values the mod changes; everything else in the file stays upstream's. Before writing, each patch is
- * read back from the JSON it serializes to and applied to the seeded base config in the run directory's
- * {@code config/the_vault/}, and any op that does not resolve fails the run, so a patch that no longer matches
- * upstream never ships. Providers that read patched configs during the same run see these patches once the mod
- * passes {@link #patches()} to {@link ConfigPatches#useDataRunPatches}.
- */
 public abstract class AbstractConfigPatchProvider implements DataProvider {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().create();
     private static final String SEEDED_CONFIG_ROOT = "config/the_vault/";
@@ -49,7 +41,6 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
 
     protected abstract void registerPatches();
 
-    /** Every patch this provider writes, keyed by the config's path below {@code config/the_vault/}. */
     public final Map<String, ConfigPatch> patches() {
         if (this.built == null) {
             this.registerPatches();
@@ -60,7 +51,6 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
         return this.built;
     }
 
-    /** The patch for one config file, such as {@code talents.json} or {@code gear_modifiers/sword.json}. */
     protected final Patch patch(String path) {
         return this.patches.computeIfAbsent(path, p -> new Patch());
     }
@@ -103,11 +93,6 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
         }
     }
 
-    /**
-     * Why the runtime hooks would never apply this patch, or null. Ops apply to files the base mod reads through
-     * {@code Config.readConfig}, generation loot tables and void crucible item files; {@code create} works only for
-     * {@code Config}-read files. Locale variants and the other generation folders are not hooked.
-     */
     private static String unhookedReason(String path, ConfigPatch patch) {
         if (path.startsWith("lang/")) {
             return "locale variants are read without the patch hook";
@@ -123,10 +108,6 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
         return null;
     }
 
-    /**
-     * The seeded base config at {@code path} below {@code config/the_vault/}, as upstream ships it (no patch applied),
-     * for patches whose ops or text depend on upstream's values. A missing file refuses the run.
-     */
     public static JsonElement seeded(String path) {
         File file = new File(SEEDED_CONFIG_ROOT + path);
         if (!file.exists()) {
@@ -139,7 +120,6 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
         }
     }
 
-    /** The paths of the seeded JSON configs directly in {@code folder} (such as {@code gear_modifiers/}), sorted. */
     public static List<String> seededFiles(String folder) {
         File[] files = new File(SEEDED_CONFIG_ROOT + folder).listFiles((dir, name) -> name.endsWith(".json"));
         if (files == null) {
@@ -153,19 +133,16 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
         return paths;
     }
 
-    /** A selector for the single array element whose {@code id} is {@code id}. */
     public static JsonObject id(String id) {
         return where("id", id);
     }
 
-    /** A selector for the single array element whose {@code field} equals {@code value}. */
     public static JsonObject where(String field, Object value) {
         JsonObject selector = new JsonObject();
         selector.add(field, json(value));
         return selector;
     }
 
-    /** A selector for the single array element equal to {@code value}. */
     public static JsonObject value(Object value) {
         return where(ConfigPatch.VALUE_SELECTOR, value);
     }
@@ -189,7 +166,6 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
         throw new IllegalArgumentException("Not a JSON value: " + value);
     }
 
-    /** Parses a JSON literal, for values whose shape is easier to read as JSON than as builder calls. */
     public static JsonElement parse(String text) {
         return JsonParser.parseString(text);
     }
@@ -198,13 +174,11 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
         private JsonElement create;
         private final List<ConfigPatch.Op> ops = new ArrayList<>();
 
-        /** Supplies the whole file for a config upstream does not ship. */
         public Patch create(JsonElement content) {
             this.create = content;
             return this;
         }
 
-        /** The node at {@code path}; each step is an object key, an array index or a selector. */
         public Node at(Object... path) {
             return new Node(this, steps(new JsonArray(), path));
         }
@@ -231,31 +205,26 @@ public abstract class AbstractConfigPatchProvider implements DataProvider {
             return new Node(this.patch, steps(this.path.deepCopy(), more));
         }
 
-        /** Replaces an existing value: an object key or an array element. */
         public Node set(Object step, Object value) {
             this.patch.op(ConfigPatch.SET, steps(this.path.deepCopy(), step), json(value));
             return this;
         }
 
-        /** Adds an object key upstream does not have. */
         public Node add(String key, Object value) {
             this.patch.op(ConfigPatch.ADD, steps(this.path.deepCopy(), key), json(value));
             return this;
         }
 
-        /** Multiplies an existing number (an object key or an array element) by {@code factor}. */
         public Node scale(Object step, Number factor) {
             this.patch.op(ConfigPatch.SCALE, steps(this.path.deepCopy(), step), json(factor));
             return this;
         }
 
-        /** Removes an existing object key or array element. */
         public Node remove(Object step) {
             this.patch.op(ConfigPatch.REMOVE, steps(this.path.deepCopy(), step), null);
             return this;
         }
 
-        /** Appends to the array at this node. */
         public Node append(Object value) {
             this.patch.op(ConfigPatch.APPEND, this.path.deepCopy(), json(value));
             return this;
