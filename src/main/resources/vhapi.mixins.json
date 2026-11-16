@@ -125,6 +125,7 @@
     "accessors.VaultGearEnchantmentConfigAccessor",
     "accessors.VaultGearTagConfigAccessor",
     "accessors.VaultGearTierConfigAccessor",
+    "accessors.VaultGearTypeConfigAccessor",
     "accessors.VaultGeneralConfigAccessor",
     "accessors.VaultLevelsConfigAccessor",
     "accessors.VaultMapRoomIconsConfigAccessor",

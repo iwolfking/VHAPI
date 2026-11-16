@@ -104,6 +104,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.VaultGearConfigProcessors.UNIQUE_GEAR_CONFIG_LOADER);
         addConfigProcessor(Processors.VaultGearConfigProcessors.UNIQUE_CODEX_CONFIG_LOADER);
         addConfigProcessor(Processors.VaultGearConfigProcessors.UNIQUE_DISCOVERY_CONFIG_LOADER);
+        addConfigProcessor(Processors.VaultGearConfigProcessors.GEAR_ROLL_TYPE_CONFIG_LOADER);
 
         addConfigProcessor(Processors.VaultModifierConfigProcessors.VAULT_MODIFIER_CONFIG_LOADER);
         addConfigProcessor(Processors.VaultModifierConfigProcessors.VAULT_MODIFIER_POOLS_CONFIG_LOADER);
