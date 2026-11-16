@@ -17,16 +17,36 @@ public class TemplatePoolProcessors {
     public static final class ReferenceProcessor implements Processor {
         private final String id;
         private final int weight;
+        private final Consumer<PaletteConsumer> paletteConsumer;
 
         public ReferenceProcessor(String id, int weight) {
+            this(id, weight, null);
+        }
+
+        /** A reference whose picked entry gets these palettes added after its own. */
+        public ReferenceProcessor(String id, int weight, Consumer<PaletteConsumer> paletteConsumer) {
             this.id = id;
             this.weight = weight;
+            this.paletteConsumer = paletteConsumer;
         }
 
         @Override
         public JsonElement toJson() {
             JsonObject o = new JsonObject();
-            o.addProperty("reference", id);
+            if (paletteConsumer == null) {
+                o.addProperty("reference", id);
+            } else {
+                JsonObject reference = new JsonObject();
+                reference.addProperty("id", id);
+                JsonArray paletteArray = new JsonArray();
+                PaletteConsumer builder = new PaletteConsumer();
+                paletteConsumer.accept(builder);
+                for (ResourceLocation palette : builder.getPalettes()) {
+                    paletteArray.add(palette.toString());
+                }
+                reference.add("palettes", paletteArray);
+                o.add("reference", reference);
+            }
             o.addProperty("weight", weight);
             return o;
         }

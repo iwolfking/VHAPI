@@ -190,6 +190,12 @@ public abstract class AbstractTemplatePoolProvider implements DataProvider {
             return this;
         }
 
+        /** Adds a reference to another pool; the entry it picks gets these palettes added after its own. */
+        public TemplatePoolBuilder addReference(int weight, ResourceLocation template, Consumer<TemplatePoolProcessors.PaletteConsumer> palettes) {
+            entries.add(new TemplatePoolProcessors.ReferenceProcessor(template.toString(), weight, palettes));
+            return this;
+        }
+
         public TemplatePoolBuilder addPool(int weight, Consumer<TemplatePoolProcessors.ProcessorConsumer> processorConsumer) {
             entries.add(new TemplatePoolProcessors.PoolProcessor(weight, processorConsumer));
             return this;
