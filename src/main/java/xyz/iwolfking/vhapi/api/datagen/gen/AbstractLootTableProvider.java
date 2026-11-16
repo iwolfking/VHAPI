@@ -101,19 +101,30 @@ public abstract class AbstractLootTableProvider implements DataProvider {
     }
 
     public static class LootPool {
-        public int weight;
+        public Number weight;
         public List<LootPoolItem> pool = new ArrayList<>();
 
         public LootPool(int weight) {
             this.weight = weight;
         }
+
+        /** A sub-pool with a fractional weight, such as a rare fifth pool far below the others. */
+        public LootPool(double weight) {
+            this.weight = weight;
+        }
     }
 
     public static class LootPoolItem {
-        public int weight;
+        public Number weight;
         public LootItem item;
 
         public LootPoolItem(int weight, LootItem item) {
+            this.weight = weight;
+            this.item = item;
+        }
+
+        /** An entry with a fractional weight. */
+        public LootPoolItem(double weight, LootItem item) {
             this.weight = weight;
             this.item = item;
         }
@@ -122,7 +133,9 @@ public abstract class AbstractLootTableProvider implements DataProvider {
     public static class LootItem {
         public String id;
         public Count count;
-        public Map<String, Object> nbt;
+
+        /** The item's NBT: a map written as a JSON object, or a string holding raw SNBT. */
+        public Object nbt;
 
         public LootItem(String id, Count count) {
             this.id = id;
@@ -170,7 +183,15 @@ public abstract class AbstractLootTableProvider implements DataProvider {
         }
 
         public EntryBuilder pool(int weight, Consumer<PoolBuilder> c) {
-            LootPool p = new LootPool(weight);
+            return this.addPool(new LootPool(weight), c);
+        }
+
+        /** Adds a sub-pool with a fractional weight. */
+        public EntryBuilder pool(double weight, Consumer<PoolBuilder> c) {
+            return this.addPool(new LootPool(weight), c);
+        }
+
+        private EntryBuilder addPool(LootPool p, Consumer<PoolBuilder> c) {
             entry.pool.add(p);
             PoolBuilder pb = new PoolBuilder(p);
             c.accept(pb);
@@ -196,13 +217,47 @@ public abstract class AbstractLootTableProvider implements DataProvider {
             return this;
         }
 
+        /** Adds an item with a fractional weight. */
+        public PoolBuilder item(double weight, String id, int min, int max) {
+            pool.pool.add(new LootPoolItem(weight, new LootItem(id, new Count(min, max))));
+            return this;
+        }
+
         public PoolBuilder itemNbt(int weight, String id, int min, int max, Consumer<LinkedHashMap<String,Object>> nbtConsumer) {
+            pool.pool.add(new LootPoolItem(weight, itemWithNbt(id, min, max, nbtConsumer)));
+            return this;
+        }
+
+        /** Adds an item with NBT and a fractional weight. */
+        public PoolBuilder itemNbt(double weight, String id, int min, int max, Consumer<LinkedHashMap<String,Object>> nbtConsumer) {
+            pool.pool.add(new LootPoolItem(weight, itemWithNbt(id, min, max, nbtConsumer)));
+            return this;
+        }
+
+        /** Adds an item whose NBT is written as a raw SNBT string, kept exactly as given. */
+        public PoolBuilder itemSnbt(int weight, String id, int min, int max, String snbt) {
+            pool.pool.add(new LootPoolItem(weight, itemWithSnbt(id, min, max, snbt)));
+            return this;
+        }
+
+        /** Adds an item whose NBT is a raw SNBT string, with a fractional weight. */
+        public PoolBuilder itemSnbt(double weight, String id, int min, int max, String snbt) {
+            pool.pool.add(new LootPoolItem(weight, itemWithSnbt(id, min, max, snbt)));
+            return this;
+        }
+
+        private static LootItem itemWithNbt(String id, int min, int max, Consumer<LinkedHashMap<String,Object>> nbtConsumer) {
             LootItem item = new LootItem(id, new Count(min, max));
             LinkedHashMap<String, Object> nbt = new LinkedHashMap<>();
             nbtConsumer.accept(nbt);
             item.nbt = nbt;
-            pool.pool.add(new LootPoolItem(weight, item));
-            return this;
+            return item;
+        }
+
+        private static LootItem itemWithSnbt(String id, int min, int max, String snbt) {
+            LootItem item = new LootItem(id, new Count(min, max));
+            item.nbt = snbt;
+            return item;
         }
     }
 
