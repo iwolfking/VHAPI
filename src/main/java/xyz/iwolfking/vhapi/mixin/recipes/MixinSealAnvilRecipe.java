@@ -31,6 +31,10 @@ import java.util.List;
 public abstract class MixinSealAnvilRecipe extends VanillaAnvilRecipe {
 
 
+    /**
+     * @author iwolfking
+     * @reason Register Crystal Workbench JEI for Seals
+     */
     @Overwrite
     public void onRegisterJEI(IRecipeRegistration registry) {
         IVanillaRecipeFactory factory = registry.getVanillaRecipeFactory();

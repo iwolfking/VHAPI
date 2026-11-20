@@ -292,7 +292,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
 
         ModFileInfo justEnoughVHMod = LoadingModList.get().getModFileById("just_enough_vh");
         if (justEnoughVHMod == null || justEnoughVHMod.getFile().getJarVersion().getMinorVersion() < 9) {
-            registration.addRecipes(GREED_CAULDRON, getGreedCauldron());
             registration.addRecipes(ROYALE_LOOT, getRoyaleLoot());
         }
         if(!RemasteredHelper.isRemasteredVaultMod()) {
@@ -948,25 +947,6 @@ public class VHAPIJEIPlugin implements IModPlugin {
         });
 
         lootInfo.add(LabeledLootInfo.of(tools, new TextComponent("Prebuilt Tools"), null));
-
-        return lootInfo;
-    }
-
-    public static List<LabeledLootInfo> getGreedCauldron() {
-        List<LabeledLootInfo> lootInfo = new ArrayList<>();
-
-        List<ItemStack> items = new ArrayList<>();
-
-        ((GreedCauldronConfigAccessor)ModConfigs.GREED_CAULDRON).getDemands().forEach((key) -> {
-            if(ResourceLocUtils.isResourceLocation(((DemandEntryAccessor)key).getItem())) {
-                Item item = ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(((DemandEntryAccessor)key).getItem()));
-                if(item != null) {
-                    items.add(formatItemStack(item.getDefaultInstance(), ((DemandEntryAccessor)key).getMinAmount(), ((DemandEntryAccessor) key).getMaxAmount(), 1, ((GreedCauldronConfigAccessor)ModConfigs.GREED_CAULDRON).getDemands().size(), ((DemandEntryAccessor) key).getCoinOutput()));
-                }
-            }
-        });
-
-        lootInfo.add(LabeledLootInfo.of(items, new TextComponent("Cauldron Demands"), null));
 
         return lootInfo;
     }

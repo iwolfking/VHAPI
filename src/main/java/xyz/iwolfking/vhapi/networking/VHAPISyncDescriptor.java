@@ -1,19 +1,12 @@
 package xyz.iwolfking.vhapi.networking;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import iskallia.vault.init.ModConfigs;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
 import xyz.iwolfking.vhapi.api.LoaderRegistry;
-import xyz.iwolfking.vhapi.api.data.core.ConfigData;
-import xyz.iwolfking.vhapi.api.lib.core.processors.IConfigProcessor;
-import xyz.iwolfking.vhapi.api.registry.VaultObjectiveRegistry;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
-import xyz.iwolfking.vhapi.mixin.accessors.BountyScreenAccessor;
 import xyz.iwolfking.vhapi.networking.util.StringCompressor;
 
 import java.util.HashMap;
@@ -60,10 +53,10 @@ public class VHAPISyncDescriptor {
             LoaderRegistry.VHAPI_DATA_LOADER.JSON_DATA.putAll(loadedConfigs);
             LoaderRegistry.VHAPI_DATA_LOADER.gatherConfigsToProcessors();
             LoaderRegistry.VHAPI_DATA_LOADER.gatherGenConfigsToProcessors();
-
-            if (BountyScreenAccessor.getObjectiveNames() != null) {
-                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
-            }
+//
+//            if (BountyScreenAccessor.getObjectiveNames() != null) {
+//                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
+//            }
         });
         context.setPacketHandled(true);
     }

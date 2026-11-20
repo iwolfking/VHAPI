@@ -46,7 +46,6 @@ public abstract class AbstractVaultBlacklistProvider extends AbstractVaultConfig
 
         @Override
         protected void configureConfig(VaultGeneralConfig config) {
-            config.SAVE_PLAYER_SNAPSHOTS = true;
             config.VAULT_EXIT_TNL_MIN = 0.5F;
             config.VAULT_EXIT_TNL_MAX = 1.0F;
             ((VaultGeneralConfigAccessor)config).setBlockBlacklist(BLOCK_BLACKLIST);

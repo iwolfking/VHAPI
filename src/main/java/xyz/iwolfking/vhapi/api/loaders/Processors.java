@@ -1,7 +1,5 @@
 package xyz.iwolfking.vhapi.api.loaders;
 
-import iskallia.vault.config.ThemeAugmentLoreConfig;
-import iskallia.vault.config.VaultItemsConfig;
 import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
@@ -17,7 +15,6 @@ import iskallia.vault.item.gear.FocusItem;
 import iskallia.vault.item.gear.VaultShieldItem;
 import iskallia.vault.item.gear.WandItem;
 import net.minecraft.world.item.Item;
-import xyz.iwolfking.vhapi.api.loaders.bounty.BountyRewardsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.card.*;
@@ -38,7 +35,6 @@ import xyz.iwolfking.vhapi.api.loaders.general.ThemeLoreConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TooltipConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.TranslationsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.general.VaultStatsConfigLoader;
-import xyz.iwolfking.vhapi.api.loaders.greed.GreedCauldronConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.greed.GreedTraderConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.items.AugmentConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.items.InscriptionConfigLoader;
@@ -87,7 +83,6 @@ import xyz.iwolfking.vhapi.api.loaders.vaultar.VaultAltarIngredientsConfigLoader
 import xyz.iwolfking.vhapi.api.loaders.workstation.VaultDiffuserConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.workstation.VaultRecyclerConfigLoader;
 import xyz.iwolfking.vhapi.mixin.accessors.UnidentifiedTreasureKeyAccessorConfig;
-import xyz.iwolfking.vhapi.mixin.accessors.VaultEntitiesConfigAccessor;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -193,7 +188,6 @@ public class Processors {
     }
 
     public static class GreedConfigProcessors {
-        public static final GreedCauldronConfigLoader GREED_CAULDRON_CONFIG_LOADER = new GreedCauldronConfigLoader();
         public static final GreedTraderConfigLoader GREED_TRADER_CONFIG_LOADER = new GreedTraderConfigLoader();
     }
 
@@ -204,7 +198,6 @@ public class Processors {
     public static class WorkstationConfigProcessors {
         public static final VaultRecyclerConfigLoader VAULT_RECYCLER_CONFIG_LOADER = new VaultRecyclerConfigLoader();
         public static final VaultDiffuserConfigLoader VAULT_DIFFUSER_CONFIG_LOADER = new VaultDiffuserConfigLoader();
-        public static final BountyRewardsConfigLoader BOUNTY_REWARDS_CONFIG_LOADER = new BountyRewardsConfigLoader();
     }
 
     public static class ShopConfigProcessors {

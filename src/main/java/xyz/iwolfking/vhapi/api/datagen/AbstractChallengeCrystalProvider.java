@@ -1,40 +1,28 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
-import iskallia.vault.VaultMod;
 import iskallia.vault.config.ChallengeCrystalConfig;
-import iskallia.vault.config.TooltipConfig;
-import iskallia.vault.config.VaultCrystalConfig;
+import iskallia.vault.config.entry.IntRangeEntry;
 import iskallia.vault.core.vault.hazard.Hazard;
 import iskallia.vault.core.vault.modifier.VaultModifierStack;
 import iskallia.vault.core.vault.modifier.modifier.EmptyModifier;
 import iskallia.vault.core.vault.modifier.registry.VaultModifierRegistry;
 import iskallia.vault.core.vault.modifier.spi.VaultModifier;
-import iskallia.vault.core.world.roll.IntRoll;
 import iskallia.vault.item.crystal.hazard.CrystalHazards;
-import iskallia.vault.item.crystal.layout.ClassicInfiniteCrystalLayout;
 import iskallia.vault.item.crystal.layout.CrystalLayout;
 import iskallia.vault.item.crystal.modifiers.CrystalModifiers;
 import iskallia.vault.item.crystal.modifiers.DefaultCrystalModifiers;
 import iskallia.vault.item.crystal.objective.CrystalObjective;
-import iskallia.vault.item.crystal.objective.EmptyCrystalObjective;
-import iskallia.vault.item.crystal.objective.NullCrystalObjective;
 import iskallia.vault.item.crystal.theme.CrystalTheme;
-import iskallia.vault.item.crystal.theme.PoolCrystalTheme;
 import iskallia.vault.item.crystal.time.CrystalTime;
-import iskallia.vault.item.crystal.time.ValueCrystalTime;
 import net.minecraft.ChatFormatting;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
-import xyz.iwolfking.vhapi.api.datagen.lib.IGenericBuilder;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
 import xyz.iwolfking.vhapi.mixin.accessors.ChallengeCrystalConfigAccessor;
-import xyz.iwolfking.vhapi.mixin.accessors.TooltipConfigAccessor;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -71,11 +59,16 @@ public abstract class AbstractChallengeCrystalProvider extends AbstractVaultConf
 
         @Override
         protected void configureConfig(ChallengeCrystalConfig config) {
-            ((ChallengeCrystalConfigAccessor)config).setChallengesMap(entries);
+            ((ChallengeCrystalConfigAccessor) config).setChallengesMap(entries);
         }
     }
 
     public static class ChallengeEntryBuilder {
+        private String name;
+        private String flavour;
+        private IntRangeEntry embers;
+        private Integer unlockLevel;
+        private int minimumSummonFury;
         private CrystalObjective objective;
         private CrystalLayout layout;
         private CrystalTheme theme;
@@ -84,6 +77,31 @@ public abstract class AbstractChallengeCrystalProvider extends AbstractVaultConf
         private final CrystalHazards hazards = new CrystalHazards();
         private String sigil;
         private boolean exhausted = false;
+
+        public ChallengeEntryBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public ChallengeEntryBuilder flavour(String flavour) {
+            this.flavour = flavour;
+            return this;
+        }
+
+        public ChallengeEntryBuilder embers(IntRangeEntry embers) {
+            this.embers = embers;
+            return this;
+        }
+
+        public ChallengeEntryBuilder unlockLevel(Integer unlockLevel) {
+            this.unlockLevel = unlockLevel;
+            return this;
+        }
+
+        public ChallengeEntryBuilder minimumSummonFury(int minimumSummonFury) {
+            this.minimumSummonFury = minimumSummonFury;
+            return this;
+        }
 
         public ChallengeEntryBuilder objective(CrystalObjective objective) {
             this.objective = objective;
@@ -114,8 +132,8 @@ public abstract class AbstractChallengeCrystalProvider extends AbstractVaultConf
             CompoundTag tag = new CompoundTag();
             tag.putString("id", id.toString());
             tag.putInt("size", size);
-            //Why you make me do this :(, fake that modifier is registered so VaultModifierStack is valid, only called in datagen so no problem
-            if(VaultModifierRegistry.getOpt(id).isEmpty()) {
+            // Why you make me do this :(, fake that modifier is registered so VaultModifierStack is valid, only called in datagen so no problem
+            if (VaultModifierRegistry.getOpt(id).isEmpty()) {
                 VaultModifierRegistry.register(id, new EmptyModifier(id, new EmptyModifier.Properties(), new VaultModifier.Display("", TextColor.fromLegacyFormat(ChatFormatting.AQUA), "")));
             }
             this.modifiers.add(VaultModifierStack.of(tag));
@@ -138,10 +156,23 @@ public abstract class AbstractChallengeCrystalProvider extends AbstractVaultConf
             return this;
         }
 
-
         public ChallengeCrystalConfig.Entry build() {
             modifiers.setRandomModifiers(false);
-            return new ChallengeCrystalConfig.Entry(objective, layout, theme, time, modifiers, hazards, sigil, exhausted);
+            return new ChallengeCrystalConfig.Entry(
+                    name,
+                    flavour,
+                    embers,
+                    unlockLevel,
+                    minimumSummonFury,
+                    objective,
+                    layout,
+                    theme,
+                    time,
+                    modifiers,
+                    hazards,
+                    sigil,
+                    exhausted
+            );
         }
     }
 }

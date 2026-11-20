@@ -9,8 +9,6 @@ import iskallia.vault.item.OverworldInscriptionItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -18,8 +16,6 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.OnDatapackSyncEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,7 +25,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 import oshi.util.tuples.Pair;
@@ -39,9 +34,7 @@ import xyz.iwolfking.vhapi.api.registry.VaultGearRegistry;
 import xyz.iwolfking.vhapi.api.registry.VaultObjectiveRegistry;
 import xyz.iwolfking.vhapi.api.util.ResourceLocUtils;
 import xyz.iwolfking.vhapi.api.util.vhapi.VHAPILoggerUtils;
-import xyz.iwolfking.vhapi.api.util.vhapi.VHAPIUtils;
 import xyz.iwolfking.vhapi.config.VHAPIConfig;
-import xyz.iwolfking.vhapi.mixin.accessors.BountyScreenAccessor;
 import xyz.iwolfking.vhapi.networking.VHAPISyncDescriptor;
 import xyz.iwolfking.vhapi.networking.VHAPISyncNetwork;
 import xyz.iwolfking.vhapi.networking.VHAPISyncTemplates;
@@ -74,7 +67,6 @@ public class VHAPI {
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::worldLoad);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, this::onLogin);
 
 
@@ -194,14 +186,14 @@ public class VHAPI {
         return tags;
     }
 
-    private void worldLoad(final WorldEvent.Load event)  {
-        //This should only run on dedicated servers, we just want to reload configs once initially.
-        if(event.getWorld().isClientSide()) {
-            if(BountyScreenAccessor.getObjectiveNames() != null) {
-                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
-            }
-        }
-    }
+//    private void worldLoad(final WorldEvent.Load event)  {
+//        //This should only run on dedicated servers, we just want to reload configs once initially.
+//        if(event.getWorld().isClientSide()) {
+//            if(BountyScreenAccessor.getObjectiveNames() != null) {
+//                BountyScreenAccessor.getObjectiveNames().putAll(VaultObjectiveRegistry.CUSTOM_BOUNTY_SCREEN_NAMES);
+//            }
+//        }
+//    }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = MODID)
     public static class Client {

@@ -1,7 +1,5 @@
 package xyz.iwolfking.vhapi.api.datagen;
 
-import iskallia.vault.config.greed.GreedChallengeEntry;
-import iskallia.vault.config.greed.GreedQuestEntry;
 import iskallia.vault.config.greed.GreedTraderConfig;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.ItemStack;
@@ -9,7 +7,6 @@ import xyz.iwolfking.vhapi.api.datagen.lib.BasicListBuilder;
 import xyz.iwolfking.vhapi.api.datagen.lib.IGenericBuilder;
 import xyz.iwolfking.vhapi.api.datagen.lib.ListBuilder;
 import xyz.iwolfking.vhapi.api.datagen.lib.VaultConfigBuilder;
-import xyz.iwolfking.vhapi.mixin.accessors.GreedChallengeEntryAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.GreedTraderConfigAccessor;
 import xyz.iwolfking.vhapi.mixin.accessors.GreedTraderConfigTradeEntryAccessor;
 
@@ -30,8 +27,6 @@ public abstract class AbstractGreedTraderProvider extends AbstractVaultConfigDat
 
     public static class Builder extends VaultConfigBuilder<GreedTraderConfig> {
         Map<Integer, List<GreedTraderConfig.TradeEntry>> tradeEntries = new LinkedHashMap<>();
-        List<GreedChallengeEntry> challengeEntries = new LinkedList<>();
-        List<GreedQuestEntry> questEntries = new LinkedList<>();
         Map<String, List<GreedTraderConfig.WeightedRoomPool>> roomPools = new LinkedHashMap<>();
         Map<String, List<GreedTraderConfig.WeightedModifier>> weightedModifiers = new LinkedHashMap<>();
 
@@ -43,22 +38,6 @@ public abstract class AbstractGreedTraderProvider extends AbstractVaultConfigDat
             ListBuilder<GreedTraderConfig.TradeEntry, TradeEntryBuilder> builder = new ListBuilder<>(TradeEntryBuilder::new);
             tradeEntryListBuilderConsumer.accept(builder);
             tradeEntries.put(greedTier, builder.build());
-            return this;
-        }
-
-        public Builder addChallengeEntry(String name, String description, String challengeCrystalId, int minTier, int maxTier) {
-            GreedChallengeEntry entry = new GreedChallengeEntry();
-            ((GreedChallengeEntryAccessor)entry).setDisplayName(name);
-            ((GreedChallengeEntryAccessor)entry).setDescription(description);
-            ((GreedChallengeEntryAccessor)entry).setId(challengeCrystalId);
-            ((GreedChallengeEntryAccessor)entry).setMinTier(minTier);
-            ((GreedChallengeEntryAccessor)entry).setMaxTier(maxTier);
-            challengeEntries.add(entry);
-            return this;
-        }
-
-        public Builder addGreedQuestEntry(GreedQuestEntry entry) {
-            questEntries.add(entry);
             return this;
         }
 
@@ -78,9 +57,6 @@ public abstract class AbstractGreedTraderProvider extends AbstractVaultConfigDat
 
         @Override
         protected void configureConfig(GreedTraderConfig config) {
-            ((GreedTraderConfigAccessor)config).getTierPoolsMap().putAll(tradeEntries);
-            ((GreedTraderConfigAccessor)config).getQuestsList().addAll(questEntries);
-            ((GreedTraderConfigAccessor)config).getChallengesList().addAll(challengeEntries);
             ((GreedTraderConfigAccessor)config).getRoomPoolsByType().putAll(roomPools);
             ((GreedTraderConfigAccessor)config).getModifierPools().putAll(weightedModifiers);
         }

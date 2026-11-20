@@ -77,7 +77,6 @@ public abstract class AbstractChampionProvider extends AbstractVaultConfigDataPr
             config.defaultAttributeOverrides.addAll(defaultAttributeOverrides);
             config.entityChampionChance.putAll(entityChampionChance);
             config.entityAttributeOverrides.putAll(entityAttributeOverrides);
-            config.entityAffixesData.putAll(entityAffixesData);
             config.defaultChampionChance = defaultChampionChance;
         }
     }

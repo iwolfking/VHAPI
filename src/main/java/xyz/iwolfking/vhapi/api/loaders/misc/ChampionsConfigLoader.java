@@ -26,10 +26,6 @@ public class ChampionsConfigLoader extends VaultConfigProcessor<ChampionsConfig>
                 ModConfigs.CHAMPIONS.defaultChampionChance = config.defaultChampionChance;
             }
 
-            if(config.entityAffixesData != null) {
-                ModConfigs.CHAMPIONS.entityAffixesData.putAll(config.entityAffixesData);
-            }
-
             if(config.entityAttributeOverrides != null) {
                 ModConfigs.CHAMPIONS.entityAttributeOverrides.putAll(config.entityAttributeOverrides);
             }

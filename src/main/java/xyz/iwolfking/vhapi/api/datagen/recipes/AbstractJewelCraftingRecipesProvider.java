@@ -31,8 +31,8 @@ public abstract class AbstractJewelCraftingRecipesProvider extends AbstractVault
             super(JewelCraftingRecipesConfig::new);
         }
 
-        public Builder addRecipe(ResourceLocation id, ResourceLocation jewelAttributeId, int size, Consumer<List<ItemStack>> inputs) {
-            ConfigJewelCraftingRecipe recipe = new ConfigJewelCraftingRecipe(jewelAttributeId, size);
+        public Builder addRecipe(ResourceLocation id, ResourceLocation jewelAttributeId, int size, String group, Consumer<List<ItemStack>> inputs) {
+            ConfigJewelCraftingRecipe recipe = new ConfigJewelCraftingRecipe(id, jewelAttributeId, size, group);
             addAndConfigureRecipe(recipe, inputs, id);
             return this;
         }
