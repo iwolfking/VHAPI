@@ -77,6 +77,7 @@ public class LoaderRegistry {
         addGenConfigProcessor(Processors.GenerationConfigProcessors.THEME_CONFIG_LOADER);
 
         addConfigProcessor(Processors.RecipesConfigProcessors.CATALYST_RECIPES_LOADER);
+        addConfigProcessor(Processors.RecipesConfigProcessors.CRYSTAL_SEAL_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.AUGMENT_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.INSCRIPTION_RECIPES_LOADER);
         addConfigProcessor(Processors.RecipesConfigProcessors.TRINKET_RECIPES_LOADER);
