@@ -106,6 +106,7 @@ public class Processors {
     public static class RecipesConfigProcessors {
         public static final CatalystRecipesLoader CATALYST_RECIPES_LOADER = new CatalystRecipesLoader();
         public static final CrystalSealRecipesLoader CRYSTAL_SEAL_RECIPES_LOADER = new CrystalSealRecipesLoader();
+        public static final ForgedFociRecipesLoader FORGED_FOCI_RECIPES_LOADER = new ForgedFociRecipesLoader();
         public static final AugmentStationLoader AUGMENT_RECIPES_LOADER = new AugmentStationLoader();
         public static final InscriptionRecipesLoader INSCRIPTION_RECIPES_LOADER = new InscriptionRecipesLoader();
         public static final TrinketRecipesLoader TRINKET_RECIPES_LOADER = new TrinketRecipesLoader();
