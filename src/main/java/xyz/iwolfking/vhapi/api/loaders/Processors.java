@@ -1,5 +1,6 @@
 package xyz.iwolfking.vhapi.api.loaders;
 
+import iskallia.vault.config.bounty.BountyBoardRewardsConfig;
 import iskallia.vault.core.world.generator.theme.Theme;
 import iskallia.vault.core.world.loot.LootTable;
 import iskallia.vault.core.world.processor.Palette;
@@ -15,6 +16,9 @@ import iskallia.vault.item.gear.FocusItem;
 import iskallia.vault.item.gear.VaultShieldItem;
 import iskallia.vault.item.gear.WandItem;
 import net.minecraft.world.item.Item;
+import xyz.iwolfking.vhapi.api.loaders.bounty.BountyBoardConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.bounty.BountyBoardRewardsConfigLoader;
+import xyz.iwolfking.vhapi.api.loaders.bounty.BountyBoardTasksConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.card.*;
@@ -101,6 +105,12 @@ public class Processors {
         public static final ThemeConfigLoader THEME_CONFIG_LOADER = new ThemeConfigLoader();
         public static final LootTableConfigLoader LOOT_TABLE_CONFIG_LOADER = new LootTableConfigLoader();
         public static final TemplatesConfigLoader TEMPLATES_CONFIG_LOADER = new TemplatesConfigLoader();
+    }
+
+    public static class BountyConfigProcessors {
+        public static final BountyBoardConfigLoader BOUNTY_BOARD_CONFIG_LOADER = new BountyBoardConfigLoader();
+        public static final BountyBoardTasksConfigLoader BOUNTY_BOARD_TASKS_CONFIG_LOADER = new BountyBoardTasksConfigLoader();
+        public static final BountyBoardRewardsConfigLoader BOUNTY_BOARD_REWARDS_CONFIG_LOADER = new BountyBoardRewardsConfigLoader();
     }
 
     public static class RecipesConfigProcessors {
@@ -246,6 +256,7 @@ public class Processors {
         public static final ChallengeCrystalConfigLoader CHALLENGE_CRYSTAL_CONFIG_LOADER = new ChallengeCrystalConfigLoader();
         public static final CompanionConfigLoader COMPANION_CONFIG_LOADER = new CompanionConfigLoader();
         public static final CompanionRelicsConfigLoader COMPANION_RELICS_CONFIG_LOADER = new CompanionRelicsConfigLoader();
+        public static final CustomisationDiscoveryConfigLoader CUSTOMISATION_DISCOVERY_CONFIG_LOADER = new CustomisationDiscoveryConfigLoader();
     }
 
     public static class TransmogConfigProcessors {
