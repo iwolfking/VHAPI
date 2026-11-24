@@ -2,8 +2,12 @@ package xyz.iwolfking.vhapi.api.datagen.lib.gen.themes;
 
 import com.google.gson.JsonObject;
 import iskallia.vault.config.ThemeAugmentLoreConfig;
+import iskallia.vault.config.entry.DescriptionData;
+import net.minecraft.resources.ResourceLocation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,6 +36,62 @@ public class ThemeDefinition {
     public String themeGroup;
     public ThemeAugmentLoreConfig.AugmentLore themeLore;
 
+    public ResourceLocation atmosphere;
+    public int minLevel = 0;
+    public boolean seasonal = false;
+    public String perk;
+    public FlairDefinition flair;
+    public List<ResourceLocation> mobPalettes = new ArrayList<>();
+
+    public ThemeDefinition setGroup(String group) {
+        this.themeGroup = group;
+        return this;
+    }
+
+    public ThemeDefinition setLore(String displayName, String description, int colour) {
+        this.themeLore = new ThemeAugmentLoreConfig.AugmentLore(
+                displayName,
+                new DescriptionData[]{DescriptionData.getDefault(description)},
+                colour
+        );
+        return this;
+    }
+
+    public ThemeDefinition setLore(String displayName, DescriptionData[] description, int colour) {
+        this.themeLore = new ThemeAugmentLoreConfig.AugmentLore(displayName, description, colour);
+        return this;
+    }
+
+    public ThemeDefinition setMinLevel(int minLevel) {
+        this.minLevel = minLevel;
+        return this;
+    }
+
+    public ThemeDefinition setSeasonal(boolean seasonal) {
+        this.seasonal = seasonal;
+        return this;
+    }
+
+    public ThemeDefinition setPerk(String perk) {
+        this.perk = perk;
+        return this;
+    }
+
+    public ThemeDefinition setAtmosphere(ResourceLocation atmosphere) {
+        this.atmosphere = atmosphere;
+        return this;
+    }
+
+    public ThemeDefinition addMobPalette(ResourceLocation palette) {
+        this.mobPalettes.add(palette);
+        return this;
+    }
+
+    public ThemeDefinition setFlair(ResourceLocation floor, ResourceLocation wall, ResourceLocation accent, ResourceLocation particle) {
+        this.flair = new FlairDefinition(floor, wall, accent, particle);
+        return this;
+    }
+
     public JsonObject toJson() {
         JsonObject root = new JsonObject();
 
@@ -52,4 +112,11 @@ public class ThemeDefinition {
 
         return root;
     }
+
+    public static record FlairDefinition(
+            ResourceLocation floor,
+            ResourceLocation wall,
+            ResourceLocation accent,
+            ResourceLocation particle
+    ) {}
 }

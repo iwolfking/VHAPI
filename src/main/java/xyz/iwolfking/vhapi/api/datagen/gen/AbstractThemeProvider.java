@@ -28,9 +28,9 @@ public abstract class AbstractThemeProvider implements DataProvider {
 
     private final List<JsonObject> themeRegistryEntries = new ArrayList<>();
     private final List<String> voidCrucibleEntries = new ArrayList<>();
-    private final Map<ResourceLocation, JsonObject> augmentEntries = new HashMap<>();
-    private final Map<String, List<String>> themeGroupEntries = new HashMap<>();
-    private final Map<String, JsonObject> themeLoreEntries = new HashMap<>();
+    private final Map<ResourceLocation, JsonObject> augmentEntries = new LinkedHashMap<>();
+    private final Map<String, List<String>> themeGroupEntries = new LinkedHashMap<>();
+    private final Map<String, JsonObject> themeLoreEntries = new LinkedHashMap<>();
 
     public AbstractThemeProvider(DataGenerator generator, String modid) {
         this.generator = generator;
@@ -56,40 +56,34 @@ public abstract class AbstractThemeProvider implements DataProvider {
             ResourceLocation id = entry.getKey();
             ThemeDefinition def = entry.getValue();
 
-            //Generate Theme gen file
             Path path = output.resolve(
                     "data/" + id.getNamespace() + "/vault_configs/gen/themes/" + id.getPath() + ".json"
             );
-
             DataProvider.save(GSON, cache, def.toJson(), path);
 
             JsonObject item = new JsonObject();
             item.addProperty("id", id.toString());
             item.addProperty("name", ResourceLocUtils.formatReadableName(id));
-            item.addProperty("color", entry.getValue().themeColor);
+            item.addProperty("color", def.themeColor);
             item.addProperty("1.0", id.toString());
-
             themeRegistryEntries.add(item);
 
-            //Generate Theme augment file
             JsonObject augmentEntry = new JsonObject();
-
-            augmentEntry.addProperty("the_vault:augment{theme:\"" + id + "\"}", 1);
-
+            String augmentStackKey = def.themeGroup != null
+                    ? "the_vault:augment{series:\"" + def.themeGroup + "\"}"
+                    : "the_vault:augment{theme:\"" + id + "\"}";
+            augmentEntry.addProperty(augmentStackKey, 1);
             augmentEntries.put(id, augmentEntry);
 
-            //Generate Theme Pool file (Vault Crystal Config)
             if (!def.levelEntries.isEmpty()) {
-
                 JsonObject root = new JsonObject();
                 JsonObject themesObject = new JsonObject();
-                JsonArray themeLevels = new JsonArray();
 
                 for (Map.Entry<String, Set<Integer>> levelEntry : def.levelEntries.entrySet()) {
                     String themeId = levelEntry.getKey();
+                    JsonArray themeLevels = new JsonArray();
 
                     for (int level : levelEntry.getValue()) {
-
                         JsonObject levelObject = new JsonObject();
                         levelObject.addProperty("level", level);
 
@@ -111,123 +105,109 @@ public abstract class AbstractThemeProvider implements DataProvider {
                 Path poolPath = output.resolve(
                         "data/" + id.getNamespace() + "/vault_configs/vault/crystal/" + id.getPath() + ".json"
                 );
-
                 DataProvider.save(GSON, cache, root, poolPath);
             }
 
-            //Generate Void Crucible config
             voidCrucibleEntries.add(id.toString());
 
+            if (def.themeGroup != null) {
+                themeGroupEntries.computeIfAbsent(def.themeGroup, k -> new ArrayList<>()).add(id.toString());
 
-            //Generate Theme lore/add to Theme lore group
-            if(def.themeGroup != null && def.themeLore == null) {
-                if(themeGroupEntries.containsKey(def.themeGroup)) {
-                    themeGroupEntries.get(def.themeGroup).add(id.toString());
-                }
-                else {
-                    List<String> ids = new ArrayList<>();
-                    ids.add(id.toString());
-                    themeGroupEntries.put(def.themeGroup, ids);
+                if (def.themeLore != null && !themeLoreEntries.containsKey(def.themeGroup)) {
+                    JsonObject seriesEntry = new JsonObject();
+                    seriesEntry.addProperty("displayName", def.themeLore.displayName);
+
+                    JsonArray description = new JsonArray();
+                    if (def.themeLore.description != null) {
+                        Arrays.stream(def.themeLore.description).forEach(descriptionData ->
+                                description.add(descriptionData.getDescription())
+                        );
+                    }
+                    seriesEntry.add("description", description);
+                    seriesEntry.addProperty("colour", def.themeLore.colour);
+
+                    if (def.atmosphere != null) {
+                        seriesEntry.addProperty("atmosphere", def.atmosphere.toString());
+                    }
+                    seriesEntry.addProperty("minLevel", def.minLevel);
+                    seriesEntry.addProperty("seasonal", def.seasonal);
+                    if (def.perk != null) {
+                        seriesEntry.addProperty("perk", def.perk);
+                    }
+
+                    if (def.flair != null) {
+                        JsonObject flairObj = new JsonObject();
+                        if (def.flair.floor() != null) {
+                            flairObj.addProperty("floor", def.flair.floor().toString());
+                        }
+                        if (def.flair.wall() != null) {
+                            flairObj.addProperty("wall", def.flair.wall().toString());
+                        }
+                        if (def.flair.accent() != null) {
+                            flairObj.addProperty("accent", def.flair.accent().toString());
+                        }
+                        if (def.flair.particle() != null) {
+                            flairObj.addProperty("particle", def.flair.particle().toString());
+                        }
+                        seriesEntry.add("flair", flairObj);
+                    }
+
+                    if (def.mobPalettes != null && !def.mobPalettes.isEmpty()) {
+                        JsonArray mobPalettes = new JsonArray();
+                        def.mobPalettes.forEach(loc -> mobPalettes.add(loc.toString()));
+                        seriesEntry.add("mobPalettes", mobPalettes);
+                    }
+
+                    themeLoreEntries.put(def.themeGroup, seriesEntry);
                 }
             }
-
-            if(def.themeGroup != null && def.themeLore != null) {
-                JsonObject seriesEntry = new JsonObject();
-
-                seriesEntry.addProperty("displayName", def.themeLore.displayName);
-                seriesEntry.addProperty("colour", def.themeLore.colour);
-                JsonArray description = new JsonArray();
-                Arrays.stream(def.themeLore.description).forEach(descriptionData -> {
-                    description.add(descriptionData.getDescription());
-                });
-                seriesEntry.add("description", description);
-                themeLoreEntries.put(def.themeGroup, seriesEntry);
-
-                if(themeGroupEntries.containsKey(def.themeGroup)) {
-                    themeGroupEntries.get(def.themeGroup).add(id.toString());
-                }
-                else {
-                    List<String> ids = new ArrayList<>();
-                    ids.add(id.toString());
-                    themeGroupEntries.put(def.themeGroup, ids);
-                }
-            }
-
         }
 
-        //Generate Theme registry file
-        Path keyPath = generator.getOutputFolder().resolve(
-                "data/" + modid + "/vault_configs/themes/themes.json"
-        );
-
+        Path keyPath = output.resolve("data/" + modid + "/vault_configs/themes/themes.json");
         JsonObject keyFile = new JsonObject();
         JsonArray keys = new JsonArray();
-
-        for(JsonObject entry : themeRegistryEntries) {
-            keys.add(entry);
-        }
-
+        themeRegistryEntries.forEach(keys::add);
         keyFile.add("keys", keys);
-
         DataProvider.save(GSON, cache, keyFile, keyPath);
 
-        //Generate Theme augment file
-        Path augmentPath = output.resolve(
-                "data/" + modid + "/vault_configs/augments/augments.json"
-        );
-
-
+        Path augmentPath = output.resolve("data/" + modid + "/vault_configs/augments/augments.json");
         JsonObject augmentFile = new JsonObject();
         JsonObject augmentMap = new JsonObject();
         augmentFile.addProperty("dropChance", 0.2);
-        augmentEntries.forEach(((resourceLocation, jsonObject) -> {
-            augmentMap.add(resourceLocation.toString(), jsonObject);
-        }));
+        augmentFile.addProperty("pieceDropChance", 0.5);
 
+        augmentEntries.forEach((resourceLocation, jsonObject) ->
+                augmentMap.add(resourceLocation.toString(), jsonObject)
+        );
         augmentFile.add("drops", augmentMap);
-
         DataProvider.save(GSON, cache, augmentFile, augmentPath);
 
-
-        //Void Crucible file
+        Path voidCruciblePath = output.resolve("data/" + modid + "/vault_configs/void_crucible/themes_crucible_config.json");
         JsonObject voidCrucibleConfigFile = new JsonObject();
-        JsonArray themes = new JsonArray();
-        JsonArray allowedBlocks = new JsonArray();
-        voidCrucibleEntries.forEach(themes::add);
-        voidCrucibleConfigFile.add("themes", themes);
-        voidCrucibleConfigFile.add("allowedBlocks", allowedBlocks);
-
-        Path voidCruciblePath = output.resolve(
-                "data/" + modid + "/vault_configs/void_crucible/themes_crucible_config.json"
-        );
-
+        JsonArray themesArray = new JsonArray();
+        voidCrucibleEntries.forEach(themesArray::add);
+        voidCrucibleConfigFile.add("themes", themesArray);
+        voidCrucibleConfigFile.add("allowedBlocks", new JsonArray());
         DataProvider.save(GSON, cache, voidCrucibleConfigFile, voidCruciblePath);
 
-        //Combined Theme Lore file
-        //Augments Map
+        Path augmentLorePath = output.resolve("data/" + modid + "/vault_configs/theme_lore/theme_lore.json");
         JsonObject themeLoreFile = new JsonObject();
-        themeLoreFile.add("series", new JsonObject());
-        JsonObject augmentGroupEntry = new JsonObject();
-        themeGroupEntries.forEach((s, strings) -> {
-            JsonArray augmentIds = new JsonArray();
-            for(String id : strings) {
-                augmentIds.add(id);
-            }
-            augmentGroupEntry.add(s, augmentIds);
+
+        JsonObject seriesMap = new JsonObject();
+        themeLoreEntries.forEach(seriesMap::add);
+        themeLoreFile.add("series", seriesMap);
+
+        JsonObject augmentsMap = new JsonObject();
+        themeGroupEntries.forEach((group, ids) -> {
+            JsonArray idsArray = new JsonArray();
+            ids.forEach(idsArray::add);
+            augmentsMap.add(group, idsArray);
         });
-        themeLoreFile.add("augments", augmentGroupEntry);
-
-        //Series Map
-        JsonObject series = new JsonObject();
-        themeLoreEntries.forEach(series::add);
-        themeLoreFile.add("series", series);
-
-        Path augmentLorePath = output.resolve(
-                "data/" + modid + "/vault_configs/theme_lore/theme_lore.json"
-        );
+        themeLoreFile.add("augments", augmentsMap);
+        themeLoreFile.add("retiredThemes", new JsonObject());
+        themeLoreFile.addProperty("spawnersPerCommonRoom", 10.06);
 
         DataProvider.save(GSON, cache, themeLoreFile, augmentLorePath);
-
     }
 
     @Override

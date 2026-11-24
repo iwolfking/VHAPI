@@ -1,6 +1,7 @@
 package xyz.iwolfking.vhapi.api.datagen.lib.gen.themes;
 
 import iskallia.vault.config.ThemeAugmentLoreConfig;
+import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vhapi.api.util.builder.description.ThemeLoreDescriptionBuilder;
 
 import java.util.HashSet;
@@ -77,10 +78,9 @@ public class ThemeBuilder {
     }
 
     public ThemeBuilder levelEntry(String pool, int level) {
-        if(def.levelEntries.containsKey(pool)) {
+        if (def.levelEntries.containsKey(pool)) {
             def.levelEntries.get(pool).add(level);
-        }
-        else {
+        } else {
             Set<Integer> levelEntries = new HashSet<>();
             levelEntries.add(level);
             def.levelEntries.put(pool, levelEntries);
@@ -102,6 +102,36 @@ public class ThemeBuilder {
         ThemeLoreDescriptionBuilder builder = new ThemeLoreDescriptionBuilder();
         descriptionBuilderConsumer.accept(builder);
         def.themeLore = new ThemeAugmentLoreConfig.AugmentLore(themeGroupName, builder.build(), color);
+        return this;
+    }
+
+    public ThemeBuilder atmosphere(ResourceLocation atmosphere) {
+        def.atmosphere = atmosphere;
+        return this;
+    }
+
+    public ThemeBuilder minLevel(int level) {
+        def.minLevel = level;
+        return this;
+    }
+
+    public ThemeBuilder seasonal(boolean seasonal) {
+        def.seasonal = seasonal;
+        return this;
+    }
+
+    public ThemeBuilder perk(String perk) {
+        def.perk = perk;
+        return this;
+    }
+
+    public ThemeBuilder mobPalette(ResourceLocation palette) {
+        def.mobPalettes.add(palette);
+        return this;
+    }
+
+    public ThemeBuilder flair(ResourceLocation floor, ResourceLocation wall, ResourceLocation accent, ResourceLocation particle) {
+        def.flair = new ThemeDefinition.FlairDefinition(floor, wall, accent, particle);
         return this;
     }
 
