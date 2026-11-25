@@ -5,6 +5,9 @@ import iskallia.vault.init.ModConfigs;
 import net.minecraft.resources.ResourceLocation;
 import xyz.iwolfking.vhapi.api.events.VaultConfigEvent;
 import xyz.iwolfking.vhapi.api.loaders.lib.core.VaultConfigProcessor;
+import xyz.iwolfking.vhapi.mixin.accessors.AbilitiesGUIConfigAccessor;
+
+import java.util.Map;
 
 public class AbilitiesGUIConfigLoader extends VaultConfigProcessor<AbilitiesGUIConfig> {
     public AbilitiesGUIConfigLoader() {
@@ -35,6 +38,17 @@ public class AbilitiesGUIConfigLoader extends VaultConfigProcessor<AbilitiesGUIC
             }
 
         }
+        rebuildIconLookup(ModConfigs.ABILITIES_GUI);
         super.afterConfigsLoad(event);
+    }
+
+    private static void rebuildIconLookup(AbilitiesGUIConfig config) {
+        Map<String, AbilitiesGUIConfig.SpecializationStyle> lookup = ((AbilitiesGUIConfigAccessor) config).getSpecializationStyleLookup();
+        lookup.clear();
+        for(AbilitiesGUIConfig.AbilityStyle style : config.getStyles().values()) {
+            if(style.getSpecializationStyles() != null) {
+                lookup.putAll(style.getSpecializationStyles());
+            }
+        }
     }
 }

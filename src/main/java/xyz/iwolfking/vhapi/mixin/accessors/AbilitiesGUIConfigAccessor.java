@@ -17,4 +17,7 @@ public interface AbilitiesGUIConfigAccessor {
 
     @Accessor("labels")
     void setLabels(List<AbilitiesGUIConfig.AbilityLabel> labels);
+
+    @Accessor("specializationStyleLookup")
+    Map<String, AbilitiesGUIConfig.SpecializationStyle> getSpecializationStyleLookup();
 }
