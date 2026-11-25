@@ -190,6 +190,7 @@ public class LoaderRegistry {
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.CHALLENGE_CRYSTAL_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.COMPANION_CONFIG_LOADER);
         addConfigProcessor(Processors.GeneralVaultConfigProcessors.COMPANION_RELICS_CONFIG_LOADER);
+        addConfigProcessor(Processors.GeneralVaultConfigProcessors.VAULT_STASH_CONFIG_LOADER);
 
         addConfigProcessor(Processors.BountyConfigProcessors.BOUNTY_BOARD_CONFIG_LOADER);
         addConfigProcessor(Processors.BountyConfigProcessors.BOUNTY_BOARD_TASKS_CONFIG_LOADER);
