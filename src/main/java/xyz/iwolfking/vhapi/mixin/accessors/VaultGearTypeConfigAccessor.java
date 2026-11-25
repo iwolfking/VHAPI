@@ -1,0 +1,14 @@
+package xyz.iwolfking.vhapi.mixin.accessors;
+
+import iskallia.vault.config.gear.VaultGearTypeConfig;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+import java.util.Map;
+
+@Mixin(value = VaultGearTypeConfig.class, remap = false)
+public interface VaultGearTypeConfigAccessor {
+
+    @Accessor("rolls")
+    Map<String, VaultGearTypeConfig.RollType> getRolls();
+}
