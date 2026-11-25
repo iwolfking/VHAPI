@@ -87,6 +87,12 @@ public class PaletteBuilder {
             return this;
         }
 
+        /** Adds a weighted_target level whose outputs are a JSON array, like {@code weightedTargetGeneric}. */
+        public LeveledBuilder listGeneric(int level, String target, Consumer<JsonArray> output) {
+            processor.addLevel(new PaletteProcessors.WeightedGenericLevelProcessor(level, target, output));
+            return this;
+        }
+
         public LeveledBuilder probability(int level, double probability, String target, Consumer<Map<String , Integer>> successes, Consumer<Map<String , Integer>> failures) {
             processor.addLevel(new PaletteProcessors.ProbabilityLevelProcessor(level, probability, successes, failures));
             return this;

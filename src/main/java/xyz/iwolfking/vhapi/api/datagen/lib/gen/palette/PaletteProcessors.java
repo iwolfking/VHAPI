@@ -177,6 +177,29 @@ public class PaletteProcessors {
         }
     }
 
+    /** A level that picks from a JSON array of weighted outputs, such as tiles carrying their own NBT fields. */
+    public static class WeightedGenericLevelProcessor extends LevelProcessor {
+        private final String target;
+        private final Consumer<JsonArray> outputConsumer;
+
+        public WeightedGenericLevelProcessor(int level, String target, Consumer<JsonArray> outputConsumer) {
+            super(level);
+            this.target = target;
+            this.outputConsumer = outputConsumer;
+        }
+
+        @Override
+        public JsonElement toJson() {
+            JsonObject o = super.toJson().getAsJsonObject();
+            o.addProperty("type", "weighted_target");
+            o.addProperty("target", target);
+            JsonArray output = new JsonArray();
+            outputConsumer.accept(output);
+            o.add("output", output);
+            return o;
+        }
+    }
+
     public static class WeightedTargetLevelProcessor extends LevelProcessor {
         private final String target;
         private final Consumer<Map<String, Integer>> outputConsumer;
