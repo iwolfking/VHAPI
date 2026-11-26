@@ -25,6 +25,7 @@
     "accessors.BountyBoardRewardsConfigEntryAccessor",
     "accessors.BountyBoardTasksConfigAccessor",
     "accessors.BountyBoardTasksConfigEntryAccessor",
+    "accessors.BountyBoardTasksEntryAccessor",
     "accessors.CardConfigAccessor",
     "accessors.CardDeckConfigAccessor",
     "accessors.CardDeckConfigEntryAccessor",
