@@ -22,6 +22,7 @@ import xyz.iwolfking.vhapi.api.loaders.bounty.BountyBoardTasksConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.MappedWeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.box.WeightedProductEntryConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.card.*;
+import xyz.iwolfking.vhapi.api.loaders.challenge.ChallengeActionsConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.challenge.ChallengeCrystalConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.challenge.ChallengeCurseConfigLoader;
 import xyz.iwolfking.vhapi.api.loaders.companion.CompanionConfigLoader;
@@ -253,6 +254,7 @@ public class Processors {
         public static final VaultItemsConfigLoader VAULT_ITEMS_CONFIG_LOADER = new VaultItemsConfigLoader();
         public static final ChallengeCurseConfigLoader CHALLENGE_CURSE_CONFIG_LOADER = new ChallengeCurseConfigLoader();
         public static final ChallengeCrystalConfigLoader CHALLENGE_CRYSTAL_CONFIG_LOADER = new ChallengeCrystalConfigLoader();
+        public static final ChallengeActionsConfigLoader CHALLENGE_ACTIONS_CONFIG_LOADER = new ChallengeActionsConfigLoader();
         public static final CompanionConfigLoader COMPANION_CONFIG_LOADER = new CompanionConfigLoader();
         public static final CompanionRelicsConfigLoader COMPANION_RELICS_CONFIG_LOADER = new CompanionRelicsConfigLoader();
         public static final CustomisationDiscoveryConfigLoader CUSTOMISATION_DISCOVERY_CONFIG_LOADER = new CustomisationDiscoveryConfigLoader();

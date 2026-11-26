@@ -12,4 +12,7 @@ import java.util.Map;
 public interface GroupChallengeActionConfigAccessor {
     @Accessor("children")
     void setChildren(Map<ChallengeAction<?>, IntRoll> children);
+
+    @Accessor("children")
+    Map<ChallengeAction<?>, IntRoll> getChildren();
 }
