@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,16 @@ public final class EnumAppender<T extends Enum<T>> {
      * map for correctly handling boxed and unboxed class types
      * important to actually use the class type originally defined for the enum, not what we get from argument objects
      */
-    private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPES = ImmutableMap.<Class<?>, Class<?>>builder().put(Integer.class, int.class).put(Boolean.class, boolean.class).put(Byte.class, byte.class).put(Short.class, short.class).put(Character.class, char.class).put(Long.class, long.class).put(Float.class, float.class).put(Double.class, double.class).build();
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPES = ImmutableMap.<Class<?>, Class<?>>builder()
+            .put(Integer.class, int.class)
+            .put(Boolean.class, boolean.class)
+            .put(Byte.class, byte.class)
+            .put(Short.class, short.class)
+            .put(Character.class, char.class)
+            .put(Long.class, long.class)
+            .put(Float.class, float.class)
+            .put(Double.class, double.class)
+            .build();
 
     /**
      * the enum class we wish to append constant values to
@@ -79,7 +89,9 @@ public final class EnumAppender<T extends Enum<T>> {
     private EnumAppender(Class<T> enumClazz, Class<? extends T> enumConcreteClazz, List<FieldAccess> fields) {
         this.enumClazz = enumClazz;
         this.enumConcreteClazz = enumConcreteClazz;
-        this.fields = fields.stream().map(f -> findField(enumClazz, f.ordinal(), f.clazz())).collect(ImmutableList.toImmutableList());
+        this.fields = fields.stream()
+                .map(f -> findField(enumClazz, f.ordinal(), f.clazz()))
+                .collect(ImmutableList.toImmutableList());
     }
 
     /**
@@ -101,18 +113,25 @@ public final class EnumAppender<T extends Enum<T>> {
     }
 
     /**
-     * find a field at a given ordinal
+     * find an instance field at a given ordinal, ignoring static and synthetic fields
      *
      * @param enumClazz the class to look for the field in
-     * @param ordinal   ordinal of this field (like with mixins)
+     * @param ordinal   ordinal of this instance field among matching fields
      * @param clazz     clazz type of the field
      * @return the field, it must be present or an exception will be raised
      */
     private static Field findField(Class<? extends Enum<?>> enumClazz, int ordinal, Class<?> clazz) {
+        int remaining = ordinal;
         for (Field field : enumClazz.getDeclaredFields()) {
-            if (field.getType() == clazz && ordinal-- == 0) return field;
+            if (Modifier.isStatic(field.getModifiers()) || field.isSynthetic()) {
+                continue;
+            }
+            if (field.getType() == clazz && remaining-- == 0) {
+                return field;
+            }
         }
-        throw new IllegalStateException("No field of type %s found at ordinal %s in enum class %s".formatted(clazz, ordinal, enumClazz));
+        throw new IllegalStateException("No instance field of type %s found at ordinal %s in enum class %s"
+                .formatted(clazz, ordinal, enumClazz));
     }
 
     /**
@@ -401,6 +420,5 @@ public final class EnumAppender<T extends Enum<T>> {
      * @param clazz   the type
      */
     private record FieldAccess(int ordinal, Class<?> clazz) {
-
     }
 }
