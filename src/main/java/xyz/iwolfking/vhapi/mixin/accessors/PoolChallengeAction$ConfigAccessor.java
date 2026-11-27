@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(value = PoolChallengeAction.Config.class,remap = false)
-public interface PoolChallengeActionAccessor {
+public interface PoolChallengeAction$ConfigAccessor {
     @Accessor("pools")
     void setPools(LevelEntryList<?> pools);
 }
